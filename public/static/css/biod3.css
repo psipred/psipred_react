@@ -1,0 +1,133 @@
+
+path {
+  fill: none;
+}
+
+text {
+  fill: black;
+}
+
+.line {
+  stroke: steelblue;
+  stroke-width: 2;
+}
+
+.axis {
+  stroke-width: 2;
+}
+
+.coil {
+  stroke: DimGrey;
+  stroke-width: 1;
+}
+
+.helix {
+  stroke: HotPink;
+  stroke-width: 3;
+}
+.strand {
+  stroke: Gold;
+  stroke-width: 3;
+}
+
+.C {
+  stroke: DimGrey;
+  stroke-width: 10;
+}
+
+.H {
+  stroke: HotPink;
+  stroke-width: 10;
+}
+.E {
+  stroke: Gold;
+  stroke-width: 10;
+}
+
+.pngbutton {
+  stroke: black;
+  fill: white;
+}
+
+.svgbutton {
+  stroke: black;
+  fill: white;
+}
+
+.pngbutton.active {
+  stroke: black;
+  fill: black;
+}
+
+.svgbutton.active {
+  stroke: black;
+  fill: black;
+}
+
+.phyrebutton {
+  stroke: black;
+  fill: white;
+}
+.phyrebutton.active {
+  stroke: black;
+  fill: black;
+}
+.leskbutton {
+  stroke: black;
+  fill: white;
+}
+.leskbutton.active {
+  stroke: black;
+  fill: black;
+}
+.clustalbutton {
+  stroke: black;
+  fill: white;
+}
+.clustalbutton.active {
+  stroke: black;
+  fill: black;
+}
+.custombutton {
+  stroke: black;
+  fill: white;
+}
+.custombutton.active {
+  stroke: black;
+  fill: black;
+}
+
+.psipredbutton {
+  stroke: black;
+  fill: white;
+}
+.psipredbutton.active {
+  stroke: black;
+  fill: black;
+}
+.memsatbutton {
+  stroke: black;
+  fill: white;
+}
+.memsatbutton.active {
+  stroke: black;
+  fill: black;
+}
+
+.buttonText {
+  fill: black;
+}
+
+.buttonText.active {
+  fill: white;
+}
+
+.cutoff_line {
+  stroke-width: 1;
+  stroke: DimGrey;
+  stroke-dasharray: 5, 5;
+}
+
+.cutoffText {
+  fill: black;
+}
