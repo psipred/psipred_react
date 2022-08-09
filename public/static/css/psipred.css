@@ -24,6 +24,10 @@ hr {  color: grey !important;
   margin: auto;
 }
 
+.form_header_blue {
+  background-color: rgb(23, 57, 88);
+}
+
 .filter_table{
   width: auto;
   margin-right: 0px;
