@@ -24,10 +24,6 @@ hr {  color: grey !important;
   margin: auto;
 }
 
-.form_header_blue {
-  background-color: rgb(23, 57, 88);
-}
-
 .filter_table{
   width: auto;
   margin-right: 0px;
@@ -134,14 +130,13 @@ td{
   height: 20px;
 }
 
-.form-header
+.form-header-blue
 {
   background-color: #173958;
   color: #ffffff;
   display: table;
 }
-
-.form-header-structure
+.form-header-red
 {
   background-color: #581717;
   color: #ffffff;
