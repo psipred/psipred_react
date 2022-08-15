@@ -1,12 +1,18 @@
 import ReactDOM from 'react-dom/client'
 import React from 'react';
-
+import {Sidebar} from './sidebar.js'; // eslint-disable-line no-unused-vars
+import {DomSerfOptions} from './sidebar.js'; // eslint-disable-line no-unused-vars
+import {BioSerfOptions} from './sidebar.js'; // eslint-disable-line no-unused-vars
+import {FfpredOptions} from './sidebar.js'; // eslint-disable-line no-unused-vars
+import {DompredOptions} from './sidebar.js'; // eslint-disable-line no-unused-vars
+import {MetsiteOptions} from './sidebar.js'; // eslint-disable-line no-unused-vars
+import {HspredOptions} from './sidebar.js'; // eslint-disable-line no-unused-vars
+import {MemembedOptions} from './sidebar.js'; // eslint-disable-line no-unused-vars
 
 class SeqForm extends React.Component {
   handleChange = (event) => {
     this.props.handleChange(event);
   }
-
   handleReset = () => {
     this.props.handleReset();
   }
@@ -189,19 +195,86 @@ class StructForm extends React.Component {
 
 
 class FormInteractivity extends React.Component{
+  render(props) {
+    return(
+      <div className="box-body">
+        <div className="form-group">
+
+          { this.props.formSelectedOption === "SeqForm" ?
+            <div className="col-md-12 form-header-blue">
+              <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
+            </div>
+          :
+            <div className="col-md-12 form-header-red">
+              <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
+            </div>
+          }
+          <div className="col-md-12">
+            <div className="row form-header-row">
+              <div className="funkyradio">
+                <div className="funkyradio-primary"><input type="radio" id="radio1" name="radio" value="SeqForm" checked={this.props.formSelectedOption === "SeqForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio1"><b>Sequence Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
+                <div className="funkyradio-danger"><input type="radio" id="radio2" name="radio" value="StructForm" checked={this.props.formSelectedOption === "StructForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio2"><b>PDB Structure Data&nbsp;&nbsp;</b></label></div>
+              </div><br />
+            </div>
+          </div>
+
+        </div>
+        <div className="form-group">
+        { this.props.formSelectedOption === "SeqForm" ?
+          <div className="col-md-12 form-header-blue">
+            <div className="row form-header-row">
+              <h5 className="float-header">Choose prediction methods (hover for short description)</h5>
+            </div>
+          </div>
+          :
+          <div className="col-md-12 form-header-red">
+            <div className="row form-header-row">
+              <h5 className="float-header">Choose prediction methods (hover for short description)</h5>
+            </div>
+          </div>
+        }
+        </div>
+        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleResetSeq} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleResetStruct} />}
+
+      </div>
+      );
+  }
+}
+
+class MainForm extends React.Component{
+  render () {
+    return(
+      <div id="main_form" className="box box-primary">
+        <div className="box-header with-border">
+          <p>The PSIPRED Workbench provides a range of protein structure prediction methods. The site can be used interactively via a web browser or programmatically via our REST API. For high-throughput analyses, downloads of all the algorithms are available.</p>
+          <p><b>Amino acid</b> sequences enable: secondary structure prediction, including regions of disorder and transmembrane helix packing; contact analysis; fold recognition; structure modelling; and prediction of domains and function. In addition <b>PDB Structure files</b> allow prediction of protein-metal ion contacts, protein-protein hotspot residues, and membrane protein orientation.</p>
+          <hr id="hr_form"></hr>
+        </div>
+        <div className="box-header with-border"><h5 className="box-title">Data Input</h5></div>
+          <FormInteractivity {...this.props} handleInputChange={this.props.handleInputChange} handleStructChange={this.props.handleStructChange} handleResetStruct={this.props.handleResetStruct} handleSeqChange={this.props.handleSeqChange} handleResetSeq={this.props.handleResetSeq} />
+      </div>
+    );
+  }
+}
+
+class DisplayArea extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      formSelectedOption: 'SeqForm',
+      formSelectedOption: 'StructForm',
       analyses: ['psipred_job'],
       input_data: '',
       seq: '',
       name: '',
       email: '',
       file: null,
+      bioserf_modeller_key: '',
+      domserf_modeller_key: '',
+      dompred_e_value_cutoff: 0.01,
+      dompred_psiblast_iterations: 5,
+      ffpred_selection: 'human',
     };
   }
-
   componentDidUpdate() {
      console.log(this.state);
   }
@@ -234,6 +307,46 @@ class FormInteractivity extends React.Component{
     }
   }
 
+  handleBioserfSideChange = (event) => {
+    this.setState({
+      bioserf_modeller_key: event.target.value
+    });
+  }
+
+  handleDomserfSideChange = (event) => {
+    this.setState({
+      domserf_modeller_key: event.target.value
+    });
+  }
+  handleDompredSideChange = (event) => {
+    if(event.target.name === 'dompred_e_value_cutoff'){
+      this.setState({
+        dompred_e_value_cutoff: event.target.value,
+      });
+    }
+    if(event.target.name === 'dompred_psiblast_iterations'){
+      this.setState({
+        dompred_psiblast_iterations: event.target.value,
+      });
+    }
+  }
+  handleFfpredSideChange = (event) => {
+    this.setState({
+      ffpred_selection: event.target.value,
+    });
+  }
+  handleMetsiteSideChange = (event) => {
+    this.setState({
+    });
+  }
+  handleHspredSideChange = (event) => {
+    this.setState({
+    });
+  }
+  handleMemembedSideChange = (event) => {
+    this.setState({
+    });
+  }
   handleSeqChange = (event) =>  {
     var value = event.target.value;
     if(event.target.name === 'input_data'){
@@ -288,7 +401,6 @@ class FormInteractivity extends React.Component{
       }
     }
   }
-
   handleResetSeq = () => {
     this.setState({
       analyses: ['psipred_job'],
@@ -296,9 +408,13 @@ class FormInteractivity extends React.Component{
       seq: '',
       name: '',
       email: '',
+      bioserf_modeller_key: '',
+      domserf_modeller_key: '',
+      dompred_e_value_cutoff: 0.01,
+      dompred_psiblast_iterations: 5,
+      ffpred_selection: 'human',
       });
   }
-
   handleResetStruct = () => {
     this.setState({
       analyses: [],
@@ -320,87 +436,11 @@ class FormInteractivity extends React.Component{
     }
   }
 
-  render(props) {
-    return(
-      <div className="box-body">
-        <div className="form-group">
-
-          { this.state.formSelectedOption === "SeqForm" ?
-            <div className="col-md-12 form-header-blue">
-              <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
-            </div>
-          :
-            <div className="col-md-12 form-header-red">
-              <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
-            </div>
-          }
-          <div className="col-md-12">
-            <div className="row form-header-row">
-              <div className="funkyradio">
-                <div className="funkyradio-primary"><input type="radio" id="radio1" name="radio" value="SeqForm" checked={this.state.formSelectedOption === "SeqForm"} onChange={this.handleInputChange} /> <label htmlFor="radio1"><b>Sequence Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
-                <div className="funkyradio-danger"><input type="radio" id="radio2" name="radio" value="StructForm" checked={this.state.formSelectedOption === "StructForm"} onChange={this.handleInputChange} /> <label htmlFor="radio2"><b>PDB Structure Data&nbsp;&nbsp;</b></label></div>
-              </div><br />
-            </div>
-          </div>
-
-
-        </div>
-        <div className="form-group">
-        { this.state.formSelectedOption === "SeqForm" ?
-          <div className="col-md-12 form-header-blue">
-            <div className="row form-header-row">
-              <h5 className="float-header">Choose prediction methods (hover for short description)</h5>
-            </div>
-          </div>
-          :
-          <div className="col-md-12 form-header-red">
-            <div className="row form-header-row">
-              <h5 className="float-header">Choose prediction methods (hover for short description)</h5>
-            </div>
-          </div>
-        }
-        </div>
-        { this.state.formSelectedOption === "SeqForm" ? <SeqForm {...this.state} handleChange={this.handleSeqChange} handleReset={this.handleResetSeq} /> : <StructForm  {...this.state} handleChange={this.handleStructChange} handleReset={this.handleResetStruct} />}
-
-      </div>
-      );
-  }
-}
-
-class MainForm extends React.Component{
-  // All state will have to come here eventually
-  render () {
-    return(
-      <div id="main_form" className="box box-primary">
-        <div className="box-header with-border">
-          <p>The PSIPRED Workbench provides a range of protein structure prediction methods. The site can be used interactively via a web browser or programmatically via our REST API. For high-throughput analyses, downloads of all the algorithms are available.</p>
-          <p><b>Amino acid</b> sequences enable: secondary structure prediction, including regions of disorder and transmembrane helix packing; contact analysis; fold recognition; structure modelling; and prediction of domains and function. In addition <b>PDB Structure files</b> allow prediction of protein-metal ion contacts, protein-protein hotspot residues, and membrane protein orientation.</p>
-          <hr id="hr_form"></hr>
-        </div>
-        <div className="box-header with-border"><h5 className="box-title">Data Input</h5></div>
-          <FormInteractivity />
-      </div>
-    );
-  }
-}
-
-class Sidebar extends React.Component{
-  render () {
-    return(
-      <div id="main_form" className="box box-primary">
-        <div className="box-header with-border">Required Options</div>
-        <div className="box-body"></div>
-      </div>
-    );
-  }
-}
-
-class DisplayArea extends React.Component{
   render () {
     return(
       <div className="row">
-        <div className="col-md-9"><MainForm /></div>
-        <div className="col-md-3"><Sidebar /></div>
+        <div className="col-md-9"><MainForm  {...this.state} handleInputChange={this.handleInputChange} handleStructChange={this.handleStructChange} handleResetStruct={this.handleResetStruct} handleSeqChange={this.handleSeqChange} handleResetSeq={this.handleResetSeq}  /></div>
+        <div className="col-md-3"><Sidebar {...this.state} handleBioserfSideChange={this.handleBioserfSideChange} handleDomserfSideChange={this.handleDomserfSideChange} handleDompredSideChange={this.handleDompredSideChange} handleFfpredSideChange={this.handleFfpredSideChange} handleMetsiteSideChange={this.handleMetsiteSideChange} handleHspredSideChange={this.handleHspredSideChange} handleMemembedSideChange={this.handleMemembedSideChange} /></div>
       </div>
     );
   }
