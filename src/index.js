@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client'
 import React from 'react';
 import {Sidebar} from './sidebar.js'; // eslint-disable-line no-unused-vars
 import {MainForm} from './mainform.js'; // eslint-disable-line no-unused-vars
+import {checkInput} from './checkform.js' // eslint-disable-line no-unused-vars
 
 class DisplayArea extends React.Component{
   constructor(props){
@@ -62,12 +63,7 @@ class DisplayArea extends React.Component{
     this.setState({
       formSelectedOption: event.target.value,
     });
-    if(event.target.value === 'SeqForm'){
-      this.handleResetSeq();
-    }
-    else {
-      this.handleResetStruct();
-    }
+    this.handleReset();
   }
   handleStructChange = (event) =>  {
     var value = event.target.value;
@@ -91,9 +87,9 @@ class DisplayArea extends React.Component{
       this.setState({
         analyses: change
       });
-      if(this.state.analyses.length === 13){
-        alert("You have selected every analysis. This job may take in excess of 12 hours. Please consider submitting seperate jobs ");
-      }
+    }
+    if(this.state.analyses.length === 4){
+      alert("You have selected every analysis method. We don't allow submissions which select all analyses. Please consider more carefully which predictions you require.");
     }
   }
 
@@ -146,9 +142,12 @@ class DisplayArea extends React.Component{
       this.setState({
         analyses: change
       });
-      if(this.state.analyses.length === 13){
-        alert("You have selected every analysis. This job may take in excess of 12 hours. Please consider submitting seperate jobs ");
+      if(this.state.analyses.length === 12){
+        alert("You have selected nearly every analysis. This job may take in excess of 12 hours. Please consider submitting seperate jobs ");
       }
+    }
+    if(this.state.analyses.length === 13){
+      alert("You have selected every analysis method. We don't allow submissions which select all analyses. Please consider more carefully which predictions you require.");
     }
   }
 
@@ -160,21 +159,43 @@ class DisplayArea extends React.Component{
     this.setState(newstate);
   }
 
+  //BEFORE RENDER CHECK LOCAL HOST AND SET ENDPOINTS
+  //              CHECK URL FOR UUID IF FOUND RENDER RESULTS
+
+  handleSubmit = (event) => {
+    // Uppercase the seq data
+    var checked = checkInput(this.state); //this call is not asynced but it's fine to stop the world for this.
+    console.log(checked);
+    if(checked.send){
+
+    }
+    else{
+      alert(checked.message);
+    }
+    //1. Check and sanitise form data
+    //2. set displaytType and re-render
+    event.preventDefault();
+  }
+
   render () {
     return(
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          <div className="col-md-9"><MainForm  {...this.state} handleInputChange={this.handleInputChange} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
+          <div className="col-md-9"><MainForm  {...this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
           <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
         </div>
       :
         <div>
           <h2>RESULTS</h2>
-          {// results panel
-          // extra panels
-          // results sidebar
-          // resubmission widget
+          {// 1. draw results 2 Main areas
+           //        DIAGRAM AND TABLES
+           //2. Draw Time/waiting panelresults panel
+           //3. send async request for times
+           //3. extra panels
+           //       results sidebar
+           //     resubmission widget
+           //4. send async request form data
           }
         </div>
       }

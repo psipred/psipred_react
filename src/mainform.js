@@ -4,13 +4,9 @@ class SeqForm extends React.Component {
   handleChange = (event) => {
     this.props.handleChange(event);
   }
-  handleReset = () => {
-    this.props.handleReset();
-  }
 
-  handleSubmit(event) {
-    alert('SUBMITTING BITCHES');
-    event.preventDefault();
+  handleSubmit = (event) => {
+    this.props.handleSubmit(event);
   }
 
   dmpfoldAlert = (event) => {
@@ -34,7 +30,7 @@ class SeqForm extends React.Component {
       <div className="form-group">
         <div className="col-md-12">
           <div className="row form-header-row"><br />
-          <form className="form" id="main_form" method="Post" intro="slide" outro="slide" name="main_form">
+          <form className="form" id="main_form" method="Post" intro="slide" outro="slide" name="main_form" onSubmit={this.handleSubmit} >
             <input type="hidden" name="csrfmiddlewaretoken" value="6TwolraqeOHCMgVbxvCgNJ3EQsHdqo9Rbp5GNIZkxWUFhlYjWMfLikgu0x7SxLDa" />
             <div className="form-group">
               <table className="full-width-table">
@@ -111,7 +107,7 @@ class SeqForm extends React.Component {
               </div>
             </div>
             <div className="form-group">
-              <input className="btn btn-danger" type="reset" value="Reset" onClick={this.handleReset} /> <input className="btn btn-primary" type="submit" value="Submit" onClick={this.handleSubmit}/>
+              <input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset} /> <input className="btn btn-primary" name="submit" type="submit" value="submit" />
             </div>
           </form>
           </div>
@@ -125,13 +121,8 @@ class StructForm extends React.Component {
     this.props.handleChange(event);
   }
 
-  handleReset = () => {
-    this.props.handleReset();
-  }
-
-  handleSubmit(event) {
-    alert('SUBMITTING BITCHES');
-    event.preventDefault();
+  handleSubmit = (event) => {
+    this.props.handleSubmit(event);
   }
 
   render () {
@@ -139,7 +130,7 @@ class StructForm extends React.Component {
     <div className="form-group">
       <div className="col-md-12">
         <div className="row form-header-row"><br />
-          <form className="form" id="main_form" method="Post" intro="slide" outro="slide" name="main_form">
+          <form className="form" id="main_form" method="Post" intro="slide" outro="slide" name="main_form" onSubmit={this.handleSubmit} >
             <input type="hidden" name="csrfmiddlewaretoken" value="6TwolraqeOHCMgVbxvCgNJ3EQsHdqo9Rbp5GNIZkxWUFhlYjWMfLikgu0x7SxLDa" />
             <div className="form-group">
               <table className="full-width-table">
@@ -175,7 +166,7 @@ class StructForm extends React.Component {
                 <label className="control-label" htmlFor="id_email">Email (optional)</label><input className="form-control" type="email" placeholder="Email (optional)" title="" id="id_email" name="email" value={this.props.email} onChange={this.handleChange}  />
               </div>
             </div>
-            <div className="form-group"><input className="btn btn-danger" type="reset" value="Reset" onClick={this.handleReset}/> <input className="btn btn-primary" type="submit" value="Submit" onClick={this.handleSubmit} /></div>
+            <div className="form-group"><input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset}/> <input className="btn btn-primary" type="submit" value="Submit" /></div>
           </form>
         </div>
       </div>
@@ -225,7 +216,7 @@ class FormInteractivity extends React.Component{
           </div>
         }
         </div>
-        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} />}
+        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />}
 
       </div>
       );
@@ -242,7 +233,7 @@ class MainForm extends React.Component{
           <hr id="hr_form"></hr>
         </div>
         <div className="box-header with-border"><h5 className="box-title">Data Input</h5></div>
-          <FormInteractivity {...this.props} handleInputChange={this.props.handleInputChange} handleStructChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSeqChange={this.props.handleSeqChange} />
+          <FormInteractivity {...this.props} handleSubmit={this.props.handleSubmit} handleInputChange={this.props.handleInputChange} handleStructChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSeqChange={this.props.handleSeqChange} />
       </div>
     );
   }
