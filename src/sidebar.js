@@ -10,25 +10,25 @@ class Sidebar extends React.Component{
         <div className="box-body">
           <div className="col-md-12">
           { this.props.analyses.includes("bioserf_job") &&
-            <BioSerfOptions {...this.props} handleBioserfSideChange={this.props.handleBioserfSideChange} />
+            <BioSerfOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
           { this.props.analyses.includes("domserf_job") &&
-            <DomSerfOptions {...this.props} handleDomserfSideChange={this.props.handleDomserfSideChange} />
+            <DomSerfOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
           { this.props.analyses.includes("dompred_job") &&
-            <DompredOptions {...this.props} handleDompredSideChange={this.props.handleDompredSideChange} />
+            <DompredOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
           { this.props.analyses.includes("ffpred_job") &&
-            <FfpredOptions {...this.props} handleFfpredSideChange={this.props.handleFfpredSideChange} />
+            <FfpredOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
           { this.props.analyses.includes("metsite_job") &&
-            <MetsiteOptions {...this.props} handleMetsiteSideChange={this.props.handleMetsiteSideChange} />
+            <MetsiteOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
           { this.props.analyses.includes("hspred_job") &&
-            <HspredOptions {...this.props} handleHspredSideChange={this.props.handleHspredSideChange} />
+            <HspredOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
           { this.props.analyses.includes("memembed_job") &&
-            <MemembedOptions {...this.props} handleMemembedSideChange={this.props.handleMemembedSideChange} />
+            <MemembedOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
           </div>
         </div>
@@ -43,8 +43,8 @@ class MetsiteOptions extends React.Component {
       <div className="row form-header-row">
         <h4>Metsite</h4>
           <strong>Select Metal:</strong><br />
-            <select id="metsite_metal_type" size="6" name="metsite_metal_type">
-              <option value="CA" selected="">Calcium</option>
+            <select id="metsite_metal_type" size="6" name="metsite_metal_type" value={this.props.metsite_metal_type} onChange={this.props.handleSidebarChange} >
+              <option value="CA" >Calcium</option>
               <option value="ZN">Zinc</option>
               <option value="MG">Magnesium</option>
               <option value="FE">Iron</option>
@@ -52,11 +52,13 @@ class MetsiteOptions extends React.Component {
               <option value="MN">Manganese</option>
             </select><br /><br />
           <strong>Chain ID:</strong>
-            <input type="text" id="metsite_chain_id" name="metsite_chain_id" value="A" /><br /><br />
+            <input type="text" id="metsite_chain_id" name="metsite_chain_id" value={this.props.metsite_chain_id} onChange={this.props.handleSidebarChange} /><br /><br />
           <strong>False Positive Rate:</strong><br />
-            <select id="metsite_fpr" size="1" name="metsite_fpr">
-              <option value="0">1%</option> <option value="1" selected="">5%</option>
-              <option value="2">10%</option> <option value="3">20%</option>
+            <select id="metsite_fpr" size="1" name="metsite_fpr" value={this.props.metsite_fpr} onChange={this.props.handleSidebarChange} >
+              <option value="0">1%</option>
+              <option value="1">5%</option>
+              <option value="2">10%</option>
+              <option value="3">20%</option>
             </select>
         </div>
     );
@@ -67,8 +69,8 @@ class HspredOptions extends React.Component {
     return(
       <div className="row form-header-row">
         <h4>HSPred</h4>
-        <strong>Protein 1:</strong><input type="text" id="hspred_protein_1" name="hspred_protein_1" value="A" /><br /><br />
-        <strong>Protein 2:</strong> <input type="text" id="hspred_protein_2" name="hspred_protein_2" value="B" />
+        <strong>Protein 1:</strong><input type="text" id="hspred_protein_1" name="hspred_protein_1" value={this.props.hspred_protein_1} onChange={this.props.handleSidebarChange} /><br /><br />
+        <strong>Protein 2:</strong> <input type="text" id="hspred_protein_2" name="hspred_protein_2" value={this.props.hspred_protein_2} onChange={this.props.handleSidebarChange} />
       </div>
     );
   }
@@ -79,18 +81,18 @@ class MemembedOptions extends React.Component {
       <div className="row form-header-row">
         <h4>Memembed</h4>
         <strong>Search Type:</strong>
-          <select id="memembed_algorithm" size="1" name="memembed_algorithm">
-            <option value="0" selected="">Genetic Algorithm</option>
+          <select id="memembed_algorithm" size="1" name="memembed_algorithm" value={this.props.memembed_algorithm} onChange={this.props.handleSidebarChange} >
+            <option value="0">Genetic Algorithm</option>
             <option value="1">Grid Search</option>
             <option value="2">Direct</option>
             <option value="3">GA x 5</option>
           </select><br /><br />
         <strong>Target is Beta Barrel:</strong><br />
-          <input type="radio" id="memembed_barrel_yes" name="memembed_barrel" value="true" /> <label htmlFor="memembed_barrel_yes">Yes</label><br />
-          <input type="radio" id="memembed_barrel_no" name="memembed_barrel" value="false" /> <label htmlFor="memembed_barrel_no">No</label><br /><br />
+          <input type="radio" id="memembed_barrel_yes" name="memembed_barrel" value="true" checked={this.props.memembed_barrel === "true"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_barrel_yes">Yes</label><br />
+          <input type="radio" id="memembed_barrel_no" name="memembed_barrel" value="false" checked={this.props.memembed_barrel === "false"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_barrel_no">No</label><br /><br />
         <strong>N-Terminal Location:</strong><br />
-          <input type="radio" id="memembed_terminal_in" name="memembed_terminal" value="in" /> <label htmlFor="memembed_terminal_in">Cytoplasmic</label><br />
-          <input type="radio" id="memembed_terminal_out" name="memembed_terminal" value="out" /> <label htmlFor="memembed_terminal_out">Extra Cellular</label><br /><br />
+          <input type="radio" id="memembed_terminal_in" name="memembed_terminal" value="in" checked={this.props.memembed_terminal === "in"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_terminal_in">Cytoplasmic</label><br />
+          <input type="radio" id="memembed_terminal_out" name="memembed_terminal" value="out" checked={this.props.memembed_terminal === "out"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_terminal_out">Extra Cellular</label><br /><br />
       </div>
     );
   }
@@ -101,8 +103,8 @@ class DompredOptions extends React.Component {
     return(
       <div className="row form-header-row">
         <h4>Dompred</h4>
-        <strong>PSI-BLAST e-value cutoff:</strong><input type="text" id="dompred_e_value_cutoff" name="dompred_e_value_cutoff" value={this.props.dompred_e_value_cutoff} onChange={this.props.handleDompredSideChange} /><br /><br />
-        <strong>PSI-BLAST Iterations:</strong> <input type="text" id="dompred_psiblast_iterations" name="dompred_psiblast_iterations" value={this.props.dompred_psiblast_iterations} onChange={this.props.handleDompredSideChange} />
+        <strong>PSI-BLAST e-value cutoff:</strong><input type="text" id="dompred_e_value_cutoff" name="dompred_e_value_cutoff" value={this.props.dompred_e_value_cutoff} onChange={this.props.handleSidebarChange} /><br /><br />
+        <strong>PSI-BLAST Iterations:</strong> <input type="text" id="dompred_psiblast_iterations" name="dompred_psiblast_iterations" value={this.props.dompred_psiblast_iterations} onChange={this.props.handleSidebarChange} />
       </div>
     );
   }
@@ -112,8 +114,8 @@ class FfpredOptions extends React.Component {
     return(
       <div className="row form-header-row">
         <h4>FFpred</h4>
-        <input type="radio" id="ffpred_human" name="ffpred_selection" value="human" checked={this.props.ffpred_selection === 'human'} onChange={this.props.handleFfpredSideChange} /> <label htmlFor="ffpred_human">Human Prediction</label><br />
-        <input type="radio" id="ffpred_fly" name="ffpred_selection" value="fly" checked={this.props.ffpred_selection === 'fly'} onChange={this.props.handleFfpredSideChange} /> <label htmlFor="ffpred_fly">Fly Prediction</label>
+        <input type="radio" id="ffpred_human" name="ffpred_selection" value="human" checked={this.props.ffpred_selection === 'human'} onChange={this.props.handleSidebarChange} /> <label htmlFor="ffpred_human">Human Prediction</label><br />
+        <input type="radio" id="ffpred_fly" name="ffpred_selection" value="fly" checked={this.props.ffpred_selection === 'fly'} onChange={this.props.handleSidebarChange} /> <label htmlFor="ffpred_fly">Fly Prediction</label>
       </div>
     );
   }
@@ -125,7 +127,7 @@ class BioSerfOptions extends React.Component {
       <div className="row form-header-row">
         <h4>Bioserf</h4>
         <strong>MODELLER Key:</strong>
-        <input type="text" id="bioserf_modeller_key" name="bioserf_modeller_key" value={this.props.bioserf_modeller_key} onChange={this.props.handleBioserfSideChange} />
+        <input type="text" id="bioserf_modeller_key" name="bioserf_modeller_key" value={this.props.bioserf_modeller_key} onChange={this.props.handleSidebarChange} />
       </div>
     );
   }
@@ -137,17 +139,10 @@ class DomSerfOptions extends React.Component {
       <div className="row form-header-row">
         <h4>Domserf</h4>
         <strong>MODELLER Key:</strong>
-        <input type="text" id="domserf_modeller_key" name="domserf_modeller_key" value={this.props.domserf_modeller_key} onChange={this.props.handleDomserfSideChange} />
+        <input type="text" id="domserf_modeller_key" name="domserf_modeller_key" value={this.props.domserf_modeller_key} onChange={this.props.handleSidebarChange} />
       </div>
     );
   }
 }
 
 export {Sidebar};
-export {DomSerfOptions};
-export {BioSerfOptions};
-export {FfpredOptions};
-export {DompredOptions};
-export {MetsiteOptions};
-export {HspredOptions};
-export {MemembedOptions};
