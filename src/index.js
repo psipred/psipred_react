@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client'
 import React from 'react';
 import {Sidebar} from './sidebar.js'; // eslint-disable-line no-unused-vars
 import {MainForm} from './mainform.js'; // eslint-disable-line no-unused-vars
-import {checkInput} from './checkform.js' // eslint-disable-line no-unused-vars
+import {validateFormData} from './checkform.js' // eslint-disable-line no-unused-vars
 
 class DisplayArea extends React.Component{
   constructor(props){
@@ -11,6 +11,7 @@ class DisplayArea extends React.Component{
       displayType: 'input',
       formSelectedOption: 'SeqForm',
       analyses: ['psipred_job'],
+      jobs: [],
       input_data: '',
       seq: '',
       name: '',
@@ -35,6 +36,7 @@ class DisplayArea extends React.Component{
   handleReset = () => {
     this.setState({
       analyses: ['psipred_job'],
+      jobs: [],
       input_data: '',
       seq: '',
       name: '',
@@ -57,7 +59,7 @@ class DisplayArea extends React.Component{
 
   componentDidUpdate() {
     // currently just doing some reporting while debugging
-     console.log(this.state);
+     //console.log(this.state);
   }
   handleInputChange = (event) =>  {
     this.setState({
@@ -164,10 +166,12 @@ class DisplayArea extends React.Component{
 
   handleSubmit = (event) => {
     // Uppercase the seq data
-    var checked = checkInput(this.state); //this call is not asynced but it's fine to stop the world for this.
-    console.log(checked);
+    let jobs = this.state.analyses;
+    jobs = jobs.map(elem => elem.replace("_job", ""));
+    let checked = validateFormData(this.state, jobs);
+    this.setState({jobs: jobs});
     if(checked.send){
-
+      //SENDING THINGS NOW!!!, set up callback to update state.
     }
     else{
       alert(checked.message);
