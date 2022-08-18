@@ -153,7 +153,7 @@ class StructForm extends React.Component {
                 <h5 className="float-header">Submission details</h5>
               </div>
             </div>
-            <p className="form_error"></p> <br /><br /><br /> Select PDB file<br /> <input type="file" id="pdbFile" name="pdbFile" value="" onChange={this.handleChange} /><br /><br />
+            <p className="form_error"></p> <br /><br /><br /> Select PDB file<br /> <input type="file" id="pdbFile" name="pdbFile" defaultValue='' /><br /><br />
             <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br />
             If you wish to Metsite or HSPred follow this link to retrieve <a className="form-link" href="http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&amp;compression=NO&amp;structureId=1IAR">a test pdb file.</a><br /><br />
             <div className="form-group">

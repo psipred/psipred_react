@@ -4,6 +4,16 @@ import {Sidebar} from './sidebar.js'; // eslint-disable-line no-unused-vars
 import {MainForm} from './mainform.js'; // eslint-disable-line no-unused-vars
 import {validateFormData} from './checkform.js' // eslint-disable-line no-unused-vars
 
+async function readPDBFile(file) {
+    let result_text = await new Promise((resolve) => {
+        let fileReader = new FileReader();
+        fileReader.onload = (e) => resolve(fileReader.result);
+        fileReader.readAsText(file);
+    });
+    return result_text;
+}
+
+
 class DisplayArea extends React.Component{
   constructor(props){
     super(props);
@@ -16,18 +26,18 @@ class DisplayArea extends React.Component{
       seq: '',
       name: '',
       email: '',
-      file: null,
+      pdbData: '',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
-      dompred_e_value_cutoff: 0.01,
-      dompred_psiblast_iterations: 5,
+      dompred_e_value_cutoff: '0.01',
+      dompred_psiblast_iterations: '5',
       ffpred_selection: 'human',
       metsite_metal_type: 'CA',
       metsite_chain_id: 'A',
-      metsite_fpr: 1,
+      metsite_fpr: '1',
       hspred_protein_1: 'A',
       hspred_protein_2: 'B',
-      memembed_algorithm: 0,
+      memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
     };
@@ -43,15 +53,16 @@ class DisplayArea extends React.Component{
       email: '',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
-      dompred_e_value_cutoff: 0.01,
-      dompred_psiblast_iterations: 5,
+      dompred_e_value_cutoff: '0.01',
+      dompred_psiblast_iterations: '5',
       ffpred_selection: 'human',
+      pdbData: '',
       metsite_metal_type: 'CA',
       metsite_chain_id: 'A',
-      metsite_fpr: 1,
+      metsite_fpr: '1',
       hspred_protein_1: 'A',
       hspred_protein_2: 'B',
-      memembed_algorithm: 0,
+      memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
       });
@@ -59,7 +70,7 @@ class DisplayArea extends React.Component{
 
   componentDidUpdate() {
     // currently just doing some reporting while debugging
-     //console.log(this.state);
+     console.log(this.state);
   }
   handleInputChange = (event) =>  {
     this.setState({
@@ -110,18 +121,18 @@ class DisplayArea extends React.Component{
         if(match){
           this.setState({
             name: match[1],
-            seq: match[2]
+            seq: match[2].toUpperCase(),
           });
         }
         else{
           this.setState({
-            seq: value
+            seq: value.toUpperCase()
           });
         }
       }
       else {
         this.setState({
-          seq: value
+          seq: value.toUpperCase()
         });
       }
     } else if(event.target.name === 'job_name') {
@@ -164,21 +175,40 @@ class DisplayArea extends React.Component{
   //BEFORE RENDER CHECK LOCAL HOST AND SET ENDPOINTS
   //              CHECK URL FOR UUID IF FOUND RENDER RESULTS
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
+    event.preventDefault();
     // Uppercase the seq data
     let jobs = this.state.analyses;
     jobs = jobs.map(elem => elem.replace("_job", ""));
-    let checked = validateFormData(this.state, jobs);
-    this.setState({jobs: jobs});
+
+    let pdbFile = null;
+    let pdbData = null;
+    try{
+     pdbFile = document.getElementById("pdbFile").files[0];
+     if(pdbFile){
+       pdbData = await readPDBFile(pdbFile);
+     }
+    }
+      catch(err) {
+        pdbData = "";
+        if(err.message.includes("FileReader.readAsText is not an object")){
+          alert("File selected not valid");
+        }
+    }
+    let checked = validateFormData(this.state, jobs, pdbData);
     if(checked.send){
       //SENDING THINGS NOW!!!, set up callback to update state.
+      this.setState({
+        jobs: checked.jobs,
+        pdbData: checked.pdbData,
+        displayType: 'results'
+      });
     }
     else{
       alert(checked.message);
     }
     //1. Check and sanitise form data
     //2. set displaytType and re-render
-    event.preventDefault();
   }
 
   render () {
