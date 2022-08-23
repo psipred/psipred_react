@@ -2,6 +2,8 @@ import ReactDOM from 'react-dom/client'
 import React from 'react';
 import {Sidebar} from './sidebar.js'; // eslint-disable-line no-unused-vars
 import {MainForm} from './mainform.js'; // eslint-disable-line no-unused-vars
+import {ResultsMain} from './results.js'; // eslint-disable-line no-unused-vars
+import {ResultsSidebar} from './results.js'; // eslint-disable-line no-unused-vars
 import {validateFormData} from './checkform.js' // eslint-disable-line no-unused-vars
 
 async function readPDBFile(file) {
@@ -17,15 +19,26 @@ async function readPDBFile(file) {
 class DisplayArea extends React.Component{
   constructor(props){
     super(props);
+    let input_data = "";
+    let seq = "";
+    let name = "";
+    let email = '';
+
+    if(this.props.location === 'Dev'){
+      input_data = "ASDASDASDASDASDASDASDASDASDASDASDASDASDASD";
+      seq = "ASDASDASDASDASDASDASDASDASDASDASDASDASDASD";
+      name = "test";
+      email = 'a@b.com'
+    }
     this.state = {
       displayType: 'input',
       formSelectedOption: 'SeqForm',
       analyses: ['psipred_job'],
       jobs: [],
-      input_data: '',
-      seq: '',
-      name: '',
-      email: '',
+      input_data: input_data,
+      seq: seq,
+      name: name,
+      email: email,
       pdbData: '',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
@@ -68,10 +81,10 @@ class DisplayArea extends React.Component{
       });
   }
 
-  componentDidUpdate() {
-    // currently just doing some reporting while debugging
-     console.log(this.state);
-  }
+  // componentDidUpdate() {
+  //   // currently just doing some reporting while debugging
+  //    console.log(this.state);
+  // }
   handleInputChange = (event) =>  {
     this.setState({
       formSelectedOption: event.target.value,
@@ -221,8 +234,10 @@ class DisplayArea extends React.Component{
         </div>
       :
         <div>
-          <h2>RESULTS</h2>
-          {// 1. draw results 2 Main areas
+          <div className="col-md-9"><ResultsMain {...{...this.state, ...this.props}} /></div>
+          <div className="col-md-3"><ResultsSidebar {...this.state} /></div>
+          {
+          // 1. draw results 2 Main areas
            //        DIAGRAM AND TABLES
            //2. Draw Time/waiting panelresults panel
            //3. send async request for times
@@ -239,11 +254,90 @@ class DisplayArea extends React.Component{
 }
 
 class PsipredSite extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      endpoints_url: null,
+      submit_url: null,
+      times_url: null,
+      joblist_url: null,
+      file_url: null,
+      gears_svg: "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg",
+      main_url: "http://bioinf.cs.ucl.ac.uk",
+      app_path: "/psipred_beta",
+      location: "Dev",
+    };
+  }
+
+  componentDidMount() {
+    console.log(window.location.hostname);
+    console.log(window.location.href);
+
+    //defaults for dev server
+    var joblist_url = 'http://127.0.0.1:8000/analytics_automated/job/';
+    var endpoints_url = 'http://127.0.0.1:8000/analytics_automated/endpoints/';
+    var submit_url = 'http://127.0.0.1:8000/analytics_automated/submission/';
+    var times_url = 'http://127.0.0.1:8000/analytics_automated/jobtimes/';
+    var app_path = '/interface';
+    var main_url = 'http://127.0.0.1:3000';
+    var gears_svg = "../static/images/gears.svg";
+    var file_url = main_url;
+    var location = "Dev";
+
+    //updates for production paths
+    if(window.location.href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (window.location.href.includes('psipred') && !  window.location.href.includes('psipred_beta')) )
+    {
+      app_path = '/psipred';
+      joblist_url = this.state.main_url+app_path+'/api/job/';
+      endpoints_url = this.state.main_url+app_path+'/api/endpoints/';
+      submit_url = this.state.main_url+app_path+'/api/submission/';
+      times_url = this.state.main_url+app_path+'/api/jobtimes/';
+      file_url = this.state.main_url+app_path+"/api";
+      gears_svg = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
+      location = "Production";
+    }
+    else if(window.location.hostname === "bioinfstage1.cs.ucl.ac.uk" || window.location.href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || window.location.href.includes('psipred_beta'))
+    { //update for staging paths
+      joblist_url = this.state.main_url+this.state.app_path+'/api/job/';
+      endpoints_url = this.state.main_url+this.state.app_path+'/api/endpoints/';
+      submit_url = this.state.main_url+this.state.app_path+'/api/submission/';
+      times_url = this.state.main_url+this.state.app_path+'/api/jobtimes/';
+      file_url = this.state.main_url+this.state.app_path+"/api";
+      location = 'Staging';
+      //gears_svg = "../static/images/gears.svg";
+    } else if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"){
+      console.log("dev server using default URIs");
+    } else {
+      alert('UNSETTING ENDPOINTS WARNING, WARNING! WEBSITE NON FUNCTIONAL');
+      joblist_url = '';
+      endpoints_url = '';
+      submit_url = '';
+      times_url = '';
+    }
+    this.setState({
+      endpoints_url: endpoints_url,
+      submit_url: submit_url,
+      times_url: times_url,
+      joblist_url: joblist_url,
+      gears_svg: gears_svg,
+      app_path: app_path,
+      file_url: file_url,
+      location: location,
+      main_url: main_url,
+    });
+  }
+
   render(){
     return(
       <section className="content">
         <div id="psipred_site">
-        <DisplayArea />
+          { this.state.location === "Dev" &&
+              <div><h3 className="form_error">WARNING: This is Dev</h3></div>
+          }
+          { this.state.location === "Staging" &&
+              <div><h3 className="form_error">WARNING: This is Staging</h3></div>
+          }
+          <DisplayArea {...this.state}/>
           <div className="row">
             <div className="col-md-9"></div><div className="col-md-3"></div>
           </div>
