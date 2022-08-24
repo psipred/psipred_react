@@ -11,13 +11,16 @@ class ResultsMain extends React.Component{
     residues.forEach(function(res){
       annotations.push({'res': res});
     });
-
     this.state ={
       uuid: null,
       result_uri: '',
-      psipred_results: 'HELLO',
+      error_message: '',
+      waiting: true,
+      psipred_waiting_message: '<h2>Please wait for your PSIPRED job to process</h2>',
+      psipred_wating_icon: 'HELLO',
       annotations: annotations,
     };
+    this.sequencePlot = React.createRef();
   }
 
   componentDidUpdate() {
@@ -60,6 +63,8 @@ class ResultsMain extends React.Component{
      }).finally(() => {
        //START POLLING
      });
+
+   draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
   }
 
@@ -75,7 +80,7 @@ class ResultsMain extends React.Component{
           <div className="job_info_text job_info_text_left">
             <p className="name_text">Name : {this.props.name}</p>
           </div>
-          <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.state.result_uri} width="160" /><button class="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink"><img src="../interface/static/images/clippy.svg" alt="Copy to clipboard" width="16" /></button></div>
+          <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.state.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink"><img src="../interface/static/images/clippy.svg" alt="Copy to clipboard" width="16" /></button></div>
         </div>
       </div>
 
@@ -83,29 +88,37 @@ class ResultsMain extends React.Component{
       <div className="box box-primary">
         <div className="box-header with-border">
           <h5 className="box-title">Sequence Plot</h5>
-          <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button></div>
+          <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i className="fa fa-minus"></i></button></div>
         </div>
-        <div class="box-body">
-          <div class="sequence_plot" id="sequence_plot"></div><br />
+        <div className="box-body">
+          <div className="sequence_plot" id="sequence_plot" ref={this.sequencePlot} ></div><br />
         </div>
+        { this.state.waiting &&
+          <div className="overlay processing">
+            <i className="fa fa-refresh fa-spin"></i>
+          </div>
+        }
       </div>
       :
         <h2>STRUCT RESULTS</h2>
       }
 
-      { draw_empty_annotation_panel({...  {...this.state, ...this.props}}) }
-
       { this.props.analyses.includes("psipred_job") &&
         <div className="box box-primary collapsed-box" id="psipred_cartoon">
           <div className="box-header with-border">
             <h5 className="box-title">PSIPRED Cartoon</h5>
-            <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-plus"></i></button></div>
+            <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
           </div>
-          <div class="box-body">
-            <div class="error"></div>
-            <div class="psipred_cartoon"></div>
-            <div class="waiting" intro="slide" outro="slide"></div>
-            <div class="waiting_icon" intro="slide" outro="slide"></div>
+          <div className="box-body">
+            <div className="error">{this.state.error_message}</div>
+            <div className="psipred_cartoon"></div>
+            <div className="waiting" intro="slide" outro="slide">{this.state.psipred_waiting_message}</div>
+            <div className="waiting_icon" intro="slide" outro="slide">{this.state.psipred_waiting_icon}</div>
+            { this.state.waiting &&
+              <div className="overlay processing">
+                <i className="fa fa-refresh fa-spin"></i>
+              </div>
+            }
           </div>
         </div>
       }
