@@ -235,7 +235,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9"><ResultsMain {...{...this.state, ...this.props}} /></div>
-          <div className="col-md-3"><ResultsSidebar {...this.state} /></div>
+          <div className="col-md-3"><ResultsSidebar {...{...this.state, ...this.props}} /></div>
           {
           // 1. draw results 2 Main areas
            //        DIAGRAM AND TABLES
@@ -266,6 +266,7 @@ class PsipredSite extends React.Component{
       main_url: "http://bioinf.cs.ucl.ac.uk",
       app_path: "/psipred_beta",
       location: "Dev",
+      gear_string: '<object width="140" height="140" type="image/svg+xml" data=""></object>',
     };
   }
 

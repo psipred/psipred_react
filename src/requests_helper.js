@@ -1,5 +1,7 @@
 //given a job name prep all the form elements and send an http request to the
 //backend
+var moment = require('moment');
+
 export function configurePost(formState)
 {
   //console.log(formState);
@@ -92,4 +94,13 @@ export function configurePost(formState)
   //   return null;
   // }
   // return true;
+}
+
+export function parse_times(data){
+  //moment.duration(times[name]*1000);
+  let times = {'loading_message': null};
+  for(const [key, value] of Object.entries(data)){
+    times[key] = moment.duration(value*1000).humanize();
+  }
+  return(times);
 }

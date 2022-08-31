@@ -41,3 +41,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'`. Ensure `onChange` and `checked` are correct.
 3. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include an additional if that detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class `AlgorithmOptions`. Add your new class and the appropriate inputs. You MUST ensure that the names match the new state variable names you added in step 1 if you added new state variables
 4. In `checkform.js` in `validateFormData()` update any job and validations you now may have.
+5. In `results.js` in `ResultsMain` class add an if for a section for any additional results you'd like to show.
+6. In `results.js` in `ResultsSiderbar` class add an if for the runtime of your new job type.

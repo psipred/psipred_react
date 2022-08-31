@@ -1,5 +1,7 @@
 import React from 'react';
 import {configurePost} from './requests_helper.js'; // eslint-disable-line no-unused-vars
+import {parse_times} from './requests_helper.js'; // eslint-disable-line no-unused-vars
+
 import {draw_empty_annotation_panel} from './results_helper.js';
 
 class ResultsMain extends React.Component{
@@ -14,10 +16,11 @@ class ResultsMain extends React.Component{
     this.state ={
       uuid: null,
       result_uri: '',
-      error_message: '',
+      error_message: null,
       waiting: true,
-      psipred_waiting_message: '<h2>Please wait for your PSIPRED job to process</h2>',
-      psipred_wating_icon: 'HELLO',
+      loading_message: 'Fetching Times',
+      psipred_waiting_message: 'Please wait for your PSIPRED job to process',
+      psipred_wating_icon: '',
       annotations: annotations,
     };
     this.sequencePlot = React.createRef();
@@ -25,13 +28,11 @@ class ResultsMain extends React.Component{
 
   componentDidUpdate() {
     // currently just doing some reporting while debugging
-     console.log(this.state);
+     //console.log(this.state);
   }
   componentDidMount(){
-    console.log(this.props);
-    console.log('Sending URI request');
-    console.log(this.props.submit_url);
-    console.log('POST');
+    //console.log(this.props);
+    console.log('Sending URI request: POST: '+this.props.submit_url );
     fetch(this.props.submit_url, {
       headers: {
         'Accept': 'application/json',
@@ -110,14 +111,18 @@ class ResultsMain extends React.Component{
             <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
           </div>
           <div className="box-body">
-            <div className="error">{this.state.error_message}</div>
+            { this.state.error_message &&
+              <div className="error">{this.state.error_message}</div>
+            }
             <div className="psipred_cartoon"></div>
-            <div className="waiting" intro="slide" outro="slide">{this.state.psipred_waiting_message}</div>
-            <div className="waiting_icon" intro="slide" outro="slide">{this.state.psipred_waiting_icon}</div>
             { this.state.waiting &&
-              <div className="overlay processing">
-                <i className="fa fa-refresh fa-spin"></i>
-              </div>
+              <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.psipred_waiting_message}</h4></div>
+            }
+            { this.state.waiting &&
+              <div className="waiting_icon" intro="slide" outro="slide">{this.state.psipred_waiting_icon}</div>
+            }
+            { this.state.waiting &&
+              <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
             }
           </div>
         </div>
@@ -131,16 +136,62 @@ class ResultsMain extends React.Component{
 }
 
 class ResultsSidebar extends React.Component{
+  constructor(props){
+    super(props);
+    this.state ={
+      loading_message: 'Fetching Times',
+    };
+  }
+
+    componentDidUpdate() {
+      // currently just doing some reporting while debugging
+       console.log(this.state);
+    }
   componentDidMount(){
-    //here we ask for the times
+    console.log('Sending Times URI request: GET: '+this.props.times_url);
+    fetch(this.props.times_url, {
+      headers: {
+        'Accept': 'application/json',
+      },
+      method: 'GET',
+    }).then(response => {
+       if(response.ok){
+         return response.json().then(json => {return(json);});
+       }
+       throw response;
+     }).then(data => {
+       if(data.UUID !== null)
+       {
+         console.log("RECIEVED TIMES");
+         var times = parse_times(data);
+         this.setState(times);
+       }
+       //DO SOME THINGS
+     }).catch(error => {
+       console.log("Sending Job to "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Sending Job to "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+      return null;
+     })
   }
 
   handleSubmit(){
-    // handle the side bar submission
+    // handle the side bar resubmission
   }
 
   render () {
-    return(<div><h2>SIDE REGION</h2></div>);
+    return(
+      <div className="info-box">
+            <span className="info-box-icon bg-blue"><i className="fa fa-clock-o"></i></span>
+            <div className="info-box-content">
+              <span className="info-box-text">Average Processing Time</span><br />
+              { this.state.loading_message &&
+                <div><span className="info-box-number">{this.state.loading_message}</span><br /></div>
+              }
+              { "psipred" in this.state &&
+                <div><span className="info-box-number">Average PSIPRED runtime is: {this.state.psipred}</span><br /></div>
+              }
+            </div>
+      </div>);
     // DOWNLOAD
     //RESUBMISSION
   }
