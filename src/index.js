@@ -3,7 +3,9 @@ import React from 'react';
 import {Sidebar} from './sidebar.js'; // eslint-disable-line no-unused-vars
 import {MainForm} from './mainform.js'; // eslint-disable-line no-unused-vars
 import {ResultsMain} from './results.js'; // eslint-disable-line no-unused-vars
-import {ResultsSidebar} from './results.js'; // eslint-disable-line no-unused-vars
+import {ResultsSidebarTimes} from './results.js'; // eslint-disable-line no-unused-vars
+import {ResultsSidebarDownloads} from './results.js'; // eslint-disable-line no-unused-vars
+import {ResultsSidebarResubmission} from './results.js'; // eslint-disable-line no-unused-vars
 import {validateFormData} from './checkform.js' // eslint-disable-line no-unused-vars
 
 async function readPDBFile(file) {
@@ -40,6 +42,7 @@ class DisplayArea extends React.Component{
       name: name,
       email: email,
       pdbData: '',
+      waiting: false,
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -64,6 +67,7 @@ class DisplayArea extends React.Component{
       seq: '',
       name: '',
       email: '',
+      waiting: false,
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -81,6 +85,9 @@ class DisplayArea extends React.Component{
       });
   }
 
+  updateWaiting = (newValue) => {
+    this.setState({waiting: newValue});
+  }
   // componentDidUpdate() {
   //   // currently just doing some reporting while debugging
   //    console.log(this.state);
@@ -234,8 +241,12 @@ class DisplayArea extends React.Component{
         </div>
       :
         <div>
-          <div className="col-md-9"><ResultsMain {...{...this.state, ...this.props}} /></div>
-          <div className="col-md-3"><ResultsSidebar {...{...this.state, ...this.props}} /></div>
+          <div className="col-md-9"><ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} /></div>
+          <div className="col-md-3">
+          <ResultsSidebarTimes {...{...this.state, ...this.props}} />
+          <ResultsSidebarDownloads {...{...this.state, ...this.props}} />
+          <ResultsSidebarResubmission {...{...this.state, ...this.props}} />
+        </div>
           {
           // 1. draw results 2 Main areas
            //        DIAGRAM AND TABLES
