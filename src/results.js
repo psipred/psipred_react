@@ -1,7 +1,6 @@
 import React from 'react';
 import {configurePost} from './requests_helper.js'; // eslint-disable-line no-unused-vars
 import {parse_times} from './requests_helper.js'; // eslint-disable-line no-unused-vars
-
 import {draw_empty_annotation_panel} from './results_helper.js';
 
 //We render the name bar with the copy link and then we render the seq plot for
@@ -248,15 +247,44 @@ class ResultsSidebarResubmission extends React.Component{
       seqStop: this.props.seq.length,
       bioDomModellerKey: '',
     };
+    this.timer = null;
   }
 
   handleResubmit = () => {
+    //if seqStart or seqStop are blank set to limits
     //Here we do the things for the resubmission
   }
 
   componentDidUpdate() {
     // currently just doing some reporting while debugging
     console.log(this.state);
+  }
+
+  triggerStartChange = (value) => {
+    console.log(value);
+    if(value.length===0){
+      this.setState({
+        seqStart: 1,
+      });
+    }
+    if(value > this.state.seqStop){
+      this.setState({
+        seqStart: this.state.seqStop,
+      });
+    }
+  }
+  triggerStopChange = (value) => {
+    console.log(value);
+    if(value.length===0 || value > this.props.seq.length){
+      this.setState({
+        seqStop: this.props.seq.length,
+      });
+    }
+    else if(value < this.state.seqStart){
+      this.setState({
+        seqStop: this.state.seqStart,
+      });
+    }
   }
 
   handleChange = (event) => {
@@ -270,32 +298,32 @@ class ResultsSidebarResubmission extends React.Component{
     }
     if(event.target.name === 'start_coord')
     {
+      clearTimeout(this.timer);
       let value = ' ';
-      if(parseInt(event.target.value) && parseInt(event.target.value) > 0)
+      value = parseInt(event.target.value);
+      if((value && value > 0) || !value)
       {
-        value = parseInt(event.target.value);
-        if(parseInt(event.target.value) >= this.state.seqStop)
-        {
-          value = this.state.seqStop;
-        }
+        if(! value){value = '';}
+        this.setState({
+          seqStart: value,
+        });
+        this.timer = setTimeout(this.triggerStartChange.bind(null, value), 1000);
       }
-      this.setState({
-        seqStart: value,
-      });
     }
+
     if(event.target.name === 'stop_coord')
     {
+      clearTimeout(this.timer);
       let value = '';
-      if(parseInt(event.target.value) && parseInt(event.target.value) <= this.props.seq.length)
+      value = parseInt(event.target.value);
+      if((value && value > 0) || !value)
       {
-        value = parseInt(event.target.value);
+        if(! value){value = '';}
+        this.setState({
+          seqStop: value,
+        });
+        this.timer = setTimeout(this.triggerStopChange.bind(null, value), 1000);
       }
-      if(parseInt(event.target.value) <= this.state.seqStart){
-        value = this.state.seqStart;
-      }
-      this.setState({
-        seqStop: value,
-      });
     }
 
   }
