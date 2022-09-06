@@ -56,7 +56,10 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
-      results_map: {'psipred_job': ['.horiz', '.ss2'], }
+      psipred_results: null,
+      results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsatdata',
+                    'presult', 'gen_presult', 'dom_presult', 'parseds', 'ffpredfeatures',
+                    'ffpredpredictions', 'metsite', 'hspred'],
     };
   }
 
@@ -83,16 +86,24 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
+      psipred_results: null
       });
+  }
+
+  updateResultsFiles = (jobType, resultsData) => {
+    if(jobType === 'psipred_job')
+    {
+      this.setState({psipred_results: resultsData});
+    }
   }
 
   updateWaiting = (newValue) => {
     this.setState({waiting: newValue});
   }
-  // componentDidUpdate() {
-  //   // currently just doing some reporting while debugging
-  //    console.log(this.state);
-  // }
+  componentDidUpdate() {
+    // currently just doing some reporting while debugging
+     console.log(this.state);
+  }
   handleInputChange = (event) =>  {
     this.setState({
       formSelectedOption: event.target.value,
@@ -243,7 +254,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} />
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles}/>
           </div>
           <div className="col-md-3">
             <ResultsSidebarTimes {...{...this.state, ...this.props}} />
@@ -275,7 +286,7 @@ class PsipredSite extends React.Component{
       submit_url: null,
       times_url: null,
       joblist_url: null,
-      file_url: null,
+      files_url: null,
       gears_svg: "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg",
       main_url: "http://bioinf.cs.ucl.ac.uk",
       app_path: "/psipred_beta",
@@ -296,7 +307,7 @@ class PsipredSite extends React.Component{
     var app_path = '/interface';
     var main_url = 'http://127.0.0.1:3000';
     var gears_svg = "../static/images/gears.svg";
-    var file_url = main_url;
+    var files_url = 'http://127.0.0.1:8000';
     var location = "Dev";
 
     //updates for production paths
@@ -307,7 +318,7 @@ class PsipredSite extends React.Component{
       endpoints_url = this.state.main_url+app_path+'/api/endpoints/';
       submit_url = this.state.main_url+app_path+'/api/submission/';
       times_url = this.state.main_url+app_path+'/api/jobtimes/';
-      file_url = this.state.main_url+app_path+"/api";
+      files_url = this.state.main_url+app_path+"/api";
       gears_svg = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
       location = "Production";
     }
@@ -317,7 +328,7 @@ class PsipredSite extends React.Component{
       endpoints_url = this.state.main_url+this.state.app_path+'/api/endpoints/';
       submit_url = this.state.main_url+this.state.app_path+'/api/submission/';
       times_url = this.state.main_url+this.state.app_path+'/api/jobtimes/';
-      file_url = this.state.main_url+this.state.app_path+"/api";
+      files_url = this.state.main_url+this.state.app_path+"/api";
       location = 'Staging';
       //gears_svg = "../static/images/gears.svg";
     } else if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"){
@@ -336,7 +347,7 @@ class PsipredSite extends React.Component{
       joblist_url: joblist_url,
       gears_svg: gears_svg,
       app_path: app_path,
-      file_url: file_url,
+      files_url: files_url,
       location: location,
       main_url: main_url,
     });

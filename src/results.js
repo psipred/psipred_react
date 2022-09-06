@@ -16,7 +16,6 @@ class ResultsMain extends React.Component{
       loading_message: 'Fetching Times',
       psipred_waiting_message: 'Please wait for your PSIPRED job to process',
       psipred_wating_icon: '',
-      psipred_result_uris: [],
     };
   }
 
@@ -25,7 +24,7 @@ class ResultsMain extends React.Component{
 
   componentDidMount(){
     //console.log(this.props);
-    console.log('Sending URI request: POST: '+this.props.submit_url );
+    console.log('Sending JOB URI request: POST: '+this.props.submit_url );
     fetch(this.props.submit_url, {
       headers: {
         'Accept': 'application/json',
@@ -64,7 +63,7 @@ class ResultsMain extends React.Component{
     return(
       <div>
       { (this.state.uuid && this.props.formSelectedOption==='SeqForm') ?
-        <ResultsSequence {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} />
+        <ResultsSequence {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} />
         :
         <h2>STRUCT RESULTS</h2>
       }

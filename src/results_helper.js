@@ -8,7 +8,14 @@ export function draw_empty_annotation_panel(state, targetDiv){
   annotationGrid(state.annotations, {parent: targetDiv, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: panel_height, container_height: panel_height});
 }
 
-export function process_files(uri, state){
-  console.log("HUH:"+state)
-  console.log(uri);
+export async function process_files(uri, file_url){
+  console.log("Fetching Results File: "+file_url+uri)
+  let response = await fetch(file_url+uri);
+  if(response.ok){
+    const text = await response.text();
+    return(text);
+  }
+  else{
+    throw new Error("Unable to retrieve: "+file_url+uri);
+  }
 }

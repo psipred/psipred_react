@@ -15,6 +15,7 @@ class ResultsSequence extends React.Component{
       annotations: annotations,
     };
     this.sequencePlot = React.createRef();
+    this.horizPlot = React.createRef();
     this.timer = null;
   }
 
@@ -25,10 +26,25 @@ class ResultsSequence extends React.Component{
     }
   }
 
-  getResultsFiles = (data, props) => {
-    data.forEach(function(entry){
-      process_files(entry.data_path, props.uuid);
+  getResultsFiles = (data, props, allResults) => {
+    let results_files = {};
+    data.forEach(async function(entry){
+      let glob = entry.data_path.split('.')[1];
+      if(props.results_map.includes(glob))
+      {
+        try {
+          let file_content = await process_files(entry.data_path, props.files_url);
+          let file_name = entry.data_path.split('/')[2];
+          results_files[file_name] = file_content;
+        }
+        catch (err){
+          console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
+          alert("Getting and processing: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+          return null;
+        }
+      }
     });
+    return(results_files);
   }
 
   getResults = () => {
@@ -48,7 +64,12 @@ class ResultsSequence extends React.Component{
       }).then(data => {
         console.log(data);
         if(data.state !== "Running"){
-          this.getResultsFiles(data.submissions[0].results, this.props);
+          let results_data = this.getResultsFiles(data.submissions[0].results, this.props, this.allResults);
+          //we update the Display area with everything the sidebar need:
+          this.props.updateResultsFiles('psipred_job', results_data);
+          // if we have a psipred_job AND some horiz file we'll call the
+          //draw_horiz(this.state, this.horizPlot.current)
+          //parse the ss2 data and redraw the sequencePlot
           this.props.updateWaiting(false);
         }
       }).catch(error => {
@@ -109,7 +130,7 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="psipred_cartoon"></div>
+              <div className="psipred_cartoon" ref={this.horizPlot} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.psipred_waiting_message}</h4></div>
               }

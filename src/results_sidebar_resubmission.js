@@ -19,7 +19,7 @@ class ResultsSidebarResubmission extends React.Component{
 
   componentDidUpdate() {
     // currently just doing some reporting while debugging
-    console.log(this.state);
+    //console.log(this.state);
   }
 
   triggerStartChange = (value) => {
