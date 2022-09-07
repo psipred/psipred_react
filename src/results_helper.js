@@ -8,14 +8,20 @@ export function draw_empty_annotation_panel(state, targetDiv){
   annotationGrid(state.annotations, {parent: targetDiv, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: panel_height, container_height: panel_height});
 }
 
-export async function process_files(uri, file_url){
-  console.log("Fetching Results File: "+file_url+uri)
-  let response = await fetch(file_url+uri);
-  if(response.ok){
-    const text = await response.text();
-    return(text);
+export function request_data(uri, file_url){
+  // convert this to synchronous
+  console.log("REQUESTING: "+file_url+uri)
+  let results_data = null;
+  let req = new XMLHttpRequest();
+  req.onreadystatechange = function (){
+    if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+     results_data = req.response;
+    }
   }
-  else{
-    throw new Error("Unable to retrieve: "+file_url+uri);
-  }
+  req.open("GET", file_url+uri, false);
+  req.send();
+  req.onerror = function() {
+    alert("Request failed");
+  };
+  return(results_data);
 }

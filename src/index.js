@@ -56,7 +56,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
-      psipred_results: null,
+      results_files: null,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsatdata',
                     'presult', 'gen_presult', 'dom_presult', 'parseds', 'ffpredfeatures',
                     'ffpredpredictions', 'metsite', 'hspred'],
@@ -86,14 +86,15 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
-      psipred_results: null
+      results_files: null
       });
   }
 
   updateResultsFiles = (jobType, resultsData) => {
     if(jobType === 'psipred_job')
     {
-      this.setState({psipred_results: resultsData});
+      //ACTUALLY TURN THESE IN TO FILES FOR THE ZIP.
+      this.setState({results_files: resultsData});
     }
   }
 
@@ -102,7 +103,7 @@ class DisplayArea extends React.Component{
   }
   componentDidUpdate() {
     // currently just doing some reporting while debugging
-     console.log(this.state);
+    //console.log(this.state);
   }
   handleInputChange = (event) =>  {
     this.setState({

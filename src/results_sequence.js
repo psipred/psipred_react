@@ -1,6 +1,7 @@
 import React from 'react';
 import {draw_empty_annotation_panel} from './results_helper.js';
-import {process_files} from './results_helper.js';
+import {request_data} from './results_helper.js';
+import { psipred } from './biod3/main.js';
 
 
 class ResultsSequence extends React.Component{
@@ -13,6 +14,7 @@ class ResultsSequence extends React.Component{
     });
     this.state ={
       annotations: annotations,
+      psipred_results: null,
     };
     this.sequencePlot = React.createRef();
     this.horizPlot = React.createRef();
@@ -24,23 +26,45 @@ class ResultsSequence extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
+    for(let key in this.state.psipred_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.psipred_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        console.log(key)
+        psipred(file_data, 'psipredChart', {debug: true, parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+    }
   }
 
-  getResultsFiles = (data, props, allResults) => {
+  getResultsFiles = (data, props) => {
     let results_files = {};
-    data.forEach(async function(entry){
+    data.forEach(function(entry){
       let glob = entry.data_path.split('.')[1];
-      if(props.results_map.includes(glob))
+      if(glob.includes(".png") || glob.includes(".gif") || glob.includes(".jpg"))
       {
-        try {
-          let file_content = await process_files(entry.data_path, props.files_url);
-          let file_name = entry.data_path.split('/')[2];
-          results_files[file_name] = file_content;
-        }
-        catch (err){
-          console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
-          alert("Getting and processing: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-          return null;
+          //There ought to be a way of casting the file string back to binary but for now
+          //we're just using JSzip utils to get the data AGAIN in binary format instead
+          // JSZipUtils.getBinaryContent(url, function (err, data) {
+          // if(err) {
+          //     throw err; // or handle the error
+          // }
+          // zip.folder(path_bits[1]).file(path_bits[2], data, {binary: true});
+          // });
+      }
+      else {
+        if(props.results_map.includes(glob))
+        {
+          try {
+            let file_content = request_data(entry.data_path, props.files_url);
+            let file_name = entry.data_path.split('/')[2];
+            results_files[file_name] = file_content;
+          }
+          catch (err){
+            console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
+            alert("Getting and processing: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+            return null;
+          }
         }
       }
     });
@@ -49,8 +73,9 @@ class ResultsSequence extends React.Component{
 
   getResults = () => {
     let result_uri = this.props.submit_url+this.props.uuid;
+    let results_data = null;
     if(this.props.waiting) {
-      console.log("RESULTS: "+result_uri);
+      console.log("POLLING RESULTS: "+result_uri);
       fetch(result_uri, {
         headers: {
           'Accept': 'application/json',
@@ -62,28 +87,34 @@ class ResultsSequence extends React.Component{
         }
         throw response;
       }).then(data => {
-        console.log(data);
+        //console.log(data); // uncomment to see polling data
         if(data.state !== "Running"){
-          let results_data = this.getResultsFiles(data.submissions[0].results, this.props, this.allResults);
-          //we update the Display area with everything the sidebar need:
-          this.props.updateResultsFiles('psipred_job', results_data);
-          // if we have a psipred_job AND some horiz file we'll call the
-          //draw_horiz(this.state, this.horizPlot.current)
-          //parse the ss2 data and redraw the sequencePlot
-          this.props.updateWaiting(false);
+          if(data.state === "Complete"){
+            results_data = this.getResultsFiles(data.submissions[0].results, this.props);
+            //we update the Display area with everything the sidebar need:
+            this.props.updateResultsFiles('psipred_job', results_data);
+            // if we have a psipred_job AND some horiz file we'll call the
+            //draw_horiz(this.state, this.horizPlot.current)
+            //parse the ss2 data and redraw the sequencePlot
+            this.props.updateWaiting(false);
+            this.setState({psipred_results: results_data,});
+          }
+          else{
+            throw new Error("Job Failed");
+          }
         }
       }).catch(error => {
         console.log("Fetching results: "+result_uri+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
         alert("Fetching results: "+result_uri+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
         return null;
       });
-    }
+    };
   }
 
   componentDidMount(){
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
-      this.timer = setInterval(()=> this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 500);
   }
 
   render() {
