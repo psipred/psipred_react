@@ -1,8 +1,9 @@
 import React from 'react';
 import {draw_empty_annotation_panel} from './results_helper.js';
 import {request_data} from './results_helper.js';
+import { parse_ss2 } from './parsers.js';
 import { psipred } from './biod3/main.js';
-
+import { annotationGrid } from './biod3/main.js';
 
 class ResultsSequence extends React.Component{
   constructor(props){
@@ -15,6 +16,7 @@ class ResultsSequence extends React.Component{
     this.state ={
       annotations: annotations,
       psipred_results: null,
+      psipred_panel_height: null
     };
     this.sequencePlot = React.createRef();
     this.horizPlot = React.createRef();
@@ -31,8 +33,10 @@ class ResultsSequence extends React.Component{
         let file_data = this.state.psipred_results[key];
         let count = (file_data.match(/Conf/g) || []).length;
         let panel_height = ((6*30)*(count+1))+120;
-        console.log(key)
-        psipred(file_data, 'psipredChart', {debug: true, parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+      if(this.state.psipred_panel_height){
+        annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.psipred_panel_height, container_height: this.state.psipred_panel_height});
       }
     }
   }
@@ -91,13 +95,22 @@ class ResultsSequence extends React.Component{
         if(data.state !== "Running"){
           if(data.state === "Complete"){
             results_data = this.getResultsFiles(data.submissions[0].results, this.props);
-            //we update the Display area with everything the sidebar need:
+            //we update the Display area with everything the sidebar needs:
             this.props.updateResultsFiles('psipred_job', results_data);
             // if we have a psipred_job AND some horiz file we'll call the
-            //draw_horiz(this.state, this.horizPlot.current)
-            //parse the ss2 data and redraw the sequencePlot
+            let parsed_data = {};
+            let local_annotations = this.state.annotations;
+            for(let key in results_data){
+              if(key.includes(".ss2")){
+                let local_data = parse_ss2(local_annotations, results_data[key]);
+                local_annotations = local_data[0];
+                parsed_data["psipred_panel_height"] = local_data[1];
+              }
+            }
+            this.setState({psipred_results: results_data,
+                           annotations: local_annotations,
+                           psipred_panel_height: parsed_data.psipred_panel_height});
             this.props.updateWaiting(false);
-            this.setState({psipred_results: results_data,});
           }
           else{
             throw new Error("Job Failed");
