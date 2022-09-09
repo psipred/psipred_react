@@ -23,7 +23,6 @@ class ResultsSidebarDownloads extends React.Component{
       }
       psipred_downloads.push(<br />);
     }
-    console.log("HI THERE")
     return(<div><h5>PSIPRED DOWNLOADS</h5>{psipred_downloads}</div>);
   }
 
