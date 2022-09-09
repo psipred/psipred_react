@@ -34,8 +34,10 @@ class ResultsSequence extends React.Component{
         let count = (file_data.match(/Conf/g) || []).length;
         let panel_height = ((6*30)*(count+1))+120;
         psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+
       }
-      if(this.state.psipred_panel_height){
+      if(key.includes(".ss2") && this.state.psipred_panel_height){
+        console.log("DRAWING ANNOTATED PANEL");
         annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.psipred_panel_height, container_height: this.state.psipred_panel_height});
       }
     }
@@ -125,6 +127,7 @@ class ResultsSequence extends React.Component{
   }
 
   componentDidMount(){
+    console.log("DRAWING EMPTY ANNOTATION PANEL");
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
     this.timer = setInterval(() => this.getResults(), 500);

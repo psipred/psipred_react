@@ -7,6 +7,8 @@ import {ResultsSidebarTimes} from './results_sidebar_times.js'; // eslint-disabl
 import {ResultsSidebarDownloads} from './results_sidebar_downloads.js'; // eslint-disable-line no-unused-vars
 import {ResultsSidebarResubmission} from './results_sidebar_resubmission.js'; // eslint-disable-line no-unused-vars
 import {validateFormData} from './checkform.js' // eslint-disable-line no-unused-vars
+//import { saveAs } from 'file-saver';
+const JSZip = require('jszip');
 
 async function readPDBFile(file) {
     let result_text = await new Promise((resolve) => {
@@ -16,7 +18,6 @@ async function readPDBFile(file) {
     });
     return result_text;
 }
-
 
 class DisplayArea extends React.Component{
   constructor(props){
@@ -43,6 +44,7 @@ class DisplayArea extends React.Component{
       email: email,
       pdbData: '',
       waiting: false,
+      uuid: null,
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -56,10 +58,11 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
-      results_files: null,
+      results_files: false,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsatdata',
                     'presult', 'gen_presult', 'dom_presult', 'parseds', 'ffpredfeatures',
                     'ffpredpredictions', 'metsite', 'hspred'],
+      zip: null,
     };
   }
 
@@ -72,6 +75,7 @@ class DisplayArea extends React.Component{
       name: '',
       email: '',
       waiting: false,
+      uuid: null,
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -86,20 +90,31 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
-      results_files: null
+      results_files: false,
+      zip: null,
       });
   }
 
   updateResultsFiles = (jobType, resultsData) => {
-    if(jobType === 'psipred_job')
-    {
-      //ACTUALLY TURN THESE IN TO FILES FOR THE ZIP.
-      this.setState({results_files: resultsData});
+    let zip = new JSZip();
+    //ACTUALLY TURN THESE IN TO FILES FOR THE ZIP
+    for(let key in resultsData){
+      zip.file(key, resultsData[key])
     }
+    // When zee button is pressed we give back this!
+    // zip.generateAsync({type:"blob"}).then(function (blob) {
+    //     saveAs(blob, uuid+".zip");
+    //});
+    this.setState({
+      zip: zip,
+      results_files: resultsData});
   }
 
   updateWaiting = (newValue) => {
     this.setState({waiting: newValue});
+  }
+  updateUuid = (newValue) => {
+    this.setState({uuid: newValue});
   }
   componentDidUpdate() {
     // currently just doing some reporting while debugging
@@ -255,7 +270,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles}/>
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid}/>
           </div>
           <div className="col-md-3">
             <ResultsSidebarTimes {...{...this.state, ...this.props}} />

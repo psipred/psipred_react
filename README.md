@@ -44,6 +44,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 5. In `checkform.js` in `validateFormData()` update any job and validations you now may have.
 6. In `results.js` in `ResultsMain` class add an if for a section for any additional results you'd like to show.
 7. In `results.js` in `ResultsSiderbarTime` class add an if for the runtime of your new job type.
+8. in `results_sequence.js` `ResultsSequence` `componentDidUpdate` update how you're handling any results file.
 
 ## WARNING
 

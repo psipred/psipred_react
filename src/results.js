@@ -10,7 +10,6 @@ class ResultsMain extends React.Component{
     super(props);
     //here's where we'll handle all the results files
     this.state ={
-      uuid: null,
       result_uri: '',
       error_message: null,
       loading_message: 'Fetching Times',
@@ -41,9 +40,9 @@ class ResultsMain extends React.Component{
        {
          console.log("RECIEVED UUID: "+data.UUID);
          this.setState({
-           uuid: data.UUID,
            result_uri: this.props.main_url+this.props.app_path+"/&uuid="+data.UUID,
          });
+         this.props.updateUuid(data.UUID);
          if (window.history.replaceState) {
            window.history.replaceState({}, data.UUID, this.props.main_url+this.props.app_path+"/&uuid="+data.UUID);
          }
@@ -62,7 +61,7 @@ class ResultsMain extends React.Component{
     //console.log(this.props);
     return(
       <div>
-      { (this.state.uuid && this.props.formSelectedOption==='SeqForm') ?
+      { (this.props.uuid && this.props.formSelectedOption==='SeqForm') ?
         <ResultsSequence {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} />
         :
         <h2>STRUCT RESULTS</h2>
