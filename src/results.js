@@ -62,7 +62,7 @@ class ResultsMain extends React.Component{
     return(
       <div>
       { (this.props.uuid && this.props.formSelectedOption==='SeqForm') ?
-        <ResultsSequence {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} />
+        <ResultsSequence {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} updateConfig={this.props.updateConfig} />
         :
         <h2>STRUCT RESULTS</h2>
       }

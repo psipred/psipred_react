@@ -8,7 +8,6 @@ import {ResultsSidebarDownloads} from './results_sidebar_downloads.js'; // eslin
 import {ResultsSidebarResubmission} from './results_sidebar_resubmission.js'; // eslint-disable-line no-unused-vars
 import {validateFormData} from './checkform.js' // eslint-disable-line no-unused-vars
 //import { saveAs } from 'file-saver';
-const JSZip = require('jszip');
 
 async function readPDBFile(file) {
     let result_text = await new Promise((resolve) => {
@@ -59,10 +58,10 @@ class DisplayArea extends React.Component{
       memembed_barrel: 'true',
       memembed_terminal: 'in',
       results_files: false,
+      config_data: null,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsatdata',
                     'presult', 'gen_presult', 'dom_presult', 'parseds', 'ffpredfeatures',
-                    'ffpredpredictions', 'metsite', 'hspred'],
-      zip: null,
+                    'ffpredpredictions', 'metsite', 'hspred', 'csv'],
     };
   }
 
@@ -91,23 +90,18 @@ class DisplayArea extends React.Component{
       memembed_barrel: 'true',
       memembed_terminal: 'in',
       results_files: false,
-      zip: null,
+      config_data: null,
       });
   }
 
   updateResultsFiles = (jobType, resultsData) => {
-    let zip = new JSZip();
-    //ACTUALLY TURN THESE IN TO FILES FOR THE ZIP
-    for(let key in resultsData){
-      zip.file(key, resultsData[key])
-    }
-    // When zee button is pressed we give back this!
-    // zip.generateAsync({type:"blob"}).then(function (blob) {
-    //     saveAs(blob, uuid+".zip");
-    //});
     this.setState({
-      zip: zip,
       results_files: resultsData});
+  }
+
+  updateConfig = (configData) => {
+    this.setState({
+      config_data: configData});
   }
 
   updateWaiting = (newValue) => {
@@ -270,7 +264,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid}/>
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig}/>
           </div>
           <div className="col-md-3">
             <ResultsSidebarTimes {...{...this.state, ...this.props}} />

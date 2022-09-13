@@ -1,6 +1,8 @@
 import React from 'react';
 import {draw_empty_annotation_panel} from './results_helper.js';
 import {request_data} from './results_helper.js';
+import {request_binary_data} from './results_helper.js';
+import {parse_config} from './results_helper.js';
 import { parse_ss2 } from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { annotationGrid } from './biod3/main.js';
@@ -34,7 +36,11 @@ class ResultsSequence extends React.Component{
         let count = (file_data.match(/Conf/g) || []).length;
         let panel_height = ((6*30)*(count+1))+120;
         psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
-
+        var svg = document.getElementById('psipredChart').outerHTML; //I'm sure we should use the horizPlot ref
+        let results_files = this.props.results_files;
+        svg = svg.replace(/<g id="toggle".+?<\/g>/, '');
+        svg = svg.replace(/<g id="buttons".+?<\/g>/, '');
+        results_files['psipredCartoon.svg'] = svg;
       }
       if(key.includes(".ss2") && this.state.psipred_panel_height){
         console.log("DRAWING ANNOTATED PANEL");
@@ -49,14 +55,25 @@ class ResultsSequence extends React.Component{
       let glob = entry.data_path.split('.')[1];
       if(glob.includes(".png") || glob.includes(".gif") || glob.includes(".jpg"))
       {
+          // THIS MIGHT NOT WORK, WE'LL SEE
+          let file_content = request_binary_data(entry.data_path, props.files_url);
+          let file_name = entry.data_path.split('/')[2];
+          results_files[file_name] = file_content;
           //There ought to be a way of casting the file string back to binary but for now
           //we're just using JSzip utils to get the data AGAIN in binary format instead
-          // JSZipUtils.getBinaryContent(url, function (err, data) {
-          // if(err) {
-          //     throw err; // or handle the error
+          // try {
+          //   JSZipUtils.getBinaryContent(url, function (err, data) {
+          //     if(err) {
+          //       throw err; // or handle the error
+          //     }
+          //     zip.folder(path_bits[1]).file(path_bits[2], data, {binary: true});
+          //   });
           // }
-          // zip.folder(path_bits[1]).file(path_bits[2], data, {binary: true});
-          // });
+          // catch(err) {
+          //   console.log("Getting and processing binary data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
+          //   alert("Getting and processing binary data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+          //   return null;
+          // }
       }
       else {
         if(props.results_map.includes(glob))
@@ -68,7 +85,7 @@ class ResultsSequence extends React.Component{
           }
           catch (err){
             console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
-            alert("Getting and processing: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+            alert("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
             return null;
           }
         }
@@ -79,7 +96,9 @@ class ResultsSequence extends React.Component{
 
   getResults = () => {
     let result_uri = this.props.submit_url+this.props.uuid;
+    let joblist_uri = this.props.joblist_url;
     let results_data = null;
+    let config_csv = '';
     if(this.props.waiting) {
       console.log("POLLING RESULTS: "+result_uri);
       fetch(result_uri, {
@@ -93,12 +112,18 @@ class ResultsSequence extends React.Component{
         }
         throw response;
       }).then(data => {
-        //console.log(data); // uncomment to see polling data
         if(data.state !== "Running"){
           if(data.state === "Complete"){
             results_data = this.getResultsFiles(data.submissions[0].results, this.props);
             //we update the Display area with everything the sidebar needs:
             this.props.updateResultsFiles('psipred_job', results_data);
+
+            //get configure
+            let config = request_data('psipred', joblist_uri, 'application/json');
+            console.log(config);
+            config_csv += parse_config(JSON.parse(config));
+            console.log(config_csv);
+
             // if we have a psipred_job AND some horiz file we'll call the
             let parsed_data = {};
             let local_annotations = this.state.annotations;
@@ -113,14 +138,15 @@ class ResultsSequence extends React.Component{
                            annotations: local_annotations,
                            psipred_panel_height: parsed_data.psipred_panel_height});
             this.props.updateWaiting(false);
+            this.props.updateConfig(config_csv);
           }
           else{
             throw new Error("Job Failed");
           }
         }
       }).catch(error => {
-        console.log("Fetching results: "+result_uri+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        alert("Fetching results: "+result_uri+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        console.log("Fetching results: "+result_uri+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        alert("Fetching results: "+result_uri+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
         return null;
       });
     };
