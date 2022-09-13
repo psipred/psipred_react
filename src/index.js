@@ -99,6 +99,14 @@ class DisplayArea extends React.Component{
       results_files: resultsData});
   }
 
+  updateForResubmit = (analyses, seq, name, email) => {
+    this.setState({
+      analyses: analyses,
+      seq: seq,
+      name: name,
+      email: email});
+  }
+
   updateConfig = (configData) => {
     this.setState({
       config_data: configData});
@@ -269,7 +277,7 @@ class DisplayArea extends React.Component{
           <div className="col-md-3">
             <ResultsSidebarTimes {...{...this.state, ...this.props}} />
             <ResultsSidebarDownloads {...{...this.state, ...this.props}} />
-            <ResultsSidebarResubmission {...{...this.state, ...this.props}} />
+            <ResultsSidebarResubmission {...{...this.state, ...this.props}} handleSubmit={this.handleSubmit} handleReset={this.handleReset} updateForResubmit={this.updateForResubmit} />
           </div>
           {
           // 1. draw results 2 Main areas

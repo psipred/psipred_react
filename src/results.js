@@ -19,10 +19,11 @@ class ResultsMain extends React.Component{
   }
 
   componentDidUpdate() {
+    //send code to get UUID/SUBMIT JOB function.
   }
 
   componentDidMount(){
-    //console.log(this.props);
+    console.log(this.props);
     console.log('Sending JOB URI request: POST: '+this.props.submit_url );
     fetch(this.props.submit_url, {
       headers: {
