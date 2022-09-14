@@ -120,9 +120,7 @@ class ResultsSequence extends React.Component{
 
             //get configure
             let config = request_data('psipred', joblist_uri, 'application/json');
-            console.log(config);
             config_csv += parse_config(JSON.parse(config));
-            console.log(config_csv);
 
             // if we have a psipred_job AND some horiz file we'll call the
             let parsed_data = {};
@@ -171,7 +169,8 @@ class ResultsSequence extends React.Component{
             <div className="job_info_text job_info_text_left">
               <p className="name_text">Name : {this.props.name}</p>
             </div>
-            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink"><img src="../interface/static/images/clippy.svg" alt="Copy to clipboard" width="16" /></button></div>
+            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink" onClick={()=>navigator.clipboard.writeText(this.props.result_uri)}
+><img src="../interface/static/images/clippy.svg" alt="Copy to clipboard" width="16" /></button></div>
           </div>
         </div>
         }
