@@ -18,9 +18,7 @@ class ResultsSidebarResubmission extends React.Component{
     console.log('PREPING RESUBMIT');
     let name = this.props.name;
     let email = this.props.email;
-    this.props.handleReset();
-    this.props.updateForResubmit(this.state.analyses, subseq, name, email);
-    this.props.handleSubmit(event);
+    this.props.handleResubmit(this.state.analyses, subseq, name, email, event);
     //if seqStart or seqStop are blank set to limits
     //Here we do the things for the resubmission
   }

@@ -18,19 +18,15 @@ class ResultsMain extends React.Component{
     };
   }
 
-  componentDidUpdate() {
-    //send code to get UUID/SUBMIT JOB function.
-  }
-
-  componentDidMount(){
-    console.log(this.props);
-    console.log('Sending JOB URI request: POST: '+this.props.submit_url );
+  postJob = (config_data) => {
+    console.log(config_data.props);
+    console.log('Sending JOB URI request: POST: '+config_data.props.submit_url );
     fetch(this.props.submit_url, {
       headers: {
         'Accept': 'application/json',
       },
       method: 'POST',
-      body: configurePost({...{...this.state, ...this.props}}),
+      body: configurePost({...{...config_data.state, ...config_data.props}}),
     }).then(response => {
        if(response.ok){
          return response.json().then(json => {return(json);});
@@ -41,21 +37,32 @@ class ResultsMain extends React.Component{
        {
          console.log("RECIEVED UUID: "+data.UUID);
          this.setState({
-           result_uri: this.props.main_url+this.props.app_path+"/&uuid="+data.UUID,
+           result_uri: config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID,
          });
          this.props.updateUuid(data.UUID);
          if (window.history.replaceState) {
-           window.history.replaceState({}, data.UUID, this.props.main_url+this.props.app_path+"/&uuid="+data.UUID);
+           window.history.replaceState({}, data.UUID, config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
          }
          this.props.updateWaiting(true);
        }
        //DO SOME THINGS
      }).catch(error => {
-       console.log("Sending Job to "+this.props.submit_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Sending Job to "+this.props.submit_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       console.log("Sending Job to "+config_data.props.submit_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Sending Job to "+config_data.props.submit_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        return null;
      });
+  }
 
+  componentDidUpdate() {
+    if (this.props.resubmit === true) {
+       console.log('RESUBMITTING SEQUENCE');
+       this.props.updateResubmit(false);
+       this.postJob(this);
+     }
+  }
+
+  componentDidMount(){
+    this.postJob(this);
   }
 
   render() {

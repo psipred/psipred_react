@@ -59,6 +59,7 @@ class DisplayArea extends React.Component{
       memembed_terminal: 'in',
       results_files: false,
       config_data: null,
+      resubmit: false,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsatdata',
                     'presult', 'gen_presult', 'dom_presult', 'parseds', 'ffpredfeatures',
                     'ffpredpredictions', 'metsite', 'hspred', 'csv'],
@@ -91,6 +92,7 @@ class DisplayArea extends React.Component{
       memembed_terminal: 'in',
       results_files: false,
       config_data: null,
+      resubmit: false,
       });
   }
 
@@ -99,12 +101,40 @@ class DisplayArea extends React.Component{
       results_files: resultsData});
   }
 
-  updateForResubmit = (analyses, seq, name, email) => {
+  handleResubmit = (analyses, seq, name, email, event) => {
     this.setState({
       analyses: analyses,
+      jobs: [],
+      input_data: '',
       seq: seq,
       name: name,
-      email: email});
+      email: email,
+      waiting: false,
+      uuid: null,
+      bioserf_modeller_key: '',
+      domserf_modeller_key: '',
+      dompred_e_value_cutoff: '0.01',
+      dompred_psiblast_iterations: '5',
+      ffpred_selection: 'human',
+      pdbData: '',
+      metsite_metal_type: 'CA',
+      metsite_chain_id: 'A',
+      metsite_fpr: '1',
+      hspred_protein_1: 'A',
+      hspred_protein_2: 'B',
+      memembed_algorithm: '0',
+      memembed_barrel: 'true',
+      memembed_terminal: 'in',
+      results_files: false,
+      config_data: null,
+      resubmit: true,
+    });
+    this.handleSubmit(event);
+  }
+
+  updateResubmit = (change) => {
+    this.setState({
+      resubmit: change});
   }
 
   updateConfig = (configData) => {
@@ -272,12 +302,12 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig}/>
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} />
           </div>
           <div className="col-md-3">
             <ResultsSidebarTimes {...{...this.state, ...this.props}} />
             <ResultsSidebarDownloads {...{...this.state, ...this.props}} />
-            <ResultsSidebarResubmission {...{...this.state, ...this.props}} handleSubmit={this.handleSubmit} handleReset={this.handleReset} updateForResubmit={this.updateForResubmit} />
+            <ResultsSidebarResubmission {...{...this.state, ...this.props}} handleResubmit={this.handleResubmit} />
           </div>
           {
           // 1. draw results 2 Main areas
