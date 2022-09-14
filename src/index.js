@@ -76,6 +76,7 @@ class DisplayArea extends React.Component{
       email: '',
       waiting: false,
       uuid: null,
+      formSelectedOption: 'SeqForm',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -111,6 +112,7 @@ class DisplayArea extends React.Component{
       email: email,
       waiting: false,
       uuid: null,
+      formSelectedOption: 'SeqForm',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -132,6 +134,10 @@ class DisplayArea extends React.Component{
     this.handleSubmit(event);
   }
 
+  updateSeq = (newValue) => {
+    this.setState({
+      seq: newValue});
+  }
   updateResubmit = (change) => {
     this.setState({
       resubmit: change});
@@ -148,6 +154,10 @@ class DisplayArea extends React.Component{
   updateUuid = (newValue) => {
     this.setState({uuid: newValue});
   }
+  updateForm = (newValue) => {
+    this.setState({formSelectedOption: newValue});
+  }
+
   componentDidUpdate() {
     // currently just doing some reporting while debugging
     //console.log(this.state);
@@ -291,6 +301,13 @@ class DisplayArea extends React.Component{
     //2. set displaytType and re-render
   }
 
+  componentDidMount(){
+    console.log("INCOMING UUID: "+this.props.incoming_uuid);
+    if(this.props.incoming_uuid){
+      this.setState({displayType: 'results'});
+    }
+  }
+
   render () {
     return(
       <div className="row">
@@ -302,7 +319,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} />
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} />
           </div>
           <div className="col-md-3">
             <ResultsSidebarTimes {...{...this.state, ...this.props}} />
@@ -340,12 +357,11 @@ class PsipredSite extends React.Component{
       app_path: "/psipred_beta",
       location: "Dev",
       gear_string: '<object width="140" height="140" type="image/svg+xml" data=""></object>',
+      incoming_uuid: null,
     };
   }
 
-  componentDidMount() {
-    console.log(window.location.hostname);
-    console.log(window.location.href);
+  componentWillMount() {
 
     //defaults for dev server
     var joblist_url = 'http://127.0.0.1:8000/analytics_automated/job/';
@@ -357,9 +373,18 @@ class PsipredSite extends React.Component{
     var gears_svg = "../static/images/gears.svg";
     var files_url = 'http://127.0.0.1:8000';
     var location = "Dev";
+    var href = window.location.href;
+    var uuid = null;
+    if(window.location.href.includes("&uuid=")){
+      href = window.location.href.split('&uuid=')[0];
+      uuid = window.location.href.split('&uuid=')[1];
 
+    }
+    console.log(window.location.hostname);
+    console.log(href);
+    console.log(uuid);
     //updates for production paths
-    if(window.location.href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (window.location.href.includes('psipred') && !  window.location.href.includes('psipred_beta')) )
+    if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (href.includes('psipred') && !  href.includes('psipred_beta')) )
     {
       app_path = '/psipred';
       joblist_url = this.state.main_url+app_path+'/api/job/';
@@ -370,7 +395,7 @@ class PsipredSite extends React.Component{
       gears_svg = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
       location = "Production";
     }
-    else if(window.location.hostname === "bioinfstage1.cs.ucl.ac.uk" || window.location.href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || window.location.href.includes('psipred_beta'))
+    else if(window.location.hostname === "bioinfstage1.cs.ucl.ac.uk" || href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || href.includes('psipred_beta'))
     { //update for staging paths
       joblist_url = this.state.main_url+this.state.app_path+'/api/job/';
       endpoints_url = this.state.main_url+this.state.app_path+'/api/endpoints/';
@@ -398,6 +423,7 @@ class PsipredSite extends React.Component{
       files_url: files_url,
       location: location,
       main_url: main_url,
+      incoming_uuid: uuid,
     });
   }
 

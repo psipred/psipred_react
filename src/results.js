@@ -1,5 +1,6 @@
 import React from 'react';
 import {configurePost} from './requests_helper.js'; // eslint-disable-line no-unused-vars
+import {request_data} from './results_helper.js'; // eslint-disable-line no-unused-vars
 import {ResultsSequence} from './results_sequence.js'; // eslint-disable-line no-unused-vars
 
 //We render the name bar with the copy link and then we render the seq plot for
@@ -16,6 +17,51 @@ class ResultsMain extends React.Component{
       psipred_waiting_message: 'Please wait for your PSIPRED job to process',
       psipred_wating_icon: '',
     };
+  }
+
+  getJob = (config_data) => {
+    console.log(config_data.props);
+    console.log('Sending JOB URI request: GET: '+config_data.props.submit_url+config_data.props.incoming_uuid );
+    fetch(this.props.submit_url+config_data.props.incoming_uuid, {
+      headers: {
+        'Accept': 'application/json',
+      },
+      method: 'GET',
+    }).then(response => {
+       if(response.ok){
+         return response.json().then(json => {return(json);});
+       }
+       throw response;
+     }).then(data => {
+       if(data.UUID !== null)
+       {
+         console.log("RECIEVED JOB DATA FOR UUID: "+data.UUID);
+         let submission_data = data.submissions[0];
+         let job_type = "SeqForm"
+         if(submission_data.job_name.includes("psipred"))//test this is a seq job
+         {
+           //GET SEQUENCE DATA
+           let seq = request_data(submission_data.input_file, config_data.props.files_url);
+           config_data.props.updateSeq(seq);
+           config_data.props.updateForm(job_type);
+         }
+         else {//set as struct job
+           //GET PDB DATA
+          job_type = "StructForm";
+          config_data.props.updateForm(job_type);
+         }
+         this.setState({
+            result_uri: config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID,
+         });
+         config_data.props.updateUuid(data.UUID);
+         config_data.props.updateWaiting(true);
+       }
+       //DO SOME THINGS
+     }).catch(error => {
+       console.log("Sending Job to "+config_data.props.submit_url+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Sending Job to "+config_data.props.submit_url+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       return null;
+     });
   }
 
   postJob = (config_data) => {
@@ -43,12 +89,12 @@ class ResultsMain extends React.Component{
          if (window.history.replaceState) {
            window.history.replaceState({}, data.UUID, config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
          }
-         this.props.updateWaiting(true);
+         config_data.props.updateWaiting(true);
        }
        //DO SOME THINGS
      }).catch(error => {
-       console.log("Sending Job to "+config_data.props.submit_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Sending Job to "+config_data.props.submit_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       console.log("Sending Job to "+config_data.props.submit_url+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Sending Job to "+config_data.props.submit_url+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        return null;
      });
   }
@@ -62,7 +108,13 @@ class ResultsMain extends React.Component{
   }
 
   componentDidMount(){
-    this.postJob(this);
+    if(this.props.incoming_uuid){
+       console.log("GETTING DETAILS JOB: "+this.props.incoming_uuid);
+       this.getJob(this);
+    }
+    else{
+      this.postJob(this);
+    }
   }
 
   render() {
