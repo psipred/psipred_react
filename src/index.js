@@ -35,7 +35,7 @@ class DisplayArea extends React.Component{
     this.state = {
       displayType: 'input',
       formSelectedOption: 'SeqForm',
-      analyses: ['psipred_job'],
+      analyses: ['disopred_job', ],
       jobs: [],
       input_data: input_data,
       seq: seq,
@@ -76,7 +76,7 @@ class DisplayArea extends React.Component{
       email: '',
       waiting: false,
       uuid: null,
-      formSelectedOption: 'SeqForm',
+      // formSelectedOption: 'SeqForm',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -163,9 +163,12 @@ class DisplayArea extends React.Component{
     //console.log(this.state);
   }
   handleInputChange = (event) =>  {
+    //console.log(this.state.formSelectedOption);
+    //console.log(event.target.value);
     this.setState({
       formSelectedOption: event.target.value,
     });
+    //console.log(this.state.formSelectedOption);
     this.handleReset();
   }
   handleStructChange = (event) =>  {
@@ -361,8 +364,7 @@ class PsipredSite extends React.Component{
     };
   }
 
-  componentWillMount() {
-
+  componentDidMount() {
     //defaults for dev server
     var joblist_url = 'http://127.0.0.1:8000/analytics_automated/job/';
     var endpoints_url = 'http://127.0.0.1:8000/analytics_automated/endpoints/';

@@ -51,6 +51,7 @@ See also class_layout.odp
       * FormInteractivity: Small class that warps the form selector
         * SeqForm: Main form that the user can use to select methods and submit Seq data
         * StructForm:  Main form that the user can use to select methods and submit Structural data
+    * Sidebar: Class shows the sidebar with advanced options
     * ResultsMain: Class is called after data submission and handles submitting a job and then displaying the   results
       * ResultsSequence: Class handles getting the results files for a sequence job and displaying them
       * ResultsStructure: TO BE IMPLEMENTED
@@ -60,14 +61,14 @@ See also class_layout.odp
 
 # Adding services to PSIPRED web server
 
-1. First modify the input form in `index.js` under `DisplayArea` (optionally) add any state variables (sidebar items) to the constructor (line 7). Update `updateResultsFiles` function too. Add file globs for your job types by updating `results_map` in the `DisplayArea` class. Update `handleReset()` function (line 34ish) to set any form variables back to defaults
+1. First modify the input form in `index.js` under `DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 7). You will also need to update the `handleRest` and `handleResubmit` functions. Add file globs for your job types by updating `results_map` in `this.state` in the `DisplayArea` class. `analyses` in `this.state` controls which jobs are pre-checked on load.
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'`. Ensure `onChange` and `checked` are correct.
-3. If it is a new sequence job, in `results.js` don't forget to add your job to the `ResultsSidebarResubmission` widget and don't forget the tooltips
-4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include an additional if that detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class `AlgorithmOptions`. Add your new class and the appropriate inputs. You MUST ensure that the names match the new state variable names you added in step 1 if you added new state variables
-5. In `checkform.js` in `validateFormData()` update any job and validations you now may have.
-6. In `results.js` in `ResultsMain` class add an if for a section for any additional results you'd like to show.
-7. In `results.js` in `ResultsSiderbarTime` class add an if for the runtime of your new job type.
-8. in `results_sequence.js` `ResultsSequence` `componentDidUpdate` update how you're handling any results file.
+3. If it is a new sequence job, don't forget to add your job to the `ResultsSidebarResubmission` class in `results_sidebar_resubmission.js` and don't forget any tooltips
+4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include any additional panels when it detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class of the form `[Algorithm]Options`. Add your new class and the appropriate inputs. You MUST ensure that the form input names match the new state variable names you added in step 1 if you added new state variables (i.e. `DisplayArea`'s `this.state` etc...)
+5. In `checkform.js` in `validateFormData()` ensure `seq_job_list` and `struct_job_list` are corret and up to date with the new job. Update any new validations you now may have for the new/advanced inputs.
+6. In `results.js` in `ResultsMain` class at ` if(submission_data.job_name.includes("psipred")` update this `if` to cath other seq jobs. MAYBE THE SEQ JOB LIST SHOULD BE STORED IN THE JOINT STATE. Update `this.state` with the waiting messages for your job.
+7. In `results_sidebar_times.js` in the `ResultsSiderbarTime` class add an if in `render` for the runtime of your new job type.
+8. in `results_sequence.js` in the `ResultsSequence` class update the constructor and `this.state` to handle any results and plots you need, using `React.createRef()` to bind new page elements you need. In `componentDidUpdate` update how you're handling any arrived results files. In `getResults()` ensure `for(let key in results_data){` handles parsing any files that need it. Ensure `this.setState({` sends the results contents to an appropriate state variables to hold them here. Lastly in `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`) 
 
 ## WARNING
 
