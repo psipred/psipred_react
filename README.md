@@ -29,15 +29,36 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Learn More
+# Learn More
+
+React has a heirarchical model of the page and pages regions. Sibling regions of the page can share state by storing that state in a parental node.
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+## Site model
+
+The Parent container for the page/results is called PsipredSite, its immediate child is DisplayArea. DisplayArea is responsible for holding most of the state of the pages and it's children are MainForm, Sidebar, ResultsMain, ResultsSidebarTimes, ResultsSidebarDownloads and ResultsSidebarResubmission.
+
+### Classes
+
+* PsipredSite: Outer container for whole page with URI initialisation
+* DisplayArea: Main container for the app that has all the shared the application state variables
+  * MainForm: Small class that wraps the interactive parts of the form
+    * FormInteractivity: Small class that warps the form selector
+      * SeqForm: Main form that the user can use to select methods and submit Seq data
+      * StructForm:  Main form that the user can use to select methods and submit Structural data
+  * ResultsMain: Class is called after data submission and handles submitting a job and then displaying the results
+    * ResultsSequence: Class handles getting the results files for a sequence job and displaying them
+    * ResultsStructure: TO BE IMPLEMENTED
+  * ResultsSidebarTimes: Small class handles getting the RunTimes and displaying them while the user waits
+  * ResultsSidebarDownloads: This class handles showing the download files panel and bundling files in to a zip for the users
+  * ResultsSidebarResubmission: This shows the resubmission panel on the results page and handles submitting a new job
+
 # Adding services to PSIPRED web server
 
-1. First modify the input form in `index.js` under `DisplayArea` (optionally) add any state variables (sidebar items) to the constructor (line 7). Update `updateResultsFiles` function too. Add file globs for your job types by updateing `results_map` in the `DisplayArea` class. Update `handleReset()` function (line 34ish) to set any form variables back to defaults
+1. First modify the input form in `index.js` under `DisplayArea` (optionally) add any state variables (sidebar items) to the constructor (line 7). Update `updateResultsFiles` function too. Add file globs for your job types by updating `results_map` in the `DisplayArea` class. Update `handleReset()` function (line 34ish) to set any form variables back to defaults
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'`. Ensure `onChange` and `checked` are correct.
 3. If it is a new sequence job, in `results.js` don't forget to add your job to the `ResultsSidebarResubmission` widget and don't forget the tooltips
 4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include an additional if that detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class `AlgorithmOptions`. Add your new class and the appropriate inputs. You MUST ensure that the names match the new state variable names you added in step 1 if you added new state variables
