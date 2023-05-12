@@ -18,10 +18,12 @@ class ResultsSequence extends React.Component{
     this.state ={
       annotations: annotations,
       psipred_results: null,
-      psipred_panel_height: null
+      disopred_results: null,
+      psipred_panel_height: null,
     };
     this.sequencePlot = React.createRef();
     this.horizPlot = React.createRef();
+    this.disorderPlot = React.createRef();
     this.timer = null;
   }
 
@@ -46,6 +48,7 @@ class ResultsSequence extends React.Component{
         console.log("DRAWING ANNOTATED PANEL");
         annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.psipred_panel_height, container_height: this.state.psipred_panel_height});
       }
+      //if(key.includes(IMAGE WE'RE HANDLING FOR DISOPRED)){}
     }
   }
 
@@ -99,6 +102,7 @@ class ResultsSequence extends React.Component{
     let joblist_uri = this.props.joblist_url;
     let results_data = null;
     let config_csv = '';
+    // we should loop over this.props.analyses and for every JOB_job we should get all the results data
     if(this.props.waiting) {
       console.log("POLLING RESULTS: "+result_uri);
       fetch(result_uri, {
@@ -114,25 +118,31 @@ class ResultsSequence extends React.Component{
       }).then(data => {
         if(data.state !== "Running"){
           if(data.state === "Complete"){
-            results_data = this.getResultsFiles(data.submissions[0].results, this.props);
-            //we update the Display area with everything the sidebar needs:
-            this.props.updateResultsFiles('psipred_job', results_data);
-
-            //get configure
-            let config = request_data('psipred', joblist_uri, 'application/json');
-            config_csv += parse_config(JSON.parse(config));
-
-            // if we have a psipred_job AND some horiz file we'll call the
+            // Here we loop over data.submissions
             let parsed_data = {};
-            let local_annotations = this.state.annotations;
-            for(let key in results_data){
-              if(key.includes(".ss2")){
-                let local_data = parse_ss2(local_annotations, results_data[key]);
-                local_annotations = local_data[0];
-                parsed_data["psipred_panel_height"] = local_data[1];
+            let local_annotations = [];
+            data.submissions.forEach((submission) => {
+              // get an array of all the results files for our job
+              results_data = this.getResultsFiles(submission.results, this.props);
+              parsed_data[submission.job_name] = results_data;
+              //we update the top DisplayArea class with everything the sidebar needs:
+              this.props.updateResultsFiles(submission.job_name+'_job', results_data);
+              // get the job configuration
+              let config = request_data(submission.job_name, joblist_uri, 'application/json');
+              config_csv += parse_config(JSON.parse(config));
+              let local_annotations = this.state.annotations;
+              for(let key in results_data){
+                if(key.includes(".ss2")){
+                  let local_data = parse_ss2(local_annotations, results_data[key]);
+                  local_annotations = local_data[0];
+                  parsed_data["psipred_panel_height"] = local_data[1];
+                }
+                //if(key.includes('DISOPRED THING'))
               }
-            }
-            this.setState({psipred_results: results_data,
+            });
+
+            this.setState({psipred_results: parsed_data.psipred,
+                           disopred_results: parsed_data.disopred,
                            annotations: local_annotations,
                            psipred_panel_height: parsed_data.psipred_panel_height});
             this.props.updateWaiting(false);
@@ -214,7 +224,30 @@ class ResultsSequence extends React.Component{
               }
             </div>
           </div>
-        }
+         }
+         { this.props.analyses.includes("disopred_job") &&
+          <div className="box box-primary collapsed-box" id="psipred_cartoon">
+            <div className="box-header with-border">
+              <h5 className="box-title">DISOPRED Plot</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div className="disorder_plot" ref={this.horizPlot} ></div>
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.disopred_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.state.disopred_waiting_icon}</div>
+              }
+              { this.props.waiting &&
+                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+              }
+            </div>
+          </div>
+         }
       </div>
     );
   }

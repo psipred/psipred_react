@@ -15,7 +15,7 @@ class ResultsSidebarResubmission extends React.Component{
   handleResubmit = (event) => {
     event.preventDefault();
     let subseq = this.props.seq.slice(this.state.seqStart-1, this.state.seqStop);
-    console.log('PREPING RESUBMIT');
+    console.log('PREPPING RESUBMIT');
     let name = this.props.name;
     let email = this.props.email;
     this.props.handleResubmit(this.state.analyses, subseq, name, email, event);
@@ -205,11 +205,13 @@ class ResultsSidebarResubmission extends React.Component{
           </tr>
 
           <tr>
+          <td data-toggle="tool-tip" title="Predict Secondary Structure Prediction with a single sequence.">
+            <input type="checkbox" id="id_s4pred_job" name="s4pred_job" value="s4pred_job" onChange={this.handleChange} checked={this.state.analyses.includes('s4pred_job')} />
+            <label htmlFor="id_s4pred_job">S4Pred</label>
+          </td>
           <td data-toggle="tool-tip" title="Predict protein function, using Gene Ontology annotations">
             <input type="checkbox" id="id_ffpred_job" name="ffpred_job" value="ffpred_job" onChange={this.handleChange} checked={this.state.analyses.includes('ffpred_job')} />
             <label htmlFor="id_ffpred_job">FFPred</label>
-          </td>
-          <td>
           </td>
           </tr>
         </tbody>

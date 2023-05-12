@@ -14,7 +14,7 @@ class ResultsSidebarTimes extends React.Component{
       //console.log(this.state);
     }
   componentDidMount(){
-    console.log('Sending Times URI request: GET: '+this.props.times_url);
+    console.log('Getting Times URI request: GET: '+this.props.times_url);
     fetch(this.props.times_url, {
       headers: {
         'Accept': 'application/json',
@@ -34,8 +34,8 @@ class ResultsSidebarTimes extends React.Component{
        }
        //DO SOME THINGS
      }).catch(error => {
-       console.log("Sending Job to "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Sending Job to "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       console.log("Getting Times data "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Getting Times data "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
       return null;
      })
   }
@@ -51,6 +51,9 @@ class ResultsSidebarTimes extends React.Component{
               }
               { "psipred" in this.state &&
                 <div><span className="info-box-number">Average PSIPRED runtime is: {this.state.psipred}</span><br /></div>
+              }
+              { "disopred" in this.state &&
+              <div><span className="info-box-number">Average DISOPRED runtime is: {this.state.disopred}</span><br /></div>
               }
             </div>
       </div>

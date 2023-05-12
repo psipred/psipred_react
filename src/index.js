@@ -35,6 +35,8 @@ class DisplayArea extends React.Component{
     this.state = {
       displayType: 'input',
       formSelectedOption: 'SeqForm',
+      seq_job_names: ['psipred', 'disopred'],
+      struct_job_names: [],
       analyses: ['disopred_job', ],
       jobs: [],
       input_data: input_data,
@@ -68,7 +70,7 @@ class DisplayArea extends React.Component{
 
   handleReset = () => {
     this.setState({
-      analyses: ['psipred_job'],
+      analyses: ['disopred_job'],
       jobs: [],
       input_data: '',
       seq: '',
@@ -349,6 +351,16 @@ class DisplayArea extends React.Component{
 class PsipredSite extends React.Component{
   constructor(props){
     super(props);
+    let href = window.location.href;
+    let uuid = null;
+    if(window.location.href.includes("&uuid=")){
+      href = window.location.href.split('&uuid=')[0];
+      uuid = window.location.href.split('&uuid=')[1];
+
+    }
+    console.log("PAGE LOAD location : "+window.location.hostname);
+    console.log("PAGE LOAD href: "+href);
+    console.log("PAGE LOAD uuid: "+uuid);
     this.state = {
       endpoints_url: null,
       submit_url: null,
@@ -360,7 +372,8 @@ class PsipredSite extends React.Component{
       app_path: "/psipred_beta",
       location: "Dev",
       gear_string: '<object width="140" height="140" type="image/svg+xml" data=""></object>',
-      incoming_uuid: null,
+      incoming_uuid: uuid,
+      href: href,
     };
   }
 
@@ -375,18 +388,9 @@ class PsipredSite extends React.Component{
     var gears_svg = "../static/images/gears.svg";
     var files_url = 'http://127.0.0.1:8000';
     var location = "Dev";
-    var href = window.location.href;
-    var uuid = null;
-    if(window.location.href.includes("&uuid=")){
-      href = window.location.href.split('&uuid=')[0];
-      uuid = window.location.href.split('&uuid=')[1];
 
-    }
-    console.log(window.location.hostname);
-    console.log(href);
-    console.log(uuid);
     //updates for production paths
-    if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (href.includes('psipred') && !  href.includes('psipred_beta')) )
+    if(this.state.href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (this.state.href.includes('psipred') && !  this.state.href.includes('psipred_beta')) )
     {
       app_path = '/psipred';
       joblist_url = this.state.main_url+app_path+'/api/job/';
@@ -397,7 +401,7 @@ class PsipredSite extends React.Component{
       gears_svg = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
       location = "Production";
     }
-    else if(window.location.hostname === "bioinfstage1.cs.ucl.ac.uk" || href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || href.includes('psipred_beta'))
+    else if(window.location.hostname === "bioinfstage1.cs.ucl.ac.uk" || this.state.props  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || this.state.href.includes('psipred_beta'))
     { //update for staging paths
       joblist_url = this.state.main_url+this.state.app_path+'/api/job/';
       endpoints_url = this.state.main_url+this.state.app_path+'/api/endpoints/';
@@ -425,7 +429,6 @@ class PsipredSite extends React.Component{
       files_url: files_url,
       location: location,
       main_url: main_url,
-      incoming_uuid: uuid,
     });
   }
 

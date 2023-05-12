@@ -67,6 +67,12 @@ class SeqForm extends React.Component {
                   <td></td>
                 </tr>
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
+                <tr><td><h4>Single Sequence Prediction</h4></td><td></td></tr>
+                <tr>
+                  <td data-toggle="tool-tip" title="Predict Secondary Structure Prediction with a single sequence."><input type="checkbox" id="id_s4pred_job" name="s4pred_job" value="s4pred_job" onChange={this.handleChange} checked={this.props.analyses.includes('s4pred_job')} />&nbsp;<label htmlFor="id_s4pred_job">S4Pred (Single Sequence SS Prediction)</label></td>
+                  <td></td>
+                </tr>
+                <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td><h4>Domain Prediction</h4></td><td></td></tr>
                 <tr>
                   <td data-toggle="tool-tip" title="Predict protein structural domain boundaries."><input type="checkbox" id="id_dompred_job" name="dompred_job" value="dompred_job" onChange={this.handleChange} checked={this.props.analyses.includes('dompred_job')} />&nbsp;<label htmlFor="id_dompred_job">DomPred (Protein Domain Prediction)</label></td>
