@@ -21,8 +21,13 @@ class ResultsMain extends React.Component{
     };
   }
 
+  checkSubset = (parentArray, subsetArray) => {
+    let set = new Set(parentArray);
+    return subsetArray.every(x => set.has(x));
+  }
+  
   getJob = (config_data) => {
-    console.log(config_data.props);
+    //console.log(config_data.props);
     console.log('Getting Job Data URI request: GET: '+config_data.props.submit_url+config_data.props.incoming_uuid );
     fetch(this.props.submit_url+config_data.props.incoming_uuid, {
       headers: {
@@ -38,22 +43,31 @@ class ResultsMain extends React.Component{
        if(data.UUID !== null)
        {
          console.log("RECIEVED JOB DATA FOR UUID: "+data.UUID);
+         let submission_jobs = [];
+         //We've got the data now we check all the jobs run are either seq or stsruct jobs and we update the
+         // parent props.analyses accordingly
+         data.submissions.forEach((submission) =>{
+            submission_jobs.push(submission.job_name);
+         });
          let submission_data = data.submissions[0];
          let job_type = "SeqForm"
 
          //console.log("ARRAY TEST:"+found)
-         //if(submission_data.job_name.includes("psipred") || submission_data.job_name.includes("disopred"))//test this is a seq job
-         if(config_data.props.seq_job_names.includes(submission_data.job_name))//test this is a seq job
+        if(this.checkSubset(config_data.props.seq_job_names, submission_jobs))
          {
-           //GET SEQUENCE DATA
            let seq = request_data(submission_data.input_file, config_data.props.files_url);
+           config_data.props.updateAnalyses(submission_jobs.map(item => `${item}_job`));
            config_data.props.updateSeq(seq);
            config_data.props.updateForm(job_type);
          }
-         else {//set as struct job
+         else if (this.checkSubset(config_data.props.struct_job_names, submission_jobs)){
            //GET PDB DATA
           job_type = "StructForm";
           config_data.props.updateForm(job_type);
+         }
+         else
+         {
+          //THROW SOME ERROR AS THE USERS SOMEHOW HAS A JOB THAT CONTAINS BOTH SEQ AND STRUCT JOBS
          }
          this.setState({
             result_uri: config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID,
@@ -70,7 +84,7 @@ class ResultsMain extends React.Component{
   }
 
   postJob = (config_data) => {
-    console.log(config_data.props);
+    // console.log(config_data.props);
     console.log('Posting Job URI request: POST: '+config_data.props.submit_url );
     fetch(this.props.submit_url, {
       headers: {

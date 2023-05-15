@@ -23,7 +23,7 @@ class ResultsSequence extends React.Component{
     };
     this.sequencePlot = React.createRef();
     this.horizPlot = React.createRef();
-    this.disorderPlot = React.createRef();
+    this.disopredPlot = React.createRef();
     this.timer = null;
   }
 
@@ -45,7 +45,7 @@ class ResultsSequence extends React.Component{
         results_files['psipredCartoon.svg'] = svg;
       }
       if(key.includes(".ss2") && this.state.psipred_panel_height){
-        console.log("DRAWING ANNOTATED PANEL");
+        console.log("REDRAWING ANNOTATION PANEL AFTER DATA UPDATE");
         annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.psipred_panel_height, container_height: this.state.psipred_panel_height});
       }
       //if(key.includes(IMAGE WE'RE HANDLING FOR DISOPRED)){}
@@ -133,18 +133,19 @@ class ResultsSequence extends React.Component{
               let local_annotations = this.state.annotations;
               for(let key in results_data){
                 if(key.includes(".ss2")){
+                  console.log("Found SS2 and parsing");
                   let local_data = parse_ss2(local_annotations, results_data[key]);
                   local_annotations = local_data[0];
                   parsed_data["psipred_panel_height"] = local_data[1];
                 }
                 //if(key.includes('DISOPRED THING'))
               }
+              this.setState({psipred_results: parsed_data.psipred,
+                disopred_results: parsed_data.disopred,
+                annotations: local_annotations,
+                psipred_panel_height: parsed_data.psipred_panel_height});
             });
-
-            this.setState({psipred_results: parsed_data.psipred,
-                           disopred_results: parsed_data.disopred,
-                           annotations: local_annotations,
-                           psipred_panel_height: parsed_data.psipred_panel_height});
+            this.props.updateDisplayTime(false);
             this.props.updateWaiting(false);
             this.props.updateConfig(config_csv);
           }
@@ -235,7 +236,7 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="disorder_plot" ref={this.horizPlot} ></div>
+              <div className="disorder_plot" ref={this.disopredPlot} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.disopred_waiting_message}</h4></div>
               }

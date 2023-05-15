@@ -34,6 +34,7 @@ class DisplayArea extends React.Component{
     }
     this.state = {
       displayType: 'input',
+      displayTime: true,
       formSelectedOption: 'SeqForm',
       seq_job_names: ['psipred', 'disopred'],
       struct_job_names: [],
@@ -159,6 +160,13 @@ class DisplayArea extends React.Component{
   updateForm = (newValue) => {
     this.setState({formSelectedOption: newValue});
   }
+  updateAnalyses = (newValue) => {
+    this.setState({analyses: newValue});
+  }
+  updateDisplayTime = (newValue) => {
+    this.setState({displayTime: newValue});
+  }
+  
 
   componentDidUpdate() {
     // currently just doing some reporting while debugging
@@ -324,23 +332,15 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} />
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
           </div>
           <div className="col-md-3">
-            <ResultsSidebarTimes {...{...this.state, ...this.props}} />
+            { this.state.displayTime === true &&
+              <ResultsSidebarTimes {...{...this.state, ...this.props}} />
+            }
             <ResultsSidebarDownloads {...{...this.state, ...this.props}} />
             <ResultsSidebarResubmission {...{...this.state, ...this.props}} handleResubmit={this.handleResubmit} />
           </div>
-          {
-          // 1. draw results 2 Main areas
-           //        DIAGRAM AND TABLES
-           //2. Draw Time/waiting panelresults panel
-           //3. send async request for times
-           //3. extra panels
-           //       results sidebar
-           //     resubmission widget
-           //4. send async request form data
-          }
         </div>
       }
       </div>
@@ -356,7 +356,7 @@ class PsipredSite extends React.Component{
     if(window.location.href.includes("&uuid=")){
       href = window.location.href.split('&uuid=')[0];
       uuid = window.location.href.split('&uuid=')[1];
-
+      //request the results once here and 
     }
     console.log("PAGE LOAD location : "+window.location.hostname);
     console.log("PAGE LOAD href: "+href);

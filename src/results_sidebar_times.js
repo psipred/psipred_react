@@ -49,11 +49,11 @@ class ResultsSidebarTimes extends React.Component{
               { this.state.loading_message &&
                 <div><span className="info-box-number">{this.state.loading_message}</span><br /></div>
               }
-              { "psipred" in this.state &&
-                <div><span className="info-box-number">Average PSIPRED runtime is: {this.state.psipred}</span><br /></div>
+              { this.props.analyses.includes('psipred_job') &&
+                <div><span className="info-box-number">PSIPRED runtime: {this.state.psipred}</span><br /></div>
               }
-              { "disopred" in this.state &&
-              <div><span className="info-box-number">Average DISOPRED runtime is: {this.state.disopred}</span><br /></div>
+              { this.props.analyses.includes('disopred_job') &&
+              <div><span className="info-box-number">DISOPRED runtime: {this.state.disopred}</span><br /></div>
               }
             </div>
       </div>
