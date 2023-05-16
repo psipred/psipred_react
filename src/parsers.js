@@ -354,54 +354,51 @@ export function parse_ss2(annotations, file)
         let entries = line.split(/\s+/);
         annotations[i].ss = entries[3];
       });
-      panel_height = ((Math.ceil(annotations.length/50)+2)*20)+(8*20);
-      if(panel_height < 300){panel_height = 300;}
     }
     else
     {
       alert("SS2 annotation length does not match query sequence");
     }
-    return([annotations, panel_height]);
+    return(annotations);
 }
 
 // //take the disopred pbdat file, parse it and add the annotations to the annotation grid
-// export function parse_pbdat(ractive, file)
-// {
-//     let annotations = ractive.get('annotations');
-//     let lines = file.split('\n');
-//     lines.shift(); lines.shift(); lines.shift(); lines.shift(); lines.shift();
-//     lines = lines.filter(Boolean);
-//     if(annotations.length == lines.length)
-//     {
-//       lines.forEach(function(line, i){
-//         let entries = line.split(/\s+/);
-//         if(entries[3] === '-'){annotations[i].disopred = 'D';}
-//         if(entries[3] === '^'){annotations[i].disopred = 'PB';}
-//       });
-//       ractive.set('annotations', annotations);
-//       let panel_height = ((Math.ceil(annotations.length/50)+2)*20)+(8*20);
-//       if(panel_height < 300){panel_height = 300;}
-//       biod3.annotationGrid(annotations, {parent: 'div.sequence_plot', margin_scaler: 2, debug: false, container_width: 900, width: 900, height: panel_height, container_height: panel_height});
-//     }
-// }
+export function parse_pbdat(annotations, file)
+{
+    let panel_height = null;
+    let lines = file.split('\n');
+    lines.shift(); lines.shift(); lines.shift(); lines.shift(); lines.shift();
+    lines = lines.filter(Boolean);
+    if(annotations.length === lines.length)
+    {
+      lines.forEach(function(line, i){
+        let entries = line.split(/\s+/);
+        if(entries[3] === '-'){annotations[i].disopred = 'D';}
+        if(entries[3] === '^'){annotations[i].disopred = 'PB';}
+      });
+    }
+    else
+    {
+      alert("PBDAT annotation length does not match query sequence");
+    }
+    return(annotations);
+}
 //
 // //parse the disopred comb file and add it to the annotation grid
-// export function parse_comb(ractive, file)
-// {
-//   let precision = [];
-//   let lines = file.split('\n');
-//   lines.shift(); lines.shift(); lines.shift();
-//   lines = lines.filter(Boolean);
-//   lines.forEach(function(line, i){
-//     let entries = line.split(/\s+/);
-//     precision[i] = {};
-//     precision[i].pos = entries[1];
-//     precision[i].precision = entries[4];
-//   });
-//   ractive.set('diso_precision', precision);
-//   biod3.genericxyLineChart(precision, 'pos', ['precision'], ['Black',], 'DisoNNChart', {parent: 'div.comb_plot', chartType: 'line', y_cutoff: 0.5, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: 300, container_height: 300});
-//
-// }
+export function parse_comb(file)
+{
+  let precision = [];
+  let lines = file.split('\n');
+  lines.shift(); lines.shift(); lines.shift();
+  lines = lines.filter(Boolean);
+  lines.forEach(function(line, i){
+    let entries = line.split(/\s+/);
+    precision[i] = {};
+    precision[i].pos = entries[1];
+    precision[i].precision = entries[4];
+  });
+  return(precision);
+}
 //
 // //parse the memsat output
 // export function parse_memsatdata(ractive, file)

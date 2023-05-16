@@ -89,10 +89,8 @@ const validateFormData = (state, jobs, pdbData) => {
                   jobs: null, // we return an array of the jobs that need to be run removing anything redundant from jobs
                   pdbData: ''
                 };
-  let seq_job_list = ["psipred", "pgenthreader", "metapsicov", "disopred", "mempack",
-                      "memsatsvm", "genthreader", "dompred", "pdomthreader", "bioserf",
-                      "domserf", "ffpred", "dmp", "dmpfold" ];
-  let struct_job_list = ["metsite", "hspred", "memembed", "gentdb"];
+  let seq_job_list = state.seq_job_names;
+  let struct_job_list =  state.struct_job_names;;
   if((compare(jobs, seq_job_list) > 0) && (compare(jobs, struct_job_list) > 0)) {
     checked.message = "You can not submit both sequence and structure analysis jobs";
     return(checked);
@@ -238,9 +236,9 @@ const validateFormData = (state, jobs, pdbData) => {
       }
     }
   }
-  // console.log(jobs);
+  //console.log(jobs);
   //remove redundant jobs
-  if(jobs.includes('pgenthreader') || jobs.includes('disopred') ||
+  if(jobs.includes('pgenthreader') || 
      jobs.includes('dompred') || jobs.includes('pdomthreader') ||
      jobs.includes('bioserf') || jobs.includes('domserf') ||
      jobs.includes('metapsicov')) {
@@ -263,7 +261,7 @@ const validateFormData = (state, jobs, pdbData) => {
       jobs.splice(idx, 1);
     }
   }
-  // console.log(jobs);
+  //console.log(jobs);
 
   checked.send = true;
   checked.message = 'all tests passed';

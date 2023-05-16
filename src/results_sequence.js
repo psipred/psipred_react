@@ -4,7 +4,11 @@ import {request_data} from './results_helper.js';
 import {request_binary_data} from './results_helper.js';
 import {parse_config} from './results_helper.js';
 import { parse_ss2 } from './parsers.js';
+import { parse_pbdat } from './parsers.js';
+import { parse_comb } from './parsers.js';
 import { psipred } from './biod3/main.js';
+import { genericxyLineChart } from './biod3/main.js';
+
 import { annotationGrid } from './biod3/main.js';
 
 class ResultsSequence extends React.Component{
@@ -15,11 +19,14 @@ class ResultsSequence extends React.Component{
     residues.forEach(function(res){
       annotations.push({'res': res});
     });
+    let panel_height = ((Math.ceil(annotations.length/50)+2)*20)+(8*20);
+    if(panel_height < 300){panel_height = 300;}
     this.state ={
       annotations: annotations,
       psipred_results: null,
-      disopred_results: null,
-      psipred_panel_height: null,
+      disopred_pbdata_data: null,
+      disopred_comb_data: null,
+      annotation_panel_height: panel_height,
     };
     this.sequencePlot = React.createRef();
     this.horizPlot = React.createRef();
@@ -32,6 +39,7 @@ class ResultsSequence extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
+    let results_data = {}
     for(let key in this.state.psipred_results){
       if(key.includes(".horiz")){
         let file_data = this.state.psipred_results[key];
@@ -39,17 +47,28 @@ class ResultsSequence extends React.Component{
         let panel_height = ((6*30)*(count+1))+120;
         psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
         var svg = document.getElementById('psipredChart').outerHTML; //I'm sure we should use the horizPlot ref
-        let results_files = this.props.results_files;
         svg = svg.replace(/<g id="toggle".+?<\/g>/, '');
         svg = svg.replace(/<g id="buttons".+?<\/g>/, '');
-        results_files['psipredCartoon.svg'] = svg;
+        results_data['psipred'] = {'psipred_horiz.svg': svg}
+        //this.props.updateResultsFiles('disopred', {'psipredCartoon.svg': svg});
+        //NEED TO UPDATE this.props.results_files?
       }
-      if(key.includes(".ss2") && this.state.psipred_panel_height){
-        console.log("REDRAWING ANNOTATION PANEL AFTER DATA UPDATE");
-        annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.psipred_panel_height, container_height: this.state.psipred_panel_height});
-      }
-      //if(key.includes(IMAGE WE'RE HANDLING FOR DISOPRED)){}
     }
+    for(let key in this.state.disopred_results){
+      if(key.includes(".comb")){
+        let file_data = this.state.disopred_results[key];
+        let precision = parse_comb(file_data);
+        genericxyLineChart(precision, 'pos', ['precision'], ['Black',], 'DisoNNChart', {parent: this.disopredPlot.current, chartType: 'line', y_cutoff: 0.5, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: 300, container_height: 300});
+        var svg = document.getElementById('disorder_svg').innerHTML;
+        svg = svg.replace(/<g id="toggle".+?<\/g>/, '');
+        svg = svg.replace(/<g id="buttons".+?<\/g>/, '');
+        results_data['disopred'] = {'disoNNChart.svg': svg}
+        //this.props.updateSVGs(results_data);
+      }
+    }
+    console.log("UPDATING ANNOTATION GRID");
+    annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
+    //this.props.updateResultsFiles(results_data);
   }
 
   getResultsFiles = (data, props) => {
@@ -120,31 +139,38 @@ class ResultsSequence extends React.Component{
           if(data.state === "Complete"){
             // Here we loop over data.submissions
             let parsed_data = {};
-            let local_annotations = [];
+            let local_data = [];
+            let local_annotations = this.state.annotations;
+            let res = {};
             data.submissions.forEach((submission) => {
               // get an array of all the results files for our job
               results_data = this.getResultsFiles(submission.results, this.props);
+              //for each job type we push all the results files to this object
               parsed_data[submission.job_name] = results_data;
               //we update the top DisplayArea class with everything the sidebar needs:
-              this.props.updateResultsFiles(submission.job_name+'_job', results_data);
+              res[submission.job_name] = results_data;
               // get the job configuration
               let config = request_data(submission.job_name, joblist_uri, 'application/json');
               config_csv += parse_config(JSON.parse(config));
-              let local_annotations = this.state.annotations;
+              
+              //here we handle updating the annotation object for the annotation panel to be rendered in
+              //component did update
               for(let key in results_data){
                 if(key.includes(".ss2")){
                   console.log("Found SS2 and parsing");
-                  let local_data = parse_ss2(local_annotations, results_data[key]);
-                  local_annotations = local_data[0];
-                  parsed_data["psipred_panel_height"] = local_data[1];
+                  local_annotations = parse_ss2(local_annotations, results_data[key]);
                 }
-                //if(key.includes('DISOPRED THING'))
+                if(key.includes('.pbdat')){
+                  console.log("Found PDBAT and parsing");
+                  local_annotations = parse_pbdat(local_annotations, results_data[key]);
+                } 
               }
+              // we assign the results files 
               this.setState({psipred_results: parsed_data.psipred,
                 disopred_results: parsed_data.disopred,
-                annotations: local_annotations,
-                psipred_panel_height: parsed_data.psipred_panel_height});
+                annotations: local_annotations});
             });
+            this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
             this.props.updateWaiting(false);
             this.props.updateConfig(config_csv);
@@ -213,7 +239,7 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="psipred_cartoon" ref={this.horizPlot} ></div>
+              <div className="psipred_cartoon" id='psipred_horiz' ref={this.horizPlot} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.psipred_waiting_message}</h4></div>
               }
@@ -227,7 +253,7 @@ class ResultsSequence extends React.Component{
           </div>
          }
          { this.props.analyses.includes("disopred_job") &&
-          <div className="box box-primary collapsed-box" id="psipred_cartoon">
+          <div className="box box-primary collapsed-box" id="disorder_plot">
             <div className="box-header with-border">
               <h5 className="box-title">DISOPRED Plot</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
@@ -236,7 +262,7 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="disorder_plot" ref={this.disopredPlot} ></div>
+              <div className="disorder_plot" id="disorder_svg" ref={this.disopredPlot} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.disopred_waiting_message}</h4></div>
               }

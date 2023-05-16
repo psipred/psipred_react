@@ -36,8 +36,10 @@ class DisplayArea extends React.Component{
       displayType: 'input',
       displayTime: true,
       formSelectedOption: 'SeqForm',
-      seq_job_names: ['psipred', 'disopred'],
-      struct_job_names: [],
+      seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
+      "memsatsvm", "genthreader", "dompred", "pdomthreader", "bioserf",
+      "domserf", "ffpred", "dmp", "dmpfold", 's4pred' ],
+      struct_job_names: ["metsite", "hspred", "memembed", "gentdb"],
       analyses: ['disopred_job', ],
       jobs: [],
       input_data: input_data,
@@ -60,6 +62,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
+      svgs: null,
       results_files: false,
       config_data: null,
       resubmit: false,
@@ -94,15 +97,21 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
+      annotation_svg: null,
       results_files: false,
       config_data: null,
       resubmit: false,
       });
   }
 
-  updateResultsFiles = (jobType, resultsData) => {
+  updateResultsFiles = (resultsData) => {
     this.setState({
       results_files: resultsData});
+  }
+
+  updateSVGs = (svg) => {
+    this.setState({
+      svgs: svg});
   }
 
   handleResubmit = (analyses, seq, name, email, event) => {
@@ -130,6 +139,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'true',
       memembed_terminal: 'in',
+      annotation_svg: null,
       results_files: false,
       config_data: null,
       resubmit: true,
@@ -166,7 +176,6 @@ class DisplayArea extends React.Component{
   updateDisplayTime = (newValue) => {
     this.setState({displayTime: newValue});
   }
-  
 
   componentDidUpdate() {
     // currently just doing some reporting while debugging
@@ -283,7 +292,7 @@ class DisplayArea extends React.Component{
     // Uppercase the seq data
     let jobs = this.state.analyses;
     jobs = jobs.map(elem => elem.replace("_job", ""));
-
+    console.log(jobs);
     let pdbFile = null;
     let pdbData = null;
     try{
@@ -299,6 +308,7 @@ class DisplayArea extends React.Component{
         }
     }
     let checked = validateFormData(this.state, jobs, pdbData);
+    //console.log(checked);
     if(checked.send){
       //SENDING THINGS NOW!!!, set up callback to update state.
       this.setState({
@@ -332,7 +342,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateSVGs={this.updateSVGs}  updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
           </div>
           <div className="col-md-3">
             { this.state.displayTime === true &&

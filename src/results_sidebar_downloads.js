@@ -1,5 +1,6 @@
 import React from 'react';
 import { saveAs } from 'file-saver';
+import { link } from 'd3';
 const JSZip = require('jszip');
 
 class ResultsSidebarDownloads extends React.Component{
@@ -15,41 +16,89 @@ class ResultsSidebarDownloads extends React.Component{
     saveAs(new Blob(file_data.split()), this.props.uuid+".csv");
   }
 
+  getSVGArea = (id) => {
+    var element = document.getElementById(id);
+    let svg = null;
+    if(element){
+      svg = element.innerHTML;
+      svg = svg.replace(/<g id="toggle".+?<\/g>/, '');
+      svg = svg.replace(/<g id="buttons".+?<\/g>/, '');
+    }
+    return(svg);
+  }
+
   returnZip = async () => {
     let zip = new JSZip();
-    for(let key in this.props.results_files){
-      zip.file(key, this.props.results_files[key])
+    Object.keys(this.props.results_files).forEach((job) => {
+      Object.keys(this.props.results_files[job]).forEach((file) => {
+        zip.file(file, this.props.results_files[job][file])
+      });
+    });
+    var svg = this.getSVGArea('sequence_plot');
+    if(svg){
+      zip.file('seq_annotation.svg', svg)
+    }
+    var svg = this.getSVGArea('psipred_horiz');
+    if(svg){
+      zip.file('psipred_cartoon.svg', svg)
+    }
+    var svg = this.getSVGArea('disorder_svg');
+    if(svg){
+      zip.file('disorder_precision.svg', svg)
     }
     let local_blob =  await zip.generateAsync({type:"blob"});
     saveAs(local_blob, this.props.uuid+".zip");
   }
+  
   packageJobDetails = () => {}
+
   getFile = (event) => {
-    for(let data in this.props.results_files){
-      if(data.includes(event.target.value)){
-        saveAs(new Blob(this.props.results_files[data].split()), data);
-      }
-    }
+    Object.keys(this.props.results_files).forEach((job) => {
+      Object.keys(this.props.results_files[job]).forEach((file) => {
+        if(file.includes(event.target.value)){
+          saveAs(new Blob(this.props.results_files[job][file].split()), file);
+        }
+      });
+    });
+
+  }
+
+  createDownloadLinks = (count, name, file_info, title) => { 
+    let html_data = [];
+
+    html_data.push(<h5 key={count} >{title}</h5>);
+    count++;
+    file_info.forEach((file) => {
+      html_data.push(<button className="fake-link" key={count} onClick={this.getFile} value={file[0]} >{file[1]}</button>);
+      count++;
+      html_data.push(<br key={count} />);
+      count++;
+    });
+    return([html_data, count]);
   }
 
   //<button className="fake-link" onClick="@this.fire('get_zip'), false">Get Zip file</button><br /><br />
   //<button className="fake-link" onClick="@this.fire('get_job_details'), false">Get Job details</button><br /><br />
-
-  renderPsipredResults = () => {
-    let psipred_downloads = [];
+  renderDownloads = (job, file_data, title_string) => {
+    let downloads_text = [];
     let count = 0;
-    for(let name in this.props.results_files){
-      count++;
-      if(name.includes(".horiz")){
-        psipred_downloads.push(<button className="fake-link" key={count} onClick={this.getFile} value="horiz">Horiz Format Output</button>);
-      }
-      if(name.includes(".ss2")){
-        psipred_downloads.push(<button className="fake-link" key={count} onClick={this.getFile} value="ss2">SS2 Format Output</button>);
-      }
-      count++;
-      psipred_downloads.push(<br key={count} />);
-    }
-    return(<div><h5>PSIPRED DOWNLOADS</h5>{psipred_downloads}</div>);
+    this.props.seq_job_names.forEach((name) =>{
+      // console.log(name);
+      // console.log(this.props.analyses);
+      let link_data = [];
+        if(this.props.analyses.includes(name+'_job')){
+          if(name === 'psipred'){
+            link_data = this.createDownloadLinks(count, name, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'PSIPRED DOWNLOADS');
+          }
+          if(name === 'disopred'){
+            link_data = this.createDownloadLinks(count, name, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], 'DISOPRED DOWNLOADS')
+          }
+          //downloads.push();
+        }
+        downloads_text.push(link_data[0]);
+        count = link_data[1];
+      });
+    return(<div>{downloads_text}</div>);
   }
 
   render() {
@@ -70,9 +119,9 @@ class ResultsSidebarDownloads extends React.Component{
            <button className="fake-link" onClick={this.returnZip} >Get Zip file</button><br /><br />
            <h5>JOB CONFIGURATION</h5>
            <button className="fake-link" onClick={this.returnJobConfig} >Get Job details</button><br /><br />
-           { (this.props.analyses.includes('psipred_job') && this.props.results_files) ?
-               this.renderPsipredResults()
-             :
+           { (this.props.results_files) ?
+                this.renderDownloads()
+              :
                null
            }
        </div>

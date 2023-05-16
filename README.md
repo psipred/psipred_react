@@ -73,6 +73,8 @@ See also class_layout.odp
    b) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or tables in the lower page region
    c) In `getResults()` ensure `if(data.state === "Complete"){` handles parsing any files that need it. Ensure `this.setState({` sends the results contents to an appropriate state variables to hold them here.
    d) Lastly in `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`) 
+   e) update `results_sidebar_downloads` to ensure the files you want users to access are available.
+   and update `returnzip()` appropriately
 9. If we're handling a struct result: 
 
 ## WARNING
