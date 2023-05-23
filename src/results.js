@@ -18,6 +18,9 @@ class ResultsMain extends React.Component{
       psipred_wating_icon: '',
       disopred_waiting_message: 'Please wait for your DISOPRED job to process',
       disopred_wating_icon: '',
+      memsatsvm_waiting_message: 'Please wait for your MEMSAT-SVM job to process',
+      memsatsvm_wating_icon: '',
+      
     };
   }
 

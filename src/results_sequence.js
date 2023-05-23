@@ -6,6 +6,7 @@ import {parse_config} from './results_helper.js';
 import { parse_ss2 } from './parsers.js';
 import { parse_pbdat } from './parsers.js';
 import { parse_comb } from './parsers.js';
+import { parse_memsatdata } from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 
@@ -24,13 +25,16 @@ class ResultsSequence extends React.Component{
     this.state ={
       annotations: annotations,
       psipred_results: null,
-      disopred_pbdata_data: null,
-      disopred_comb_data: null,
+      disopred_results: null,
+      memsatsvm_results: null,
+      memsat_svm_data: null,
       annotation_panel_height: panel_height,
     };
     this.sequencePlot = React.createRef();
     this.horizPlot = React.createRef();
     this.disopredPlot = React.createRef();
+    this.memsatSVMSchematic = React.createRef();
+    this.memsatSVMCartoon = React.createRef();
     this.timer = null;
   }
 
@@ -46,10 +50,7 @@ class ResultsSequence extends React.Component{
         let count = (file_data.match(/Conf/g) || []).length;
         let panel_height = ((6*30)*(count+1))+120;
         psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
-        var svg = document.getElementById('psipredChart').outerHTML; //I'm sure we should use the horizPlot ref
-        svg = svg.replace(/<g id="toggle".+?<\/g>/, '');
-        svg = svg.replace(/<g id="buttons".+?<\/g>/, '');
-        results_data['psipred'] = {'psipred_horiz.svg': svg}
+        //var svg = document.getElementById('psipredChart').outerHTML; //I'm sure we should use the horizPlot ref
         //this.props.updateResultsFiles('disopred', {'psipredCartoon.svg': svg});
         //NEED TO UPDATE this.props.results_files?
       }
@@ -59,13 +60,20 @@ class ResultsSequence extends React.Component{
         let file_data = this.state.disopred_results[key];
         let precision = parse_comb(file_data);
         genericxyLineChart(precision, 'pos', ['precision'], ['Black',], 'DisoNNChart', {parent: this.disopredPlot.current, chartType: 'line', y_cutoff: 0.5, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: 300, container_height: 300});
-        var svg = document.getElementById('disorder_svg').innerHTML;
-        svg = svg.replace(/<g id="toggle".+?<\/g>/, '');
-        svg = svg.replace(/<g id="buttons".+?<\/g>/, '');
-        results_data['disopred'] = {'disoNNChart.svg': svg}
-        //this.props.updateSVGs(results_data);
+        //var svg = document.getElementById('disorder_svg').innerHTML;
       }
     }
+    for(let key in this.state.memsatsvm_results){
+      if(key.includes("_schematic.png")){
+        let file_data = this.state.memsatsvm_results[key];
+        console.log(file_data);
+      }
+      if(key.includes("_cartoon_memsat_svm.png")){
+        let file_data = this.state.memsatsvm_results[key];
+        console.log(file_data);
+      }
+    }
+    
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -75,12 +83,13 @@ class ResultsSequence extends React.Component{
     let results_files = {};
     data.forEach(function(entry){
       let glob = entry.data_path.split('.')[1];
-      if(glob.includes(".png") || glob.includes(".gif") || glob.includes(".jpg"))
+      if(glob.includes("png") || glob.includes("gif") || glob.includes("jpg"))
       {
           // THIS MIGHT NOT WORK, WE'LL SEE
           let file_content = request_binary_data(entry.data_path, props.files_url);
           let file_name = entry.data_path.split('/')[2];
           results_files[file_name] = file_content;
+          console.log(file_content);
           //There ought to be a way of casting the file string back to binary but for now
           //we're just using JSzip utils to get the data AGAIN in binary format instead
           // try {
@@ -164,10 +173,16 @@ class ResultsSequence extends React.Component{
                   console.log("Found PDBAT and parsing");
                   local_annotations = parse_pbdat(local_annotations, results_data[key]);
                 } 
+                if(key.includes('.memsat_svm')){
+                  console.log("Found MEMSAT_SVM and parsing");
+                  local_annotations = parse_memsatdata(local_annotations, results_data[key]);
+                } 
+                
               }
               // we assign the results files 
               this.setState({psipred_results: parsed_data.psipred,
                 disopred_results: parsed_data.disopred,
+                memsatsvm_results: parsed_data.memsatsvm,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -268,6 +283,32 @@ class ResultsSequence extends React.Component{
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.state.disopred_waiting_icon}</div>
+              }
+              { this.props.waiting &&
+                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+              }
+            </div>
+          </div>
+         }
+        { this.props.analyses.includes("memsatsvm_job") &&
+          <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
+            <div className="box-header with-border">
+              <h5 className="box-title">MEMSAT-SVM Schematics</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div className="memsatsvm_schematic" id="memsatsvm_schematic">
+                <img alt="memsat schematic" ref={this.memsatSVMSchematic} />
+              </div>
+              <div className="memsatsvm_cartoon" id="memsatsvm_cartoon" ref={this.memsatSVMCartoon} ></div>
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.memsatsvm_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.state.memsatsvm_waiting_icon}</div>
               }
               { this.props.waiting &&
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>

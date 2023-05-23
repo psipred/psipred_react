@@ -90,13 +90,15 @@ class ResultsSidebarDownloads extends React.Component{
           if(name === 'psipred'){
             link_data = this.createDownloadLinks(count, name, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'PSIPRED DOWNLOADS');
           }
+          
           if(name === 'disopred'){
             link_data = this.createDownloadLinks(count, name, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], 'DISOPRED DOWNLOADS')
           }
-          //downloads.push();
+          downloads_text.push(link_data[0]);
+          count = link_data[1];
         }
-        downloads_text.push(link_data[0]);
-        count = link_data[1];
+        // downloads_text.push(link_data[0]);
+        // count = link_data[1];
       });
     return(<div>{downloads_text}</div>);
   }

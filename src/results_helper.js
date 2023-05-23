@@ -8,7 +8,7 @@ export function draw_empty_annotation_panel(state, targetDiv){
 
 export function request_data(uri, file_url, mime){
   // convert this to synchronous
-  console.log("REQUESTING ASCII: "+file_url+uri)
+  console.log("REQUESTING ASCII DATA: "+file_url+uri)
   let results_data = null;
   let req = new XMLHttpRequest();
   req.onreadystatechange = function (){
@@ -27,20 +27,18 @@ export function request_data(uri, file_url, mime){
 
 export function request_binary_data(uri, file_url){
   // convert this to synchronous
-  console.log("REQUESTING BINARY: "+file_url+uri)
+  console.log("REQUESTING BINARY DATA: "+file_url+uri)
   let results_data = null;
   let req = new XMLHttpRequest();
+  //req.responseType = "arraybuffer";
   req.onreadystatechange = function (){
     if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
-      const arrayBuffer = req.response;
-      if(arrayBuffer){
-        const byteArray = new Uint8Array(arrayBuffer);
-        results_data = byteArray;
-      }
+      const byteArray = new Uint8Array(req.response);
+      results_data = byteArray;
     }
   }
   req.open("GET", file_url+uri, false);
-  req.responseType = "arraybuffer";
+  //req.responseType = "arraybuffer";
   req.send();
   req.onerror = function() {
     alert("Request failed");
