@@ -1,7 +1,7 @@
 import React from 'react';
 import {draw_empty_annotation_panel} from './results_helper.js';
 import {request_data} from './results_helper.js';
-import {request_binary_data} from './results_helper.js';
+// import {request_binary_data} from './results_helper.js';
 import {parse_config} from './results_helper.js';
 import { parse_ss2 } from './parsers.js';
 import { parse_pbdat } from './parsers.js';
@@ -43,7 +43,6 @@ class ResultsSequence extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    let results_data = {}
     for(let key in this.state.psipred_results){
       if(key.includes(".horiz")){
         let file_data = this.state.psipred_results[key];
@@ -65,12 +64,22 @@ class ResultsSequence extends React.Component{
     }
     for(let key in this.state.memsatsvm_results){
       if(key.includes("_schematic.png")){
-        let file_data = this.state.memsatsvm_results[key];
-        console.log(file_data);
+        let img_url = this.state.memsatsvm_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Memsat Schematic diagram";
+        this.memsatSVMSchematic.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.memsatSVMSchematic.current.appendChild(newElement);
       }
       if(key.includes("_cartoon_memsat_svm.png")){
-        let file_data = this.state.memsatsvm_results[key];
-        console.log(file_data);
+        let img_url = this.state.memsatsvm_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Memsat Cartoon diagram";
+        this.memsatSVMSchematic.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.memsatSVMSchematic.current.appendChild(newElement);
       }
     }
     
@@ -85,12 +94,17 @@ class ResultsSequence extends React.Component{
       let glob = entry.data_path.split('.')[1];
       if(glob.includes("png") || glob.includes("gif") || glob.includes("jpg"))
       {
-          // THIS MIGHT NOT WORK, WE'LL SEE
-          let file_content = request_binary_data(entry.data_path, props.files_url);
+          // THIS MIGHT NOT WORK, WE'LL SEE 
+          // WE DON'T NEED TO GRAB THE BINARY DATA HERE WE JUST NEED THE URL FOR THE WEB PAGE
+          // image data is grabbed by sidebar_downloads
+
+          //let file_content = request_binary_data(entry.data_path, props.files_url);
+          let image_url = props.files_url+entry.data_path;
+          console.log(image_url)
           let file_name = entry.data_path.split('/')[2];
-          results_files[file_name] = file_content;
-          console.log(file_content);
+          results_files[file_name] = image_url;
           //There ought to be a way of casting the file string back to binary but for now
+          // THIS BIT SHOULD BE IN SIDEBAR_DOWNLOADS
           //we're just using JSzip utils to get the data AGAIN in binary format instead
           // try {
           //   JSZipUtils.getBinaryContent(url, function (err, data) {
@@ -148,7 +162,6 @@ class ResultsSequence extends React.Component{
           if(data.state === "Complete"){
             // Here we loop over data.submissions
             let parsed_data = {};
-            let local_data = [];
             let local_annotations = this.state.annotations;
             let res = {};
             data.submissions.forEach((submission) => {
@@ -300,9 +313,7 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="memsatsvm_schematic" id="memsatsvm_schematic">
-                <img alt="memsat schematic" ref={this.memsatSVMSchematic} />
-              </div>
+              <div className="memsatsvm_schematic" id="memsatsvm_schematic" ref={this.memsatSVMSchematic}></div>
               <div className="memsatsvm_cartoon" id="memsatsvm_cartoon" ref={this.memsatSVMCartoon} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.memsatsvm_waiting_message}</h4></div>

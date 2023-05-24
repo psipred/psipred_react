@@ -1,7 +1,8 @@
 import React from 'react';
 import { saveAs } from 'file-saver';
-import { link } from 'd3';
+//import { link } from 'd3';
 const JSZip = require('jszip');
+const JSZipUtils = require('jszip-utils');
 
 class ResultsSidebarDownloads extends React.Component{
   constructor(props){
@@ -31,18 +32,33 @@ class ResultsSidebarDownloads extends React.Component{
     let zip = new JSZip();
     Object.keys(this.props.results_files).forEach((job) => {
       Object.keys(this.props.results_files[job]).forEach((file) => {
-        zip.file(file, this.props.results_files[job][file])
+        console.log(file);
+        if(file.includes(".png") ||file.includes(".jpg") ||file.includes(".jpeg") ||file.includes(".gif"))
+        {
+          let url = this.props.files_url+"/submissions/"+file;
+          var imgdata = null;
+          try{
+            imgdata = JSZipUtils.getBinaryContent(url);
+          }
+          catch (err){
+            console.log("Could not get image data for zip: "+file);
+          }
+          zip.file(file, imgdata, {binary: true});
+        }
+        else {
+          zip.file(file, this.props.results_files[job][file])
+        }
       });
     });
     var svg = this.getSVGArea('sequence_plot');
     if(svg){
       zip.file('seq_annotation.svg', svg)
     }
-    var svg = this.getSVGArea('psipred_horiz');
+    svg = this.getSVGArea('psipred_horiz');
     if(svg){
       zip.file('psipred_cartoon.svg', svg)
     }
-    var svg = this.getSVGArea('disorder_svg');
+    svg = this.getSVGArea('disorder_svg');
     if(svg){
       zip.file('disorder_precision.svg', svg)
     }
@@ -90,9 +106,11 @@ class ResultsSidebarDownloads extends React.Component{
           if(name === 'psipred'){
             link_data = this.createDownloadLinks(count, name, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'PSIPRED DOWNLOADS');
           }
-          
           if(name === 'disopred'){
             link_data = this.createDownloadLinks(count, name, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], 'DISOPRED DOWNLOADS')
+          }
+          if(name === 'memsatsvm'){
+            link_data = this.createDownloadLinks(count, name, [['.memsat_svm', 'MEMSAT-SVM text format'], ], 'MEMSAT-SVM DOWNLOADS')
           }
           downloads_text.push(link_data[0]);
           count = link_data[1];
