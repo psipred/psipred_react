@@ -58,6 +58,9 @@ class ResultsSidebarTimes extends React.Component{
               { this.props.analyses.includes('memsatsvm_job') &&
               <div><span className="info-box-number">MEMSAT-SVM runtime: {this.state.memsatsvm}</span><br /></div>
               }
+              { this.props.analyses.includes('pgenthreader_job') &&
+              <div><span className="info-box-number">pGenTHREADER runtime: {this.state.pgenthreader}</span><br /></div>
+              }
               
             </div>
       </div>

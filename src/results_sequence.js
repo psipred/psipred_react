@@ -7,6 +7,7 @@ import { parse_ss2 } from './parsers.js';
 import { parse_pbdat } from './parsers.js';
 import { parse_comb } from './parsers.js';
 import { parse_memsatdata } from './parsers.js';
+import { parse_presults } from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 
@@ -27,7 +28,7 @@ class ResultsSequence extends React.Component{
       psipred_results: null,
       disopred_results: null,
       memsatsvm_results: null,
-      memsat_svm_data: null,
+      pgenthreader_results: null,
       annotation_panel_height: panel_height,
     };
     this.sequencePlot = React.createRef();
@@ -35,6 +36,7 @@ class ResultsSequence extends React.Component{
     this.disopredPlot = React.createRef();
     this.memsatSVMSchematic = React.createRef();
     this.memsatSVMCartoon = React.createRef();
+    this.pgenthreaderTable = React.createRef();
     this.timer = null;
   }
 
@@ -43,6 +45,7 @@ class ResultsSequence extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
+    //console.log(this.state);
     for(let key in this.state.psipred_results){
       if(key.includes(".horiz")){
         let file_data = this.state.psipred_results[key];
@@ -80,9 +83,33 @@ class ResultsSequence extends React.Component{
         this.memsatSVMSchematic.current.appendChild(newElement);
         newElement = document.createElement('br');
         this.memsatSVMSchematic.current.appendChild(newElement);
+      } 
+    }
+    let ann_set = {};
+    for(let key in this.state.pgenthreader_results){
+      if(key.includes(".ann")){
+        let path = key.substring(0, key.lastIndexOf("."));
+        let id = path.substring(path.lastIndexOf(".")+1, path.length);
+        ann_set[id] = {};
+        ann_set[id]['ann'] = path+".ann";
+        ann_set[id]['aln'] = path+".aln";
       }
     }
-    
+    for(let key in this.state.pgenthreader_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.pgenthreader_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+      if(key.includes(".presults")){
+        let file_data = this.state.pgenthreader_results[key];
+        let html_data = parse_presults(file_data, ann_set, "pgen");
+        var t = document.createElement('template');
+        t.innerHTML = html_data;
+        this.pgenthreaderTable.current.appendChild(t.content);
+      }
+    }
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -91,34 +118,14 @@ class ResultsSequence extends React.Component{
   getResultsFiles = (data, props) => {
     let results_files = {};
     data.forEach(function(entry){
-      let glob = entry.data_path.split('.')[1];
-      if(glob.includes("png") || glob.includes("gif") || glob.includes("jpg"))
+      let glob = entry.data_path.split(/[.]/).pop();
+      if(glob.includes("png") || glob.includes("gif") || glob.includes("jpg") || glob.includes("ann") || glob.includes("aln"))
       {
-          // THIS MIGHT NOT WORK, WE'LL SEE 
-          // WE DON'T NEED TO GRAB THE BINARY DATA HERE WE JUST NEED THE URL FOR THE WEB PAGE
-          // image data is grabbed by sidebar_downloads
-
-          //let file_content = request_binary_data(entry.data_path, props.files_url);
+          // we just store the image URI for later use (i.e. zip file creation)
           let image_url = props.files_url+entry.data_path;
           console.log(image_url)
           let file_name = entry.data_path.split('/')[2];
           results_files[file_name] = image_url;
-          //There ought to be a way of casting the file string back to binary but for now
-          // THIS BIT SHOULD BE IN SIDEBAR_DOWNLOADS
-          //we're just using JSzip utils to get the data AGAIN in binary format instead
-          // try {
-          //   JSZipUtils.getBinaryContent(url, function (err, data) {
-          //     if(err) {
-          //       throw err; // or handle the error
-          //     }
-          //     zip.folder(path_bits[1]).file(path_bits[2], data, {binary: true});
-          //   });
-          // }
-          // catch(err) {
-          //   console.log("Getting and processing binary data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
-          //   alert("Getting and processing binary data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-          //   return null;
-          // }
       }
       else {
         if(props.results_map.includes(glob))
@@ -192,10 +199,12 @@ class ResultsSequence extends React.Component{
                 } 
                 
               }
+              console.log(parsed_data.pgenthreader);
               // we assign the results files 
               this.setState({psipred_results: parsed_data.psipred,
                 disopred_results: parsed_data.disopred,
                 memsatsvm_results: parsed_data.memsatsvm,
+                pgenthreader_results: parsed_data.pgenthreader,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -257,7 +266,7 @@ class ResultsSequence extends React.Component{
         </div>
         }
 
-        { this.props.analyses.includes("psipred_job") &&
+        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job")) &&
           <div className="box box-primary collapsed-box" id="psipred_cartoon">
             <div className="box-header with-border">
               <h5 className="box-title">PSIPRED Cartoon</h5>
@@ -320,6 +329,29 @@ class ResultsSequence extends React.Component{
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.state.memsatsvm_waiting_icon}</div>
+              }
+              { this.props.waiting &&
+                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+              }
+            </div>
+          </div>
+         }
+         { this.props.analyses.includes("pgenthreader_job") &&
+          <div className="box box-primary collapsed-box" id="pgen_table">
+            <div className="box-header with-border">
+              <h5 className="box-title">pGenTHREADER Structural Results</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div className="pgen_table" id='pgenthreader_table' ref={this.pgenthreaderTable} ></div>
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.pgenthreader_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.state.pgenthreader_waiting_icon}</div>
               }
               { this.props.waiting &&
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
