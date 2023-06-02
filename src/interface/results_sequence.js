@@ -155,35 +155,7 @@ class ResultsSequence extends React.Component{
       });
 
     }
-  //   var gen_table = null;
-  // var mgen_table = null;
-  // var dgen_table = null;
-  // if(type === 'gen'){
-  //   gen_table = $('#'+type+'_table').DataTable({
-  //     'searching'   : true,
-  //     'pageLength': 50,
-  //   });
-  //   $('#min_gen_pval, #max_gen_pval').keyup( function() {
-  //     gen_table.draw();
-  //   });
-  // }
-  // if(type === 'pgen'){
-  //   mgen_table = $('#'+type+'_table').DataTable({
-  //     'searching'   : true,
-  //     'pageLength': 50,
-  //   });
-  //   $('#min_pgen_pval, #max_pgen_pval').keyup( function() {
-  //      mgen_table.draw();
-  //   });
-  // }
-  // if(type === 'dgen'){
-  //   dgen_table = $('#'+type+'_table').DataTable({
-  //     'searching'   : true,
-  //     'pageLength': 50,
-  //   });
-  //   $('#min_dgen_pval, #max_dgen_pval').keyup( function() {
-  //     dgen_table.draw();
-  //   });
+
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);

@@ -502,14 +502,14 @@ export function parse_presults(file, ann_list, type)
       pseudo_table += "<td>"+entries[9]+"</td>";
       pseudo_table += "<td>"+entries[10]+"</td>";
       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/version/latest/domain/"+table_hit+"'>"+table_hit+"</a></td>";
-      pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/scop/pdb.cgi?pdb="+pdb+"'>SEARCH</a></td>";
+      pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
       pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
       pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"cath_modeller\");' value='Model' /></td>";
     }
     else{
       pseudo_table += "<td><a target='_blank' href='https://www.rcsb.org/pdb/explore/explore.do?structureId="+pdb+"'>"+table_hit+"</a></td>";
-      pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/scop/pdb.cgi?pdb="+pdb+"'>SEARCH</a></td>";
+      pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/pdb/"+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
       pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
