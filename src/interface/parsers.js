@@ -450,7 +450,8 @@ export function parse_presults(file, ann_list, type)
   let lines = file.split('\n');
   let pseudo_table = null;
   if(Object.keys(ann_list).length > 0){
-  pseudo_table = '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min P-Value: <input id="min_'+type+'_pval" name="min_'+type+'_score" type="text"></td></tr><tr><td class="alnright" >Max P-Value: <input id="max_'+type+'_pval" name="max_'+type+'_pval" type="text"></td></tr></tbody></table><br />';
+  pseudo_table =  '<div class="text-right modeller-key" style="visibility: visible;">Modeller Licence Key: <input class="text" value=""><br><br></div>';
+  pseudo_table += '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min P-Value: <input id="min_'+type+'_pval" name="min_'+type+'_score" type="text"></td></tr><tr><td class="alnright" >Max P-Value: <input id="max_'+type+'_pval" name="max_'+type+'_pval" type="text"></td></tr></tbody></table><br />';
   pseudo_table += '<table id="'+type+'_table" class="small-table table-striped table-bordered gen-table"><thead>\n';
   pseudo_table += '<tr><th>Conf.</th>';
   pseudo_table += '<th>Net Score</th>';
@@ -518,37 +519,6 @@ export function parse_presults(file, ann_list, type)
     }
   });
   pseudo_table += "</tbody><tfoot></tfoot></table>\n";
-  var gen_table = null;
-  var mgen_table = null;
-  var dgen_table = null;
-  // if(type === 'gen'){
-  //   gen_table = $('#'+type+'_table').DataTable({
-  //     'searching'   : true,
-  //     'pageLength': 50,
-  //   });
-  //   $('#min_gen_pval, #max_gen_pval').keyup( function() {
-  //     gen_table.draw();
-  //   });
-  // }
-  // if(type === 'pgen'){
-  //   mgen_table = $('#'+type+'_table').DataTable({
-  //     'searching'   : true,
-  //     'pageLength': 50,
-  //   });
-  //   $('#min_pgen_pval, #max_pgen_pval').keyup( function() {
-  //      mgen_table.draw();
-  //   });
-  // }
-  // if(type === 'dgen'){
-  //   dgen_table = $('#'+type+'_table').DataTable({
-  //     'searching'   : true,
-  //     'pageLength': 50,
-  //   });
-  //   $('#min_dgen_pval, #max_dgen_pval').keyup( function() {
-  //     dgen_table.draw();
-  //   });
-  // }
-
   }
   else {
     pseudo_table = "<h3>No good hits found. GUESS and LOW confidence hits can be found in the results file</h3>";

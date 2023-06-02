@@ -179,33 +179,6 @@ export class Interface extends React.Component{
           </div>
           &nbsp;
         </footer>
-      
-      
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery-ui.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/bootstrap.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/app.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/popper.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/ractive.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/ractive-events-tap.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/ractive-transitions-slide.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/biod3.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/clipboard.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jszip.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jszip-utils.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/FileSaver.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/msa.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/konami_code.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery.dataTables.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/dataTables.bootstrap.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/data_tables_helper.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery.slimscroll.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/fastclick.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/adminlte.min.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/alerts.js"></script>
-          <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/3Dmol-nojquery.js"></script>
-          { /* <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/psipred.js"></script>--> */ }
-      
             </div>
         )};
 }

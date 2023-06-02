@@ -10,6 +10,8 @@ import { parse_memsatdata } from './parsers.js';
 import { parse_presults } from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
+import $ from 'jquery';
+import DataTable from 'datatables.net-dt';
 
 import { annotationGrid } from './biod3/main.js';
 
@@ -86,6 +88,8 @@ class ResultsSequence extends React.Component{
       } 
     }
     let ann_set = {};
+
+    
     for(let key in this.state.pgenthreader_results){
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
@@ -110,6 +114,76 @@ class ResultsSequence extends React.Component{
         this.pgenthreaderTable.current.appendChild(t.content);
       }
     }
+    if(this.state.pgenthreader_results){
+      let mgen_table = $('#pgen_table').DataTable({
+        'searching'   : true,
+        'pageLength': 50,
+      });
+
+      var minEl = $('#min_pgen_pval');
+      var maxEl = $('#max_pgen_pval');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'pgen_table' ) {
+            return true;
+          }
+          var min = parseFloat(minEl.val(), 10);
+          var max = parseFloat(maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+   
+      // Changes to the inputs will trigger a redraw to update the table
+      minEl.on('input', function () {
+          mgen_table.draw();
+      });
+      maxEl.on('input', function () {
+          mgen_table.draw();
+      });
+
+    }
+  //   var gen_table = null;
+  // var mgen_table = null;
+  // var dgen_table = null;
+  // if(type === 'gen'){
+  //   gen_table = $('#'+type+'_table').DataTable({
+  //     'searching'   : true,
+  //     'pageLength': 50,
+  //   });
+  //   $('#min_gen_pval, #max_gen_pval').keyup( function() {
+  //     gen_table.draw();
+  //   });
+  // }
+  // if(type === 'pgen'){
+  //   mgen_table = $('#'+type+'_table').DataTable({
+  //     'searching'   : true,
+  //     'pageLength': 50,
+  //   });
+  //   $('#min_pgen_pval, #max_pgen_pval').keyup( function() {
+  //      mgen_table.draw();
+  //   });
+  // }
+  // if(type === 'dgen'){
+  //   dgen_table = $('#'+type+'_table').DataTable({
+  //     'searching'   : true,
+  //     'pageLength': 50,
+  //   });
+  //   $('#min_dgen_pval, #max_dgen_pval').keyup( function() {
+  //     dgen_table.draw();
+  //   });
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -123,7 +197,7 @@ class ResultsSequence extends React.Component{
       {
           // we just store the image URI for later use (i.e. zip file creation)
           let image_url = props.files_url+entry.data_path;
-          console.log(image_url)
+          //console.log(image_url)
           let file_name = entry.data_path.split('/')[2];
           results_files[file_name] = image_url;
       }
@@ -199,7 +273,6 @@ class ResultsSequence extends React.Component{
                 } 
                 
               }
-              console.log(parsed_data.pgenthreader);
               // we assign the results files 
               this.setState({psipred_results: parsed_data.psipred,
                 disopred_results: parsed_data.disopred,
@@ -337,7 +410,7 @@ class ResultsSequence extends React.Component{
           </div>
          }
          { this.props.analyses.includes("pgenthreader_job") &&
-          <div className="box box-primary collapsed-box" id="pgen_table">
+          <div className="box box-primary collapsed-box" id="pgen_table_box">
             <div className="box-header with-border">
               <h5 className="box-title">pGenTHREADER Structural Results</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
@@ -346,7 +419,7 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="pgen_table" id='pgenthreader_table' ref={this.pgenthreaderTable} ></div>
+              <div className="pgen_table_div" id='pgenthreader_table' ref={this.pgenthreaderTable} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.pgenthreader_waiting_message}</h4></div>
               }
