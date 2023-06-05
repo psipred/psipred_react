@@ -20,7 +20,8 @@ class ResultsMain extends React.Component{
       disopred_wating_icon: '',
       memsatsvm_waiting_message: 'Please wait for your MEMSAT-SVM job to process',
       memsatsvm_wating_icon: '',
-      
+      pgenthreader_waiting_message: 'Please wait for your pGenTHREADER job to process',
+      pgenthreader_wating_icon: '',
     };
   }
 

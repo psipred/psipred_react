@@ -61,7 +61,7 @@ See also class_layout.odp
 
 # Adding services to PSIPRED web server
 
-1. First modify the page in `index.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` and `struct_job_names`. If you new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. `analyses` in `this.state` controls which jobs are alread have a check mark in the form on page load. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
+1. First modify the page in `index.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. `analyses` in `this.state` controls which jobs are alread have a check mark in the form on page load. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
 
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box and edit as needed. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. Ensure `onChange` and `checked` are correct.
 
@@ -69,7 +69,7 @@ See also class_layout.odp
 
 4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include any additional panels when it detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class of the form `[Algorithm]Options`. Add your new class and the appropriate inputs. You MUST ensure that the form input names match the new state variable names you added in step 1 if you added new state variables (i.e. `DisplayArea`'s `this.state` etc...)
 
-5. In `checkform.js` in `validateFormData()`. Add/Update any new validations you now may have for the new/advanced inputs.
+5. In `checkform.js` in `validateFormData()`. Add/Update any new validations you now may have for the new/advanced/options inputs.
 
 6. In `results.js` update `this.state` with the waiting messages for your job.
 

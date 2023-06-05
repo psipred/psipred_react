@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>PSIPRED Workbench</title>
+
+    <meta charset="utf-8">
+    <meta name="description" content="PSIPRED Protein Analysis Workbench">
+    <meta name="keywords" content="Protein Folding,Bioinformatics,Secondary Structure,Homology Modelling,Proteins,amino acids,UCL,contact prediction,transmembrane helix prediction,fold recognition,binding side prediction,protein disorder">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="UCL Computer Science Department Bioinformatics Group">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="http://bioinf.cs.ucl.ac.uk/psipred_new/static/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://bioinf.cs.ucl.ac.uk/psipred_new/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://bioinf.cs.ucl.ac.uk/psipred_new/static/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://bioinf.cs.ucl.ac.uk/psipred_new/static/css/_all-skins.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="../interface/static/css/psipred.css" rel="stylesheet" type="text/css" />
+    <link href="http://bioinf.cs.ucl.ac.uk/psipred_new/static/css/biod3.css" rel="stylesheet" type="text/css" />
+    <link href="http://bioinf.cs.ucl.ac.uk/psipred_new/static/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-6345502-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-6345502-1');
+    </script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini skin-blue-light">
+
+
+<div class="wrapper"> <!-- WRAPS ALL PAGE CONTENT -->
+
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="/" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini">
+      <img src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/images/psipred_logomark.svg" alt="PSIPRED logomark"/>
+</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg">
+      <img src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/images/psipred_logo.svg" alt="PSIPRED"/>
+</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+
+<nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="padding-top: 18px">
+        <span class="sr-only">Toggle navigation</span>
+    </a>
+    <div class="container-fluid">
+          <div class="navbar-header" style="padding-top: 5px">
+            <h4 class="psipred_title" ><b>UCL Department of Computer Science: Bioinformatics Group</b></h4>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-collapse">
+            <div class="nav navbar-nav navbar-right">
+              <a href="https://www.ucl.ac.uk/" alt="UCL"><img height="50px" src="http://cms.cs.ucl.ac.uk/typo3/fileadmin/bioinf/templates/images/ucl-logo.svg" /></a>
+            </div>
+          </div>
+    </div>
+</nav>
+
+</header>
+
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+        <section class="sidebar">
+          <!-- Sidebar Menu -->
+          <ul class="sidebar-menu tree" data-widget="tree">
+    <!-- Optionally, you can add icons to the links -->
+          <ul class="sidebar-menu">
+            <li class="treeview">
+
+          <ul class="treeview-menu" style="display: block">
+            <li>
+                <a href="http://bioinfadmin.cs.ucl.ac.uk/index.html">
+                    <i class="fa fa-info"></i><span><b>Introduction</b></span>
+                </a>
+            </li>
+              <li>
+                  <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Contact.html">
+                      <i class="fa fa-keyboard-o"></i> <span>Contact</span>
+                  </a>
+              </li>
+              <li>
+                  <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Software_Downloads.html">
+                      <i class="fa fa-download"></i> <span>Downloads &amp; Branding</span>
+                  </a>
+              </li>
+              <li>
+                  <a href="https://twitter.com/psipred">
+                      <i class="fa fa-twitter"></i> <span>Twitter/News</span>
+                  </a>
+              </li>
+            </ul>
+                <a href="#"><i class="fa fa-th"></i> <span>PSIPRED Team Links</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+            <ul class="treeview-menu" style="display: block">
+
+              <li>
+                  <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_People.html">
+                      <i class="fa fa-users"></i> <span>People</span>
+                  </a>
+              </li>
+              <li>
+                  <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_ProCovar.html">
+                      <i class="fa fa-archive"></i> <span>ProCovar</span>
+                  </a>
+              </li>
+              <li>
+                  <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Publications.html">
+                      <i class="fa fa-book"></i> <span>Publications</span>
+                  </a>
+              </li>
+
+
+              <li>
+                  <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Vacancies.html">
+                      <i class="fa fa-envelope-square"></i> <span>Vacancies</span>
+                  </a>
+              </li>
+
+              </ul>
+             </li>
+         </ul>
+
+         <ul class="sidebar-menu">
+           <li class="treeview">
+               <a href="#"><i class="fa fa-th"></i> <span>PSIPRED Workbench Links</span>
+                   <span class="pull-right-container">
+                       <i class="fa fa-angle-left pull-right"></i>
+                   </span>
+               </a>
+           <ul class="treeview-menu" style="display: block">
+           <li>
+               <a href="http://bioinf.cs.ucl.ac.uk/psipred/">
+                   <i class="fa fa-dashboard"></i> <span>PSIPRED Workbench</span>
+               </a>
+           </li>
+           <li>
+               <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_methods_overview.html">
+                   <i class="fa fa-list-ul"></i> <span>Workbench Overview</span>
+               </a>
+           </li>
+           <li>
+               <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_PSIPRED_citation.html">
+                   <i class="fa fa-file-text-o"></i> <span>Workbench Citation</span>
+               </a>
+           </li>
+           <li>
+               <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">
+                   <i class="fa fa-question-circle-o"></i> <span>Help & Tutorials</span>
+               </a>
+           </li>
+           <li>
+               <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Web_Services.html">
+                   <i class="fa fa-server"></i> <span>REST API</span>
+               </a>
+           </li>
+
+           <li>
+               <a href="https://github.com/psipred">
+                   <i class="fa fa-github"></i> <span>PSIPRED Github</span>
+               </a>
+           </li>
+
+           </ul>
+            </li>
+           </ul>
+         </ul>
+         <!-- /.sidebar-menu -->
+
+
+      </section>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+
+  <div class="content-wrapper">
+    <div id="root"></div>
+  </div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+    <strong>Copyright &copy; 2022.<br /></strong>
+    </div>
+    &nbsp;
+  </footer>
+
+
+
+</div>  <!-- WRAPS ALL PAGE CONTENT -->
+
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery-ui.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/bootstrap.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/app.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/popper.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/ractive.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/ractive-events-tap.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/ractive-transitions-slide.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/biod3.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/clipboard.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jszip.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jszip-utils.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/FileSaver.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/msa.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/konami_code.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery.dataTables.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/dataTables.bootstrap.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/data_tables_helper.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/jquery.slimscroll.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/fastclick.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/adminlte.min.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/alerts.js"></script>
+    <script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/3Dmol-nojquery.js"></script>
+    <!--<script src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/js/psipred.js"></script>-->
+
+
+
+
+</body>
+</html>

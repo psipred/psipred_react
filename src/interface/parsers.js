@@ -344,7 +344,6 @@ export function get_memsat_ranges(regex, data)
 // take and ss2 (file) and parse the details and write the new annotation grid
 export function parse_ss2(annotations, file)
 {
-    let panel_height = null;
     let lines = file.split('\n');
     lines.shift();
     lines = lines.filter(Boolean);
@@ -365,7 +364,6 @@ export function parse_ss2(annotations, file)
 // //take the disopred pbdat file, parse it and add the annotations to the annotation grid
 export function parse_pbdat(annotations, file)
 {
-    let panel_height = null;
     let lines = file.split('\n');
     lines.shift(); lines.shift(); lines.shift(); lines.shift(); lines.shift();
     lines = lines.filter(Boolean);
@@ -446,121 +444,88 @@ export function parse_memsatdata(annotations, file)
   });
   return(annotations);
 }
-//
-// export function parse_presult(ractive, file, type)
-// {
-//   let lines = file.split('\n');
-//   console.log(type);
-//   let ann_list = ractive.get(type+'_ann_set');
-//   //console.log(ann_list);
-//   if(Object.keys(ann_list).length > 0){
-//   let pseudo_table = '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min P-Value: <input id="min_'+type+'_pval" name="min_'+type+'_score" type="text"></td></tr><tr><td class="alnright" >Max P-Value: <input id="max_'+type+'_pval" name="max_'+type+'_pval" type="text"></td></tr></tbody></table><br />';
-//   pseudo_table += '<table id="'+type+'_table" class="small-table table-striped table-bordered gen-table"><thead>\n';
-//   pseudo_table += '<tr><th>Conf.</th>';
-//   pseudo_table += '<th>Net Score</th>';
-//   pseudo_table += '<th>p-value</th>';
-//   pseudo_table += '<th>PairE</th>';
-//   pseudo_table += '<th>SolvE</th>';
-//   pseudo_table += '<th>Aln Score</th>';
-//   pseudo_table += '<th>Aln Length</th>';
-//   pseudo_table += '<th>Target Len</th>';
-//   pseudo_table += '<th>Query Len</th>';
-//   if(type === 'dgen'){
-//     pseudo_table += '<th>Region Start</th>';
-//     pseudo_table += '<th>Region End</th>';
-//     pseudo_table += '<th>CATH</th>';
-//     pseudo_table += '<th>SCOP</th>';
-//   }else {
-//     pseudo_table += '<th>Fold</th>';
-//     pseudo_table += '<th>SCOP</th>';
-//     pseudo_table += '<th>CATH</th>';
-//   }
-//   pseudo_table += '<th>PDBSUM</th>';
-//   pseudo_table += '<th>Alignment</th>';
-//   pseudo_table += '<th>MODEL</th>';
-//
-//   // if MODELLER THINGY
-//   pseudo_table += '</tr></thead><tbody">\n';
-//   lines.forEach(function(line, i){
-//     //console.log(line);
-//     if(line.length === 0){return;}
-//     let entries = line.split(/\s+/);
-//     let table_hit = entries[9];
-//     if(type === 'dgen'){ table_hit = entries[11];}
-//     if(table_hit+"_"+i in ann_list)
-//     {
-//     pseudo_table += "<tr>";
-//     pseudo_table += "<td class='"+entries[0].toLowerCase()+"'>"+entries[0]+"</td>";
-//     pseudo_table += "<td>"+entries[1]+"</td>";
-//     pseudo_table += "<td>"+entries[2]+"</td>";
-//     pseudo_table += "<td>"+entries[3]+"</td>";
-//     pseudo_table += "<td>"+entries[4]+"</td>";
-//     pseudo_table += "<td>"+entries[5]+"</td>";
-//     pseudo_table += "<td>"+entries[6]+"</td>";
-//     pseudo_table += "<td>"+entries[7]+"</td>";
-//     pseudo_table += "<td>"+entries[8]+"</td>";
-//     let pdb = entries[9].substring(0, entries[9].length-2);
-//     if(type === 'dgen'){ pdb = entries[11].substring(0, entries[11].length-3);}
-//     if(type === 'dgen'){
-//       pseudo_table += "<td>"+entries[9]+"</td>";
-//       pseudo_table += "<td>"+entries[10]+"</td>";
-//       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/version/latest/domain/"+table_hit+"'>"+table_hit+"</a></td>";
-//       pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/scop/pdb.cgi?pdb="+pdb+"'>SEARCH</a></td>";
-//       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
-//       pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
-//       pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"cath_modeller\");' value='Model' /></td>";
-//     }
-//     else{
-//       pseudo_table += "<td><a target='_blank' href='https://www.rcsb.org/pdb/explore/explore.do?structureId="+pdb+"'>"+table_hit+"</a></td>";
-//       pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/scop/pdb.cgi?pdb="+pdb+"'>SEARCH</a></td>";
-//       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/pdb/"+pdb+"'>SEARCH</a></td>";
-//       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
-//       pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
-//       pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"pdb_modeller\");' value='Model' /></td>";
-//     }
-//     pseudo_table += "</tr>\n";
-//     }
-//   });
-//   pseudo_table += "</tbody><tfoot></tfoot></table>\n";
-//   ractive.set(type+"_table", pseudo_table);
-//   var gen_table = null;
-//   var mgen_table = null;
-//   var dgen_table = null;
-//   if(type === 'gen'){
-//     gen_table = $('#'+type+'_table').DataTable({
-//       'searching'   : true,
-//       'pageLength': 50,
-//     });
-//     $('#min_gen_pval, #max_gen_pval').keyup( function() {
-//       gen_table.draw();
-//     });
-//   }
-//   if(type === 'pgen'){
-//     mgen_table = $('#'+type+'_table').DataTable({
-//       'searching'   : true,
-//       'pageLength': 50,
-//     });
-//     $('#min_pgen_pval, #max_pgen_pval').keyup( function() {
-//        mgen_table.draw();
-//     });
-//   }
-//   if(type === 'dgen'){
-//     dgen_table = $('#'+type+'_table').DataTable({
-//       'searching'   : true,
-//       'pageLength': 50,
-//     });
-//     $('#min_dgen_pval, #max_dgen_pval').keyup( function() {
-//       dgen_table.draw();
-//     });
-//   }
-//
-//   }
-//   else {
-//       ractive.set(type+"_table", "<h3>No good hits found. GUESS and LOW confidence hits can be found in the results file</h3>");
-//   }
-//
-// }
-//
+//type is one of gen, pgen and dgen
+export function parse_presults(file, ann_list, type)
+{
+  let lines = file.split('\n');
+  let pseudo_table = null;
+  if(Object.keys(ann_list).length > 0){
+  pseudo_table =  '<div class="text-right modeller-key" style="visibility: visible;">Modeller Licence Key: <input class="text" value=""><br><br></div>';
+  pseudo_table += '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min P-Value: <input id="min_'+type+'_pval" name="min_'+type+'_score" type="text"></td></tr><tr><td class="alnright" >Max P-Value: <input id="max_'+type+'_pval" name="max_'+type+'_pval" type="text"></td></tr></tbody></table><br />';
+  pseudo_table += '<table id="'+type+'_table" class="small-table table-striped table-bordered gen-table"><thead>\n';
+  pseudo_table += '<tr><th>Conf.</th>';
+  pseudo_table += '<th>Net Score</th>';
+  pseudo_table += '<th>p-value</th>';
+  pseudo_table += '<th>PairE</th>';
+  pseudo_table += '<th>SolvE</th>';
+  pseudo_table += '<th>Aln Score</th>';
+  pseudo_table += '<th>Aln Length</th>';
+  pseudo_table += '<th>Target Len</th>';
+  pseudo_table += '<th>Query Len</th>';
+  if(type === 'dgen'){
+    pseudo_table += '<th>Region Start</th>';
+    pseudo_table += '<th>Region End</th>';
+    pseudo_table += '<th>CATH</th>';
+    pseudo_table += '<th>SCOP</th>';
+  }else {
+    pseudo_table += '<th>Fold</th>';
+    pseudo_table += '<th>SCOP</th>';
+    pseudo_table += '<th>CATH</th>';
+  }
+  pseudo_table += '<th>PDBSUM</th>';
+  pseudo_table += '<th>Alignment</th>';
+  pseudo_table += '<th>MODEL</th>';
+
+  // if MODELLER THINGY
+  pseudo_table += '</tr></thead><tbody">\n';
+  lines.forEach(function(line, i){
+    //console.log(line);
+    if(line.length === 0){return;}
+    let entries = line.split(/\s+/);
+    let table_hit = entries[9];
+    if(type === 'dgen'){ table_hit = entries[11];}
+    if(table_hit+"_"+i in ann_list)
+    {
+    pseudo_table += "<tr>";
+    pseudo_table += "<td class='"+entries[0].toLowerCase()+"'>"+entries[0]+"</td>";
+    pseudo_table += "<td>"+entries[1]+"</td>";
+    pseudo_table += "<td>"+entries[2]+"</td>";
+    pseudo_table += "<td>"+entries[3]+"</td>";
+    pseudo_table += "<td>"+entries[4]+"</td>";
+    pseudo_table += "<td>"+entries[5]+"</td>";
+    pseudo_table += "<td>"+entries[6]+"</td>";
+    pseudo_table += "<td>"+entries[7]+"</td>";
+    pseudo_table += "<td>"+entries[8]+"</td>";
+    let pdb = entries[9].substring(0, entries[9].length-2);
+    if(type === 'dgen'){ pdb = entries[11].substring(0, entries[11].length-3);}
+    if(type === 'dgen'){
+      pseudo_table += "<td>"+entries[9]+"</td>";
+      pseudo_table += "<td>"+entries[10]+"</td>";
+      pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/version/latest/domain/"+table_hit+"'>"+table_hit+"</a></td>";
+      pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
+      pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"cath_modeller\");' value='Model' /></td>";
+    }
+    else{
+      pseudo_table += "<td><a target='_blank' href='https://www.rcsb.org/pdb/explore/explore.do?structureId="+pdb+"'>"+table_hit+"</a></td>";
+      pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
+      pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/pdb/"+pdb+"'>SEARCH</a></td>";
+      pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"pdb_modeller\");' value='Model' /></td>";
+    }
+    pseudo_table += "</tr>\n";
+    }
+  });
+  pseudo_table += "</tbody><tfoot></tfoot></table>\n";
+  }
+  else {
+    pseudo_table = "<h3>No good hits found. GUESS and LOW confidence hits can be found in the results file</h3>";
+  }
+  return(pseudo_table);
+}
+
 // export function parse_parseds(ractive, file)
 // {
 //   let prediction_regex = /Domain\sBoundary\slocations\spredicted\sDPS:\s(.+)/;
