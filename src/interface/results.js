@@ -1,6 +1,6 @@
 import React from 'react';
 import {configurePost} from './requests_helper.js'; // eslint-disable-line no-unused-vars
-import {request_data} from './results_helper.js'; // eslint-disable-line no-unused-vars
+import {request_data} from '../shared/index.js'; // eslint-disable-line no-unused-vars
 import {ResultsSequence} from './results_sequence.js'; // eslint-disable-line no-unused-vars
 
 //We render the name bar with the copy link and then we render the seq plot for

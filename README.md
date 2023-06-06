@@ -37,9 +37,30 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+## Multi-entry point site
+
+The usual react model is for single page single-entry point dynamic pages. Here we have
+adapted this to a multi entry point site so that all code runs user side (unlike old psipred_javascript, which dispatched some things to the backend).
+
+There are three entry points; `interface`, `msa` and `model`. Interface is the user interface that users use to select jobs. msa is an entry point for displaying sequence alignments and model is an entry point that requests and shows 3D models (based off an alignment.)
+
+And we have a shared folder that lets us share code between models
+
 ## Site model
 
-The Parent container for the page/results is called PsipredSite, its immediate child is DisplayArea. DisplayArea is responsible for holding most of the state of the pages and it's children are MainForm, Sidebar, ResultsMain, ResultsSidebarTimes, ResultsSidebarDownloads and ResultsSidebarResubmission.
+To level `index.js` is now just a dispatcher for the 3 entry points and holds any global state that all three entry points need.
+
+### interface model
+
+The Parent container for the page/results is called `Interface` and can be found in the index.js.This is really just the menu, header and footer regions. The main action happens in it's immediate child; `PsipredSite`. From here its child is `DisplayArea`. `DisplayArea` is responsible for holding most of the state of the pages and it's children are `MainForm`, `Sidebar`, `ResultsMain`, `ResultsSidebarTimes`, `ResultsSidebarDownloads` and `ResultsSidebarResubmission`.
+
+### msa model
+
+This is just a simple class that reads the alignment and annotation files it needs and uses nightingale to display that alignments
+
+### model
+
+This is just a simple class that reads the alignment files it needs, dispatches a request for a 3D model and displays that when it comes back.
 
 ### Classes
 

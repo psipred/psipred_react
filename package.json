@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nightingale-elements/nightingale-manager": "^4.2.1-alpha.0",
+    "@nightingale-elements/nightingale-msa": "^4.2.1-alpha.0",
+    "@nightingale-elements/nightingale-navigation": "^4.2.1-alpha.0",
+    "@nightingale-elements/nightingale-sequence": "^4.2.1-alpha.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
