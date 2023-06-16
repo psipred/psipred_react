@@ -257,13 +257,18 @@ class ResultsSequence extends React.Component{
             this.props.updateWaiting(false);
             this.props.updateConfig(config_csv);
           }
+          else if(data.state === "Error"){
+            throw new Error(data.submissions.at(-1).last_message);
+          }
           else{
             throw new Error("Job Failed");
           }
+
         }
       }).catch(error => {
-        console.log("Fetching results: "+result_uri+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        alert("Fetching results: "+result_uri+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        console.log("Fetching results: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        alert("Fetching results: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        this.props.updateWaiting(false);
         return null;
       });
     };

@@ -33,7 +33,7 @@ class ResultsMain extends React.Component{
   getJob = (config_data) => {
     //console.log(config_data.props);
     console.log('Getting Job Data URI request: GET: '+config_data.props.submit_url+config_data.props.incoming_uuid );
-    fetch(this.props.submit_url+config_data.props.incoming_uuid, {
+    fetch(config_data.props.submit_url+config_data.props.incoming_uuid, {
       headers: {
         'Accept': 'application/json',
       },
@@ -90,12 +90,13 @@ class ResultsMain extends React.Component{
   postJob = (config_data) => {
     // console.log(config_data.props);
     console.log('Posting Job URI request: POST: '+config_data.props.submit_url );
-    fetch(this.props.submit_url, {
+    let sending_data = configurePost({...{...config_data.state, ...config_data.props}});
+    fetch(config_data.props.submit_url, {
       headers: {
         'Accept': 'application/json',
       },
       method: 'POST',
-      body: configurePost({...{...config_data.state, ...config_data.props}}),
+      body: sending_data,
     }).then(response => {
        if(response.ok){
          return response.json().then(json => {return(json);});
