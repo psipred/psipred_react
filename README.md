@@ -116,3 +116,4 @@ If you added a new file type then you have to update the staging and production 
 3. move dmp, dompred, bioserf alerts to single master function out of `mainform.js` and `results.js`
 4. Each component class gets its own file?
 5. `seq_job_list` and `struct_job_list` in `checkform.js` could inherit these lists from the global state set in index.js
+6. in modle/indec.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all xmlhttprequest uses with this pattern.
