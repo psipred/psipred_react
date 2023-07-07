@@ -115,7 +115,7 @@ export class Model extends React.Component{
               results_data = this.getResultsFiles(submission.results, this.state);
               //for each job type we push all the results files to this object
               parsed_data[submission.job_name] = results_data;
-              console.log(parsed_data);
+              //console.log(parsed_data);
             });
             this.setState({waiting: false,
                 pdb_data: parsed_data.pdb_modeller,});
@@ -141,16 +141,22 @@ export class Model extends React.Component{
 
 
   componentDidUpdate(prevProps) {
-    console.log(this.state.pdb_data);
+    console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
+    var data = this.state.pdb_data[Object.keys(this.state.pdb_data)[0]];
+    var cartoon_color = function(atom) {
+      if(atom.ss === 'h'){return '#e353e3';}
+      if(atom.ss === 's'){return '#e5dd55';}
+      return('grey');
+    };
     //https://www.npmjs.com/package/3dmol
-    let element = this.model;
+    let element = this.model.current;
     let config = { backgroundColor: '#ffffff' };
     let viewer = $3Dmol.createViewer( element, config );
-    // viewer.addModel( data, "pdb" );                       /* load data */
-    // viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
-    // viewer.zoomTo();                                      /* set camera */
-    // viewer.render();                                      /* render scene */
-    // viewer.zoom(1.7, 3000);     
+    viewer.addModel( data, "pdb" );                       /* load data */
+    viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
+    viewer.zoomTo();                                      /* set camera */
+    viewer.render();                                      /* render scene */
+    viewer.zoom(1.7, 3000);     
   }
 
     componentDidMount(){
@@ -163,7 +169,6 @@ export class Model extends React.Component{
         return(
             <>{ this.state.pdb_data ?
                 <div>
-                    <h1>&nbsp;3D MODEL RECIEVED</h1>
                     <div className="row">
                     <div className="col-sm-7 col-sm-offset-5">
                         <div id="container-01" ref={this.model} className="mol-container" style={{width: "600px",height: "600px", position: "relative"}}></div>
@@ -171,7 +176,7 @@ export class Model extends React.Component{
                     </div>
                 </div>
               :
-              <h1>&nbsp;3D MODEL Requested...</h1>
+              <h1>&nbsp;3D MODEL Requested (may take up to 30mins)...</h1>
            }</>
         )}
 }
