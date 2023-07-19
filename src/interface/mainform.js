@@ -47,7 +47,7 @@ class SeqForm extends React.Component {
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td colSpan="2"><h4>Contact Analysis</h4></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Predict interresidue contacts using a convolutional neural network"><input type="checkbox" id="id_dmp_job" name="dmp_job" value="dmp_job" onChange={this.handleChange} checked={this.props.analyses.includes('dmp_job')} />&nbsp;<label htmlFor="id_dmp_job">DeepMetaPSICOV 1.0 (Structural Contact Prediction)</label></td>
+                  <td data-toggle="tool-tip" title="Predict inter-residue contacts using a convolutional neural network"><input type="checkbox" id="id_dmp_job" name="dmp_job" value="dmp_job" onChange={this.handleChange} checked={this.props.analyses.includes('dmp_job')} />&nbsp;<label htmlFor="id_dmp_job">DeepMetaPSICOV 1.0 (Structural Contact Prediction)</label></td>
                   <td data-toggle="tool-tip" title="Predict packing membrane helices"><input type="checkbox" id="id_mempack_job" name="mempack_job" value="mempack_job" onChange={this.handleChange} checked={this.props.analyses.includes('mempack_job')} />&nbsp;<label htmlFor="id_mempack_job">MEMPACK (TM Topology and Helix Packing)</label></td>
                 </tr>
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>

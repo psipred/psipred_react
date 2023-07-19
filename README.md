@@ -82,7 +82,7 @@ See also class_layout.odp
 
 # Adding services to PSIPRED web server
 
-1. First modify the page in `index.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. `analyses` in `this.state` controls which jobs are alread have a check mark in the form on page load. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
+1. First modify the page in `interface/psipred_site.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. `analyses` in `this.state` controls which jobs are alread have a check mark in the form on page load. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
 
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box and edit as needed. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. Ensure `onChange` and `checked` are correct.
 
@@ -98,11 +98,11 @@ See also class_layout.odp
 
 8. If we're handling a seq result:
    a) in `results_sequence.js` in the `ResultsSequence` class update the constructor and `this.state` to handle any results and plots you need, using `React.createRef()` to bind new page elements you need.
-   b) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or tables in the lower page region
+   b) Lastly in `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`) 
    c) In `getResults()` ensure `if(data.state === "Complete"){` handles parsing any files that need it. Ensure `this.setState({` sends the results contents to an appropriate state variables to hold them here.
-   d) Lastly in `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`) 
+   d) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or  tables in the lower page region
    e) update `results_sidebar_downloads` to ensure the files you want users to access are available.
-   and update `returnzip()` appropriately
+   and update `returnzip()` appropriately. Recall that you need to add the results file glob to the list of `results_map` list in `psipred_site.js`
 9. If we're handling a struct result: 
 
 ## WARNING

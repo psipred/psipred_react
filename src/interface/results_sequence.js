@@ -39,6 +39,7 @@ class ResultsSequence extends React.Component{
     this.memsatSVMSchematic = React.createRef();
     this.memsatSVMCartoon = React.createRef();
     this.pgenthreaderTable = React.createRef();
+    this.dmp_plot = React.createRef();
     this.timer = null;
   }
 
@@ -155,7 +156,24 @@ class ResultsSequence extends React.Component{
       });
 
     }
-
+    for(let key in this.state.dmp_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.dmp_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+      if(key.includes("png")){
+        let img_url = this.state.dmp_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "DMP Contact Map";
+        this.dmp_plot.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.dmp_plot.current.appendChild(newElement);
+      } 
+    }
+    
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -250,6 +268,7 @@ class ResultsSequence extends React.Component{
                 disopred_results: parsed_data.disopred,
                 memsatsvm_results: parsed_data.memsatsvm,
                 pgenthreader_results: parsed_data.pgenthreader,
+                dmp_results: parsed_data.dmp,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -281,7 +300,35 @@ class ResultsSequence extends React.Component{
     this.timer = setInterval(() => this.getResults(), 500);
   }
 
+  renderIcon(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
+    return(
+      <div className="box box-primary collapsed-box" id={panel_id}>
+      <div className="box-header with-border">
+        <h5 className="box-title">{title}</h5>
+        <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+      </div>
+      <div className="box-body">
+        { this.state.error_message &&
+          <div className="error">{this.state.error_message}</div>
+        }
+        <div className={plot_class} id={plot_id} ref={plot_data_ref} ></div>
+        { this.props.waiting &&
+          <div className="waiting" intro="slide" outro="slide"><br /><h4>{waiting_message}</h4></div>
+        }
+        { this.props.waiting &&
+          <div className="waiting_icon" intro="slide" outro="slide">{waiting_icon}</div>
+        }
+        { this.props.waiting &&
+          <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+        }
+      </div>
+    </div>
+    )
+  }
+
+
   render() {
+    // currently the memsat panel is not calling the funcition. Possible argument for the memsat panel to be 2 panels
     return(
       <div>
         { this.props.uuid &&
@@ -316,50 +363,14 @@ class ResultsSequence extends React.Component{
         </div>
         }
 
-        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job")) &&
-          <div className="box box-primary collapsed-box" id="psipred_cartoon">
-            <div className="box-header with-border">
-              <h5 className="box-title">PSIPRED Cartoon</h5>
-              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
-            </div>
-            <div className="box-body">
-              { this.state.error_message &&
-                <div className="error">{this.state.error_message}</div>
-              }
-              <div className="psipred_cartoon" id='psipred_horiz' ref={this.horizPlot} ></div>
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.psipred_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.psipred_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
-            </div>
-          </div>
+        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job")) &&
+          <div>
+            { this.renderIcon("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
+          </div> 
          }
          { this.props.analyses.includes("disopred_job") &&
-          <div className="box box-primary collapsed-box" id="disorder_plot">
-            <div className="box-header with-border">
-              <h5 className="box-title">DISOPRED Plot</h5>
-              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
-            </div>
-            <div className="box-body">
-              { this.state.error_message &&
-                <div className="error">{this.state.error_message}</div>
-              }
-              <div className="disorder_plot" id="disorder_svg" ref={this.disopredPlot} ></div>
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.disopred_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.disopred_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
-            </div>
+          <div>
+            { this.renderIcon("disorder_plot", "DISOPRED Plot", "disorder_plot", 'pdisorder_svg', this.disopredPlot, this.state.disopred_waiting_message, this.state.disopred_waiting_icon) }
           </div>
          }
         { this.props.analyses.includes("memsatsvm_job") &&
@@ -387,26 +398,13 @@ class ResultsSequence extends React.Component{
           </div>
          }
          { this.props.analyses.includes("pgenthreader_job") &&
-          <div className="box box-primary collapsed-box" id="pgen_table_box">
-            <div className="box-header with-border">
-              <h5 className="box-title">pGenTHREADER Structural Results</h5>
-              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
-            </div>
-            <div className="box-body">
-              { this.state.error_message &&
-                <div className="error">{this.state.error_message}</div>
-              }
-              <div className="pgen_table_div" id='pgenthreader_table' ref={this.pgenthreaderTable} ></div>
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.pgenthreader_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.pgenthreader_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
-            </div>
+          <div>
+            { this.renderIcon("pgen_table_box", "pGenTHREADER Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.state.pgenthreader_waiting_message, this.state.pgenthreader_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("dmp_job") &&
+          <div>
+            { this.renderIcon("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.state.dmp_waiting_message, this.state.dmp_waiting_icon) }
           </div>
          }
       </div>

@@ -32,7 +32,7 @@ class ResultsSidebarDownloads extends React.Component{
     let zip = new JSZip();
     Object.keys(this.props.results_files).forEach((job) => {
       Object.keys(this.props.results_files[job]).forEach((file) => {
-        console.log(file);
+        //console.log(file);
         if(file.includes(".png") ||file.includes(".jpg") ||file.includes(".jpeg") ||file.includes(".gif"))
         {
           let url = this.props.files_url+"/submissions/"+file;
@@ -71,6 +71,7 @@ class ResultsSidebarDownloads extends React.Component{
   getFile = (event) => {
     Object.keys(this.props.results_files).forEach((job) => {
       Object.keys(this.props.results_files[job]).forEach((file) => {
+        console.log(file);
         if(file.includes(event.target.value)){
           saveAs(new Blob(this.props.results_files[job][file].split()), file);
         }
@@ -79,7 +80,7 @@ class ResultsSidebarDownloads extends React.Component{
 
   }
 
-  createDownloadLinks = (count, name, file_info, title) => { 
+  createDownloadLinks = (count, file_info, title) => { 
     let html_data = [];
 
     html_data.push(<h5 key={count} >{title}</h5>);
@@ -103,16 +104,23 @@ class ResultsSidebarDownloads extends React.Component{
       // console.log(this.props.analyses);
       let link_data = [];
         if(this.props.analyses.includes(name+'_job')){
-          if(name === 'psipred'){
-            link_data = this.createDownloadLinks(count, name, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'PSIPRED DOWNLOADS');
+          if(name === 'psipred' || name === 'dmp'){
+            link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'PSIPRED DOWNLOADS');
+            downloads_text.push(link_data[0]);
           }
           if(name === 'disopred'){
-            link_data = this.createDownloadLinks(count, name, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], 'DISOPRED DOWNLOADS')
+            link_data = this.createDownloadLinks(count, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], 'DISOPRED DOWNLOADS')
+            downloads_text.push(link_data[0]);
           }
           if(name === 'memsatsvm'){
-            link_data = this.createDownloadLinks(count, name, [['.memsat_svm', 'MEMSAT-SVM text format'], ], 'MEMSAT-SVM DOWNLOADS')
+            link_data = this.createDownloadLinks(count, [['.memsat_svm', 'MEMSAT-SVM text format'], ], 'MEMSAT-SVM DOWNLOADS')
+            downloads_text.push(link_data[0]);
           }
-          downloads_text.push(link_data[0]);
+          if(name === 'dmp'){
+            link_data = this.createDownloadLinks(count, [['.con', 'DMP Contacts'], ], 'DMP DOWNLOADS')
+            downloads_text.push(link_data[0]);
+          }
+    
           count = link_data[1];
         }
         // downloads_text.push(link_data[0]);

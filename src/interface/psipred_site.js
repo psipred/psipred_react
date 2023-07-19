@@ -42,7 +42,7 @@ class DisplayArea extends React.Component{
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "bioserf",
       "domserf", "ffpred", "dmp", "dmpfold", 's4pred' ],
       struct_job_names: ["metsite", "hspred", "memembed", "gentdb"],
-      analyses: ['pgenthreader_job', ],
+      analyses: ['dmp_job', ],
       jobs: [],
       input_data: input_data,
       seq: seq,
@@ -70,13 +70,13 @@ class DisplayArea extends React.Component{
       resubmit: false,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
                     'presult', 'align', 'presults', 'dom_presults', 'parseds', 'ffpredfeatures',
-                    'ffpredpredictions', 'metsite', 'hspred', 'csv', 'ann', 'aln'],
+                    'ffpredpredictions', 'metsite', 'hspred', 'csv', 'ann', 'aln', 'con'],
     };
   }
 
   handleReset = () => {
     this.setState({
-      analyses: ['pgenthreader_job'],
+      analyses: ['dmp_job', ],
       jobs: [],
       input_data: '',
       seq: '',
