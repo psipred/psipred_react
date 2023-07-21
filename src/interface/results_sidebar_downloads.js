@@ -128,6 +128,10 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['.presults', 'GenTHREADER Hits'], ], 'GenTHREADER DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
+          if(name === 'pdomthreader'){
+            link_data = this.createDownloadLinks(count, [['.presults', 'pDomTHREADER Hits'], ], 'pDomTHREADER DOWNLOADS')
+            downloads_text.push(link_data[0]);
+          }
     
           count = link_data[1];
         }

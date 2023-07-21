@@ -70,6 +70,9 @@ class ResultsSidebarTimes extends React.Component{
               { this.props.analyses.includes('genthreader_job') &&
               <div><span className="info-box-number">GenTHREADER runtime: {this.state.genthreader}</span><br /></div>
               }
+              { this.props.analyses.includes('pdomthreader_job') &&
+              <div><span className="info-box-number">pDomTHREADER runtime: {this.state.pdomthreader}</span><br /></div>
+              }
               
             </div>
       </div>

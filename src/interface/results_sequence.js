@@ -41,6 +41,7 @@ class ResultsSequence extends React.Component{
     this.pgenthreaderTable = React.createRef();
     this.dmp_plot = React.createRef();
     this.genthreaderTable = React.createRef();
+    this.pdomthreaderTable = React.createRef();
     this.timer = null;
   }
 
@@ -91,7 +92,7 @@ class ResultsSequence extends React.Component{
     }
     let ann_set = {};
     let ann_gen_set = {};
-    //let ann_dom_set = {};
+    let ann_dom_set = {};
 
     for(let key in this.state.pgenthreader_results){
       if(key.includes(".ann")){
@@ -221,6 +222,67 @@ class ResultsSequence extends React.Component{
 
     }
 
+    for(let key in this.state.pdomthreader_results){
+      if(key.includes(".ann")){
+        let path = key.substring(0, key.lastIndexOf("."));
+        let id = path.substring(path.lastIndexOf(".")+1, path.length);
+        ann_dom_set[id] = {};
+        ann_dom_set[id]['ann'] = path+".ann";
+        ann_dom_set[id]['aln'] = path+".aln";
+      }
+    }
+    for(let key in this.state.pdomthreader_results){
+      if(key.includes(".presults")){
+        let file_data = this.state.pdomthreader_results[key];
+        console.log(file_data);
+        let html_data = parse_presults(file_data, ann_dom_set, "dgen");
+        var dt = document.createElement('template');
+        dt.innerHTML = html_data;
+        this.pdomthreaderTable.current.appendChild(dt.content);
+      }
+    }
+
+    if(this.state.pdomthreader_results){
+      let dom_table = $('#pdom_table').DataTable({
+        'searching'   : true,
+        'pageLength': 50,
+      });
+
+      var dom_minEl = $('#min_gen_pval');
+      var dom_maxEl = $('#max_gen_pval');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'gen_table' ) {
+            return true;
+          }
+          var min = parseFloat(dom_minEl.val(), 10);
+          var max = parseFloat(dom_maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+   
+      // Changes to the inputs will trigger a redraw to update the table
+      dom_minEl.on('input', function () {
+          dom_table.draw();
+      });
+      dom_maxEl.on('input', function () {
+          dom_table.draw();
+      });
+
+    }
 
     for(let key in this.state.dmp_results){
       if(key.includes(".horiz")){
@@ -336,6 +398,7 @@ class ResultsSequence extends React.Component{
                 pgenthreader_results: parsed_data.pgenthreader,
                 dmp_results: parsed_data.dmp,
                 genthreader_results: parsed_data.genthreader,
+                pdomthreader_results: parsed_data.pdomthreader,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -476,7 +539,12 @@ class ResultsSequence extends React.Component{
          }
          { this.props.analyses.includes("genthreader_job") &&
           <div>
-            { this.renderIcon("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_plot', this.genthreaderTable, this.state.genthreader_waiting_message, this.state.genthreader_waiting_icon) }
+            { this.renderIcon("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.state.genthreader_waiting_message, this.state.genthreader_waiting_icon) }
+          </div>
+         }
+                  { this.props.analyses.includes("pdomthreader_job") &&
+          <div>
+            { this.renderIcon("pdom_table_box", "pDomTHREADER Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.state.pdomthreader_waiting_message, this.state.pdomthreader_waiting_icon) }
           </div>
          }
       </div>

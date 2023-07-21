@@ -28,6 +28,8 @@ class ResultsMain extends React.Component{
       mempack_wating_icon: '',
       genthreader_waiting_message: 'Please wait for your GenTHREADER job to process',
       genthreader_wating_icon: '',
+      pdomthreader_waiting_message: 'Please wait for your pDomTHREADER job to process',
+      pdomthreader_wating_icon: '',
       
     };
   }
