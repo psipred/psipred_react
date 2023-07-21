@@ -24,6 +24,10 @@ class ResultsMain extends React.Component{
       pgenthreader_wating_icon: '',
       dmp_waiting_message: 'Please wait for your DeepMetaPSICOV job to process',
       dmp_wating_icon: '',
+      mempack_waiting_message: 'Please wait for your Mempack job to process',
+      mempack_wating_icon: '',
+      genthreader_waiting_message: 'Please wait for your GenTHREADER job to process',
+      genthreader_wating_icon: '',
       
     };
   }

@@ -64,6 +64,12 @@ class ResultsSidebarTimes extends React.Component{
               { this.props.analyses.includes('dmp_job') &&
               <div><span className="info-box-number">DeepMetaPSICOV runtime: {this.state.dmp}</span><br /></div>
               }
+               { this.props.analyses.includes('mempack_job') &&
+              <div><span className="info-box-number">MEMPACK runtime: {this.state.mempack}</span><br /></div>
+              }
+              { this.props.analyses.includes('genthreader_job') &&
+              <div><span className="info-box-number">GenTHREADER runtime: {this.state.genthreader}</span><br /></div>
+              }
               
             </div>
       </div>

@@ -108,6 +108,10 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'PSIPRED DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
+          if(name === 'pgenthreader'){
+            link_data = this.createDownloadLinks(count, [['.presults', 'pGenTHREADER Hits'], ], 'pGenTHREADER DOWNLOADS')
+            downloads_text.push(link_data[0]);
+          }
           if(name === 'disopred'){
             link_data = this.createDownloadLinks(count, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], 'DISOPRED DOWNLOADS')
             downloads_text.push(link_data[0]);
@@ -118,6 +122,10 @@ class ResultsSidebarDownloads extends React.Component{
           }
           if(name === 'dmp'){
             link_data = this.createDownloadLinks(count, [['.con', 'DMP Contacts'], ], 'DMP DOWNLOADS')
+            downloads_text.push(link_data[0]);
+          }
+          if(name === 'genthreader'){
+            link_data = this.createDownloadLinks(count, [['.presults', 'GenTHREADER Hits'], ], 'GenTHREADER DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
     

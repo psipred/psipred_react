@@ -40,6 +40,7 @@ class ResultsSequence extends React.Component{
     this.memsatSVMCartoon = React.createRef();
     this.pgenthreaderTable = React.createRef();
     this.dmp_plot = React.createRef();
+    this.genthreaderTable = React.createRef();
     this.timer = null;
   }
 
@@ -89,8 +90,9 @@ class ResultsSequence extends React.Component{
       } 
     }
     let ann_set = {};
+    let ann_gen_set = {};
+    //let ann_dom_set = {};
 
-    
     for(let key in this.state.pgenthreader_results){
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
@@ -156,6 +158,70 @@ class ResultsSequence extends React.Component{
       });
 
     }
+
+    for(let key in this.state.genthreader_results){
+      if(key.includes(".ann")){
+        let path = key.substring(0, key.lastIndexOf("."));
+        let id = path.substring(path.lastIndexOf(".")+1, path.length);
+        ann_gen_set[id] = {};
+        ann_gen_set[id]['ann'] = path+".ann";
+        ann_gen_set[id]['aln'] = path+".aln";
+      }
+    }
+    for(let key in this.state.genthreader_results){
+      if(key.includes(".presults")){
+        let file_data = this.state.genthreader_results[key];
+        console.log(file_data);
+        let html_data = parse_presults(file_data, ann_gen_set, "gen");
+        var gt = document.createElement('template');
+        gt.innerHTML = html_data;
+        this.genthreaderTable.current.appendChild(gt.content);
+      }
+    }
+
+    if(this.state.genthreader_results){
+      let gen_table = $('#gen_table').DataTable({
+        'searching'   : true,
+        'pageLength': 50,
+      });
+
+      var gen_minEl = $('#min_gen_pval');
+      var gen_maxEl = $('#max_gen_pval');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'gen_table' ) {
+            return true;
+          }
+          var min = parseFloat(gen_minEl.val(), 10);
+          var max = parseFloat(gen_maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+   
+      // Changes to the inputs will trigger a redraw to update the table
+      gen_minEl.on('input', function () {
+          gen_table.draw();
+      });
+      gen_maxEl.on('input', function () {
+          gen_table.draw();
+      });
+
+    }
+
+
     for(let key in this.state.dmp_results){
       if(key.includes(".horiz")){
         let file_data = this.state.dmp_results[key];
@@ -269,6 +335,7 @@ class ResultsSequence extends React.Component{
                 memsatsvm_results: parsed_data.memsatsvm,
                 pgenthreader_results: parsed_data.pgenthreader,
                 dmp_results: parsed_data.dmp,
+                genthreader_results: parsed_data.genthreader,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -405,6 +472,11 @@ class ResultsSequence extends React.Component{
          { this.props.analyses.includes("dmp_job") &&
           <div>
             { this.renderIcon("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.state.dmp_waiting_message, this.state.dmp_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("genthreader_job") &&
+          <div>
+            { this.renderIcon("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_plot', this.genthreaderTable, this.state.genthreader_waiting_message, this.state.genthreader_waiting_icon) }
           </div>
          }
       </div>
