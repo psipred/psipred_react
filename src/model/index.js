@@ -10,22 +10,25 @@ export class Model extends React.Component{
         let main_url = "http://bioinf.cs.ucl.ac.uk";
         let app_path = "/psipred_beta";
         let aln = null;
+        let analysis_type = null;
         console.log(href);
         if(window.location.href.includes("aln=")){
           let aln_ref = window.location.href.split('?')[1];
-          aln = aln_ref.slice(4);
+          let input_data = aln_ref.slice(4).split('&type=');
+          aln = input_data[0];
+          analysis_type = input_data[1];
         }
         console.log("PAGE LOAD location : "+window.location.hostname);
         console.log("ALN:" +aln);
         let uris = decide_location(href, window.location.hostname, main_url, app_path)
         uris['aln'] = aln;
         this.timer = null;
-
         this.state = uris;
         this.state.uuid = null; 
+        this.state.model_uri = null;
         this.state.waiting = true;
         this.state.aln = request_data("/submissions/"+aln, this.state.files_url, 'text/plain');
-        this.state.form_data = this.configurePost(this.state.aln);
+        this.state.form_data = this.configurePost(this.state.aln, analysis_type);
         this.state.uuid = this.postModelJob(this.state.form_data);
         this.state.pdb_data = null;
         console.log("MODELLING JOB UUID: "+this.state.uuid);
@@ -52,7 +55,7 @@ export class Model extends React.Component{
         return(results_data.UUID);
     }
 
-    configurePost = (aln_data) =>
+    configurePost = (aln_data, analysis_type) =>
     {
       //console.log(formState);
       var file = null;
@@ -64,10 +67,17 @@ export class Model extends React.Component{
         alert(e);
       }
       let fd = new FormData();
-      console.log("JOB NAME: pdb_modeller ");
     
       fd.append("input_data", file, 'input.txt');
-      fd.append("job", "pdb_modeller");
+      if(analysis_type === "cath"){
+
+          console.log("JOB NAME: cath_modeller ");
+          fd.append("job", "cath_modeller");
+      }
+      else{
+        console.log("JOB NAME: pdb_modeller ");
+        fd.append("job", "pdb_modeller");
+      }
       fd.append("submission_name", "genthreader_model");
       fd.append("email", "dummy@dummy.com");
       
@@ -76,6 +86,7 @@ export class Model extends React.Component{
 
     getResultsFiles = (data, state) => {
         let results_files = {};
+        let model_uri = null;
         data.forEach(function(entry){
           let glob = entry.data_path.split(/[.]/).pop();
           if(glob.includes("pdb"))
@@ -83,9 +94,10 @@ export class Model extends React.Component{
               let file_content = request_data(entry.data_path, state.files_url);
               let file_name = entry.data_path.split('/')[2];
               results_files[file_name] = file_content;
+              model_uri = state.files_url+entry.data_path;
           }
         });
-        return(results_files);
+        return([results_files, model_uri]);
       }
     
 
@@ -110,15 +122,15 @@ export class Model extends React.Component{
           if(data.state === "Complete"){
             // Here we loop over data.submissions
             let parsed_data = {};
+            let model_data = null;
             data.submissions.forEach((submission) => {
               // get an array of all the results files for our job
               results_data = this.getResultsFiles(submission.results, this.state);
               //for each job type we push all the results files to this object
-              parsed_data[submission.job_name] = results_data;
-              //console.log(parsed_data);
             });
             this.setState({waiting: false,
-                pdb_data: parsed_data.pdb_modeller,});
+                pdb_data: results_data[0],
+                model_uri: results_data[1],});
             clearInterval(this.timer);
           }
           else if(data.state === "Error"){
@@ -141,7 +153,8 @@ export class Model extends React.Component{
 
 
   componentDidUpdate(prevProps) {
-    console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
+    // console.log(this.state.pdb_data);
+    // console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
     var data = this.state.pdb_data[Object.keys(this.state.pdb_data)[0]];
     var cartoon_color = function(atom) {
       if(atom.ss === 'h'){return '#e353e3';}
@@ -171,7 +184,8 @@ export class Model extends React.Component{
                 <div>
                     <div className="row">
                     <div className="col-sm-7 col-sm-offset-5">
-                        <div id="container-01" ref={this.model} className="mol-container" style={{width: "600px",height: "600px", position: "relative"}}></div>
+                      <h2><a href={this.state.model_uri}>DOWNLOAD MODEL</a></h2>
+                      <div id="container-01" ref={this.model} className="mol-container" style={{width: "600px",height: "600px", position: "relative"}}></div>
                     </div>
                     </div>
                 </div>
