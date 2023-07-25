@@ -30,6 +30,8 @@ class ResultsMain extends React.Component{
       genthreader_wating_icon: '',
       pdomthreader_waiting_message: 'Please wait for your pDomTHREADER job to process',
       pdomthreader_wating_icon: '',
+      dmpfold_waiting_message: 'Please wait for your DPMFold job to process',
+      dmpfold_wating_icon: '',
       
     };
   }

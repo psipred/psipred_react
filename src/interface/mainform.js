@@ -59,11 +59,7 @@ class SeqForm extends React.Component {
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td><h4>Structure Modelling</h4></td><td></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Fully automated homology modelling"><input type="checkbox" onClick={this.bioserfAlert} id="id_bioserf_job" name="bioserf_job" value="bioserf_job" onChange={this.handleChange} checked={this.props.analyses.includes('bioserf_job')} />&nbsp;<label htmlFor="id_bioserf_job">Bioserf 2.0 (Automated Homology Modelling)</label></td>
-                  <td data-toggle="tool-tip" title="Fully automated structural domain homology modelling"><input type="checkbox" onClick={this.domserfAlert} id="id_domserf_job" name="domserf_job" value="domserf_job" onChange={this.handleChange} checked={this.props.analyses.includes('domserf_job')} />&nbsp;<label htmlFor="id_domserf_job">Domserf 2.1 (Automated Domain Homology Modelling)</label></td>
-                </tr>
-                <tr>
-                  <td data-toggle="tool-tip" title="Accurate structure prediction using residue-residue contacts."><input type="checkbox" onClick={this.dmpfoldAlert} id="id_dmpfold_job" name="dmpfold_job" value="dmpfold_job" onChange={this.handleChange} checked={this.props.analyses.includes('dmpfold_job')} />&nbsp;<label htmlFor="id_dmpfold_job">DMPfold 1.0 Fast Mode (Protein Structure Prediction)</label></td>
+                  <td data-toggle="tool-tip" title="Accurate structure prediction using residue-residue contacts."><input type="checkbox" onClick={this.dmpfoldAlert} id="id_dmpfold_job" name="dmpfold_job" value="dmpfold_job" onChange={this.handleChange} checked={this.props.analyses.includes('dmpfold_job')} />&nbsp;<label htmlFor="id_dmpfold_job">DMPfold 2.0 (Protein Structure Prediction)</label></td>
                   <td></td>
                 </tr>
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>

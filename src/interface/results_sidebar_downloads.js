@@ -132,6 +132,10 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['.presults', 'pDomTHREADER Hits'], ], 'pDomTHREADER DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
+          if(name === 'dmpfold'){
+            link_data = this.createDownloadLinks(count, [['.pdb', 'PDB Model'], ], 'DMPFold DOWNLOADS')
+            downloads_text.push(link_data[0]);
+          }
     
           count = link_data[1];
         }

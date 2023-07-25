@@ -132,3 +132,9 @@ text {
 .cutoffText {
   fill: black;
 }
+
+.pdb_panel_class {
+  width: 60%;
+  height: 400px;
+  position: relative;
+}

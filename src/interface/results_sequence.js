@@ -12,7 +12,7 @@ import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 import $ from 'jquery';
 import DataTable from 'datatables.net-dt';
-
+import * as $3Dmol from '3dmol/build/3Dmol.js';
 import { annotationGrid } from './biod3/main.js';
 
 class ResultsSequence extends React.Component{
@@ -42,6 +42,7 @@ class ResultsSequence extends React.Component{
     this.dmp_plot = React.createRef();
     this.genthreaderTable = React.createRef();
     this.pdomthreaderTable = React.createRef();
+    this.dmpfold_pdb = React.createRef();
     this.timer = null;
   }
 
@@ -172,7 +173,7 @@ class ResultsSequence extends React.Component{
     for(let key in this.state.genthreader_results){
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
-        console.log(file_data);
+        //console.log(file_data);
         let html_data = parse_presults(file_data, ann_gen_set, "gen");
         var gt = document.createElement('template');
         gt.innerHTML = html_data;
@@ -234,7 +235,7 @@ class ResultsSequence extends React.Component{
     for(let key in this.state.pdomthreader_results){
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
-        console.log(file_data);
+        //console.log(file_data);
         let html_data = parse_presults(file_data, ann_dom_set, "dgen");
         var dt = document.createElement('template');
         dt.innerHTML = html_data;
@@ -301,7 +302,25 @@ class ResultsSequence extends React.Component{
         this.dmp_plot.current.appendChild(newElement);
       } 
     }
-    
+    for(let key in this.state.dmpfold_results){
+      if(key.includes(".pdb")){
+        console.log(this.state.dmpfold_results[key]);
+        var cartoon_color = function(atom) {
+          if(atom.ss === 'h'){return '#e353e3';}
+          if(atom.ss === 's'){return '#e5dd55';}
+          return('grey');
+        };
+        //https://www.npmjs.com/package/3dmol
+        let element = this.dmpfold_pdb .current;
+        let config = { backgroundColor: '#ffffff' };
+        let viewer = $3Dmol.createViewer( element, config );
+        viewer.addModel( this.state.dmpfold_results[key], "pdb" );   /* load data */
+        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
+        viewer.zoomTo();                                      /* set camera */
+        viewer.render();                                      /* render scene */
+        viewer.zoom(1.7, 3000);     
+      }
+    }
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -399,6 +418,7 @@ class ResultsSequence extends React.Component{
                 dmp_results: parsed_data.dmp,
                 genthreader_results: parsed_data.genthreader,
                 pdomthreader_results: parsed_data.pdomthreader,
+                dmpfold_results: parsed_data.dmpfold,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -430,7 +450,12 @@ class ResultsSequence extends React.Component{
     this.timer = setInterval(() => this.getResults(), 500);
   }
 
-  renderIcon(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
+  renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
+  //ID to identify the panel
+  //A nice human readable name of the panel
+  //A class name for the results area
+  //And ID name for the results
+  //A react ref to manipulate to insert the diagram/results/etc
     return(
       <div className="box box-primary collapsed-box" id={panel_id}>
       <div className="box-header with-border">
@@ -495,12 +520,12 @@ class ResultsSequence extends React.Component{
 
         { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job")) &&
           <div>
-            { this.renderIcon("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
+            { this.renderPanel("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
           </div> 
          }
          { this.props.analyses.includes("disopred_job") &&
           <div>
-            { this.renderIcon("disorder_plot", "DISOPRED Plot", "disorder_plot", 'pdisorder_svg', this.disopredPlot, this.state.disopred_waiting_message, this.state.disopred_waiting_icon) }
+            { this.renderPanel("disorder_plot", "DISOPRED Plot", "disorder_plot", 'pdisorder_svg', this.disopredPlot, this.state.disopred_waiting_message, this.state.disopred_waiting_icon) }
           </div>
          }
         { this.props.analyses.includes("memsatsvm_job") &&
@@ -529,24 +554,30 @@ class ResultsSequence extends React.Component{
          }
          { this.props.analyses.includes("pgenthreader_job") &&
           <div>
-            { this.renderIcon("pgen_table_box", "pGenTHREADER Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.state.pgenthreader_waiting_message, this.state.pgenthreader_waiting_icon) }
+            { this.renderPanel("pgen_table_box", "pGenTHREADER Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.state.pgenthreader_waiting_message, this.state.pgenthreader_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("dmp_job") &&
           <div>
-            { this.renderIcon("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.state.dmp_waiting_message, this.state.dmp_waiting_icon) }
+            { this.renderPanel("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.state.dmp_waiting_message, this.state.dmp_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("genthreader_job") &&
           <div>
-            { this.renderIcon("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.state.genthreader_waiting_message, this.state.genthreader_waiting_icon) }
+            { this.renderPanel("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.state.genthreader_waiting_message, this.state.genthreader_waiting_icon) }
           </div>
          }
-                  { this.props.analyses.includes("pdomthreader_job") &&
+         { this.props.analyses.includes("pdomthreader_job") &&
           <div>
-            { this.renderIcon("pdom_table_box", "pDomTHREADER Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.state.pdomthreader_waiting_message, this.state.pdomthreader_waiting_icon) }
+            { this.renderPanel("pdom_table_box", "pDomTHREADER Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.state.pdomthreader_waiting_message, this.state.pdomthreader_waiting_icon) }
           </div>
          }
+         { this.props.analyses.includes("dmpfold_job") &&
+          <div>
+            { this.renderPanel("dmpfold_pdb", "DMPfold prediction", "pdb_panel_class", 'dmp_pdb_id', this.dmpfold_pdb , this.state.dmpfold_waiting_message, this.state.dmpfold_waiting_icon) }
+          </div>
+         }
+         
       </div>
     );
   }
