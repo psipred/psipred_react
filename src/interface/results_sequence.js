@@ -43,6 +43,7 @@ class ResultsSequence extends React.Component{
     this.genthreaderTable = React.createRef();
     this.pdomthreaderTable = React.createRef();
     this.dmpfold_pdb = React.createRef();
+    this.s4pred_horiz = React.createRef();
     this.timer = null;
   }
 
@@ -311,7 +312,7 @@ class ResultsSequence extends React.Component{
           return('grey');
         };
         //https://www.npmjs.com/package/3dmol
-        let element = this.dmpfold_pdb .current;
+        let element = this.dmpfold_pdb.current;
         let config = { backgroundColor: '#ffffff' };
         let viewer = $3Dmol.createViewer( element, config );
         viewer.addModel( this.state.dmpfold_results[key], "pdb" );   /* load data */
@@ -321,6 +322,16 @@ class ResultsSequence extends React.Component{
         viewer.zoom(1.7, 3000);     
       }
     }
+
+    for(let key in this.state.s4pred_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.s4pred_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.s4pred_horiz.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+    }
+
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -419,6 +430,7 @@ class ResultsSequence extends React.Component{
                 genthreader_results: parsed_data.genthreader,
                 pdomthreader_results: parsed_data.pdomthreader,
                 dmpfold_results: parsed_data.dmpfold,
+                s4pred_results: parsed_data.s4pred,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -575,6 +587,11 @@ class ResultsSequence extends React.Component{
          { this.props.analyses.includes("dmpfold_job") &&
           <div>
             { this.renderPanel("dmpfold_pdb", "DMPfold prediction", "pdb_panel_class", 'dmp_pdb_id', this.dmpfold_pdb , this.state.dmpfold_waiting_message, this.state.dmpfold_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("s4pred_job") &&
+          <div>
+            { this.renderPanel("s4pred_cartoon", "S4Pred Cartoon", "s4pred_cartoon", 's4pred_horiz', this.s4pred_horiz , this.state.s4pred_waiting_message, this.state.dmpfold_waiting_icon) }
           </div>
          }
          

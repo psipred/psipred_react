@@ -96,14 +96,16 @@ See also class_layout.odp
 
 7. In `results_sidebar_times.js` in the `ResultsSiderbarTimes` class add an if in `render` for the runtime of your new job type.
 
-8. If we're handling a seq result:
+8. If you haven't configured the job in the backend A_A instance I find now is a good time to do that
+
+9. If we're handling a seq result:
    a) in `results_sequence.js` in the `ResultsSequence` class update the constructor and `this.state` to handle any results and plots you need, using `React.createRef()` to bind new page elements you need.
    b) In `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`). Use `renderPanel()` to insert an area for a diagram
    c) In `getResults()` ensure `if(data.state === "Complete"){` handles parsing any files that need it. Ensure `this.setState({` sends the results contents to an appropriate state variables to hold them here.
    d) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or  tables in the lower page region
    e) update `results_sidebar_downloads` to ensure the files you want users to access are available.
    and update `returnzip()` appropriately. Recall that you need to add the results file glob to the list of `results_map` list in `psipred_site.js`
-9. If we're handling a struct result: 
+10. If we're handling a struct result: 
 
 ## WARNING
 
