@@ -140,6 +140,10 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'S4Pred DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
+          if(name === 'dompred'){
+            link_data = this.createDownloadLinks(count, [['.boundary','DomPred Boundaries']], 'DomPred DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
     
           count = link_data[1];
         }

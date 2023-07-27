@@ -528,36 +528,28 @@ export function parse_presults(file, ann_list, type)
   return(pseudo_table);
 }
 
-// export function parse_parseds(ractive, file)
-// {
-//   let prediction_regex = /Domain\sBoundary\slocations\spredicted\sDPS:\s(.+)/;
-//   let prediction_match =  prediction_regex.exec(file);
-//   if(prediction_match)
-//   {
-//     let details = file.replace("\n","<br />");
-//     details = details.replace("\n","<br />");
-//     ractive.set("parseds_info", "<h4>"+details+"</h4>");
-//     let values = [];
-//     if(prediction_match[1].indexOf(","))
-//     {
-//       values = prediction_match[1].split(',');
-//       values.forEach(function(value, i){
-//         values[i] = parseInt(value);
-//       });
-//     }
-//     else
-//     {
-//       values[0] = parseInt(prediction_match[1]);
-//     }
-//     //console.log(values);
-//     let annotations = ractive.get('annotations');
-//     values.forEach(function(value){
-//       annotations[value].dompred = 'B';
-//     });
-//     ractive.set('annotations', annotations);
-//   }
-//   else
-//   {
-//     ractive.set("parseds_info", "No ParseDS Domain boundaries predicted");
-//   }
-// }
+export function parse_parseds(annotations, file)
+{
+  let prediction_regex = /Domain\sBoundary\slocations\spredicted\sDPS:\s(.+)/;
+  let prediction_match =  prediction_regex.exec(file);
+  if(prediction_match)
+  {
+    let values = [];
+    if(prediction_match[1].indexOf(","))
+    {
+      values = prediction_match[1].split(',');
+      values.forEach(function(value, i){
+        values[i] = parseInt(value);
+      });
+    }
+    else
+    {
+      values[0] = parseInt(prediction_match[1]);
+    }
+    //console.log(values);
+    values.forEach(function(value){
+      annotations[value].dompred = 'B';
+    });
+  }
+  return(annotations);
+}

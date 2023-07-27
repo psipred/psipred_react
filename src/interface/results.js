@@ -34,6 +34,8 @@ class ResultsMain extends React.Component{
       dmpfold_wating_icon: '',
       s4pred_waiting_message: 'Please wait for your S4Pred job to process',
       s4pred_wating_icon: '',
+      dompred_waiting_message: 'Please wait for your DomPred job to process',
+      dompred_wating_icon: '',
       
     };
   }

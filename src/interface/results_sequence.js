@@ -8,6 +8,7 @@ import { parse_pbdat } from './parsers.js';
 import { parse_comb } from './parsers.js';
 import { parse_memsatdata } from './parsers.js';
 import { parse_presults } from './parsers.js';
+import { parse_parseds } from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 import $ from 'jquery';
@@ -44,6 +45,8 @@ class ResultsSequence extends React.Component{
     this.pdomthreaderTable = React.createRef();
     this.dmpfold_pdb = React.createRef();
     this.s4pred_horiz = React.createRef();
+    this.dompred_chart = React.createRef();
+    this.dompred_results = React.createRef();
     this.timer = null;
   }
 
@@ -62,6 +65,14 @@ class ResultsSequence extends React.Component{
         //var svg = document.getElementById('psipredChart').outerHTML; //I'm sure we should use the horizPlot ref
         //this.props.updateResultsFiles('disopred', {'psipredCartoon.svg': svg});
         //NEED TO UPDATE this.props.results_files?
+      }
+    }
+    for(let key in this.state.dompred_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.dompred_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
       }
     }
     for(let key in this.state.disopred_results){
@@ -332,6 +343,34 @@ class ResultsSequence extends React.Component{
       }
     }
 
+    for(let key in this.state.dompred_results){
+      
+      if(key.includes(".png")){
+        let img_url = this.state.dompred_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Dompred Chart";
+        this.dompred_chart.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.dompred_chart.current.appendChild(newElement);
+      }
+      if(key.includes(".boundary")){
+        let boundary_data = this.state.dompred_results[key];
+        let prediction_regex = /Domain\sBoundary\slocations\spredicted\sDPS:\s(.+)/;
+        let prediction_match =  prediction_regex.exec(boundary_data);
+        let h4Element = document.createElement('h4');
+        h4Element.innerText += boundary_data;
+        if(prediction_match)
+        {
+          h4Element.innerText += boundary_data;
+        }
+        else{
+          h4Element.innerText += "No ParseDS Domain boundaries predicted";
+        }
+        this.dompred_results.current.appendChild(h4Element);
+      }
+    }
+
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -419,6 +458,10 @@ class ResultsSequence extends React.Component{
                   console.log("Found MEMSAT_SVM and parsing");
                   local_annotations = parse_memsatdata(local_annotations, results_data[key]);
                 } 
+                if(key.includes('.boundary')){
+                  console.log("Found Dompred and parsing");
+                  local_annotations = parse_parseds(local_annotations, results_data[key]);
+                } 
                 
               }
               // we assign the results files 
@@ -431,6 +474,7 @@ class ResultsSequence extends React.Component{
                 pdomthreader_results: parsed_data.pdomthreader,
                 dmpfold_results: parsed_data.dmpfold,
                 s4pred_results: parsed_data.s4pred,
+                dompred_results: parsed_data.dompred,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -530,7 +574,7 @@ class ResultsSequence extends React.Component{
         </div>
         }
 
-        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job")) &&
+        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job")) &&
           <div>
             { this.renderPanel("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
           </div> 
@@ -592,6 +636,30 @@ class ResultsSequence extends React.Component{
          { this.props.analyses.includes("s4pred_job") &&
           <div>
             { this.renderPanel("s4pred_cartoon", "S4Pred Cartoon", "s4pred_cartoon", 's4pred_horiz', this.s4pred_horiz , this.state.s4pred_waiting_message, this.state.dmpfold_waiting_icon) }
+          </div>
+         }
+        { this.props.analyses.includes("dompred_job") &&
+          <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
+            <div className="box-header with-border">
+              <h5 className="box-title">DomPred Results</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div className="dompred_chart" id="dompred_chart" ref={this.dompred_chart}></div>
+              <div className="dompred_results" id="dompread_results" ref={this.dompred_results} ></div>
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.dompred_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.state.dompred_waiting_icon}</div>
+              }
+              { this.props.waiting &&
+                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+              }
+            </div>
           </div>
          }
          
