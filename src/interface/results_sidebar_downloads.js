@@ -136,6 +136,10 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['.pdb', 'PDB Model'], ], 'DMPFold DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
+          if(name === 's4pred'){
+            link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'S4Pred DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
     
           count = link_data[1];
         }
