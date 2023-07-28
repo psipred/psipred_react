@@ -1,6 +1,6 @@
 import React from 'react';
 import {configurePost} from './requests_helper.js'; // eslint-disable-line no-unused-vars
-import {request_data} from './results_helper.js'; // eslint-disable-line no-unused-vars
+import {request_data} from '../shared/index.js'; // eslint-disable-line no-unused-vars
 import {ResultsSequence} from './results_sequence.js'; // eslint-disable-line no-unused-vars
 
 //We render the name bar with the copy link and then we render the seq plot for
@@ -22,6 +22,21 @@ class ResultsMain extends React.Component{
       memsatsvm_wating_icon: '',
       pgenthreader_waiting_message: 'Please wait for your pGenTHREADER job to process',
       pgenthreader_wating_icon: '',
+      dmp_waiting_message: 'Please wait for your DeepMetaPSICOV job to process',
+      dmp_wating_icon: '',
+      mempack_waiting_message: 'Please wait for your Mempack job to process',
+      mempack_wating_icon: '',
+      genthreader_waiting_message: 'Please wait for your GenTHREADER job to process',
+      genthreader_wating_icon: '',
+      pdomthreader_waiting_message: 'Please wait for your pDomTHREADER job to process',
+      pdomthreader_wating_icon: '',
+      dmpfold_waiting_message: 'Please wait for your DPMFold job to process',
+      dmpfold_wating_icon: '',
+      s4pred_waiting_message: 'Please wait for your S4Pred job to process',
+      s4pred_wating_icon: '',
+      dompred_waiting_message: 'Please wait for your DomPred job to process',
+      dompred_wating_icon: '',
+      
     };
   }
 
@@ -33,7 +48,7 @@ class ResultsMain extends React.Component{
   getJob = (config_data) => {
     //console.log(config_data.props);
     console.log('Getting Job Data URI request: GET: '+config_data.props.submit_url+config_data.props.incoming_uuid );
-    fetch(this.props.submit_url+config_data.props.incoming_uuid, {
+    fetch(config_data.props.submit_url+config_data.props.incoming_uuid, {
       headers: {
         'Accept': 'application/json',
       },
@@ -90,12 +105,13 @@ class ResultsMain extends React.Component{
   postJob = (config_data) => {
     // console.log(config_data.props);
     console.log('Posting Job URI request: POST: '+config_data.props.submit_url );
-    fetch(this.props.submit_url, {
+    let sending_data = configurePost({...{...config_data.state, ...config_data.props}});
+    fetch(config_data.props.submit_url, {
       headers: {
         'Accept': 'application/json',
       },
       method: 'POST',
-      body: configurePost({...{...config_data.state, ...config_data.props}}),
+      body: sending_data,
     }).then(response => {
        if(response.ok){
          return response.json().then(json => {return(json);});

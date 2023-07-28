@@ -61,6 +61,24 @@ class ResultsSidebarTimes extends React.Component{
               { this.props.analyses.includes('pgenthreader_job') &&
               <div><span className="info-box-number">pGenTHREADER runtime: {this.state.pgenthreader}</span><br /></div>
               }
+              { this.props.analyses.includes('dmp_job') &&
+              <div><span className="info-box-number">DeepMetaPSICOV runtime: {this.state.dmp}</span><br /></div>
+              }
+               { this.props.analyses.includes('mempack_job') &&
+              <div><span className="info-box-number">MEMPACK runtime: {this.state.mempack}</span><br /></div>
+              }
+              { this.props.analyses.includes('genthreader_job') &&
+              <div><span className="info-box-number">GenTHREADER runtime: {this.state.genthreader}</span><br /></div>
+              }
+              { this.props.analyses.includes('pdomthreader_job') &&
+              <div><span className="info-box-number">pDomTHREADER runtime: {this.state.pdomthreader}</span><br /></div>
+              }
+              { this.props.analyses.includes('s4pred_job') &&
+              <div><span className="info-box-number">S4Pred runtime: {this.state.s4pred}</span><br /></div>
+              }
+              { this.props.analyses.includes('dompred_job') &&
+              <div><span className="info-box-number">DomPred runtime: {this.state.dompred}</span><br /></div>
+              }
               
             </div>
       </div>

@@ -23,11 +23,11 @@ text {
 }
 
 .helix {
-  stroke: HotPink;
+  stroke: #f87fd3;
   stroke-width: 3;
 }
 .strand {
-  stroke: Gold;
+  stroke: #f8f87f;
   stroke-width: 3;
 }
 
@@ -37,11 +37,11 @@ text {
 }
 
 .H {
-  stroke: HotPink;
+  stroke: #f87fd3;
   stroke-width: 10;
 }
 .E {
-  stroke: Gold;
+  stroke: #f8f87f;
   stroke-width: 10;
 }
 
@@ -131,4 +131,10 @@ text {
 
 .cutoffText {
   fill: black;
+}
+
+.pdb_panel_class {
+  width: 60%;
+  height: 400px;
+  position: relative;
 }

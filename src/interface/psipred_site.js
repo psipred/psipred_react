@@ -7,6 +7,8 @@ import {ResultsSidebarTimes} from './results_sidebar_times.js'; // eslint-disabl
 import {ResultsSidebarDownloads} from './results_sidebar_downloads.js'; // eslint-disable-line no-unused-vars
 import {ResultsSidebarResubmission} from './results_sidebar_resubmission.js'; // eslint-disable-line no-unused-vars
 import {validateFormData} from './checkform.js' // eslint-disable-line no-unused-vars
+import {decide_location} from '../shared/index.js' // eslint-disable-line no-unused-vars
+
 //import { saveAs } from 'file-saver';
 
 async function readPDBFile(file) {
@@ -37,10 +39,9 @@ class DisplayArea extends React.Component{
       displayTime: true,
       formSelectedOption: 'SeqForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
-      "memsatsvm", "genthreader", "dompred", "pdomthreader", "bioserf",
-      "domserf", "ffpred", "dmp", "dmpfold", 's4pred' ],
+      "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", "dmpfold", 's4pred' ],
       struct_job_names: ["metsite", "hspred", "memembed", "gentdb"],
-      analyses: ['pgenthreader_job', ],
+      analyses: ['dompred_job', ],
       jobs: [],
       input_data: input_data,
       seq: seq,
@@ -68,13 +69,14 @@ class DisplayArea extends React.Component{
       resubmit: false,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
                     'presult', 'align', 'presults', 'dom_presults', 'parseds', 'ffpredfeatures',
-                    'ffpredpredictions', 'metsite', 'hspred', 'csv', 'ann', 'aln'],
+                    'ffpredpredictions', 'metsite', 'hspred', 'csv', 'ann', 'aln', 'con', 'pdb',
+                    'boundary'],
     };
   }
 
   handleReset = () => {
     this.setState({
-      analyses: ['pgenthreader_job'],
+      analyses: ['dompred_job', ],
       jobs: [],
       input_data: '',
       seq: '',
@@ -388,58 +390,8 @@ export class PsipredSite extends React.Component{
   }
 
   componentDidMount() {
+    this.setState(decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path));
     //defaults for dev server
-    var joblist_url = 'http://127.0.0.1:8000/analytics_automated/job/';
-    var endpoints_url = 'http://127.0.0.1:8000/analytics_automated/endpoints/';
-    var submit_url = 'http://127.0.0.1:8000/analytics_automated/submission/';
-    var times_url = 'http://127.0.0.1:8000/analytics_automated/jobtimes/';
-    var app_path = '/interface';
-    var main_url = 'http://127.0.0.1:3000';
-    var gears_svg = "../static/images/gears.svg";
-    var files_url = 'http://127.0.0.1:8000';
-    var location = "Dev";
-
-    //updates for production paths
-    if(this.state.href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (this.state.href.includes('psipred') && !  this.state.href.includes('psipred_beta')) )
-    {
-      app_path = '/psipred';
-      joblist_url = this.state.main_url+app_path+'/api/job/';
-      endpoints_url = this.state.main_url+app_path+'/api/endpoints/';
-      submit_url = this.state.main_url+app_path+'/api/submission/';
-      times_url = this.state.main_url+app_path+'/api/jobtimes/';
-      files_url = this.state.main_url+app_path+"/api";
-      gears_svg = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
-      location = "Production";
-    }
-    else if(window.location.hostname === "bioinfstage1.cs.ucl.ac.uk" || this.state.props  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || this.state.href.includes('psipred_beta'))
-    { //update for staging paths
-      joblist_url = this.state.main_url+this.state.app_path+'/api/job/';
-      endpoints_url = this.state.main_url+this.state.app_path+'/api/endpoints/';
-      submit_url = this.state.main_url+this.state.app_path+'/api/submission/';
-      times_url = this.state.main_url+this.state.app_path+'/api/jobtimes/';
-      files_url = this.state.main_url+this.state.app_path+"/api";
-      location = 'Staging';
-      //gears_svg = "../static/images/gears.svg";
-    } else if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"){
-      console.log("dev server using default URIs");
-    } else {
-      alert('UNSETTING ENDPOINTS WARNING, WARNING! WEBSITE NON FUNCTIONAL');
-      joblist_url = '';
-      endpoints_url = '';
-      submit_url = '';
-      times_url = '';
-    }
-    this.setState({
-      endpoints_url: endpoints_url,
-      submit_url: submit_url,
-      times_url: times_url,
-      joblist_url: joblist_url,
-      gears_svg: gears_svg,
-      app_path: app_path,
-      files_url: files_url,
-      location: location,
-      main_url: main_url,
-    });
   }
 
   render(){

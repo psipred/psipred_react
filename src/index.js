@@ -21,3 +21,4 @@ import(`./index/${getIndexFile()}`).then(( this_class ) => {
   //ReactDOM.render(render, document.getElementById('root'))
   root.render(this_class.render());
 })
+

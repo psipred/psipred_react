@@ -181,18 +181,7 @@ class ResultsSidebarResubmission extends React.Component{
             <label htmlFor="id_pdomthreader_job">&nbsp;pDomThreader</label>
           </td>
           </tr>
-
-          <tr>
-          <td data-toggle="tool-tip" title="Fully automated homology modelling">
-            <input type="checkbox" onClick={this.bioserfAlert} id="id_bioserf_job" name="bioserf_job" value="bioserf_job" onChange={this.handleChange} checked={this.state.analyses.includes('bioserf_job')} />
-            <label htmlFor="id_bioserf_job">&nbsp;Bioserf</label>
-          </td>
-          <td data-toggle="tool-tip" title="Fully automated structural domain homology modelling">
-            <input type="checkbox" onClick={this.domserfAlert} id="id_domserf_job" name="domserf_job" value="domserf_job" onChange={this.handleChange} checked={this.state.analyses.includes('domserf_job')} />
-            <label htmlFor="id_domserf_job">&nbsp;Domserf</label>
-          </td>
-          </tr>
-
+          
           <tr>
           <td data-toggle="tool-tip" title="Accurate structure prediction using residue-residue contacts.">
             <input type="checkbox" onClick={this.dmpfoldAlert} id="id_dmpfold_job" name="dmpfold_job" value="dmpfold_job" onChange={this.handleChange} checked={this.state.analyses.includes('dmpfold_job')} />

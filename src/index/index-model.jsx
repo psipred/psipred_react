@@ -1,3 +1,3 @@
-import { App } from "../model"
+import { Model } from "../model"
 
-export const render = () => <App/>
+export const render = () => <Model/>

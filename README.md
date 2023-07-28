@@ -37,9 +37,30 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+## Multi-entry point site
+
+The usual react model is for single page single-entry point dynamic pages. Here we have
+adapted this to a multi entry point site so that all code runs user side (unlike old psipred_javascript, which dispatched some things to the backend).
+
+There are three entry points; `interface`, `msa` and `model`. Interface is the user interface that users use to select jobs. msa is an entry point for displaying sequence alignments and model is an entry point that requests and shows 3D models (based off an alignment.)
+
+And we have a shared folder that lets us share code between models
+
 ## Site model
 
-The Parent container for the page/results is called PsipredSite, its immediate child is DisplayArea. DisplayArea is responsible for holding most of the state of the pages and it's children are MainForm, Sidebar, ResultsMain, ResultsSidebarTimes, ResultsSidebarDownloads and ResultsSidebarResubmission.
+To level `index.js` is now just a dispatcher for the 3 entry points and holds any global state that all three entry points need.
+
+### interface model
+
+The Parent container for the page/results is called `Interface` and can be found in the index.js.This is really just the menu, header and footer regions. The main action happens in it's immediate child; `PsipredSite`. From here its child is `DisplayArea`. `DisplayArea` is responsible for holding most of the state of the pages and it's children are `MainForm`, `Sidebar`, `ResultsMain`, `ResultsSidebarTimes`, `ResultsSidebarDownloads` and `ResultsSidebarResubmission`.
+
+### msa model
+
+This is just a simple class that reads the alignment and annotation files it needs and uses nightingale to display that alignments
+
+### model
+
+This is just a simple class that reads the alignment files it needs, dispatches a request for a 3D model and displays that when it comes back.
 
 ### Classes
 
@@ -61,7 +82,7 @@ See also class_layout.odp
 
 # Adding services to PSIPRED web server
 
-1. First modify the page in `index.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. `analyses` in `this.state` controls which jobs are alread have a check mark in the form on page load. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
+1. First modify the page in `interface/psipred_site.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. This is critical for setting which files show up in the downloads area. `analyses` in `this.state` controls which jobs are alread have a check mark in the form on page load. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
 
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box and edit as needed. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. Ensure `onChange` and `checked` are correct.
 
@@ -75,14 +96,16 @@ See also class_layout.odp
 
 7. In `results_sidebar_times.js` in the `ResultsSiderbarTimes` class add an if in `render` for the runtime of your new job type.
 
-8. If we're handling a seq result:
+8. If you haven't configured the job in the backend A_A instance I find now is a good time to do that
+
+9. If we're handling a seq result:
    a) in `results_sequence.js` in the `ResultsSequence` class update the constructor and `this.state` to handle any results and plots you need, using `React.createRef()` to bind new page elements you need.
-   b) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or tables in the lower page region
+   b) In `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`). Use `renderPanel()` to insert an area for a diagram
    c) In `getResults()` ensure `if(data.state === "Complete"){` handles parsing any files that need it. Ensure `this.setState({` sends the results contents to an appropriate state variables to hold them here.
-   d) Lastly in `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`) 
+   d) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or  tables in the lower page region
    e) update `results_sidebar_downloads` to ensure the files you want users to access are available.
-   and update `returnzip()` appropriately
-9. If we're handling a struct result: 
+   and update `returnzip()` appropriately. Recall that you need to add the results file glob to the list of `results_map` list in `psipred_site.js`
+10. If we're handling a struct result: 
 
 ## WARNING
 
@@ -95,3 +118,4 @@ If you added a new file type then you have to update the staging and production 
 3. move dmp, dompred, bioserf alerts to single master function out of `mainform.js` and `results.js`
 4. Each component class gets its own file?
 5. `seq_job_list` and `struct_job_list` in `checkform.js` could inherit these lists from the global state set in index.js
+6. in modle/indec.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all xmlhttprequest uses with this pattern.

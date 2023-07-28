@@ -1,3 +1,3 @@
-import { App } from "../msa"
+import { MSA } from "../msa"
 
-export const render = () => <App/>
+export const render = () => <MSA/>

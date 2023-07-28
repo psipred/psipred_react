@@ -1,6 +1,6 @@
 import React from 'react';
 import {draw_empty_annotation_panel} from './results_helper.js';
-import {request_data} from './results_helper.js';
+import {request_data} from '../shared/index.js';
 // import {request_binary_data} from './results_helper.js';
 import {parse_config} from './results_helper.js';
 import { parse_ss2 } from './parsers.js';
@@ -8,11 +8,12 @@ import { parse_pbdat } from './parsers.js';
 import { parse_comb } from './parsers.js';
 import { parse_memsatdata } from './parsers.js';
 import { parse_presults } from './parsers.js';
+import { parse_parseds } from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 import $ from 'jquery';
 import DataTable from 'datatables.net-dt';
-
+import * as $3Dmol from '3dmol/build/3Dmol.js';
 import { annotationGrid } from './biod3/main.js';
 
 class ResultsSequence extends React.Component{
@@ -39,6 +40,13 @@ class ResultsSequence extends React.Component{
     this.memsatSVMSchematic = React.createRef();
     this.memsatSVMCartoon = React.createRef();
     this.pgenthreaderTable = React.createRef();
+    this.dmp_plot = React.createRef();
+    this.genthreaderTable = React.createRef();
+    this.pdomthreaderTable = React.createRef();
+    this.dmpfold_pdb = React.createRef();
+    this.s4pred_horiz = React.createRef();
+    this.dompred_chart = React.createRef();
+    this.dompred_results = React.createRef();
     this.timer = null;
   }
 
@@ -57,6 +65,14 @@ class ResultsSequence extends React.Component{
         //var svg = document.getElementById('psipredChart').outerHTML; //I'm sure we should use the horizPlot ref
         //this.props.updateResultsFiles('disopred', {'psipredCartoon.svg': svg});
         //NEED TO UPDATE this.props.results_files?
+      }
+    }
+    for(let key in this.state.dompred_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.dompred_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
       }
     }
     for(let key in this.state.disopred_results){
@@ -88,8 +104,9 @@ class ResultsSequence extends React.Component{
       } 
     }
     let ann_set = {};
+    let ann_gen_set = {};
+    let ann_dom_set = {};
 
-    
     for(let key in this.state.pgenthreader_results){
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
@@ -154,6 +171,204 @@ class ResultsSequence extends React.Component{
           mgen_table.draw();
       });
 
+    }
+
+    for(let key in this.state.genthreader_results){
+      if(key.includes(".ann")){
+        let path = key.substring(0, key.lastIndexOf("."));
+        let id = path.substring(path.lastIndexOf(".")+1, path.length);
+        ann_gen_set[id] = {};
+        ann_gen_set[id]['ann'] = path+".ann";
+        ann_gen_set[id]['aln'] = path+".aln";
+      }
+    }
+    for(let key in this.state.genthreader_results){
+      if(key.includes(".presults")){
+        let file_data = this.state.genthreader_results[key];
+        //console.log(file_data);
+        let html_data = parse_presults(file_data, ann_gen_set, "gen");
+        var gt = document.createElement('template');
+        gt.innerHTML = html_data;
+        this.genthreaderTable.current.appendChild(gt.content);
+      }
+    }
+
+    if(this.state.genthreader_results){
+      let gen_table = $('#gen_table').DataTable({
+        'searching'   : true,
+        'pageLength': 50,
+      });
+
+      var gen_minEl = $('#min_gen_pval');
+      var gen_maxEl = $('#max_gen_pval');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'gen_table' ) {
+            return true;
+          }
+          var min = parseFloat(gen_minEl.val(), 10);
+          var max = parseFloat(gen_maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+   
+      // Changes to the inputs will trigger a redraw to update the table
+      gen_minEl.on('input', function () {
+          gen_table.draw();
+      });
+      gen_maxEl.on('input', function () {
+          gen_table.draw();
+      });
+
+    }
+
+    for(let key in this.state.pdomthreader_results){
+      if(key.includes(".ann")){
+        let path = key.substring(0, key.lastIndexOf("."));
+        let id = path.substring(path.lastIndexOf(".")+1, path.length);
+        ann_dom_set[id] = {};
+        ann_dom_set[id]['ann'] = path+".ann";
+        ann_dom_set[id]['aln'] = path+".aln";
+      }
+    }
+    for(let key in this.state.pdomthreader_results){
+      if(key.includes(".presults")){
+        let file_data = this.state.pdomthreader_results[key];
+        //console.log(file_data);
+        let html_data = parse_presults(file_data, ann_dom_set, "dgen");
+        var dt = document.createElement('template');
+        dt.innerHTML = html_data;
+        this.pdomthreaderTable.current.appendChild(dt.content);
+      }
+    }
+
+    if(this.state.pdomthreader_results){
+      let dom_table = $('#pdom_table').DataTable({
+        'searching'   : true,
+        'pageLength': 50,
+      });
+
+      var dom_minEl = $('#min_gen_pval');
+      var dom_maxEl = $('#max_gen_pval');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'gen_table' ) {
+            return true;
+          }
+          var min = parseFloat(dom_minEl.val(), 10);
+          var max = parseFloat(dom_maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+   
+      // Changes to the inputs will trigger a redraw to update the table
+      dom_minEl.on('input', function () {
+          dom_table.draw();
+      });
+      dom_maxEl.on('input', function () {
+          dom_table.draw();
+      });
+
+    }
+
+    for(let key in this.state.dmp_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.dmp_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+      if(key.includes("png")){
+        let img_url = this.state.dmp_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "DMP Contact Map";
+        this.dmp_plot.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.dmp_plot.current.appendChild(newElement);
+      } 
+    }
+    for(let key in this.state.dmpfold_results){
+      if(key.includes(".pdb")){
+        console.log(this.state.dmpfold_results[key]);
+        var cartoon_color = function(atom) {
+          if(atom.ss === 'h'){return '#e353e3';}
+          if(atom.ss === 's'){return '#e5dd55';}
+          return('grey');
+        };
+        //https://www.npmjs.com/package/3dmol
+        let element = this.dmpfold_pdb.current;
+        let config = { backgroundColor: '#ffffff' };
+        let viewer = $3Dmol.createViewer( element, config );
+        viewer.addModel( this.state.dmpfold_results[key], "pdb" );   /* load data */
+        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
+        viewer.zoomTo();                                      /* set camera */
+        viewer.render();                                      /* render scene */
+        viewer.zoom(1.7, 3000);     
+      }
+    }
+
+    for(let key in this.state.s4pred_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.s4pred_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.s4pred_horiz.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+    }
+
+    for(let key in this.state.dompred_results){
+      
+      if(key.includes(".png")){
+        let img_url = this.state.dompred_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Dompred Chart";
+        this.dompred_chart.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.dompred_chart.current.appendChild(newElement);
+      }
+      if(key.includes(".boundary")){
+        let boundary_data = this.state.dompred_results[key];
+        let prediction_regex = /Domain\sBoundary\slocations\spredicted\sDPS:\s(.+)/;
+        let prediction_match =  prediction_regex.exec(boundary_data);
+        let h4Element = document.createElement('h4');
+        h4Element.innerText += boundary_data;
+        if(prediction_match)
+        {
+          h4Element.innerText += boundary_data;
+        }
+        else{
+          h4Element.innerText += "No ParseDS Domain boundaries predicted";
+        }
+        this.dompred_results.current.appendChild(h4Element);
+      }
     }
 
     console.log("UPDATING ANNOTATION GRID");
@@ -243,6 +458,10 @@ class ResultsSequence extends React.Component{
                   console.log("Found MEMSAT_SVM and parsing");
                   local_annotations = parse_memsatdata(local_annotations, results_data[key]);
                 } 
+                if(key.includes('.boundary')){
+                  console.log("Found Dompred and parsing");
+                  local_annotations = parse_parseds(local_annotations, results_data[key]);
+                } 
                 
               }
               // we assign the results files 
@@ -250,6 +469,12 @@ class ResultsSequence extends React.Component{
                 disopred_results: parsed_data.disopred,
                 memsatsvm_results: parsed_data.memsatsvm,
                 pgenthreader_results: parsed_data.pgenthreader,
+                dmp_results: parsed_data.dmp,
+                genthreader_results: parsed_data.genthreader,
+                pdomthreader_results: parsed_data.pdomthreader,
+                dmpfold_results: parsed_data.dmpfold,
+                s4pred_results: parsed_data.s4pred,
+                dompred_results: parsed_data.dompred,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -257,13 +482,18 @@ class ResultsSequence extends React.Component{
             this.props.updateWaiting(false);
             this.props.updateConfig(config_csv);
           }
+          else if(data.state === "Error"){
+            throw new Error(data.submissions.at(-1).last_message);
+          }
           else{
             throw new Error("Job Failed");
           }
+
         }
       }).catch(error => {
-        console.log("Fetching results: "+result_uri+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        alert("Fetching results: "+result_uri+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        console.log("Fetching results: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        alert("Fetching results: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        this.props.updateWaiting(false);
         return null;
       });
     };
@@ -276,7 +506,40 @@ class ResultsSequence extends React.Component{
     this.timer = setInterval(() => this.getResults(), 500);
   }
 
+  renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
+  //ID to identify the panel
+  //A nice human readable name of the panel
+  //A class name for the results area
+  //And ID name for the results
+  //A react ref to manipulate to insert the diagram/results/etc
+    return(
+      <div className="box box-primary collapsed-box" id={panel_id}>
+      <div className="box-header with-border">
+        <h5 className="box-title">{title}</h5>
+        <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+      </div>
+      <div className="box-body">
+        { this.state.error_message &&
+          <div className="error">{this.state.error_message}</div>
+        }
+        <div className={plot_class} id={plot_id} ref={plot_data_ref} ></div>
+        { this.props.waiting &&
+          <div className="waiting" intro="slide" outro="slide"><br /><h4>{waiting_message}</h4></div>
+        }
+        { this.props.waiting &&
+          <div className="waiting_icon" intro="slide" outro="slide">{waiting_icon}</div>
+        }
+        { this.props.waiting &&
+          <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+        }
+      </div>
+    </div>
+    )
+  }
+
+
   render() {
+    // currently the memsat panel is not calling the funcition. Possible argument for the memsat panel to be 2 panels
     return(
       <div>
         { this.props.uuid &&
@@ -311,50 +574,14 @@ class ResultsSequence extends React.Component{
         </div>
         }
 
-        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job")) &&
-          <div className="box box-primary collapsed-box" id="psipred_cartoon">
-            <div className="box-header with-border">
-              <h5 className="box-title">PSIPRED Cartoon</h5>
-              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
-            </div>
-            <div className="box-body">
-              { this.state.error_message &&
-                <div className="error">{this.state.error_message}</div>
-              }
-              <div className="psipred_cartoon" id='psipred_horiz' ref={this.horizPlot} ></div>
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.psipred_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.psipred_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
-            </div>
-          </div>
+        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job")) &&
+          <div>
+            { this.renderPanel("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
+          </div> 
          }
          { this.props.analyses.includes("disopred_job") &&
-          <div className="box box-primary collapsed-box" id="disorder_plot">
-            <div className="box-header with-border">
-              <h5 className="box-title">DISOPRED Plot</h5>
-              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
-            </div>
-            <div className="box-body">
-              { this.state.error_message &&
-                <div className="error">{this.state.error_message}</div>
-              }
-              <div className="disorder_plot" id="disorder_svg" ref={this.disopredPlot} ></div>
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.disopred_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.disopred_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
-            </div>
+          <div>
+            { this.renderPanel("disorder_plot", "DISOPRED Plot", "disorder_plot", 'pdisorder_svg', this.disopredPlot, this.state.disopred_waiting_message, this.state.disopred_waiting_icon) }
           </div>
          }
         { this.props.analyses.includes("memsatsvm_job") &&
@@ -382,21 +609,52 @@ class ResultsSequence extends React.Component{
           </div>
          }
          { this.props.analyses.includes("pgenthreader_job") &&
-          <div className="box box-primary collapsed-box" id="pgen_table_box">
+          <div>
+            { this.renderPanel("pgen_table_box", "pGenTHREADER Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.state.pgenthreader_waiting_message, this.state.pgenthreader_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("dmp_job") &&
+          <div>
+            { this.renderPanel("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.state.dmp_waiting_message, this.state.dmp_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("genthreader_job") &&
+          <div>
+            { this.renderPanel("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.state.genthreader_waiting_message, this.state.genthreader_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("pdomthreader_job") &&
+          <div>
+            { this.renderPanel("pdom_table_box", "pDomTHREADER Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.state.pdomthreader_waiting_message, this.state.pdomthreader_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("dmpfold_job") &&
+          <div>
+            { this.renderPanel("dmpfold_pdb", "DMPfold prediction", "pdb_panel_class", 'dmp_pdb_id', this.dmpfold_pdb , this.state.dmpfold_waiting_message, this.state.dmpfold_waiting_icon) }
+          </div>
+         }
+         { this.props.analyses.includes("s4pred_job") &&
+          <div>
+            { this.renderPanel("s4pred_cartoon", "S4Pred Cartoon", "s4pred_cartoon", 's4pred_horiz', this.s4pred_horiz , this.state.s4pred_waiting_message, this.state.dmpfold_waiting_icon) }
+          </div>
+         }
+        { this.props.analyses.includes("dompred_job") &&
+          <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
             <div className="box-header with-border">
-              <h5 className="box-title">pGenTHREADER Structural Results</h5>
+              <h5 className="box-title">DomPred Results</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
             </div>
             <div className="box-body">
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="pgen_table_div" id='pgenthreader_table' ref={this.pgenthreaderTable} ></div>
+              <div className="dompred_chart" id="dompred_chart" ref={this.dompred_chart}></div>
+              <div className="dompred_results" id="dompread_results" ref={this.dompred_results} ></div>
               { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.pgenthreader_waiting_message}</h4></div>
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.dompred_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.pgenthreader_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide">{this.state.dompred_waiting_icon}</div>
               }
               { this.props.waiting &&
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
@@ -404,6 +662,7 @@ class ResultsSequence extends React.Component{
             </div>
           </div>
          }
+         
       </div>
     );
   }

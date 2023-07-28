@@ -504,16 +504,18 @@ export function parse_presults(file, ann_list, type)
       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/version/latest/domain/"+table_hit+"'>"+table_hit+"</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"cath_modeller\");' value='Model' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/msa/?aln="+(ann_list[table_hit+"_"+i].aln)+"&ann="+(ann_list[table_hit+"_"+i].ann)+"\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=1000 height=400 top=30\")' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=cath\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
     }
     else{
       pseudo_table += "<td><a target='_blank' href='https://www.rcsb.org/pdb/explore/explore.do?structureId="+pdb+"'>"+table_hit+"</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/pdb/"+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='psipred.loadNewAlignment(\""+(ann_list[table_hit+"_"+i].aln)+"\",\""+(ann_list[table_hit+"_"+i].ann)+"\",\""+(table_hit+"_"+i)+"\");' value='View' /></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"pdb_modeller\");' value='Model' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/msa/?aln="+(ann_list[table_hit+"_"+i].aln)+"&ann="+(ann_list[table_hit+"_"+i].ann)+"\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=1000 height=400 top=30\")' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=cath\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
+      
+      //pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"pdb_modeller\");' value='Model' /></td>";
     }
     pseudo_table += "</tr>\n";
     }
@@ -526,36 +528,28 @@ export function parse_presults(file, ann_list, type)
   return(pseudo_table);
 }
 
-// export function parse_parseds(ractive, file)
-// {
-//   let prediction_regex = /Domain\sBoundary\slocations\spredicted\sDPS:\s(.+)/;
-//   let prediction_match =  prediction_regex.exec(file);
-//   if(prediction_match)
-//   {
-//     let details = file.replace("\n","<br />");
-//     details = details.replace("\n","<br />");
-//     ractive.set("parseds_info", "<h4>"+details+"</h4>");
-//     let values = [];
-//     if(prediction_match[1].indexOf(","))
-//     {
-//       values = prediction_match[1].split(',');
-//       values.forEach(function(value, i){
-//         values[i] = parseInt(value);
-//       });
-//     }
-//     else
-//     {
-//       values[0] = parseInt(prediction_match[1]);
-//     }
-//     //console.log(values);
-//     let annotations = ractive.get('annotations');
-//     values.forEach(function(value){
-//       annotations[value].dompred = 'B';
-//     });
-//     ractive.set('annotations', annotations);
-//   }
-//   else
-//   {
-//     ractive.set("parseds_info", "No ParseDS Domain boundaries predicted");
-//   }
-// }
+export function parse_parseds(annotations, file)
+{
+  let prediction_regex = /Domain\sBoundary\slocations\spredicted\sDPS:\s(.+)/;
+  let prediction_match =  prediction_regex.exec(file);
+  if(prediction_match)
+  {
+    let values = [];
+    if(prediction_match[1].indexOf(","))
+    {
+      values = prediction_match[1].split(',');
+      values.forEach(function(value, i){
+        values[i] = parseInt(value);
+      });
+    }
+    else
+    {
+      values[0] = parseInt(prediction_match[1]);
+    }
+    //console.log(values);
+    values.forEach(function(value){
+      annotations[value].dompred = 'B';
+    });
+  }
+  return(annotations);
+}
