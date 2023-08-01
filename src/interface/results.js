@@ -36,6 +36,8 @@ class ResultsMain extends React.Component{
       s4pred_wating_icon: '',
       dompred_waiting_message: 'Please wait for your DomPred job to process',
       dompred_wating_icon: '',
+      ffpred_waiting_message: 'Please wait for your FFPred job to process',
+      ffpred_wating_icon: '',
       
     };
   }

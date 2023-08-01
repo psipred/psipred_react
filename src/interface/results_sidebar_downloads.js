@@ -144,7 +144,15 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['.boundary','DomPred Boundaries']], 'DomPred DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
-    
+          if(name === 'dompred'){
+            link_data = this.createDownloadLinks(count, [['.boundary','DomPred Boundaries']], 'DomPred DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
+          if(name === 'ffpred'){
+            link_data = this.createDownloadLinks(count, [['.featcfg', 'FFPred Predicted Features'], ['.full_formatted', 'FFPred Predictions']], 'FFPred DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
+
           count = link_data[1];
         }
         // downloads_text.push(link_data[0]);

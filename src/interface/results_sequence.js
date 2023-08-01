@@ -9,6 +9,8 @@ import { parse_comb } from './parsers.js';
 import { parse_memsatdata } from './parsers.js';
 import { parse_presults } from './parsers.js';
 import { parse_parseds } from './parsers.js';
+import { parse_featcfg } from './parsers.js';
+import { parse_ffpreds} from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 import $ from 'jquery';
@@ -47,6 +49,11 @@ class ResultsSequence extends React.Component{
     this.s4pred_horiz = React.createRef();
     this.dompred_chart = React.createRef();
     this.dompred_results = React.createRef();
+    this.ffpred_memsat = React.createRef();
+    this.ffpred_tables = React.createRef();
+    this.ffpred_sch = React.createRef();
+    this.aa_comp = React.createRef();
+    this.global_features = React.createRef();
     this.timer = null;
   }
 
@@ -70,6 +77,14 @@ class ResultsSequence extends React.Component{
     for(let key in this.state.dompred_results){
       if(key.includes(".horiz")){
         let file_data = this.state.dompred_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+    }
+    for(let key in this.state.ffpred_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.ffpred_results[key];
         let count = (file_data.match(/Conf/g) || []).length;
         let panel_height = ((6*30)*(count+1))+120;
         psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
@@ -371,6 +386,175 @@ class ResultsSequence extends React.Component{
       }
     }
 
+     for(let key in this.state.ffpred_results){
+      if(key.includes("_cartoon_memsat_svm.png")){
+        let img_url = this.state.ffpred_results[key];
+        let divElement = document.createElement('div');
+        divElement.className = "center"
+
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Memsat Cartoon diagram";
+        divElement.append(newElement);
+        this.ffpred_memsat.current.appendChild(divElement);
+        newElement = document.createElement('br');
+        this.ffpred_memsat.current.appendChild(newElement);
+      }
+      if(key.includes("_sch.png")){
+        let img_url = this.state.ffpred_results[key];
+        let divElement = document.createElement('div');
+        divElement.className = "center"
+
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "FFPred Feature Schematic";
+        divElement.append(newElement);
+        this.ffpred_sch.current.appendChild(divElement);
+        newElement = document.createElement('br');
+        this.ffpred_sch.current.appendChild(newElement);
+      }
+      if(key.includes(".featcfg")){
+        let file_data = this.state.ffpred_results[key];
+        let html_data = parse_featcfg(file_data);
+        let feat_table = html_data[0];
+        let aa_table = html_data[1];
+        
+        t = document.createElement('template');
+        t.innerHTML = feat_table;
+        this.global_features.current.appendChild(t.content);
+        t = document.createElement('template');
+        t.innerHTML = aa_table;
+        this.aa_comp.current.appendChild(t.content);
+      }
+      if(key.includes(".full_formatted")){
+        let file_data = this.state.ffpred_results[key];
+        let html_data = parse_ffpreds(file_data);
+        t = document.createElement('template');
+        t.innerHTML = html_data;
+        this.ffpred_tables.current.appendChild(t.content);
+      }
+     }
+     if(this.state.ffpred_results){
+      let bp_table = $('#bp_table').DataTable({
+        'searching'   : true,
+        'pageLength': 25,
+        'order': [[3, 'asc'],]
+      });
+
+      var bp_minEl = $('#min_bp_prob');
+      var bp_maxEl = $('#max_bp_prob');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'bp_table' ) {
+            return true;
+          }
+          var min = parseFloat(bp_minEl.val(), 10);
+          var max = parseFloat(bp_maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+      // Changes to the inputs will trigger a redraw to update the table
+      bp_minEl.on('input', function () {
+          bp_table.draw();
+      });
+      bp_maxEl.on('input', function () {
+          bp_table.draw();
+      });
+
+      let mf_table = $('#mf_table').DataTable({
+        'searching'   : true,
+        'pageLength': 25,
+        'order': [[3, 'asc'],]
+      });
+
+      var mf_minEl = $('#min_mf_prob');
+      var mf_maxEl = $('#max_mf_prob');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'mf_table' ) {
+            return true;
+          }
+          var min = parseFloat(mf_minEl.val(), 10);
+          var max = parseFloat(mf_maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+      // Changes to the inputs will trigger a redraw to update the table
+      mf_minEl.on('input', function () {
+          mf_table.draw();
+      });
+      mf_maxEl.on('input', function () {
+          mf_table.draw();
+      });
+
+      let cc_table = $('#cc_table').DataTable({
+        'searching'   : true,
+        'pageLength': 25,
+        'order': [[3, 'asc'],]
+      });
+
+      var cc_minEl = $('#min_cc_prob');
+      var cc_maxEl = $('#max_cc_prob');
+      // Custom range filtering function
+      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+      //note: we have to push one of these functions on to the array for every table we want to have
+      // a custom filter for.
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+          //console.log(settings.nTable.id);
+          if ( settings.nTable.id !== 'cc_table' ) {
+            return true;
+          }
+          var min = parseFloat(cc_minEl.val(), 10);
+          var max = parseFloat(cc_maxEl.val(), 10);
+          var pval = parseFloat(data[2]) || 0; // use data for the age column
+          if (
+              (isNaN(min) && isNaN(max)) ||
+              (isNaN(min) && pval <= max) ||
+              (min <= pval && isNaN(max)) ||
+              (min <= pval && pval <= max)
+          ) {
+              return true;
+          }
+   
+          return false;
+      });
+      // Changes to the inputs will trigger a redraw to update the table
+      cc_minEl.on('input', function () {
+          cc_table.draw();
+      });
+      cc_maxEl.on('input', function () {
+          cc_table.draw();
+      });
+
+    }
+
+
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
@@ -475,6 +659,7 @@ class ResultsSequence extends React.Component{
                 dmpfold_results: parsed_data.dmpfold,
                 s4pred_results: parsed_data.s4pred,
                 dompred_results: parsed_data.dompred,
+                ffpred_results: parsed_data.ffpred,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -574,7 +759,7 @@ class ResultsSequence extends React.Component{
         </div>
         }
 
-        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job")) &&
+        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job") || this.props.analyses.includes("ffpred_job")) &&
           <div>
             { this.renderPanel("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
           </div> 
@@ -655,6 +840,41 @@ class ResultsSequence extends React.Component{
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.state.dompred_waiting_icon}</div>
+              }
+              { this.props.waiting &&
+                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+              }
+            </div>
+          </div>
+         }
+         { this.props.analyses.includes("ffpred_job") &&
+          <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
+            <div className="box-header with-border">
+              <h5 className="box-title">FFPred Predictions</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <p>These prediction terms represent terms predicted where SVM training includes assigned GO terms across all evidence code types. SVM reliability is regarded as High (H) when MCC, sensitivity, specificity and precision are jointly above a given threshold, Otherwise Reliability is indicated as Low (L). </p>
+              <div className="ffpred_bp_table" id="ffpred_bp_table" ref={this.ffpred_tables} ></div>
+              <h4>Sequence Feature Map</h4>
+              <p>Position dependent feature predictions are mapped onto the sequence schematic shown below. The line height of the Phosphorylation and Glycosylation features reflects the confidence of the residue prediction.</p>
+              <div className="ffpred_sch" id="ffpred_sch" ref={this.ffpred_sch} ></div>
+              <h4>Predicted Transmembrane Topology</h4>
+              <div className="ffpred_memsat" id="ffpred_memsat" ref={this.ffpred_memsat} ></div>
+              <h4>Amino Acid Composition</h4>
+              <div className="ffpred_memsat" id="ffpred_memsat" ref={this.aa_comp} ></div>
+              <h4>Global Features</h4>
+              <p>Global features are calculated directly from sequence. Localisation values are predicted by the Psort algorithm and reflect the relative likelihood of the protein occupying different cellular localisations. The bias column is highlighted according to the significance of the feature value calculated from Z score of the feature.</p>
+              <div className="ffpred_memsat" id="ffpred_memsat" ref={this.global_features} ></div>
+              
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.ffpred_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.state.ffpred_waiting_icon}</div>
               }
               { this.props.waiting &&
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>

@@ -77,7 +77,7 @@ class SeqForm extends React.Component {
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td><h4>Function Prediction</h4></td><td></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Predict protein function, using Gene Ontology annotations"><input type="checkbox" id="id_ffpred_job" name="ffpred_job" value="ffpred_job" onChange={this.handleChange} checked={this.props.analyses.includes('ffpred_job')} />&nbsp;<label htmlFor="id_ffpred_job">FFPred 3 (Eurkaryotic Function Prediction)</label> </td>
+                  <td data-toggle="tool-tip" title="Predict protein function, using Gene Ontology annotations"><input type="checkbox" id="id_ffpred_job" name="ffpred_job" value="ffpred_job" onChange={this.handleChange} checked={this.props.analyses.includes('ffpred_job')} />&nbsp;<label htmlFor="id_ffpred_job">FFPred 4 (Eurkaryotic Function Prediction)</label> </td>
                   <td></td>
                 </tr>
                 <tr><td colSpan="2"><a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /></td></tr>
