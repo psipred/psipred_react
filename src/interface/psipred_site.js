@@ -23,14 +23,15 @@ async function readPDBFile(file) {
 class DisplayArea extends React.Component{
   constructor(props){
     super(props);
-    let input_data = "";
-    let seq = "";
+    let input_data = '';
+    let seq = '';
+    let pdb_data = null;
     let name = "";
     let email = '';
 
     if(this.props.location === 'Dev'){
-      input_data = "ASDASDASDASDASDASDASDASDASDASDASDASDASDASD";
-      seq = "ASDASDASDASDASDASDASDASDASDASDASDASDASDASD";
+      input_data = 'ASDASDASDASDASDASDASDASDASDASD';
+      seq = 'ASDASDASDASDASDASDASDASDASDASD';
       name = "test";
       email = 'a@b.com'
     }
@@ -47,7 +48,7 @@ class DisplayArea extends React.Component{
       seq: seq,
       name: name,
       email: email,
-      pdbData: '',
+      pdbData: pdb_data,
       waiting: false,
       uuid: null,
       bioserf_modeller_key: '',
@@ -90,7 +91,7 @@ class DisplayArea extends React.Component{
       dompred_e_value_cutoff: '0.01',
       dompred_psiblast_iterations: '5',
       ffpred_selection: 'human',
-      pdbData: '',
+      pdbData: null,
       metsite_metal_type: 'CA',
       metsite_chain_id: 'A',
       metsite_fpr: '1',
@@ -294,7 +295,7 @@ class DisplayArea extends React.Component{
     // Uppercase the seq data
     let jobs = this.state.analyses;
     jobs = jobs.map(elem => elem.replace("_job", ""));
-    console.log(jobs);
+    //console.log(jobs);
     let pdbFile = null;
     let pdbData = null;
     try{

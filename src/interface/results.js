@@ -40,6 +40,8 @@ class ResultsMain extends React.Component{
       dompred_wating_icon: '',
       ffpred_waiting_message: 'Please wait for your FFPred job to process',
       ffpred_wating_icon: '',
+      metsite_waiting_message: 'Please wait for your Metsite job to process',
+      metsite_wating_icon: '',
       
     };
   }
@@ -99,9 +101,10 @@ class ResultsMain extends React.Component{
          config_data.props.updateWaiting(true);
        }
        //DO SOME THINGS
-     }).catch(error => {
-       console.log("Getting Job data "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Getting Job data to "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+     }).catch(async error => {
+       let obj = await error.json().then(json => {return(json);});
+       console.log("Getting Job data "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Getting Job data to "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        return null;
      });
   }
@@ -110,18 +113,21 @@ class ResultsMain extends React.Component{
     // console.log(config_data.props);
     console.log('Posting Job URI request: POST: '+config_data.props.submit_url );
     let sending_data = configurePost({...{...config_data.state, ...config_data.props}});
+    //console.log(sending_data);
     fetch(config_data.props.submit_url, {
       headers: {
         'Accept': 'application/json',
       },
       method: 'POST',
       body: sending_data,
-    }).then(response => {
+    }).then(async response => {
        if(response.ok){
+         //console.log("response ok");
          return response.json().then(json => {return(json);});
        }
        throw response;
      }).then(data => {
+       //console.log("response processing");
        if(data.UUID !== null)
        {
          console.log("RECIEVED UUID: "+data.UUID);
@@ -136,9 +142,17 @@ class ResultsMain extends React.Component{
          config_data.props.updateWaiting(true);
        }
        //DO SOME THINGS
-     }).catch(error => {
-       console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Posting Job to "+config_data.props.submit_url+" Failed. "+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+     }).catch(async error => {
+       let obj = await error.json().then(json => {return(json);});
+       let message = '';
+       if(obj.error){
+        message = obj.error;
+       }
+       if(obj.error.input_data){
+        message = obj.error.input_data
+       }
+       console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        return null;
      });
   }
@@ -174,9 +188,6 @@ class ResultsMain extends React.Component{
 
       </div>
     );
-    // name bar
-    // IF seq job : show sequencve plot
-    // IF show various results
   }
 }
 

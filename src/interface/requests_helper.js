@@ -14,6 +14,15 @@ export function configurePost(formState)
   {
     alert(e);
   }
+  if(formState.pdbData) {
+    try
+    {
+      file = new Blob([formState.pdbData]);
+    } catch (e)
+    {
+      alert(e);
+    }
+  }
   let fd = new FormData();
   console.log("JOB NAME: "+formState.name);
 

@@ -141,9 +141,10 @@ export class Model extends React.Component{
           }
 
         }
-      }).catch(error => {
-        console.log("Fetching 3D MODEL: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        alert("Fetching 3D MODEL: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+      }).catch(async error => {
+        let obj = await error.json().then(json => {return(json);});
+        console.log("Fetching 3D MODEL: "+result_uri+" Failed. \n"+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        alert("Fetching 3D MODEL: "+result_uri+" Failed. \n"+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
         this.setState({waiting: false});
         clearInterval(this.timer);
         return null;

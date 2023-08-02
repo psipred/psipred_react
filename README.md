@@ -129,3 +129,4 @@ If you added a new file type then you have to update the staging and production 
 10. ensure emembed and mempack work (need to use staging to debug as won't compile)
 11. Check passing the commandline options is actually working
 12. I guess in theory `results_sequence.js` and `results_structure.js` could be combined in to a single file/class. I think that would make things a bit too hairy and cumbersome but go for it if you fancy
+13. Arguably everything in the `requests_helper` should got to `shared/`

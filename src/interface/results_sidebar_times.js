@@ -33,9 +33,10 @@ class ResultsSidebarTimes extends React.Component{
          this.setState(times);
        }
        //DO SOME THINGS
-     }).catch(error => {
-       console.log("Getting Times data "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Getting Times data "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+     }).catch(async error => {
+       let obj = await error.json().then(json => {return(json);});
+       console.log("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
       return null;
      })
   }
