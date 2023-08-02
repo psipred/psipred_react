@@ -2,6 +2,8 @@ import React from 'react';
 import {configurePost} from './requests_helper.js'; // eslint-disable-line no-unused-vars
 import {request_data} from '../shared/index.js'; // eslint-disable-line no-unused-vars
 import {ResultsSequence} from './results_sequence.js'; // eslint-disable-line no-unused-vars
+import {ResultsStructure} from './results_structure.js'; // eslint-disable-line no-unused-vars
+
 
 //We render the name bar with the copy link and then we render the seq plot for
 //any SeqForm results.
@@ -166,7 +168,7 @@ class ResultsMain extends React.Component{
       { (this.props.uuid && this.props.formSelectedOption==='SeqForm') ?
         <ResultsSequence {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} updateConfig={this.props.updateConfig} />
         :
-        <h2>STRUCT RESULTS</h2>
+        <ResultsStructure {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} updateConfig={this.props.updateConfig} />
       }
 
 

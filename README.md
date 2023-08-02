@@ -105,7 +105,11 @@ See also class_layout.odp
    d) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or  tables in the lower page region
    e) update `results_sidebar_downloads` to ensure the files you want users to access are available.
    and update `returnzip()` appropriately. Recall that you need to add the results file glob to the list of `results_map` list in `psipred_site.js`
+
 10. If we're handling a struct result: 
+    a) If we're working on structure methods you can set the struct form in `psipredsite.js`, set 
+    `formSelectedOption` to `StructForm` 
+    b) now repeat what is in 9 but with `results_structure.js`
 
 ## WARNING
 
@@ -118,4 +122,10 @@ If you added a new file type then you have to update the staging and production 
 3. move dmp, dompred, bioserf alerts to single master function out of `mainform.js` and `results.js`
 4. Each component class gets its own file?
 5. `seq_job_list` and `struct_job_list` in `checkform.js` could inherit these lists from the global state set in index.js
-6. in modle/indec.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all xmlhttprequest uses with this pattern.
+6. in model/index.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all xmlhttprequest uses with this pattern.
+7. Code that handles DataTable `results_sequence.js` AND `results_struct.js` searching could be DRYed out and sent to `shared/index.js`
+8. Check errors are inserted in to page correctly, not just the pop up
+9. Ensure the stuff for the versioning is correctly captured.
+10. ensure emembed and mempack work (need to use staging to debug as won't compile)
+11. Check passing the commandline options is actually working
+12. I guess in theory `results_sequence.js` and `results_structure.js` could be combined in to a single file/class. I think that would make things a bit too hairy and cumbersome but go for it if you fancy

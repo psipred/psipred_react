@@ -37,11 +37,11 @@ class DisplayArea extends React.Component{
     this.state = {
       displayType: 'input',
       displayTime: true,
-      formSelectedOption: 'SeqForm',
+      formSelectedOption: 'StructForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", "dmpfold", 's4pred' ],
       struct_job_names: ["metsite", "hspred", "memembed", "gentdb"],
-      analyses: ['ffpred_job', ],
+      analyses: ['metsite_job', ],
       jobs: [],
       input_data: input_data,
       seq: seq,
@@ -76,7 +76,7 @@ class DisplayArea extends React.Component{
 
   handleReset = () => {
     this.setState({
-      analyses: ['ffpred_job', ],
+      analyses: ['metsite_job', ],
       jobs: [],
       input_data: '',
       seq: '',
