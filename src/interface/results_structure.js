@@ -9,7 +9,9 @@ import * as $3Dmol from '3dmol/build/3Dmol.js';
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
-    //this.sequencePlot = React.createRef();
+    this.state = {};
+    this.metsite_structure = React.createRef();
+    this.metsite_table = React.createRef();
     this.timer = null;
   }
 
@@ -146,7 +148,7 @@ class ResultsStructure extends React.Component{
               //component did update
 
               // we assign the results files 
-              this.setState({});
+              this.setState({metsite_results: parsed_data.metsite});
             });
             this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
@@ -234,10 +236,30 @@ class ResultsStructure extends React.Component{
         </div>
         }
 
-        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job") || this.props.analyses.includes("ffpred_job")) &&
-          <div>
-            { this.renderPanel("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
-          </div> 
+        { this.props.analyses.includes("metsite_job") &&
+          <div className="box box-primary collapsed-box" id="metsite_preds">
+            <div className="box-header with-border">
+              <h5 className="box-title">Metsite Predictions</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div className="metsite_structure" id="metsite_structure" ref={this.metsite_structure} ></div>
+              <div className="metsite_table" id="metsite_table" ref={this.metsite_table} ></div>
+              
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.metsite_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.state.metsite_waiting_icon}</div>
+              }
+              { this.props.waiting &&
+                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+              }
+            </div>
+          </div>
          }
          
       </div>
