@@ -1,9 +1,9 @@
 import React from 'react';
-import {draw_empty_annotation_panel} from './results_helper.js';
+import {draw_empty_annotation_panel} from '../shared/index.js';
 import {request_data} from '../shared/index.js';
 import {config_table} from '../shared/index.js'; 
 // import {request_binary_data} from './results_helper.js';
-import {parse_config} from './results_helper.js';
+import {parse_config} from '../shared/index.js';
 import { parse_ss2 } from './parsers.js';
 import { parse_pbdat } from './parsers.js';
 import { parse_comb } from './parsers.js';

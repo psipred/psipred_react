@@ -1,5 +1,8 @@
 import $ from 'jquery';
 import DataTable from 'datatables.net-dt';
+import { annotationGrid } from '../interface/biod3/main.js';
+
+var moment = require('moment');
 
 export function decide_location(href, hostname, main_url, app_path){
     let uris = {
@@ -134,4 +137,96 @@ export function config_table(table_id, page_length, min_id, max_id, table_name, 
   maxEl.on('input', function () {
     table.draw();
   });
+}
+
+//given a job name prep all the form elements and send an http request to the
+//backend
+
+export function configurePost(formState)
+{
+  //console.log(formState);
+  console.log("Sending form data");
+  var file = null;
+  try
+  {
+    file = new Blob([formState.seq]);
+  } catch (e)
+  {
+    alert(e);
+  }
+  if(formState.pdbData) {
+    try
+    {
+      file = new Blob([formState.pdbData]);
+    } catch (e)
+    {
+      alert(e);
+    }
+  }
+  let fd = new FormData();
+  console.log("JOB NAME: "+formState.name);
+
+  fd.append("input_data", file, 'input.txt');
+  fd.append("job",formState.jobs.join(","));
+  fd.append("submission_name", formState.name);
+  fd.append("email", formState.email);
+  if(formState.jobs.includes('dompred')){
+  fd.append("psiblast_dompred_evalue", formState.dompred_e_value_cutoff);
+  fd.append("psiblast_dompred_iterations", formState.dompred_psiblast_iterations);}
+  if(formState.jobs.includes('metsite')){
+  fd.append("metsite_checkchains_chain", formState.metsite_chain_id);
+  fd.append("extract_fasta_chain", formState.metsite_chain_id);
+  fd.append("seedSiteFind_metal", formState.metsite_metal_type);
+  fd.append("seedSiteFind_chain", formState.metsite_chain_id);
+  fd.append("metpred_wrapper_chain", formState.metsite_chain_id);
+  fd.append("metpred_wrapper_metal", formState.metsite_metal_type);
+  fd.append("metpred_wrapper_fpr", formState.metsite_fpr);}
+  if(formState.jobs.includes('hspred')){
+  fd.append("hspred_checkchains_chains", formState.hspred_protein_1+formState.hspred_protein_2);
+  fd.append("hs_pred_first_chain", formState.hspred_protein_1);
+  fd.append("hs_pred_second_chain", formState.hspred_protein_2);
+  fd.append("split_pdb_files_first_chain", formState.hspred_protein_1);
+  fd.append("split_pdb_files_second_chain", formState.hspred_protein_2);}
+  if(formState.jobs.includes('memembed')){
+  fd.append("memembed_algorithm", formState.memembed_algorithm);
+  fd.append("memembed_barrel", formState.memembed_barrel);
+  fd.append("memembed_termini", formState.memembed_terminal);}
+  if(formState.jobs.includes('ffpred')){
+  fd.append("ffpred_selection", formState.ffpred_selection);
+  }
+  return(fd);
+}
+
+export function parse_times(data){
+  //moment.duration(times[name]*1000);
+  let times = {'loading_message': null};
+  for(const [key, value] of Object.entries(data)){
+    times[key] = moment.duration(value*1000).humanize();
+  }
+  return(times);
+}
+
+export function draw_empty_annotation_panel(state, targetDiv){
+  // console.log(Math.ceil(residues.length/50));
+  //console.log("INITIAL HEIGHT: "+panel_height);
+  annotationGrid(state.annotations, {parent: targetDiv, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: state.annotation_panel_height, container_height: state.annotation_panel_height});
+}
+
+export function parse_config(json){
+  let job_summary = '';
+  let step_count = 0;
+  json.steps.forEach(function(step){
+    if(step.task.configuration.length > 0) {
+      step.task.configuration.forEach(function(conf){
+        job_summary += json.name+",";
+        job_summary += step_count+",";
+        job_summary += conf.type+",";
+        job_summary += conf.name+",";
+        job_summary += conf.version+",";
+        job_summary += '"'+conf.parameters+'"\n';
+      });
+      step_count+=1;
+    }
+  });
+  return(job_summary);
 }

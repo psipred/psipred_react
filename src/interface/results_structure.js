@@ -1,7 +1,7 @@
 import React from 'react';
 import {request_data} from '../shared/index.js'; 
 import {config_table} from '../shared/index.js'; 
-import {parse_config} from './results_helper.js';
+import {parse_config} from '../shared/index.js';
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 

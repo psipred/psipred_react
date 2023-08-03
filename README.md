@@ -82,7 +82,7 @@ See also class_layout.odp
 
 # Adding services to PSIPRED web server
 
-1. First modify the page in `interface/psipred_site.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. This is critical for setting which files show up in the downloads area. `analyses` in `this.state` controls which jobs are alread have a check mark in the form on page load. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
+1. First modify the page in `interface/psipred_site.js` under `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. This is critical for setting which files show up in the downloads area. `analyses` in `this.state` controls which jobs are already have a check mark in the form on page load. `job_strings` keeps a track of how your new method is spelt across the site. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. 
 
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box and edit as needed. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. Ensure `onChange` and `checked` are correct.
 
@@ -117,18 +117,10 @@ If you added a new file type then you have to update the staging and production 
 
 # TODO
 
-1. Move tooltip strings to the top level state and replace them with this.props references in `mainform.js` AND `results.js`
-2. Add proper names for each algorithm to top level state and replace all refs to these across the site.
-3. move dmp, dompred, bioserf alerts to single master function out of `mainform.js` and `results.js`
-4. Each component class gets its own file?
-5. `seq_job_list` and `struct_job_list` in `checkform.js` could inherit these lists from the global state set in index.js
-6. in model/index.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all xmlhttprequest uses with this pattern.
-7. Check errors are inserted in to page correctly, not just the pop up
-8. Ensure the stuff for the versioning is correctly captured.
-9. ensure emembed and mempack work (need to use staging to debug as won't compile)
-10. Check passing the commandline options is actually working
-11. I guess in theory `results_sequence.js` and `results_structure.js` could be combined in to a single file/class. I think that would make things a bit too hairy and cumbersome but go for it if you fancy
-12. Arguably everything in the `requests_helper` should got to `shared/`
-13. DRY out all the uses of 3Dmol, lift the `display_structure()` function from `psipred_javascript/ractive_helpers/ractive_helpers.js`
-14. Fix any hard coded paths in msa and model
-15. Set polling time correctly in `results_sequence.js` and `results_structure.js`
+1. in model/index.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all httprequest uses with this pattern.
+2. Check errors are inserted in to page correctly, not just the pop up
+3. Ensure the stuff for the versioning is correctly captured.
+4. ensure emembed and mempack work (need to use staging to debug as won't compile)
+5. DRY out all the uses of 3Dmol, lift the `display_structure()` function from `psipred_javascript/ractive_helpers/ractive_helpers.js`
+6. Fix any hard coded paths in msa and model
+7. Set polling time correctly in `results_sequence.js` and `results_structure.js`
