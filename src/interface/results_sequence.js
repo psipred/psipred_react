@@ -1,6 +1,7 @@
 import React from 'react';
 import {draw_empty_annotation_panel} from './results_helper.js';
 import {request_data} from '../shared/index.js';
+import {config_table} from '../shared/index.js'; 
 // import {request_binary_data} from './results_helper.js';
 import {parse_config} from './results_helper.js';
 import { parse_ss2 } from './parsers.js';
@@ -13,8 +14,7 @@ import { parse_featcfg } from './parsers.js';
 import { parse_ffpreds} from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
-import $ from 'jquery';
-import DataTable from 'datatables.net-dt';
+//import DataTable from 'datatables.net-dt';
 import * as $3Dmol from '3dmol/build/3Dmol.js';
 import { annotationGrid } from './biod3/main.js';
 
@@ -147,45 +147,7 @@ class ResultsSequence extends React.Component{
       }
     }
     if(this.state.pgenthreader_results){
-      let mgen_table = $('#pgen_table').DataTable({
-        'searching'   : true,
-        'pageLength': 50,
-      });
-
-      var minEl = $('#min_pgen_pval');
-      var maxEl = $('#max_pgen_pval');
-      // Custom range filtering function
-      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
-      //note: we have to push one of these functions on to the array for every table we want to have
-      // a custom filter for.
-      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-          //console.log(settings.nTable.id);
-          if ( settings.nTable.id !== 'pgen_table' ) {
-            return true;
-          }
-          var min = parseFloat(minEl.val(), 10);
-          var max = parseFloat(maxEl.val(), 10);
-          var pval = parseFloat(data[2]) || 0; // use data for the age column
-          if (
-              (isNaN(min) && isNaN(max)) ||
-              (isNaN(min) && pval <= max) ||
-              (min <= pval && isNaN(max)) ||
-              (min <= pval && pval <= max)
-          ) {
-              return true;
-          }
-   
-          return false;
-      });
-   
-      // Changes to the inputs will trigger a redraw to update the table
-      minEl.on('input', function () {
-          mgen_table.draw();
-      });
-      maxEl.on('input', function () {
-          mgen_table.draw();
-      });
-
+      config_table('#pgen_table', 50, '#min_pgen_pval', '#max_pgen_pval', 'pgen_table', 2, null);
     }
 
     for(let key in this.state.genthreader_results){
@@ -209,45 +171,7 @@ class ResultsSequence extends React.Component{
     }
 
     if(this.state.genthreader_results){
-      let gen_table = $('#gen_table').DataTable({
-        'searching'   : true,
-        'pageLength': 50,
-      });
-
-      var gen_minEl = $('#min_gen_pval');
-      var gen_maxEl = $('#max_gen_pval');
-      // Custom range filtering function
-      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
-      //note: we have to push one of these functions on to the array for every table we want to have
-      // a custom filter for.
-      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-          //console.log(settings.nTable.id);
-          if ( settings.nTable.id !== 'gen_table' ) {
-            return true;
-          }
-          var min = parseFloat(gen_minEl.val(), 10);
-          var max = parseFloat(gen_maxEl.val(), 10);
-          var pval = parseFloat(data[2]) || 0; // use data for the age column
-          if (
-              (isNaN(min) && isNaN(max)) ||
-              (isNaN(min) && pval <= max) ||
-              (min <= pval && isNaN(max)) ||
-              (min <= pval && pval <= max)
-          ) {
-              return true;
-          }
-   
-          return false;
-      });
-   
-      // Changes to the inputs will trigger a redraw to update the table
-      gen_minEl.on('input', function () {
-          gen_table.draw();
-      });
-      gen_maxEl.on('input', function () {
-          gen_table.draw();
-      });
-
+      config_table('#gen_table', 50, '#min_gen_pval', '#max_gen_pval', 'gen_table', 2, null);
     }
 
     for(let key in this.state.pdomthreader_results){
@@ -271,45 +195,7 @@ class ResultsSequence extends React.Component{
     }
 
     if(this.state.pdomthreader_results){
-      let dom_table = $('#pdom_table').DataTable({
-        'searching'   : true,
-        'pageLength': 50,
-      });
-
-      var dom_minEl = $('#min_gen_pval');
-      var dom_maxEl = $('#max_gen_pval');
-      // Custom range filtering function
-      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
-      //note: we have to push one of these functions on to the array for every table we want to have
-      // a custom filter for.
-      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-          //console.log(settings.nTable.id);
-          if ( settings.nTable.id !== 'gen_table' ) {
-            return true;
-          }
-          var min = parseFloat(dom_minEl.val(), 10);
-          var max = parseFloat(dom_maxEl.val(), 10);
-          var pval = parseFloat(data[2]) || 0; // use data for the age column
-          if (
-              (isNaN(min) && isNaN(max)) ||
-              (isNaN(min) && pval <= max) ||
-              (min <= pval && isNaN(max)) ||
-              (min <= pval && pval <= max)
-          ) {
-              return true;
-          }
-   
-          return false;
-      });
-   
-      // Changes to the inputs will trigger a redraw to update the table
-      dom_minEl.on('input', function () {
-          dom_table.draw();
-      });
-      dom_maxEl.on('input', function () {
-          dom_table.draw();
-      });
-
+      config_table('#pdom_table', 50, '#min_pdom_pval', '#max_pdom_pval', 'pdom_table', 2, null);
     }
 
     for(let key in this.state.dmp_results){
@@ -435,123 +321,9 @@ class ResultsSequence extends React.Component{
       }
      }
      if(this.state.ffpred_results){
-      let bp_table = $('#bp_table').DataTable({
-        'searching'   : true,
-        'pageLength': 25,
-        'order': [[3, 'asc'],]
-      });
-
-      var bp_minEl = $('#min_bp_prob');
-      var bp_maxEl = $('#max_bp_prob');
-      // Custom range filtering function
-      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
-      //note: we have to push one of these functions on to the array for every table we want to have
-      // a custom filter for.
-      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-          //console.log(settings.nTable.id);
-          if ( settings.nTable.id !== 'bp_table' ) {
-            return true;
-          }
-          var min = parseFloat(bp_minEl.val(), 10);
-          var max = parseFloat(bp_maxEl.val(), 10);
-          var pval = parseFloat(data[2]) || 0; // use data for the age column
-          if (
-              (isNaN(min) && isNaN(max)) ||
-              (isNaN(min) && pval <= max) ||
-              (min <= pval && isNaN(max)) ||
-              (min <= pval && pval <= max)
-          ) {
-              return true;
-          }
-   
-          return false;
-      });
-      // Changes to the inputs will trigger a redraw to update the table
-      bp_minEl.on('input', function () {
-          bp_table.draw();
-      });
-      bp_maxEl.on('input', function () {
-          bp_table.draw();
-      });
-
-      let mf_table = $('#mf_table').DataTable({
-        'searching'   : true,
-        'pageLength': 25,
-        'order': [[3, 'asc'],]
-      });
-
-      var mf_minEl = $('#min_mf_prob');
-      var mf_maxEl = $('#max_mf_prob');
-      // Custom range filtering function
-      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
-      //note: we have to push one of these functions on to the array for every table we want to have
-      // a custom filter for.
-      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-          //console.log(settings.nTable.id);
-          if ( settings.nTable.id !== 'mf_table' ) {
-            return true;
-          }
-          var min = parseFloat(mf_minEl.val(), 10);
-          var max = parseFloat(mf_maxEl.val(), 10);
-          var pval = parseFloat(data[2]) || 0; // use data for the age column
-          if (
-              (isNaN(min) && isNaN(max)) ||
-              (isNaN(min) && pval <= max) ||
-              (min <= pval && isNaN(max)) ||
-              (min <= pval && pval <= max)
-          ) {
-              return true;
-          }
-   
-          return false;
-      });
-      // Changes to the inputs will trigger a redraw to update the table
-      mf_minEl.on('input', function () {
-          mf_table.draw();
-      });
-      mf_maxEl.on('input', function () {
-          mf_table.draw();
-      });
-
-      let cc_table = $('#cc_table').DataTable({
-        'searching'   : true,
-        'pageLength': 25,
-        'order': [[3, 'asc'],]
-      });
-
-      var cc_minEl = $('#min_cc_prob');
-      var cc_maxEl = $('#max_cc_prob');
-      // Custom range filtering function
-      //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
-      //note: we have to push one of these functions on to the array for every table we want to have
-      // a custom filter for.
-      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-          //console.log(settings.nTable.id);
-          if ( settings.nTable.id !== 'cc_table' ) {
-            return true;
-          }
-          var min = parseFloat(cc_minEl.val(), 10);
-          var max = parseFloat(cc_maxEl.val(), 10);
-          var pval = parseFloat(data[2]) || 0; // use data for the age column
-          if (
-              (isNaN(min) && isNaN(max)) ||
-              (isNaN(min) && pval <= max) ||
-              (min <= pval && isNaN(max)) ||
-              (min <= pval && pval <= max)
-          ) {
-              return true;
-          }
-   
-          return false;
-      });
-      // Changes to the inputs will trigger a redraw to update the table
-      cc_minEl.on('input', function () {
-          cc_table.draw();
-      });
-      cc_maxEl.on('input', function () {
-          cc_table.draw();
-      });
-
+      config_table('#bp_table', 50, '#min_bp_prob', '#max_bp_prob', 'bp_table', 2, [3, 'asc']);
+      config_table('#mf_table', 50, '#min_mf_prob', '#max_mf_prob', 'mf_table', 2, [3, 'asc']);
+      config_table('#cc_table', 50, '#min_cc_prob', '#max_cc_prob', 'cc_table', 2, [3, 'asc']);
     }
 
 
@@ -783,10 +555,10 @@ class ResultsSequence extends React.Component{
               <div className="memsatsvm_schematic" id="memsatsvm_schematic" ref={this.memsatSVMSchematic}></div>
               <div className="memsatsvm_cartoon" id="memsatsvm_cartoon" ref={this.memsatSVMCartoon} ></div>
               { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.memsatsvm_waiting_message}</h4></div>
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.memsatsvm_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.memsatsvm_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.memsatsvm_waiting_icon}</div>
               }
               { this.props.waiting &&
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
@@ -796,32 +568,32 @@ class ResultsSequence extends React.Component{
          }
          { this.props.analyses.includes("pgenthreader_job") &&
           <div>
-            { this.renderPanel("pgen_table_box", "pGenTHREADER Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.state.pgenthreader_waiting_message, this.state.pgenthreader_waiting_icon) }
+            { this.renderPanel("pgen_table_box", "pGenTHREADER Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.props.pgenthreader_waiting_message, this.props.pgenthreader_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("dmp_job") &&
           <div>
-            { this.renderPanel("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.state.dmp_waiting_message, this.state.dmp_waiting_icon) }
+            { this.renderPanel("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.props.dmp_waiting_message, this.props.dmp_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("genthreader_job") &&
           <div>
-            { this.renderPanel("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.state.genthreader_waiting_message, this.state.genthreader_waiting_icon) }
+            { this.renderPanel("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.props.genthreader_waiting_message, this.props.genthreader_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("pdomthreader_job") &&
           <div>
-            { this.renderPanel("pdom_table_box", "pDomTHREADER Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.state.pdomthreader_waiting_message, this.state.pdomthreader_waiting_icon) }
+            { this.renderPanel("pdom_table_box", "pDomTHREADER Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.props.pdomthreader_waiting_message, this.props.pdomthreader_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("dmpfold_job") &&
           <div>
-            { this.renderPanel("dmpfold_pdb", "DMPfold prediction", "pdb_panel_class", 'dmp_pdb_id', this.dmpfold_pdb , this.state.dmpfold_waiting_message, this.state.dmpfold_waiting_icon) }
+            { this.renderPanel("dmpfold_pdb", "DMPfold prediction", "pdb_panel_class", 'dmp_pdb_id', this.dmpfold_pdb , this.props.dmpfold_waiting_message, this.props.dmpfold_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("s4pred_job") &&
           <div>
-            { this.renderPanel("s4pred_cartoon", "S4Pred Cartoon", "s4pred_cartoon", 's4pred_horiz', this.s4pred_horiz , this.state.s4pred_waiting_message, this.state.dmpfold_waiting_icon) }
+            { this.renderPanel("s4pred_cartoon", "S4Pred Cartoon", "s4pred_cartoon", 's4pred_horiz', this.s4pred_horiz , this.props.s4pred_waiting_message, this.props.dmpfold_waiting_icon) }
           </div>
          }
         { this.props.analyses.includes("dompred_job") &&
@@ -837,10 +609,10 @@ class ResultsSequence extends React.Component{
               <div className="dompred_chart" id="dompred_chart" ref={this.dompred_chart}></div>
               <div className="dompred_results" id="dompread_results" ref={this.dompred_results} ></div>
               { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.dompred_waiting_message}</h4></div>
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.dompred_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.dompred_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.dompred_waiting_icon}</div>
               }
               { this.props.waiting &&
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
@@ -872,10 +644,10 @@ class ResultsSequence extends React.Component{
               <div className="ffpred_memsat" id="ffpred_memsat" ref={this.global_features} ></div>
               
               { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.ffpred_waiting_message}</h4></div>
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.ffpred_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.ffpred_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.ffpred_waiting_icon}</div>
               }
               { this.props.waiting &&
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>

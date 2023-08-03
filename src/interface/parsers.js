@@ -28,34 +28,34 @@
 // }
 //
 // // parse the small metsite output table
-// export function parse_metsite(ractive, file)
-// {
-//   let metsite_table = '<br /><h3>Key</h3><table class="small-table table-striped table-bordered"><tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Metal Binding Contact</td></tr>';
-//   metsite_table += '<tr><td bgcolor="#000000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Chain not predicted</td></tr>';
-//   metsite_table += '<tr><td bgcolor="#0000ff" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Predicted chain</td></tr></table><br />';
-//   metsite_table += '<h3>Residue Predictions</h3>';
-//   metsite_table += '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min Score: <input id="min_met_score" name="min_met_score" type="text"></td></tr><tr><td class="alnright" >Max Score: <input id="max_met_score" name="max_met_score" type="text"></td></tr></tbody></table><br />';
-//   metsite_table += '<table id="metsite_table" class="table small-table table-striped table-bordered"><thead><tr><th>Residue</th><th>Raw Neural Network Score</th><th>Highlight Residue</th><thead><tbody>';
-//   let hit_regex = /\d+\s.+?\s\w{3}\d+/g;
-//   let hit_matches = file.match(hit_regex);
-//   if(hit_matches)
-//   {
-//     hit_matches.forEach(function(line, i){
-//       let entries = line.split(/\s/);
-//       metsite_table += '<tr><td>'+entries[2]+'</td><td>'+entries[1]+'</td><td><input type="checkbox" value="'+entries[2]+'" id="'+entries[2]+'" onClick="psipred.highlight_metsite_residue(\''+entries[2]+'\')"=></td></tr>';
-//     });
-//   }
-//   metsite_table += '</tbody><tfoot></tfoot><table>';
-//   ractive.set('metsite_table', metsite_table);
-//   var met_table = $('#metsite_table').DataTable({
-//     'searching'   : true,
-//     'pageLength': 10,
-//   });
-//     $('#min_met_score, #max_met_score').keyup( function() {
-//       met_table.draw();
-//     });
-// }
-//
+export function parse_metsite(file)
+{
+  let metsite_table = '<br /><h3>Key</h3><table class="small-table table-striped table-bordered"><tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000"></td><td><h5>&nbsp;Metal Binding Contact&nbsp;</h5></td></tr>';
+  metsite_table += '<tr><td bgcolor="#000000" style="border-style:solid; border-width:1px; border-color:#000000"></td><td><h5>&nbsp;Chain not predicted&nbsp;</h5></td></tr>';
+  metsite_table += '<tr><td bgcolor="#0000ff" style="border-style:solid; border-width:1px; border-color:#000000"></td><td><h5>&nbsp;Predicted chain&nbsp;</h5></td></tr></table><br />';
+  metsite_table += '<h3>Residue Predictions</h3>';
+  metsite_table += '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min Score: <input id="min_met_score" name="min_met_score" type="text"></td></tr><tr><td class="alnright" >Max Score: <input id="max_met_score" name="max_met_score" type="text"></td></tr></tbody></table><br />';
+  metsite_table += '<table id="metsite_table" class="table small-table table-striped table-bordered"><thead><tr><th>Residue</th><th>Raw Neural Network Score</th><th>Highlight Residue</th><thead><tbody>';
+  let hit_regex = /\d+\s.+?\s\w{3}\d+/g;
+  let hit_matches = file.match(hit_regex);
+  if(hit_matches)
+  {
+    hit_matches.forEach(function(line, i){
+      let entries = line.split(/\s/);
+      metsite_table += '<tr><td>'+entries[2]+'</td><td>'+entries[1]+'</td><td><input type="checkbox" value="'+entries[2]+'" id="'+entries[2]+'" onClick="psipred.highlight_metsite_residue(\''+entries[2]+'\')"=></td></tr>';
+    });
+  }
+  metsite_table += '</tbody><tfoot></tfoot><table>';
+  // var met_table = $('#metsite_table').DataTable({
+  //   'searching'   : true,
+  //   'pageLength': 10,
+  // });
+  //   $('#min_met_score, #max_met_score').keyup( function() {
+  //     met_table.draw();
+  //   });
+  return(metsite_table);
+}
+
 export function parse_ffpreds(file){
 
   let lines = file.split('\n');

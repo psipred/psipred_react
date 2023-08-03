@@ -71,7 +71,7 @@ class DisplayArea extends React.Component{
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
                     'presult', 'align', 'presults', 'dom_presults', 'parseds', 'featcfg',
                     'full_formatted', 'metsite', 'hspred', 'csv', 'ann', 'aln', 'con', 'pdb',
-                    'boundary'],
+                    'boundary', 'Metpred', 'MetPred'],
     };
   }
 
@@ -85,7 +85,7 @@ class DisplayArea extends React.Component{
       email: '',
       waiting: false,
       uuid: null,
-      // formSelectedOption: 'SeqForm',
+      formSelectedOption: 'SeqForm',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
@@ -352,7 +352,9 @@ class DisplayArea extends React.Component{
               <ResultsSidebarTimes {...{...this.state, ...this.props}} />
             }
             <ResultsSidebarDownloads {...{...this.state, ...this.props}} />
+            { this.state.formSelectedOption === 'SeqForm' &&
             <ResultsSidebarResubmission {...{...this.state, ...this.props}} handleResubmit={this.handleResubmit} />
+            }
           </div>
         </div>
       }

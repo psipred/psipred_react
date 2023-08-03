@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import DataTable from 'datatables.net-dt';
+
 export function decide_location(href, hostname, main_url, app_path){
     let uris = {
         endpoints_url: 'http://127.0.0.1:8000/analytics_automated/endpoints/',
@@ -81,4 +84,51 @@ export function request_binary_data(uri, file_url){
     alert("Request failed");
   };
   return(results_data);
+}
+
+export function config_table(table_id, page_length, min_id, max_id, table_name, sort_column_number, extra_order){
+  let table = $(table_id).DataTable({
+    'searching'   : true,
+    'pageLength': page_length,
+  });
+  if(extra_order)
+  {
+    let table = $(table_id).DataTable({
+      'searching'   : true,
+      'pageLength': page_length,
+      'order': [extra_order,]
+    });
+  }
+  var minEl = $(min_id);
+  var maxEl = $(max_id);
+  // Custom range filtering function
+  //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
+  //note: we have to push one of these functions on to the array for every table we want to have
+  // a custom filter for.
+  $.fn.dataTable.ext.search.push(function (settings, data) {
+    //console.log(settings.nTable.id);
+    if ( settings.nTable.id !== table_name ) {
+      return true;
+    }
+    var min = parseFloat(minEl.val(), 10);
+    var max = parseFloat(maxEl.val(), 10);
+    var score = parseFloat(data[sort_column_number]) || 0; // use data for the column
+    if (
+        (isNaN(min) && isNaN(max)) ||
+        (isNaN(min) && score <= max) ||
+        (min <= score && isNaN(max)) ||
+        (min <= score && score <= max)
+    ) {
+        return true;
+    }
+    return false;
+  });
+     
+  // Changes to the inputs will trigger a redraw to update the table
+  minEl.on('input', function () {
+      table.draw();
+  });
+  maxEl.on('input', function () {
+    table.draw();
+  });
 }

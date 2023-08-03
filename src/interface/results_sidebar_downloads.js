@@ -99,6 +99,16 @@ class ResultsSidebarDownloads extends React.Component{
   renderDownloads = (job, file_data, title_string) => {
     let downloads_text = [];
     let count = 0;
+    
+    this.props.struct_job_names.forEach((name) =>{
+      let link_data = [];
+      if(name === 'metsite'){
+        link_data = this.createDownloadLinks(count, [['.MetPred', 'Metsite PDB'], ['.Metpred', 'Mesite assignments']], 'Metsite DOWNLOADS');
+        downloads_text.push(link_data[0]);
+      }
+      count = link_data[1];
+    });
+
     this.props.seq_job_names.forEach((name) =>{
       // console.log(name);
       // console.log(this.props.analyses);
@@ -152,7 +162,6 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['.featcfg', 'FFPred Predicted Features'], ['.full_formatted', 'FFPred Predictions']], 'FFPred DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
-
           count = link_data[1];
         }
         // downloads_text.push(link_data[0]);

@@ -1,16 +1,15 @@
 import React from 'react';
-import {request_data} from '../shared/index.js';
-// import {request_binary_data} from './results_helper.js';
+import {request_data} from '../shared/index.js'; 
+import {config_table} from '../shared/index.js'; 
 import {parse_config} from './results_helper.js';
-import $ from 'jquery';
-import DataTable from 'datatables.net-dt';
+import { parse_metsite } from './parsers.js';
 import * as $3Dmol from '3dmol/build/3Dmol.js';
 
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
-    this.metsite_structure = React.createRef();
+    this.metsite_pdb = React.createRef();
     this.metsite_table = React.createRef();
     this.timer = null;
   }
@@ -21,6 +20,42 @@ class ResultsStructure extends React.Component{
       this.time = null;
     }
     //console.log(this.state);
+
+
+    for(let key in this.state.metsite_results){
+      if(key.includes(".MetPred")){
+        //console.log(this.state.metsite_results[key]);
+        var cartoon_color = function(atom) {
+          if(atom.b === 1.0){atom.color = 'red'; return 'red';}
+          if(atom.b === 0.5){atom.color = 'black'; return 'black';}
+          if(atom.b === 50){atom.color = 'white'; return 'white';}
+          if(atom.b === 100){atom.color = 'red'; return 'red';}
+          atom.color = 'blue';
+          return("blue");
+        };
+        //https://www.npmjs.com/package/3dmol
+        let element = this.metsite_pdb.current;
+        let config = { backgroundColor: '#ffffff' };
+        let viewer = $3Dmol.createViewer( element, config );
+        viewer.addModel( this.state.metsite_results[key], "pdb" );   /* load data */
+        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
+        viewer.zoomTo();                                      /* set camera */
+        viewer.render();                                      /* render scene */
+        viewer.zoom(1.7, 3000);     
+      }
+      if(key.includes(".Metpred")){
+        console.log(key);
+        let file_data = this.state.metsite_results[key];
+        //console.log(file_data);
+        let html_data = parse_metsite(file_data);
+        var dt = document.createElement('template');
+        dt.innerHTML = html_data;
+        this.metsite_table.current.appendChild(dt.content);
+      }
+    }
+    if(this.state.metsite_results){
+      config_table('#metsite_table', 10, '#min_met_score', '#max_met_score', 'metsite_table', 1, null);
+    }
 
     // for(let key in this.state.memsatsvm_results){
     //   if(key.includes("_schematic.png")){
@@ -34,48 +69,6 @@ class ResultsStructure extends React.Component{
     //   }
     // }
     
-    // if(this.state.genthreader_results){
-    //   let gen_table = $('#gen_table').DataTable({
-    //     'searching'   : true,
-    //     'pageLength': 50,
-    //   });
-
-    //   var gen_minEl = $('#min_gen_pval');
-    //   var gen_maxEl = $('#max_gen_pval');
-    //   // Custom range filtering function
-    //   //https://stackoverflow.com/questions/55242822/prevent-datatables-custom-filter-from-affecting-all-tables-on-a-page
-    //   //note: we have to push one of these functions on to the array for every table we want to have
-    //   // a custom filter for.
-    //   $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-    //       //console.log(settings.nTable.id);
-    //       if ( settings.nTable.id !== 'gen_table' ) {
-    //         return true;
-    //       }
-    //       var min = parseFloat(gen_minEl.val(), 10);
-    //       var max = parseFloat(gen_maxEl.val(), 10);
-    //       var pval = parseFloat(data[2]) || 0; // use data for the age column
-    //       if (
-    //           (isNaN(min) && isNaN(max)) ||
-    //           (isNaN(min) && pval <= max) ||
-    //           (min <= pval && isNaN(max)) ||
-    //           (min <= pval && pval <= max)
-    //       ) {
-    //           return true;
-    //       }
-   
-    //       return false;
-    //   });
-   
-    //   // Changes to the inputs will trigger a redraw to update the table
-    //   gen_minEl.on('input', function () {
-    //       gen_table.draw();
-    //   });
-    //   gen_maxEl.on('input', function () {
-    //       gen_table.draw();
-    //   });
-
-    // }
-    //this.props.updateResultsFiles(results_data);
   }
 
   getResultsFiles = (data, props) => {
@@ -237,7 +230,7 @@ class ResultsStructure extends React.Component{
         }
 
         { this.props.analyses.includes("metsite_job") &&
-          <div className="box box-primary collapsed-box" id="metsite_preds">
+          <div className="box box-primary" id="metsite_preds">
             <div className="box-header with-border">
               <h5 className="box-title">Metsite Predictions</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
@@ -246,17 +239,14 @@ class ResultsStructure extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="metsite_structure" id="metsite_structure" ref={this.metsite_structure} ></div>
-              <div className="metsite_table" id="metsite_table" ref={this.metsite_table} ></div>
+              <div className="metsite_structure pdb_panel_class" id="metsite_structure" ref={this.metsite_pdb}></div>
+              <div className="metsite_table_holder" id="metsite_table_holder" ref={this.metsite_table} ></div>
               
               { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.state.metsite_waiting_message}</h4></div>
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.metsite_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.state.metsite_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.metsite_waiting_icon}</div>
               }
             </div>
           </div>
