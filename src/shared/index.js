@@ -87,16 +87,19 @@ export function request_binary_data(uri, file_url){
 }
 
 export function config_table(table_id, page_length, min_id, max_id, table_name, sort_column_number, extra_order){
-  let table = $(table_id).DataTable({
-    'searching'   : true,
-    'pageLength': page_length,
-  });
+  let table = null;
   if(extra_order)
   {
-    let table = $(table_id).DataTable({
+    table = $(table_id).DataTable({
       'searching'   : true,
       'pageLength': page_length,
       'order': [extra_order,]
+    });
+  }
+  else{
+    table = $(table_id).DataTable({
+      'searching' : true,
+      'pageLength': page_length,
     });
   }
   var minEl = $(min_id);

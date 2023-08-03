@@ -86,7 +86,7 @@ See also class_layout.odp
 
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box and edit as needed. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. Ensure `onChange` and `checked` are correct.
 
-3. If it is a new sequence job, don't forget to add your job to the `ResultsSidebarResubmission` class in `results_sidebar_resubmission.js` and don't forget any tooltips. Copy and existing entry and edit as needed.
+3. If it is a new sequence job, don't forget to add your job to the `ResultsSidebarResubmission` class in `results_sidebar_resubmission.js` and don't forget any tooltips. Copy an existing entry and edit as needed.
 
 4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include any additional panels when it detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class of the form `[Algorithm]Options`. Add your new class and the appropriate inputs. You MUST ensure that the form input names match the new state variable names you added in step 1 if you added new state variables (i.e. `DisplayArea`'s `this.state` etc...)
 
@@ -130,4 +130,5 @@ If you added a new file type then you have to update the staging and production 
 11. I guess in theory `results_sequence.js` and `results_structure.js` could be combined in to a single file/class. I think that would make things a bit too hairy and cumbersome but go for it if you fancy
 12. Arguably everything in the `requests_helper` should got to `shared/`
 13. DRY out all the uses of 3Dmol, lift the `display_structure()` function from `psipred_javascript/ractive_helpers/ractive_helpers.js`
-14. Fix hard coded paths in msa and model
+14. Fix any hard coded paths in msa and model
+15. Set polling time correctly in `results_sequence.js` and `results_structure.js`

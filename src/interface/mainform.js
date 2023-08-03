@@ -157,7 +157,7 @@ class StructForm extends React.Component {
             </div>
             <p className="form_error"></p> <br /><br /><br /> Select PDB file<br /> <input type="file" id="pdbFile" name="pdbFile" defaultValue='' /><br /><br />
             <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br />
-            If you wish to Metsite or HSPred follow this link to retrieve <a className="form-link" href="http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&amp;compression=NO&amp;structureId=1IAR">a test pdb file.</a><br /><br />
+            If you wish to try Metsite or HSPred follow this link to retrieve <a className="form-link" href="http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&amp;compression=NO&amp;structureId=1IAR">a test pdb file.</a><br /><br />
             <div className="form-group">
               <div className="form-group">
                 <label className="control-label" htmlFor="id_job_name">Job name</label><input className="form-control" type="text" placeholder="Job name" title="" required="" id="id_job_name" name="job_name" value={this.props.name} onChange={this.handleChange} />

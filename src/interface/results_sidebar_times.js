@@ -86,6 +86,9 @@ class ResultsSidebarTimes extends React.Component{
               { this.props.analyses.includes('metsite_job') &&
               <div><span className="info-box-number">Metsite runtime: {this.state.mesite}</span><br /></div>
               }
+              { this.props.analyses.includes('hspred_job') &&
+              <div><span className="info-box-number">HSPred runtime: {this.state.hspred}</span><br /></div>
+              }
               
             </div>
       </div>

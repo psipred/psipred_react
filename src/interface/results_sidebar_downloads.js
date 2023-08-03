@@ -96,17 +96,22 @@ class ResultsSidebarDownloads extends React.Component{
 
   //<button className="fake-link" onClick="@this.fire('get_zip'), false">Get Zip file</button><br /><br />
   //<button className="fake-link" onClick="@this.fire('get_job_details'), false">Get Job details</button><br /><br />
-  renderDownloads = (job, file_data, title_string) => {
+  renderDownloads = () => {
     let downloads_text = [];
     let count = 0;
     
     this.props.struct_job_names.forEach((name) =>{
       let link_data = [];
-      if(name === 'metsite'){
-        link_data = this.createDownloadLinks(count, [['.MetPred', 'Metsite PDB'], ['.Metpred', 'Mesite assignments']], 'Metsite DOWNLOADS');
-        downloads_text.push(link_data[0]);
+      if(this.props.analyses.includes(name+'_job')){
+        if(name === 'metsite'){
+          link_data = this.createDownloadLinks(count, [['.MetPred', 'Metsite PDB'], ['.Metpred', 'Mesite Predictions']], 'Metsite DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }if(name === 'hspred'){
+          link_data = this.createDownloadLinks(count, [['initial.pdb', 'HSPred First PDB File'], ['second.pdb', 'HSPred Second PDB File'], ['.out', 'HSPRed Predictions']], 'HSPred DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
+        count = link_data[1];
       }
-      count = link_data[1];
     });
 
     this.props.seq_job_names.forEach((name) =>{

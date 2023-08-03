@@ -2,7 +2,9 @@ import React from 'react';
 import {request_data} from '../shared/index.js'; 
 import {config_table} from '../shared/index.js'; 
 import {parse_config} from './results_helper.js';
-import { parse_metsite } from './parsers.js';
+import {parse_metsite} from './parsers.js';
+import {parse_hspred} from './parsers.js';
+
 import * as $3Dmol from '3dmol/build/3Dmol.js';
 
 class ResultsStructure extends React.Component{
@@ -11,6 +13,9 @@ class ResultsStructure extends React.Component{
     this.state = {};
     this.metsite_pdb = React.createRef();
     this.metsite_table = React.createRef();
+    this.hspred_initial_pdb = React.createRef();
+    this.hspred_second_pdb = React.createRef();
+    this.hspred_table = React.createRef();
     this.timer = null;
   }
 
@@ -44,7 +49,6 @@ class ResultsStructure extends React.Component{
         viewer.zoom(1.7, 3000);     
       }
       if(key.includes(".Metpred")){
-        console.log(key);
         let file_data = this.state.metsite_results[key];
         //console.log(file_data);
         let html_data = parse_metsite(file_data);
@@ -57,17 +61,57 @@ class ResultsStructure extends React.Component{
       config_table('#metsite_table', 10, '#min_met_score', '#max_met_score', 'metsite_table', 1, null);
     }
 
-    // for(let key in this.state.memsatsvm_results){
-    //   if(key.includes("_schematic.png")){
-    //     let img_url = this.state.memsatsvm_results[key];
-    //     let newElement = document.createElement('img');
-    //     newElement.src = img_url;
-    //     newElement.alt = "Memsat Schematic diagram";
-    //     this.memsatSVMSchematic.current.appendChild(newElement);
-    //     newElement = document.createElement('br');
-    //     this.memsatSVMSchematic.current.appendChild(newElement);
-    //   }
-    // }
+    for(let key in this.state.hspred_results){
+      if(key.includes("_initial.pdb")){
+        var cartoon_color = function(atom) {
+          if(atom.b === 1.0){atom.color = 'red'; return 'red';}
+          if(atom.b === 0.5){atom.color = 'black'; return 'black';}
+          if(atom.b === 50){atom.color = 'white'; return 'white';}
+          if(atom.b === 100){atom.color = 'red'; return 'red';}
+          atom.color = 'blue';
+          return("blue");
+        };
+        //https://www.npmjs.com/package/3dmol
+        let element = this.hspred_initial_pdb.current;
+        let config = { backgroundColor: '#ffffff' };
+        let viewer = $3Dmol.createViewer( element, config );
+        viewer.addModel( this.state.hspred_results[key], "pdb" );   /* load data */
+        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
+        viewer.zoomTo();                                      /* set camera */
+        viewer.render();                                      /* render scene */
+        viewer.zoom(1.7, 3000);     
+      }
+      if(key.includes("_second.pdb")){
+        var cartoon_color = function(atom) {
+          if(atom.b === 1.0){atom.color = 'red'; return 'red';}
+          if(atom.b === 0.5){atom.color = 'black'; return 'black';}
+          if(atom.b === 50){atom.color = 'white'; return 'white';}
+          if(atom.b === 100){atom.color = 'red'; return 'red';}
+          atom.color = 'blue';
+          return("blue");
+        };
+        //https://www.npmjs.com/package/3dmol
+        let element = this.hspred_second_pdb.current;
+        let config = { backgroundColor: '#ffffff' };
+        let viewer = $3Dmol.createViewer( element, config );
+        viewer.addModel( this.state.hspred_results[key], "pdb" );   /* load data */
+        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
+        viewer.zoomTo();                                      /* set camera */
+        viewer.render();                                      /* render scene */
+        viewer.zoom(1.7, 3000);     
+      }
+      if(key.includes(".out")){
+        let file_data = this.state.hspred_results[key];
+        //console.log(file_data);
+        let html_data = parse_hspred(file_data);
+        let hs = document.createElement('template');
+        hs.innerHTML = html_data;
+        this.hspred_table.current.appendChild(hs.content);
+      }
+    }
+    if(this.state.hspred_results){
+      config_table('#hspred_table', 50, '#min_hs_score', '#max_hs_score', 'hspred_table', 2, [2, 'desc']);
+    }
     
   }
 
@@ -141,7 +185,9 @@ class ResultsStructure extends React.Component{
               //component did update
 
               // we assign the results files 
-              this.setState({metsite_results: parsed_data.metsite});
+              this.setState({metsite_results: parsed_data.metsite,
+                    hspred_results: parsed_data.hspred
+              });
             });
             this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
@@ -247,6 +293,31 @@ class ResultsStructure extends React.Component{
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.props.metsite_waiting_icon}</div>
+              }
+            </div>
+          </div>
+         }
+        { this.props.analyses.includes("hspred_job") &&
+          <div className="box box-primary" id="hspred_preds">
+            <div className="box-header with-border">
+              <h5 className="box-title">HSPred Predictions</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div>
+              <div className="hspred_structure pdb_panel_class" id="hs_pred_initial" ref={this.hspred_initial_pdb}></div>
+              <div className="hspred_structure pdb_panel_class" id="hs_pred_second" ref={this.hspred_second_pdb}></div>
+              </div>
+              <div className="hspred_table_holder" id="hspred_table_holder" ref={this.hspred_table} ></div>
+              
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.hspred_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.hspred_waiting_icon}</div>
               }
             </div>
           </div>

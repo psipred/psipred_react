@@ -1,33 +1,26 @@
 //https://stackoverflow.com/questions/23616226/insert-html-with-react-variable-statements-jsx
 
-// export function parse_hspred(ractive, file)
-// {
-//   let hspred_table = '<br /><h3>Key</h3><table class="small-table table-striped table-bordered"><tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Hotspot Residue</td></tr>';
-//   hspred_table += '<tr><td bgcolor="#ffffff" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Non-Hotspot Residue</td></tr>';
-//   hspred_table += '<tr><td bgcolor="#0000ff" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Non-interface residue</td></tr></table><br /><br />';
-//   hspred_table += '<h3>Residue Predictions</h3>';
-//   hspred_table += '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min Score: <input id="min_hs_score" name="min_hs_score" type="text"></td></tr><tr><td class="alnright" >Max Score: <input id="max_hs_score" name="max_hs_score" type="text"></td></tr></tbody></table><br />';
-//   hspred_table += '<table id="hspred_table" class="table table-striped table-bordered"><thead><tr><th>Chain/Residue</th><th>Residue Identity</th><th>Score</th><th>Highlight Residue</th></thead><tbody>';
-//   let lines = file.split('\n');
-//   lines.forEach(function(line, i){
-//     let entries = line.split(/\s+/);
-//     if(entries.length === 3){
-//       hspred_table += '<tr><td>'+entries[0]+'</td><td>'+entries[1]+'</td><td>'+entries[2]+'</td><td><input type="checkbox" value="'+entries[0]+'" id="'+entries[0]+'" onClick="psipred.highlight_hs_residue(\''+entries[0]+'\')"=></td></td></tr>';
-//     }
-//   });
-//   hspred_table += '</tbody><tfoot></tfoot><table>';
-//   ractive.set('hspred_table', hspred_table);
-//   var hs_table = $('#hspred_table').DataTable({
-//     'searching'   : true,
-//     'pageLength': 50,
-//     'order': [[2, 'desc'],]
-//   });
-//   $('#min_hs_score, #max_hs_score').keyup( function() {
-//     hs_table.draw();
-//   });
-// }
-//
-// // parse the small metsite output table
+export function parse_hspred(file)
+{
+  let hspred_table = '<br /><h3>Key</h3><table class="small-table table-striped table-bordered"><tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Hotspot Residue</td></tr>';
+  hspred_table += '<tr><td bgcolor="#ffffff" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Non-Hotspot Residue</td></tr>';
+  hspred_table += '<tr><td bgcolor="#0000ff" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Non-interface residue</td></tr></table><br /><br />';
+  hspred_table += '<h3>Residue Predictions</h3>';
+  hspred_table += '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min Score: <input id="min_hs_score" name="min_hs_score" type="text"></td></tr><tr><td class="alnright" >Max Score: <input id="max_hs_score" name="max_hs_score" type="text"></td></tr></tbody></table><br />';
+  hspred_table += '<table id="hspred_table" class="table table-striped table-bordered"><thead><tr><th>Chain/Residue</th><th>Residue Identity</th><th>Score</th><th>Highlight Residue</th></thead><tbody>';
+  let lines = file.split('\n');
+  lines.forEach(function(line, i){
+    let entries = line.split(/\s+/);
+    if(entries.length === 3){
+      hspred_table += '<tr><td>'+entries[0]+'</td><td>'+entries[1]+'</td><td>'+entries[2]+'</td><td><input type="checkbox" value="'+entries[0]+'" id="'+entries[0]+'" onClick="psipred.highlight_hs_residue(\''+entries[0]+'\')"=></td></td></tr>';
+    }
+  });
+  hspred_table += '</tbody><tfoot></tfoot><table>';
+  return(hspred_table)
+}
+
+
+// parse the small metsite output table
 export function parse_metsite(file)
 {
   let metsite_table = '<br /><h3>Key</h3><table class="small-table table-striped table-bordered"><tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000"></td><td><h5>&nbsp;Metal Binding Contact&nbsp;</h5></td></tr>';
@@ -46,13 +39,6 @@ export function parse_metsite(file)
     });
   }
   metsite_table += '</tbody><tfoot></tfoot><table>';
-  // var met_table = $('#metsite_table').DataTable({
-  //   'searching'   : true,
-  //   'pageLength': 10,
-  // });
-  //   $('#min_met_score, #max_met_score').keyup( function() {
-  //     met_table.draw();
-  //   });
   return(metsite_table);
 }
 
@@ -120,24 +106,6 @@ export function parse_ffpreds(file){
   table_data += '</tbody><tfoot></tfoot></table><br />';
   table_data += 'These prediction terms represent terms predicted where SVM training includes assigned GO terms across all evidence code types. SVM reliability is regarded as High (H) when MCC, sensitivity, specificity and precision are jointly above a given threshold. otherwise Reliability is indicated as Low (L). <br />';
   return(table_data);
-
-  // var mf_table = $('#mf_table').DataTable({
-  //   'searching'   : true,
-  //   'pageLength': 25,
-  //   'order': [[3, 'asc'],]
-  // });
-  // var cc_table = $('#cc_table').DataTable({
-  //   'searching'   : true,
-  //   'pageLength': 25,
-  //   'order': [[3, 'asc'],]
-  // });
-
-  // $('#min_mf_prob, #max_mf_prob').keyup( function() {
-  //   mf_table.draw();
-  // });
-  // $('#min_cc_prob, #max_cc_prob').keyup( function() {
-  //   cc_table.draw();
-  // });
 }
 
 function set_aanorm(){

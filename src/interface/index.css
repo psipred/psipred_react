@@ -134,7 +134,8 @@ text {
 }
 
 .pdb_panel_class {
-  width: 60%;
+  display: inline-block;
+  width: 50%;
   height: 400px;
   position: relative;
 }
