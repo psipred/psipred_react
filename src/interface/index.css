@@ -140,6 +140,10 @@ text {
   position: relative;
 }
 
+.error {
+  font: 30px Arial;
+}
+
 .signif10p
 {
  border:     1px solid #cccccc;

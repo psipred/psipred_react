@@ -208,17 +208,19 @@ class ResultsStructure extends React.Component{
         try {
           let obj = await error.json().then(json => {return(json);});
           if(obj.error){
-            message = obj.error;
+            message.message = obj.error;
           }
           if(obj.error.input_data){
-            message = obj.error.input_data
+            message.message = obj.error.input_data
           }
         }
         catch{
           message=error
         }
-        console.log("Fetching results: "+result_uri+" Failed. \n"+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        alert("Fetching results: "+result_uri+" Failed. \n"+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        console.log(message.message);
+        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        //alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        this.setState({error_message: message.message});
         this.props.updateWaiting(false);
         return null;
       });
