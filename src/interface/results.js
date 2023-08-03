@@ -105,8 +105,15 @@ class ResultsMain extends React.Component{
        //DO SOME THINGS
      }).catch(async error => {
        let obj = await error.json().then(json => {return(json);});
-       console.log("Getting Job data "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Getting Job data to "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       let message = '';
+       if(obj.error){
+        message = obj.error;
+       }
+       if(obj.error.input_data){
+        message = obj.error.input_data
+       }
+       console.log("Getting Job data "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Getting Job data to "+config_data.props.submit_url+config_data.props.incoming_uuid+" Failed. "+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        return null;
      });
   }
