@@ -2,6 +2,8 @@ import React from 'react';
 import {request_data} from '../shared/index.js'; 
 import {config_table} from '../shared/index.js'; 
 import {parse_config} from '../shared/index.js';
+import {display_structure} from '../shared/index.js';
+
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 
@@ -29,24 +31,7 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.metsite_results){
       if(key.includes(".MetPred")){
-        //console.log(this.state.metsite_results[key]);
-        var cartoon_color = function(atom) {
-          if(atom.b === 1.0){atom.color = 'red'; return 'red';}
-          if(atom.b === 0.5){atom.color = 'black'; return 'black';}
-          if(atom.b === 50){atom.color = 'white'; return 'white';}
-          if(atom.b === 100){atom.color = 'red'; return 'red';}
-          atom.color = 'blue';
-          return("blue");
-        };
-        //https://www.npmjs.com/package/3dmol
-        let element = this.metsite_pdb.current;
-        let config = { backgroundColor: '#ffffff' };
-        let viewer = $3Dmol.createViewer( element, config );
-        viewer.addModel( this.state.metsite_results[key], "pdb" );   /* load data */
-        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
-        viewer.zoomTo();                                      /* set camera */
-        viewer.render();                                      /* render scene */
-        viewer.zoom(1.7, 3000);     
+        display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false);
       }
       if(key.includes(".Metpred")){
         let file_data = this.state.metsite_results[key];
@@ -63,42 +48,10 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.hspred_results){
       if(key.includes("_initial.pdb")){
-        var cartoon_color = function(atom) {
-          if(atom.b === 1.0){atom.color = 'red'; return 'red';}
-          if(atom.b === 0.5){atom.color = 'black'; return 'black';}
-          if(atom.b === 50){atom.color = 'white'; return 'white';}
-          if(atom.b === 100){atom.color = 'red'; return 'red';}
-          atom.color = 'blue';
-          return("blue");
-        };
-        //https://www.npmjs.com/package/3dmol
-        let element = this.hspred_initial_pdb.current;
-        let config = { backgroundColor: '#ffffff' };
-        let viewer = $3Dmol.createViewer( element, config );
-        viewer.addModel( this.state.hspred_results[key], "pdb" );   /* load data */
-        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
-        viewer.zoomTo();                                      /* set camera */
-        viewer.render();                                      /* render scene */
-        viewer.zoom(1.7, 3000);     
+        display_structure(this.hspred_initial_pdb.current, this.state.hspred_results[key], false);    
       }
       if(key.includes("_second.pdb")){
-        var cartoon_color = function(atom) {
-          if(atom.b === 1.0){atom.color = 'red'; return 'red';}
-          if(atom.b === 0.5){atom.color = 'black'; return 'black';}
-          if(atom.b === 50){atom.color = 'white'; return 'white';}
-          if(atom.b === 100){atom.color = 'red'; return 'red';}
-          atom.color = 'blue';
-          return("blue");
-        };
-        //https://www.npmjs.com/package/3dmol
-        let element = this.hspred_second_pdb.current;
-        let config = { backgroundColor: '#ffffff' };
-        let viewer = $3Dmol.createViewer( element, config );
-        viewer.addModel( this.state.hspred_results[key], "pdb" );   /* load data */
-        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
-        viewer.zoomTo();                                      /* set camera */
-        viewer.render();                                      /* render scene */
-        viewer.zoom(1.7, 3000);     
+        display_structure(this.hspred_second_pdb.current, this.state.hspred_results[key], false);
       }
       if(key.includes(".out")){
         let file_data = this.state.hspred_results[key];

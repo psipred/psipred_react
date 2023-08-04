@@ -468,7 +468,7 @@ export function parse_presults(file, ann_list, type)
       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/pdb/"+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
       pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/msa/?aln="+(ann_list[table_hit+"_"+i].aln)+"&ann="+(ann_list[table_hit+"_"+i].ann)+"\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=1000 height=400 top=30\")' value='View' /></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=cath\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=pdb\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
       
       //pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"pdb_modeller\");' value='Model' /></td>";
     }

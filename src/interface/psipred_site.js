@@ -404,6 +404,7 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
+    this.state.seq = this.state.seq.replace(/\r?\n|\r/g, "");
     let checked = validateFormData(this.state, jobs, pdbData);
     //console.log(checked);
     if(checked.send){

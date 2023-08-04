@@ -1,6 +1,8 @@
 import React from 'react';
 import { saveAs } from 'file-saver';
 //import { link } from 'd3';
+import {request_data} from '../shared/index.js';
+
 const JSZip = require('jszip');
 const JSZipUtils = require('jszip-utils');
 
@@ -11,9 +13,27 @@ class ResultsSidebarDownloads extends React.Component{
     };
   }
 
-  returnJobConfig = () => {
+
+  getConf = () => {
     let header = "job,step_number,type,name,version,parameters\n";
-    let file_data = header+this.props.config_data;
+    let conf = '';
+    this.props.analyses.forEach((job)=> {
+      job = job.replace(/_job/, '')
+      console.log("Getting config for "+job);
+      let config_data = JSON.parse(request_data(job, this.props.joblist_url, 'application/json'));
+      config_data.steps.forEach((step) => {
+        if(step.task.configuration.length !== 0){
+          step.task.configuration.forEach((info) => {
+            conf += job+","+step.ordering+","+info.type+","+info.name+","+info.version+","+info.parameters+"\n";
+          });
+        }
+      });
+    });
+    return(header+conf);
+  }
+
+  returnJobConfig = () => {
+    let file_data = this.getConf();
     saveAs(new Blob(file_data.split()), this.props.uuid+".csv");
   }
 
@@ -33,7 +53,7 @@ class ResultsSidebarDownloads extends React.Component{
     Object.keys(this.props.results_files).forEach((job) => {
       Object.keys(this.props.results_files[job]).forEach((file) => {
         //console.log(file);
-        if(file.includes(".png") ||file.includes(".jpg") ||file.includes(".jpeg") ||file.includes(".gif"))
+        if(file.includes(".png") ||file.includes(".jpg") || file.includes(".jpeg") ||file.includes(".gif"))
         {
           let url = this.props.files_url+"/submissions/"+file;
           var imgdata = null;
@@ -50,6 +70,7 @@ class ResultsSidebarDownloads extends React.Component{
         }
       });
     });
+    zip.file("job_configuration.csv", this.getConf());
     var svg = this.getSVGArea('sequence_plot');
     if(svg){
       zip.file('seq_annotation.svg', svg)
@@ -185,10 +206,10 @@ class ResultsSidebarDownloads extends React.Component{
            </div>
        </div>
        <div className="box-body">
-           <h5>ZIP FILE</h5>
-           <button className="fake-link" onClick={this.returnZip} >Get Zip file</button><br /><br />
+           <h5>RESULTS ZIP FILE</h5>
+           <button className="fake-link" onClick={this.returnZip} >Get Zip File</button><br /><br />
            <h5>JOB CONFIGURATION</h5>
-           <button className="fake-link" onClick={this.returnJobConfig} >Get Job details</button><br /><br />
+           <button className="fake-link" onClick={this.returnJobConfig} >Get Job Details</button><br /><br />
            { (this.props.results_files) ?
                 this.renderDownloads()
               :

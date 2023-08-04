@@ -83,6 +83,7 @@ class ResultsMain extends React.Component{
         if(this.checkSubset(config_data.props.seq_job_names, submission_jobs))
          {
            let seq = request_data(submission_data.input_file, config_data.props.files_url);
+           seq = seq.replace(/\r?\n|\r/g, "");
            config_data.props.updateAnalyses(submission_jobs.map(item => `${item}_job`));
            config_data.props.updateSeq(seq);
            config_data.props.updateForm(job_type);
@@ -90,6 +91,7 @@ class ResultsMain extends React.Component{
          else if (this.checkSubset(config_data.props.struct_job_names, submission_jobs)){
            //GET PDB DATA
           job_type = "StructForm";
+          config_data.props.updateAnalyses(submission_jobs.map(item => `${item}_job`));
           config_data.props.updateForm(job_type);
          }
          else
@@ -152,16 +154,22 @@ class ResultsMain extends React.Component{
        }
        //DO SOME THINGS
      }).catch(async error => {
-       let obj = await error.json().then(json => {return(json);});
-       let message = '';
-       if(obj.error){
-        message = obj.error;
-       }
-       if(obj.error.input_data){
-        message = obj.error.input_data
-       }
-       console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        let message = '';
+        try {
+          let obj = await error.json().then(json => {return(json);});
+          if(obj.error){
+            message.message = obj.error;
+          }
+          if(obj.error.input_data){
+            message.message = obj.error.input_data
+          }
+        }
+        catch{
+          message=error
+        }
+        console.log(message.message);
+       console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        return null;
      });
   }

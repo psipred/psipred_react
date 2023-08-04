@@ -2,6 +2,7 @@ import React from 'react';
 import {draw_empty_annotation_panel} from '../shared/index.js';
 import {request_data} from '../shared/index.js';
 import {config_table} from '../shared/index.js'; 
+import {display_structure} from '../shared/index.js'; 
 // import {request_binary_data} from './results_helper.js';
 import {parse_config} from '../shared/index.js';
 import { parse_ss2 } from './parsers.js';
@@ -15,7 +16,6 @@ import { parse_ffpreds} from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 //import DataTable from 'datatables.net-dt';
-import * as $3Dmol from '3dmol/build/3Dmol.js';
 import { annotationGrid } from './biod3/main.js';
 
 class ResultsSequence extends React.Component{
@@ -187,7 +187,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
         //console.log(file_data);
-        let html_data = parse_presults(file_data, ann_dom_set, "dgen");
+        let html_data = parse_presults(file_data, ann_dom_set, "pgen");
         var dt = document.createElement('template');
         dt.innerHTML = html_data;
         this.pdomthreaderTable.current.appendChild(dt.content);
@@ -217,21 +217,7 @@ class ResultsSequence extends React.Component{
     }
     for(let key in this.state.dmpfold_results){
       if(key.includes(".pdb")){
-        console.log(this.state.dmpfold_results[key]);
-        var cartoon_color = function(atom) {
-          if(atom.ss === 'h'){return '#e353e3';}
-          if(atom.ss === 's'){return '#e5dd55';}
-          return('grey');
-        };
-        //https://www.npmjs.com/package/3dmol
-        let element = this.dmpfold_pdb.current;
-        let config = { backgroundColor: '#ffffff' };
-        let viewer = $3Dmol.createViewer( element, config );
-        viewer.addModel( this.state.dmpfold_results[key], "pdb" );   /* load data */
-        viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
-        viewer.zoomTo();                                      /* set camera */
-        viewer.render();                                      /* render scene */
-        viewer.zoom(1.7, 3000);     
+        display_structure(this.dmpfold_pdb.current, this.state.dmpfold_results[key], true);
       }
     }
 

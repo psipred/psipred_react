@@ -117,10 +117,8 @@ If you added a new file type then you have to update the staging and production 
 
 # TODO
 
-1. Ensure the stuff for the versioning is correctly captured.
-2. DRY out all the uses of 3Dmol, lift the `display_structure()` function from `psipred_javascript/ractive_helpers/active_helpers.js`
-3. Fix any hard coded paths in msa and model
-4. ensure memembed and mempack work (need to use staging to debug as won't compile)
-5. Set polling time correctly in `results_sequence.js` and `results_structure.js`
+1. ensure memembed and mempack work (need to use staging to debug as won't compile)
+2. Set polling time correctly in `results_sequence.js` and `results_structure.js`
 
-6. in model/index.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all httprequest uses with this pattern.
+4. in model/index.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all httprequest uses with this pattern.
+5. Maybe there is a way to dry out some of the creatElement creation stuff in `results_sequence.js` and `results_structure.js`, especially for the img tag stuff.
