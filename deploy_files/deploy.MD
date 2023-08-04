@@ -21,8 +21,9 @@ sudo npm run build
 
 4. Enable site
 
-`sudo cp deploy_files/httpd.conf /etc/httpd/conf/httpd.conf`
+`sudo cp ./deploy_files/httpd.conf /etc/httpd/conf/httpd.conf`
 
 5. start/restart apache
 
+`sudo systemctl enable httpd`
 `sudo systemctl restart httpd`
