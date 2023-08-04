@@ -150,9 +150,13 @@ class ResultsMain extends React.Component{
           //DEV EXPECTS THIS URL TO BE 127.0.0.1, if you're on LOCALHOST this asssignment will fail
 
           //window.history.replaceState({}, data.UUID, config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
-          console.log("HISTORY:"+config_data.props.main_url+config_data.props.app_path);
-          window.history.replaceState({}, data.UUID, config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
-         
+          //console.log("HISTORY:"+config_data.props.main_url+config_data.props.app_path);
+          try {
+            window.history.replaceState({}, data.UUID, config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
+          }
+          catch{
+            throw new Error("HISTORY:"+config_data.props.main_url+config_data.props.app_path);
+          }
         }
          config_data.props.updateWaiting(true);
        }
