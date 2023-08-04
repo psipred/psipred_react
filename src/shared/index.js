@@ -53,8 +53,12 @@ export function decide_location(href, hostname, main_url, app_path){
         app_path:  '/interface',
         files_url:  'http://127.0.0.1:8000',
         location: "Dev",
-        main_url: 'http://127.0.0.1:3000',
+        main_url: 'http://127.0.0.1',
     };
+
+    if(href.includes(':3000')){
+      uris['main_url'] = 'http://127.0.0.1:3000';
+    }
 
     if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (href.includes('psipred') && !  href.includes('psipred_beta')) )
     {
