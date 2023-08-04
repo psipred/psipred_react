@@ -14,7 +14,6 @@ const getIndexFile = () => {
   if(location.startsWith("/model")){
     return 'index-model'
   }
-  return 'index-interface';
 }
 
 import(`./index/${getIndexFile()}`).then(( this_class ) => {
