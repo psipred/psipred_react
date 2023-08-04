@@ -23,6 +23,10 @@ sudo npm run build
 
 `sudo cp ./deploy_files/httpd.conf /etc/httpd/conf/httpd.conf`
 
+4. Maybe all httpd via selinux
+
+`sudo setsebool -P httpd_can_network_connect on`
+
 5. start/restart apache
 
 `sudo systemctl enable httpd`
