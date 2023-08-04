@@ -16,10 +16,10 @@ export function display_structure(mol_container, pdb_data, cartoon)
     return('grey');
   };
   let hotspot_color = function(atom){
-    if(atom.b == 1.0){atom.color = 'red'; return 'red';}
-    if(atom.b == 0.5){atom.color = 'black'; return 'black';}
-    if(atom.b == 50){atom.color = 'white'; return 'white';}
-    if(atom.b == 100){atom.color = 'red'; return 'red';}
+    if(atom.b === 1.0){atom.color = 'red'; return 'red';}
+    if(atom.b === 0.5){atom.color = 'black'; return 'black';}
+    if(atom.b === 50){atom.color = 'white'; return 'white';}
+    if(atom.b === 100){atom.color = 'red'; return 'red';}
     atom.color = 'blue';
     return("blue");
   };

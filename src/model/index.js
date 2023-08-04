@@ -121,8 +121,6 @@ export class Model extends React.Component{
         if(data.state !== "Running"){
           if(data.state === "Complete"){
             // Here we loop over data.submissions
-            let parsed_data = {};
-            let model_data = null;
             data.submissions.forEach((submission) => {
               // get an array of all the results files for our job
               results_data = this.getResultsFiles(submission.results, this.state);

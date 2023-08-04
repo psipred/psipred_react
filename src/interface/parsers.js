@@ -216,7 +216,7 @@ export function parse_featcfg(file)
   });
 
   // build html tables for the feature data
-  let class_colour = '';
+  //let class_colour = '';
   let feat_table = '<table align="center" class="small-table table-striped table-bordered ffpred-table"><tr><th>Feature Name</th><th>Value</th><th>Bias</th></tr>';
 
   Object.keys(SF_data).sort().forEach(function(feature_name){

@@ -7,8 +7,6 @@ import {display_structure} from '../shared/index.js';
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 
-import * as $3Dmol from '3dmol/build/3Dmol.js';
-
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
