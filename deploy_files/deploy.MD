@@ -31,3 +31,12 @@ sudo npm run build
 
 `sudo systemctl enable httpd`
 `sudo systemctl restart httpd`
+
+# OTHER TEMP DEPLOY NOTES
+
+updating on staging
+
+aa
+commandRunner
+blast_cache
+psipred_react
