@@ -21,8 +21,8 @@ sudo npm run build
 
 4. Enable site
 
-`sudo a2ensite deploy_files/my-app.conf`
+`sudo cp deploy_files/httpd.conf /etc/httpd/conf/httpd.conf`
 
 5. start/restart apache
 
-`sudo systemctl restart apache2`
+`sudo systemctl restart httpd`
