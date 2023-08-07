@@ -148,6 +148,9 @@ class ResultsStructure extends React.Component{
           else if(data.state === "Error"){
             throw new Error(data.submissions.at(-1).last_message);
           }
+          else if(data.state === "Submitted"){
+            console.log("Awaiting Worker")
+          }
           else{
             throw new Error("Job Failed");
           }
