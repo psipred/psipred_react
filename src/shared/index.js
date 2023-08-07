@@ -89,6 +89,7 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['submit_url'] = '';
       uris['times_url'] = '';
     }
+    console.log(uris);
     return(uris);
 }
 

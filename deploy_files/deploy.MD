@@ -34,9 +34,13 @@ sudo npm run build
 
 # OTHER TEMP DEPLOY NOTES
 
-updating on staging
+updating on staging:
 
 aa
 commandRunner
-blast_cache
+
+hspred and cleanexpect udpate
+
+//blast_cache
+
 psipred_react
