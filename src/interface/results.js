@@ -150,9 +150,9 @@ class ResultsMain extends React.Component{
           //DEV EXPECTS THIS URL TO BE 127.0.0.1, if you're on LOCALHOST this asssignment will fail
 
           //window.history.replaceState({}, data.UUID, config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
-          console.log("Add new history to browser window: "+config_data.props.main_url+config_data.props.app_path);
+          console.log("Add new history to browser window: "+config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
           try {
-            window.history.replaceState({}, data.UUID, config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID);
+            window.history.replaceState({}, data.UUID, config_data.props.app_path+"/&uuid="+data.UUID);
           }
           catch{
             throw new Error("Failed to push new browser history: "+config_data.props.main_url+config_data.props.app_path);
