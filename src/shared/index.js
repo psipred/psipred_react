@@ -55,7 +55,7 @@ export function decide_location(href, hostname, main_url, app_path){
         location: "Dev",
         main_url: 'http://127.0.0.1',
     };
-
+    uris['main_url'] = main_url;
     if(href.includes(':3000')){
       uris['main_url'] = 'http://127.0.0.1:3000';
     }
