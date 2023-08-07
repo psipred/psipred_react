@@ -16,11 +16,11 @@ export class Interface extends React.Component{
                   <a href="/" className="logo">
                        { /* <!-- mini logo for sidebar mini 50x50 pixels --> */ }
                       <span className="logo-mini">
-                    <img src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/images/psipred_logomark.svg" alt="PSIPRED logomark"/>
+                    <img src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/psipred_logomark.svg" alt="PSIPRED logomark"/>
               </span>
               { /* <!-- logo for regular state and mobile devices --> */ }
                       <span className="logo-lg">
-                    <img src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/images/psipred_logo.svg" alt="PSIPRED"/>
+                    <img src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/psipred_logo.svg" alt="PSIPRED"/>
               </span>
                   </a>
                   { /* <!-- Header Navbar: style can be found in header.less --> */ }
