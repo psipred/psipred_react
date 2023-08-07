@@ -368,7 +368,7 @@ class ResultsSequence extends React.Component{
         }
         throw response;
       }).then(data => {
-        if(data.state !== "Running" || data.state !== "Submitted"){
+        if(data.state !== "Running"){
           if(data.state === "Complete"){
             // Here we loop over data.submissions
             let parsed_data = {};
@@ -427,6 +427,9 @@ class ResultsSequence extends React.Component{
           }
           else if(data.state === "Error"){
             throw new Error(data.submissions.at(-1).last_message);
+          }
+          else if(data.state === "Submitted"){
+            console.log("Awaiting Worker")
           }
           else{
             throw new Error("Job Failed");
