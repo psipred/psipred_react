@@ -368,7 +368,7 @@ class ResultsSequence extends React.Component{
         }
         throw response;
       }).then(data => {
-        if(data.state !== "Running"){
+        if(data.state !== "Running" || data.state !== "Submitted"){
           if(data.state === "Complete"){
             // Here we loop over data.submissions
             let parsed_data = {};
