@@ -2,7 +2,6 @@
   "name": "psipred_react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/psipred_beta",
   "dependencies": {
     "@nightingale-elements/nightingale-manager": "^4.2.1-alpha.0",
     "@nightingale-elements/nightingale-msa": "^4.2.1-alpha.0",
