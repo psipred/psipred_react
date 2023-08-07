@@ -84,6 +84,7 @@ export function decide_location(href, hostname, main_url, app_path){
     }
     else if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || href.includes('psipred_beta'))
     { //update for staging paths
+      uris['app_path'] = app_path;
       uris['main_url'] = "bioinf.cs.ucl.ac.uk";
       uris['joblist_url'] = main_url+app_path+'/api/job/';
       uris['endpoints_url'] = main_url+app_path+'/api/endpoints/';
