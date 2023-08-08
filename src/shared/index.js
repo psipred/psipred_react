@@ -201,7 +201,7 @@ export function config_table(table_id, page_length, min_id, max_id, table_name, 
 
 export function configurePost(formState)
 {
-  //console.log(formState);
+  console.log(formState);
   console.log("Sending form data");
   var file = null;
   try
