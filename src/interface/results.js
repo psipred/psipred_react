@@ -165,6 +165,7 @@ class ResultsMain extends React.Component{
        //DO SOME THINGS
      }).catch(async error => {
         let message = '';
+        console.log(error.text());
         try {
           let obj = await error.json().then(json => {return(json);});
           if(obj.error){
@@ -178,7 +179,6 @@ class ResultsMain extends React.Component{
         catch{
           message=error
         }
-        console.log(error.text());
         console.log(message.message);
        console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
