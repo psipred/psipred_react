@@ -71,7 +71,7 @@ class DisplayArea extends React.Component{
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
                     'presult', 'align', 'presults', 'dom_presults', 'parseds', 'featcfg',
                     'full_formatted', 'csv', 'ann', 'aln', 'con', 'pdb',
-                    'boundary', 'Metpred', 'MetPred', 'out'],
+                    'boundary', 'Metpred', 'MetPred', 'out', 'results'],
       job_strings: { "psipred": { 'shortName': 'PSIPRED',
                                   'fullName': 'PSIPRED 4.0',
                                   'describedName': 'PSIPRED 4.0 (Predict Secondary Structure)',

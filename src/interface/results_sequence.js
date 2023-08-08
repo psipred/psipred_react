@@ -54,6 +54,7 @@ class ResultsSequence extends React.Component{
     this.ffpred_sch = React.createRef();
     this.aa_comp = React.createRef();
     this.global_features = React.createRef();
+    this.mempack_plot = React.createRef();
     this.timer = null;
   }
 
@@ -258,7 +259,7 @@ class ResultsSequence extends React.Component{
       }
     }
 
-     for(let key in this.state.ffpred_results){
+    for(let key in this.state.ffpred_results){
       if(key.includes("_cartoon_memsat_svm.png")){
         let img_url = this.state.ffpred_results[key];
         let divElement = document.createElement('div');
@@ -305,11 +306,46 @@ class ResultsSequence extends React.Component{
         t.innerHTML = html_data;
         this.ffpred_tables.current.appendChild(t.content);
       }
-     }
-     if(this.state.ffpred_results){
+    }
+    if(this.state.ffpred_results){
       config_table('#bp_table', 50, '#min_bp_prob', '#max_bp_prob', 'bp_table', 2, [3, 'asc']);
       config_table('#mf_table', 50, '#min_mf_prob', '#max_mf_prob', 'mf_table', 2, [3, 'asc']);
       config_table('#cc_table', 50, '#min_cc_prob', '#max_cc_prob', 'cc_table', 2, [3, 'asc']);
+    }
+    for(let key in this.state.mempack_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.mempack_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
+      if(key.includes(".png")){
+        let img_url = this.state.mempack_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Mempack Diagram";
+        this.mempack_plot.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.mempack_plot.current.appendChild(newElement);
+      }
+      if(key.includes("_schematic.png")){
+        let img_url = this.state.mempack_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Memsat Schematic diagram";
+        this.memsatSVMSchematic.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.memsatSVMSchematic.current.appendChild(newElement);
+      }
+      if(key.includes("_cartoon_memsat_svm.png")){
+        let img_url = this.state.mempack_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "Memsat Cartoon diagram";
+        this.memsatSVMSchematic.current.appendChild(newElement);
+        newElement = document.createElement('br');
+        this.memsatSVMSchematic.current.appendChild(newElement);
+      } 
     }
 
 
@@ -418,6 +454,7 @@ class ResultsSequence extends React.Component{
                 s4pred_results: parsed_data.s4pred,
                 dompred_results: parsed_data.dompred,
                 ffpred_results: parsed_data.ffpred,
+                mempack_results: parsed_data.mempack,
                 annotations: local_annotations});
             });
             this.props.updateResultsFiles(res);
@@ -535,20 +572,20 @@ class ResultsSequence extends React.Component{
         </div>
         }
 
-        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job") || this.props.analyses.includes("ffpred_job")) &&
+        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job") || this.props.analyses.includes("ffpred_job") || this.props.analyses.includes("mempack_job") ) &&
           <div>
-            { this.renderPanel("psipred_cartoon", "PSIPRED Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
+            { this.renderPanel("psipred_cartoon", this.props.job_strings.psipred.shortName+" Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
           </div> 
          }
          { this.props.analyses.includes("disopred_job") &&
           <div>
-            { this.renderPanel("disorder_plot", "DISOPRED Plot", "disorder_plot", 'pdisorder_svg', this.disopredPlot, this.state.disopred_waiting_message, this.state.disopred_waiting_icon) }
+            { this.renderPanel("disorder_plot", this.props.job_strings.disopred.shortName+" Plot", "disorder_plot", 'pdisorder_svg', this.disopredPlot, this.state.disopred_waiting_message, this.state.disopred_waiting_icon) }
           </div>
          }
-        { this.props.analyses.includes("memsatsvm_job") &&
+        { this.props.analyses.includes("memsatsvm_job" || this.props.analyses.includes("mempack_job")) &&
           <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
             <div className="box-header with-border">
-              <h5 className="box-title">MEMSAT-SVM Schematics</h5>
+              <h5 className="box-title">{this.props.job_strings.memsatsvm.shortName} Schematics</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
             </div>
             <div className="box-body">
@@ -571,38 +608,38 @@ class ResultsSequence extends React.Component{
          }
          { this.props.analyses.includes("pgenthreader_job") &&
           <div>
-            { this.renderPanel("pgen_table_box", "pGenTHREADER Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.props.pgenthreader_waiting_message, this.props.pgenthreader_waiting_icon) }
+            { this.renderPanel("pgen_table_box", this.props.job_strings.pgenthreader.shortName+" Structural Results", "pgen_table_div", 'pgenthreader_table', this.pgenthreaderTable, this.props.pgenthreader_waiting_message, this.props.pgenthreader_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("dmp_job") &&
           <div>
-            { this.renderPanel("dmp_contact_map", "DMP Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.props.dmp_waiting_message, this.props.dmp_waiting_icon) }
+            { this.renderPanel("dmp_contact_map", this.props.job_strings.dmp.shortName+" Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.props.dmp_waiting_message, this.props.dmp_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("genthreader_job") &&
           <div>
-            { this.renderPanel("gen_table_box", "GenTHREADER Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.props.genthreader_waiting_message, this.props.genthreader_waiting_icon) }
+            { this.renderPanel("gen_table_box", this.props.job_strings.genthreader.shortName+" Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.props.genthreader_waiting_message, this.props.genthreader_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("pdomthreader_job") &&
           <div>
-            { this.renderPanel("pdom_table_box", "pDomTHREADER Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.props.pdomthreader_waiting_message, this.props.pdomthreader_waiting_icon) }
+            { this.renderPanel("pdom_table_box", this.props.job_strings.pdomthreader.shortName+" Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.props.pdomthreader_waiting_message, this.props.pdomthreader_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("dmpfold_job") &&
           <div>
-            { this.renderPanel("dmpfold_pdb", "DMPfold prediction", "pdb_panel_class", 'dmp_pdb_id', this.dmpfold_pdb , this.props.dmpfold_waiting_message, this.props.dmpfold_waiting_icon) }
+            { this.renderPanel("dmpfold_pdb", this.props.job_strings.dmpfold.shortName+" prediction", "pdb_panel_class", 'dmp_pdb_id', this.dmpfold_pdb , this.props.dmpfold_waiting_message, this.props.dmpfold_waiting_icon) }
           </div>
          }
          { this.props.analyses.includes("s4pred_job") &&
           <div>
-            { this.renderPanel("s4pred_cartoon", "S4Pred Cartoon", "s4pred_cartoon", 's4pred_horiz', this.s4pred_horiz , this.props.s4pred_waiting_message, this.props.dmpfold_waiting_icon) }
+            { this.renderPanel("s4pred_cartoon", this.props.job_strings.s4pred.shortName+" Cartoon", "s4pred_cartoon", 's4pred_horiz', this.s4pred_horiz , this.props.s4pred_waiting_message, this.props.dmpfold_waiting_icon) }
           </div>
          }
         { this.props.analyses.includes("dompred_job") &&
           <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
             <div className="box-header with-border">
-              <h5 className="box-title">DomPred Results</h5>
+              <h5 className="box-title">{this.props.job_strings.dompred.shortName} Results</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
             </div>
             <div className="box-body">
@@ -626,7 +663,7 @@ class ResultsSequence extends React.Component{
          { this.props.analyses.includes("ffpred_job") &&
           <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
             <div className="box-header with-border">
-              <h5 className="box-title">FFPred Predictions</h5>
+              <h5 className="box-title">{this.props.job_strings.ffpred.shortName} Predictions</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
             </div>
             <div className="box-body">
@@ -656,6 +693,11 @@ class ResultsSequence extends React.Component{
                 <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
               }
             </div>
+          </div>
+         }
+        { this.props.analyses.includes("mempack_job") &&
+          <div>
+            { this.renderPanel("mempack_panel", this.props.job_strings.pack.shortName+" Plot", "mempack_plot", 'mempack_plot', this.mempack_plot , this.props.mempack_waiting_message, this.props.mempack_waiting_icon) }
           </div>
          }
          

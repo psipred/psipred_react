@@ -44,6 +44,8 @@ class ResultsMain extends React.Component{
       metsite_wating_icon: '',
       hspred_waiting_message: 'Please wait for your '+this.props.job_strings.hspred.shortName+' job to process',
       hspred_wating_icon: '',
+      memembed_waiting_message: 'Please wait for your '+this.props.job_strings.membed.shortName+' job to process',
+      memembed_wating_icon: '',
       
     };
   }

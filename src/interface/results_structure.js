@@ -240,7 +240,7 @@ class ResultsStructure extends React.Component{
         { this.props.analyses.includes("metsite_job") &&
           <div className="box box-primary" id="metsite_preds">
             <div className="box-header with-border">
-              <h5 className="box-title">Metsite Predictions</h5>
+              <h5 className="box-title">{this.props.job_strings.metsite.shortName} Predictions</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
             </div>
             <div className="box-body">
@@ -262,7 +262,7 @@ class ResultsStructure extends React.Component{
         { this.props.analyses.includes("hspred_job") &&
           <div className="box box-primary" id="hspred_preds">
             <div className="box-header with-border">
-              <h5 className="box-title">HSPred Predictions</h5>
+              <h5 className="box-title">{this.props.job_strings.hspred.shortName} Predictions</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
             </div>
             <div className="box-body">
