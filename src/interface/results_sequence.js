@@ -697,7 +697,7 @@ class ResultsSequence extends React.Component{
          }
         { this.props.analyses.includes("mempack_job") &&
           <div>
-            { this.renderPanel("mempack_panel", this.props.job_strings.pack.shortName+" Plot", "mempack_plot", 'mempack_plot', this.mempack_plot , this.props.mempack_waiting_message, this.props.mempack_waiting_icon) }
+            { this.renderPanel("mempack_panel", this.props.job_strings.mempack.shortName+" Plot", "mempack_plot", 'mempack_plot', this.mempack_plot , this.props.mempack_waiting_message, this.props.mempack_waiting_icon) }
           </div>
          }
          
