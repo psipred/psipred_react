@@ -178,7 +178,7 @@ class ResultsMain extends React.Component{
         catch{
           message=error
         }
-        console.log(message);
+        console.log(error.text());
         console.log(message.message);
        console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
