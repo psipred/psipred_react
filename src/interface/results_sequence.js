@@ -313,7 +313,7 @@ class ResultsSequence extends React.Component{
       config_table('#cc_table', 50, '#min_cc_prob', '#max_cc_prob', 'cc_table', 2, [3, 'asc']);
     }
     for(let key in this.state.mempack_results){
-      if(key.includes(".png") && !key.includes("_schematic") && !key.includes("_cartoon_memsat_svm")){
+      if(key.includes("_Kamada-Kawai_1.png")){
         let img_url = this.state.mempack_results[key];
         let newElement = document.createElement('img');
         newElement.src = img_url;
