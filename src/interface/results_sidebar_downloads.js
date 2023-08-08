@@ -186,7 +186,7 @@ class ResultsSidebarDownloads extends React.Component{
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.mempack.varName){
-            link_data = this.createDownloadLinks(count, [['.out', this.props.job_strings.mempack.shortName+' Output'], ['.results', this.props.job_strings.mempack.shortName+' Results']], this.props.job_strings.mempack.shortName+' DOWNLOADS');
+            link_data = this.createDownloadLinks(count, [['_LIPID_EXPOSURE.results', this.props.job_strings.mempack.shortName+' Lipid Exposure Results'], ['_CONTACT_DEF1.results', this.props.job_strings.mempack.shortName+' Contacts']], this.props.job_strings.mempack.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
           

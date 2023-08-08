@@ -313,13 +313,7 @@ class ResultsSequence extends React.Component{
       config_table('#cc_table', 50, '#min_cc_prob', '#max_cc_prob', 'cc_table', 2, [3, 'asc']);
     }
     for(let key in this.state.mempack_results){
-      if(key.includes(".horiz")){
-        let file_data = this.state.mempack_results[key];
-        let count = (file_data.match(/Conf/g) || []).length;
-        let panel_height = ((6*30)*(count+1))+120;
-        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
-      }
-      if(key.includes(".png") && !key.includes("_schematic.png") && !key.includes("_cartoon_memsat_svm.png")){
+      if(key.includes(".png") && !key.includes("_schematic") && !key.includes("_cartoon_memsat_svm")){
         let img_url = this.state.mempack_results[key];
         let newElement = document.createElement('img');
         newElement.src = img_url;
