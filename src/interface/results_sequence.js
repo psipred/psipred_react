@@ -566,7 +566,7 @@ class ResultsSequence extends React.Component{
         </div>
         }
 
-        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job") || this.props.analyses.includes("ffpred_job") || this.props.analyses.includes("mempack_job") ) &&
+        { (this.props.analyses.includes("psipred_job") || this.props.analyses.includes("pgenthreader_job") || this.props.analyses.includes("dmp_job") || this.props.analyses.includes("dompred_job") || this.props.analyses.includes("ffpred_job") ) &&
           <div>
             { this.renderPanel("psipred_cartoon", this.props.job_strings.psipred.shortName+" Cartoon", "psipred_cartoon", 'psipred_horiz', this.horizPlot, this.state.psipred_waiting_message, this.state.psipred_waiting_icon) }
           </div> 
