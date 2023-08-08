@@ -90,7 +90,7 @@ const validateFormData = (state, jobs, pdbData) => {
                   pdbData: ''
                 };
   let seq_job_list = state.seq_job_names;
-  let struct_job_list =  state.struct_job_names;;
+  let struct_job_list =  state.struct_job_names;
   if((compare(jobs, seq_job_list) > 0) && (compare(jobs, struct_job_list) > 0)) {
     checked.message = "You can not submit both sequence and structure analysis jobs";
     return(checked);

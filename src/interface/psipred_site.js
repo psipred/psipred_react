@@ -41,7 +41,7 @@ class DisplayArea extends React.Component{
       formSelectedOption: 'SeqForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", "dmpfold", 's4pred' ],
-      struct_job_names: ["metsite", "hspred", "memembed", "gentdb"],
+      struct_job_names: ["metsite", "hspred", "memembed", ],
       analyses: ['psipred_job', ],
       jobs: [],
       input_data: input_data,
@@ -160,7 +160,7 @@ class DisplayArea extends React.Component{
                                 'fullName': 'MEMEMBED',
                                 'describedName': 'MEMEMBED (Protein-Protein Hotspor Residue Prediction)',
                                 'varName': 'memembed',
-                                'jobName': 'meembed_job',
+                                'jobName': 'memembed_job',
                                 'tooltip': 'Orientate membrane proteins within the lipid bilayer', },    
                                    
                     
