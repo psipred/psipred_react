@@ -689,7 +689,7 @@ class ResultsSequence extends React.Component{
             </div>
           </div>
          }
-        { this.props.analyses.includes("dompred_job") &&
+        { this.props.analyses.includes("mempack_job") &&
           <div className="box box-primary collapsed-box" id="mempack_panel">
             <div className="box-header with-border">
               <h5 className="box-title">{this.props.job_strings.mempack.shortName} Plot</h5>
