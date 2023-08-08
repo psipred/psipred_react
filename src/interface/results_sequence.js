@@ -637,7 +637,7 @@ class ResultsSequence extends React.Component{
           </div>
          }
         { this.props.analyses.includes("dompred_job") &&
-          <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
+          <div className="box box-primary collapsed-box" id="dompred_results">
             <div className="box-header with-border">
               <h5 className="box-title">{this.props.job_strings.dompred.shortName} Results</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
@@ -661,7 +661,7 @@ class ResultsSequence extends React.Component{
           </div>
          }
          { this.props.analyses.includes("ffpred_job") &&
-          <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
+          <div className="box box-primary collapsed-box" id="ffpred_schematics">
             <div className="box-header with-border">
               <h5 className="box-title">{this.props.job_strings.ffpred.shortName} Predictions</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>

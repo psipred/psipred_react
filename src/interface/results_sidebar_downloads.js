@@ -131,6 +131,7 @@ class ResultsSidebarDownloads extends React.Component{
           link_data = this.createDownloadLinks(count, [['initial.pdb', 'HSPred First PDB File'], ['second.pdb', 'HSPred Second PDB File'], ['.out', 'HSPRed Predictions']], this.props.job_strings.hspred.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
         }
+        
         count = link_data[1];
       }
     });
@@ -145,7 +146,7 @@ class ResultsSidebarDownloads extends React.Component{
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.pgenthreader.varName){
-            link_data = this.createDownloadLinks(count, [['.presults', 'pGenTHREADER Hits'], ], this.props.job_strings.pgenthreader.shortName+' DOWNLOADS')
+            link_data = this.createDownloadLinks(count, [['.presults', this.props.job_strings.pgenthreader.shortName+' Hits'], ], this.props.job_strings.pgenthreader.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.disopred.varName){
@@ -153,19 +154,19 @@ class ResultsSidebarDownloads extends React.Component{
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.memsatsvm.varName){
-            link_data = this.createDownloadLinks(count, [['.memsat_svm', 'MEMSAT-SVM text format'], ], this.props.job_strings.memsatsvm.shortName+' DOWNLOADS')
+            link_data = this.createDownloadLinks(count, [['.memsat_svm', this.props.job_strings.memsatsvm.shortName+' text format'], ], this.props.job_strings.memsatsvm.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.dmp.varName){
-            link_data = this.createDownloadLinks(count, [['.con', 'DMP Contacts'], ], this.props.job_strings.dmp.shortName+' DOWNLOADS')
+            link_data = this.createDownloadLinks(count, [['.con', this.props.job_strings.dmp.shortName+' Contact List'], ], this.props.job_strings.dmp.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.genthreader.varName){
-            link_data = this.createDownloadLinks(count, [['.presults', 'GenTHREADER Hits'], ], this.props.job_strings.genthreader.shortName+' DOWNLOADS')
+            link_data = this.createDownloadLinks(count, [['.presults', this.props.job_strings.genthreader.shortName+' Hits'], ], this.props.job_strings.genthreader.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.pdomthreader.varName){
-            link_data = this.createDownloadLinks(count, [['.presults', 'pDomTHREADER Hits'], ], this.props.job_strings.pdomthreader.shortName+' DOWNLOADS')
+            link_data = this.createDownloadLinks(count, [['.presults', this.props.job_strings.pdomthreader.shortName+' Hits'], ], this.props.job_strings.pdomthreader.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.dmpfold.varName){
@@ -177,13 +178,18 @@ class ResultsSidebarDownloads extends React.Component{
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.dompred.varName){
-            link_data = this.createDownloadLinks(count, [['.boundary','DomPred Boundaries']], this.props.job_strings.dompred.shortName+' DOWNLOADS');
+            link_data = this.createDownloadLinks(count, [['.boundary',this.props.job_strings.dompred.shortName+' Boundaries']], this.props.job_strings.dompred.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
           if(name === this.props.job_strings.ffpred.varName){
-            link_data = this.createDownloadLinks(count, [['.featcfg', 'FFPred Predicted Features'], ['.full_formatted', 'FFPred Predictions']], this.props.job_strings.ffpred.shortName+' DOWNLOADS');
+            link_data = this.createDownloadLinks(count, [['.featcfg', this.props.job_strings.ffpred.shortName+' Predicted Features'], ['.full_formatted', this.props.job_strings.ffpred.shortName+' Predictions']], this.props.job_strings.ffpred.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
+          if(name === this.props.job_strings.mempack.varName){
+            link_data = this.createDownloadLinks(count, [['.out', this.props.job_strings.mempack.shortName+' Output'], ['.results', this.props.job_strings.mempack.shortName+' Results']], this.props.job_strings.mempack.shortName+' DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
+          
           count = link_data[1];
         }
         // downloads_text.push(link_data[0]);
