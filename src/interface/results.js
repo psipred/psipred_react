@@ -165,7 +165,7 @@ class ResultsMain extends React.Component{
        //DO SOME THINGS
      }).catch(async error => {
         let message = '';
-        console.log(error.text());
+        console.log(await error.text());
         try {
           let obj = await error.json().then(json => {return(json);});
           if(obj.error){
