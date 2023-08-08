@@ -126,7 +126,7 @@ class ResultsMain extends React.Component{
     // console.log(config_data.props);
     console.log('Posting Job URI request: POST: '+config_data.props.submit_url );
     let sending_data = configurePost({...{...config_data.state, ...config_data.props}});
-    //console.log(sending_data);
+    console.log(sending_data);
     fetch(config_data.props.submit_url, {
       headers: {
         'Accept': 'application/json',
