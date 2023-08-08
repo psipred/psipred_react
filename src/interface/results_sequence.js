@@ -689,9 +689,27 @@ class ResultsSequence extends React.Component{
             </div>
           </div>
          }
-        { this.props.analyses.includes("mempack_job") &&
-          <div>
-            { this.renderPanel("mempack_panel", this.props.job_strings.mempack.shortName+" Plot", "mempack_plot", 'mempack_plot', this.mempack_plot , this.props.mempack_waiting_message, this.props.mempack_waiting_icon) }
+        { this.props.analyses.includes("dompred_job") &&
+          <div className="box box-primary collapsed-box" id="mempack_panel">
+            <div className="box-header with-border">
+              <h5 className="box-title">{this.props.job_strings.mempack.shortName} Plot</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div className="mempack_plot" id="mempack_plot" ref={this.mempack_plot} style={{width: "60%"}}></div>
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.mempack_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.mempack_waiting_icon}</div>
+              }
+              { this.props.waiting &&
+                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+              }
+            </div>
           </div>
          }
          
