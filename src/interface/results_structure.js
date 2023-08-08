@@ -16,6 +16,7 @@ class ResultsStructure extends React.Component{
     this.hspred_initial_pdb = React.createRef();
     this.hspred_second_pdb = React.createRef();
     this.hspred_table = React.createRef();
+    this.memembed_pdb = React.createRef();
     this.timer = null;
   }
 
@@ -63,7 +64,12 @@ class ResultsStructure extends React.Component{
     if(this.state.hspred_results){
       config_table('#hspred_table', 50, '#min_hs_score', '#max_hs_score', 'hspred_table', 2, [2, 'desc']);
     }
-    
+
+    for(let key in this.state.memembed_results){
+      if(key.includes(".pdb")){
+        display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false);    
+      }
+    }
   }
 
   getResultsFiles = (data, props) => {
@@ -137,7 +143,8 @@ class ResultsStructure extends React.Component{
 
               // we assign the results files 
               this.setState({metsite_results: parsed_data.metsite,
-                    hspred_results: parsed_data.hspred
+                    hspred_results: parsed_data.hspred,
+                    memembed_results: parsed_data.memembed
               });
             });
             this.props.updateResultsFiles(res);
@@ -284,6 +291,28 @@ class ResultsStructure extends React.Component{
             </div>
           </div>
          }
+        { this.props.analyses.includes("memembed_job") &&
+          <div className="box box-primary" id="hspred_preds">
+            <div className="box-header with-border">
+              <h5 className="box-title">{this.props.job_strings.memembed.shortName} Prediction</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              <div className="memembed_pdb pdb_panel_class" id="memembed" ref={this.memembed_pdb}></div>
+        
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.memembed_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.memembed_waiting_icon}</div>
+              }
+            </div>
+          </div>
+         }
+         
          
       </div>
     );
