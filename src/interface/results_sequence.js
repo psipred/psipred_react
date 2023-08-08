@@ -582,7 +582,7 @@ class ResultsSequence extends React.Component{
             { this.renderPanel("disorder_plot", this.props.job_strings.disopred.shortName+" Plot", "disorder_plot", 'pdisorder_svg', this.disopredPlot, this.state.disopred_waiting_message, this.state.disopred_waiting_icon) }
           </div>
          }
-        { this.props.analyses.includes("memsatsvm_job" || this.props.analyses.includes("mempack_job")) &&
+        { (this.props.analyses.includes("memsatsvm_job") || this.props.analyses.includes("mempack_job")) &&
           <div className="box box-primary collapsed-box" id="memsatsvm_schematics">
             <div className="box-header with-border">
               <h5 className="box-title">{this.props.job_strings.memsatsvm.shortName} Schematics</h5>
