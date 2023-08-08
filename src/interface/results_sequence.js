@@ -318,6 +318,7 @@ class ResultsSequence extends React.Component{
         let newElement = document.createElement('img');
         newElement.src = img_url;
         newElement.alt = "Mempack Diagram";
+        newElement.setAttribute('width', "60%");
         this.mempack_plot.current.appendChild(newElement);
         newElement = document.createElement('br');
         this.mempack_plot.current.appendChild(newElement);
@@ -699,7 +700,7 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="mempack_plot" id="mempack_plot" ref={this.mempack_plot} style={{width: "60%"}}></div>
+              <div className="mempack_plot" id="mempack_plot" ref={this.mempack_plot}></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.mempack_waiting_message}</h4></div>
               }
