@@ -165,7 +165,6 @@ class ResultsMain extends React.Component{
        //DO SOME THINGS
      }).catch(async error => {
         let message = '';
-        console.log(await error.text());
         try {
           let obj = await error.json().then(json => {return(json);});
           if(obj.error){
@@ -174,7 +173,7 @@ class ResultsMain extends React.Component{
           if(obj.error.input_data){
             message.message = obj.error.input_data
           }
-          message = obj;
+          message.message = obj;
         }
         catch{
           message=error

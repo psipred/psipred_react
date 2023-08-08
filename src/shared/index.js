@@ -245,6 +245,7 @@ export function configurePost(formState)
   fd.append("split_pdb_files_first_chain", formState.hspred_protein_1);
   fd.append("split_pdb_files_second_chain", formState.hspred_protein_2);}
   if(formState.jobs.includes('memembed')){
+    console.log("ADDING MEMEMBED STUFF TO FORM");
   fd.append("memembed_algorithm", formState.memembed_algorithm);
   fd.append("memembed_barrel", formState.memembed_barrel);
   fd.append("memembed_termini", formState.memembed_terminal);}
