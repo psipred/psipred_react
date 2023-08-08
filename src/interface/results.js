@@ -173,6 +173,7 @@ class ResultsMain extends React.Component{
           if(obj.error.input_data){
             message.message = obj.error.input_data
           }
+          message = obj;
         }
         catch{
           message=error
