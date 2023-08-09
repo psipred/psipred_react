@@ -10,7 +10,7 @@ import {parse_hspred} from './parsers.js';
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {copySuccess: '',};
     this.metsite_pdb = React.createRef();
     this.metsite_table = React.createRef();
     this.hspred_initial_pdb = React.createRef();
@@ -224,6 +224,14 @@ class ResultsStructure extends React.Component{
     )
   }
 
+  copyToClipboard = (e) => {
+    document.execCommand('copy', true, this.props.result_uri);
+    // This is just personal preference.
+    // I prefer to not show the whole text area selected.
+    this.setState({ copySuccess: 'Copied!' });
+  };
+
+
 
   render() {
     // currently the memsat panel is not calling the funcition. Possible argument for the memsat panel to be 2 panels
@@ -238,14 +246,8 @@ class ResultsStructure extends React.Component{
             <div className="job_info_text job_info_text_left">
               <p className="name_text">Name : {this.props.name}</p>
             </div>
-            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink" onClick={async () => {
-  if ("clipboard" in navigator) {
-    await navigator.clipboard.writeText(this.props.result_uri);
-  } else {
-    document.execCommand("copy", true, this.props.result_uri);
-  }
-}}
-><img src={process.env.PUBLIC_URL+"/static/images/clippy.svg"} alt="Copy to clipboard" width="16" /></button></div>
+            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink" onClick={this.copyToClipboard}
+><img src={process.env.PUBLIC_URL+"/static/images/clippy.svg"} alt="Copy to clipboard" width="16" />{this.state.copySuccess}</button></div>
           </div>
         </div>
         }
