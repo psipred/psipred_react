@@ -258,7 +258,7 @@ class ResultsStructure extends React.Component{
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.metsite_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.metsite_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.metsite_waiting_icon} /></div>
               }
               <div className="metsite_structure pdb_panel_class" id="metsite_structure" ref={this.metsite_pdb}></div>
               <div className="metsite_table_holder" id="metsite_table_holder" ref={this.metsite_table} ></div>
@@ -306,7 +306,7 @@ class ResultsStructure extends React.Component{
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.memembed_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.memembed_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.memembed_waiting_icon} /></div>
               }
               <div className="memembed_pdb pdb_panel_class" id="memembed" ref={this.memembed_pdb}></div>
         

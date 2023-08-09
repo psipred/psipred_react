@@ -519,7 +519,7 @@ class ResultsSequence extends React.Component{
           <div className="waiting" intro="slide" outro="slide"><br /><h4>{waiting_message}</h4></div>
         }
         { this.props.waiting &&
-          <div className="waiting_icon" intro="slide" outro="slide">{waiting_icon}</div>
+          <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={waiting_icon} /></div>
         }
         <div className={plot_class} id={plot_id} ref={plot_data_ref} ></div>
 
@@ -591,7 +591,7 @@ class ResultsSequence extends React.Component{
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.memsatsvm_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.memsatsvm_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.memsatsvm_waiting_icon} /></div>
               }
               <div className="memsatsvm_schematic" id="memsatsvm_schematic" ref={this.memsatSVMSchematic}></div>
               <div className="memsatsvm_cartoon" id="memsatsvm_cartoon" ref={this.memsatSVMCartoon} ></div>
@@ -642,7 +642,7 @@ class ResultsSequence extends React.Component{
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.dompred_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.dompred_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.dompred_waiting_icon} /></div>
               }
               <div className="dompred_chart" id="dompred_chart" ref={this.dompred_chart}></div>
               <div className="dompred_results" id="dompread_results" ref={this.dompred_results} ></div>
@@ -664,7 +664,7 @@ class ResultsSequence extends React.Component{
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.ffpred_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.ffpred_waiting_icon}</div>
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.ffpred_waiting_icon} /></div>
               }
               <p>These prediction terms represent terms predicted where SVM training includes assigned GO terms across all evidence code types. SVM reliability is regarded as High (H) when MCC, sensitivity, specificity and precision are jointly above a given threshold, Otherwise Reliability is indicated as Low (L). </p>
               <div className="ffpred_bp_table" id="ffpred_bp_table" ref={this.ffpred_tables} ></div>
