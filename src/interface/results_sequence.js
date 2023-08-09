@@ -218,7 +218,7 @@ class ResultsSequence extends React.Component{
     }
     for(let key in this.state.dmpfold_results){
       if(key.includes(".pdb")){
-        display_structure(this.dmpfold_pdb.current, this.state.dmpfold_results[key], true);
+        display_structure(this.dmpfold_pdb.current, this.state.dmpfold_results[key], true, false);
       }
     }
 

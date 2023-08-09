@@ -30,7 +30,7 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.metsite_results){
       if(key.includes(".MetPred")){
-        display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false);
+        display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false, false);
       }
       if(key.includes(".Metpred")){
         let file_data = this.state.metsite_results[key];
@@ -47,10 +47,10 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.hspred_results){
       if(key.includes("_initial.pdb")){
-        display_structure(this.hspred_initial_pdb.current, this.state.hspred_results[key], false);    
+        display_structure(this.hspred_initial_pdb.current, this.state.hspred_results[key], false, false);    
       }
       if(key.includes("_second.pdb")){
-        display_structure(this.hspred_second_pdb.current, this.state.hspred_results[key], false);
+        display_structure(this.hspred_second_pdb.current, this.state.hspred_results[key], false, false);
       }
       if(key.includes(".out")){
         let file_data = this.state.hspred_results[key];
@@ -67,7 +67,7 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.memembed_results){
       if(key.includes(".pdb")){
-        display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false);    
+        display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false, true);    
       }
     }
   }

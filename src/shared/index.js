@@ -7,7 +7,7 @@ var moment = require('moment');
 
 
 
-export function display_structure(mol_container, pdb_data, cartoon)
+export function display_structure(mol_container, pdb_data, cartoon, memembed)
 {
   let cartoon_color = function(atom) {
     if(atom.ss === 'h'){atom.color = '#e353e3'; return '#e353e3';}
@@ -34,9 +34,9 @@ export function display_structure(mol_container, pdb_data, cartoon)
   else {
     viewer.setStyle({}, {cartoon: {colorfunc: hotspot_color}});  /* style all atoms */
   }
-  // if(css_id.startsWith('#memembed')){
-  //   viewer.addSurface($3Dmol.SurfaceType.VDW, {'opacity':0.8, colorscheme: 'whiteCarbon'}, {hetflag:true},{});
-  // }
+  if(memembed){
+    viewer.addSurface($3Dmol.SurfaceType.VDW, {'opacity':0.8, colorscheme: 'whiteCarbon'}, {hetflag:true},{});
+  }
   viewer.zoomTo();                                      /* set camera */
   viewer.render();                                      /* render scene */
   viewer.zoom(1.7, 3000);
