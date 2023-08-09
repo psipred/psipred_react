@@ -238,7 +238,13 @@ class ResultsStructure extends React.Component{
             <div className="job_info_text job_info_text_left">
               <p className="name_text">Name : {this.props.name}</p>
             </div>
-            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink" onClick={()=>navigator.clipboard.writeText(this.props.result_uri)}
+            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink" onClick={async () => {
+  if ("clipboard" in navigator) {
+    await navigator.clipboard.writeText(this.props.result_uri);
+  } else {
+    document.execCommand("copy", true, this.props.result_uri);
+  }
+}}
 ><img src={process.env.PUBLIC_URL+"/static/images/clippy.svg"} alt="Copy to clipboard" width="16" /></button></div>
           </div>
         </div>
