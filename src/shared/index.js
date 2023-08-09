@@ -35,7 +35,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed)
     viewer.setStyle({}, {cartoon: {colorfunc: hotspot_color}});  /* style all atoms */
   }
   if(memembed){
-    viewer.addSurface($3Dmol.SurfaceType.VDW, {'opacity':0.8, colorscheme: 'whiteCarbon'}, {hetflag:true},{});
+    viewer.addSurface($3Dmol.SurfaceType.VDW, {'opacity':0.8, voldata: new $3Dmol.VolumeData(volumedata, "cube"), volscheme: new $3Dmol.Gradient.RWB(-10,10), colorscheme: 'whiteCarbon'}, {hetflag:true});
   }
   viewer.zoomTo();                                      /* set camera */
   viewer.render();                                      /* render scene */
