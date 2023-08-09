@@ -127,8 +127,13 @@ class ResultsSidebarDownloads extends React.Component{
         if(name === this.props.job_strings.metsite.varName){
           link_data = this.createDownloadLinks(count, [['.MetPred', 'Metsite PDB'], ['.Metpred', 'Mesite Predictions']], this.props.job_strings.metsite.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
-        }if(name === this.props.job_strings.hspred.varName){
+        }
+        if(name === this.props.job_strings.hspred.varName){
           link_data = this.createDownloadLinks(count, [['initial.pdb', 'HSPred First PDB File'], ['second.pdb', 'HSPred Second PDB File'], ['.out', 'HSPRed Predictions']], this.props.job_strings.hspred.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
+        if(name === this.props.job_strings.memembed.varName){
+          link_data = this.createDownloadLinks(count, [['.pdb', 'PDB Embedding'], ], this.props.job_strings.memembed.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
         }
         
