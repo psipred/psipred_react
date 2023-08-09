@@ -515,21 +515,21 @@ class ResultsSequence extends React.Component{
         { this.state.error_message &&
           <div className="error">{this.state.error_message}</div>
         }
-        <div className={plot_class} id={plot_id} ref={plot_data_ref} ></div>
         { this.props.waiting &&
           <div className="waiting" intro="slide" outro="slide"><br /><h4>{waiting_message}</h4></div>
         }
         { this.props.waiting &&
           <div className="waiting_icon" intro="slide" outro="slide">{waiting_icon}</div>
         }
-        { this.props.waiting &&
-          <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-        }
+        <div className={plot_class} id={plot_id} ref={plot_data_ref} ></div>
+
       </div>
     </div>
     )
   }
-
+  // { this.props.waiting &&
+  //   <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
+  // }
 
   render() {
     // currently the memsat panel is not calling the funcition. Possible argument for the memsat panel to be 2 panels
@@ -587,17 +587,14 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="memsatsvm_schematic" id="memsatsvm_schematic" ref={this.memsatSVMSchematic}></div>
-              <div className="memsatsvm_cartoon" id="memsatsvm_cartoon" ref={this.memsatSVMCartoon} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.memsatsvm_waiting_message}</h4></div>
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.props.memsatsvm_waiting_icon}</div>
               }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
+              <div className="memsatsvm_schematic" id="memsatsvm_schematic" ref={this.memsatSVMSchematic}></div>
+              <div className="memsatsvm_cartoon" id="memsatsvm_cartoon" ref={this.memsatSVMCartoon} ></div>
             </div>
           </div>
          }
@@ -641,17 +638,15 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="dompred_chart" id="dompred_chart" ref={this.dompred_chart}></div>
-              <div className="dompred_results" id="dompread_results" ref={this.dompred_results} ></div>
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.dompred_waiting_message}</h4></div>
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.props.dompred_waiting_icon}</div>
               }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
+              <div className="dompred_chart" id="dompred_chart" ref={this.dompred_chart}></div>
+              <div className="dompred_results" id="dompread_results" ref={this.dompred_results} ></div>
+
             </div>
           </div>
          }
@@ -665,6 +660,12 @@ class ResultsSequence extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.ffpred_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide">{this.props.ffpred_waiting_icon}</div>
+              }
               <p>These prediction terms represent terms predicted where SVM training includes assigned GO terms across all evidence code types. SVM reliability is regarded as High (H) when MCC, sensitivity, specificity and precision are jointly above a given threshold, Otherwise Reliability is indicated as Low (L). </p>
               <div className="ffpred_bp_table" id="ffpred_bp_table" ref={this.ffpred_tables} ></div>
               <h4>Sequence Feature Map</h4>
@@ -677,41 +678,13 @@ class ResultsSequence extends React.Component{
               <h4>Global Features</h4>
               <p>Global features are calculated directly from sequence. Localisation values are predicted by the Psort algorithm and reflect the relative likelihood of the protein occupying different cellular localisations. The bias column is highlighted according to the significance of the feature value calculated from Z score of the feature.</p>
               <div className="ffpred_memsat" id="ffpred_memsat" ref={this.global_features} ></div>
-              
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.ffpred_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.ffpred_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
             </div>
           </div>
          }
         { this.props.analyses.includes("mempack_job") &&
-          <div className="box box-primary collapsed-box" id="mempack_panel">
-            <div className="box-header with-border">
-              <h5 className="box-title">{this.props.job_strings.mempack.shortName} Plot</h5>
-              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
-            </div>
-            <div className="box-body">
-              { this.state.error_message &&
-                <div className="error">{this.state.error_message}</div>
-              }
-              <div className="mempack_plot" id="mempack_plot" ref={this.mempack_plot}></div>
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.mempack_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.mempack_waiting_icon}</div>
-              }
-              { this.props.waiting &&
-                <div className="overlay processing"><i className="fa fa-refresh fa-spin"></i></div>
-              }
-            </div>
-          </div>
+        <div>
+        { this.renderPanel("mempack_pane", this.props.job_strings.mempack.shortName+" Cartoon", "mempack_plot", 'mempack_plot', this.mempack_plot , this.props.mempack_waiting_message, this.props.mempack_waiting_icon) }
+        </div>
          }
          
       </div>

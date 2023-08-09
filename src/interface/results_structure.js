@@ -254,15 +254,15 @@ class ResultsStructure extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="metsite_structure pdb_panel_class" id="metsite_structure" ref={this.metsite_pdb}></div>
-              <div className="metsite_table_holder" id="metsite_table_holder" ref={this.metsite_table} ></div>
-              
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.metsite_waiting_message}</h4></div>
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.props.metsite_waiting_icon}</div>
               }
+              <div className="metsite_structure pdb_panel_class" id="metsite_structure" ref={this.metsite_pdb}></div>
+              <div className="metsite_table_holder" id="metsite_table_holder" ref={this.metsite_table} ></div>
+              
             </div>
           </div>
          }
@@ -276,18 +276,19 @@ class ResultsStructure extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
+                            
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.hspred_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.hspred_waiting_icon} /></div>
+              }
               <div>
               <div className="hspred_structure pdb_panel_class" id="hs_pred_initial" ref={this.hspred_initial_pdb}></div>
               <div className="hspred_structure pdb_panel_class" id="hs_pred_second" ref={this.hspred_second_pdb}></div>
               </div>
               <div className="hspred_table_holder" id="hspred_table_holder" ref={this.hspred_table} ></div>
               
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.hspred_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide">{this.props.hspred_waiting_icon}</div>
-              }
             </div>
           </div>
          }
@@ -301,14 +302,14 @@ class ResultsStructure extends React.Component{
               { this.state.error_message &&
                 <div className="error">{this.state.error_message}</div>
               }
-              <div className="memembed_pdb pdb_panel_class" id="memembed" ref={this.memembed_pdb}></div>
-        
               { this.props.waiting &&
                 <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.memembed_waiting_message}</h4></div>
               }
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide">{this.props.memembed_waiting_icon}</div>
               }
+              <div className="memembed_pdb pdb_panel_class" id="memembed" ref={this.memembed_pdb}></div>
+        
             </div>
           </div>
          }

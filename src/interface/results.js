@@ -17,35 +17,35 @@ class ResultsMain extends React.Component{
       error_message: null,
       loading_message: 'Fetching Times',
       psipred_waiting_message: 'Please wait for your '+this.props.job_strings.psipred.shortName+' job to process',
-      psipred_wating_icon: '',
+      psipred_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       disopred_waiting_message: 'Please wait for your '+this.props.job_strings.disopred.shortName+' job to process',
-      disopred_wating_icon: '',
+      disopred_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       memsatsvm_waiting_message: 'Please wait for your '+this.props.job_strings.memsatsvm.shortName+' job to process',
-      memsatsvm_wating_icon: '',
+      memsatsvm_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       pgenthreader_waiting_message: 'Please wait for your '+this.props.job_strings.pgenthreader.shortName+' job to process',
-      pgenthreader_wating_icon: '',
+      pgenthreader_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       dmp_waiting_message: 'Please wait for your '+this.props.job_strings.dmp.shortName+' job to process',
-      dmp_wating_icon: '',
+      dmp_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       mempack_waiting_message: 'Please wait for your '+this.props.job_strings.mempack.shortName+' job to process',
-      mempack_wating_icon: '',
+      mempack_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       genthreader_waiting_message: 'Please wait for your '+this.props.job_strings.genthreader.shortName+' job to process',
-      genthreader_wating_icon: '',
+      genthreader_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       pdomthreader_waiting_message: 'Please wait for your '+this.props.job_strings.pdomthreader.shortName+' job to process',
-      pdomthreader_wating_icon: '',
+      pdomthreader_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       dmpfold_waiting_message: 'Please wait for your '+this.props.job_strings.dmpfold.shortName+' job to process',
-      dmpfold_wating_icon: '',
+      dmpfold_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       s4pred_waiting_message: 'Please wait for your '+this.props.job_strings.s4pred.shortName+' job to process',
-      s4pred_wating_icon: '',
+      s4pred_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       dompred_waiting_message: 'Please wait for your '+this.props.job_strings.dompred.shortName+' job to process',
-      dompred_wating_icon: '',
+      dompred_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       ffpred_waiting_message: 'Please wait for your '+this.props.job_strings.ffpred.shortName+' job to process',
-      ffpred_wating_icon: '',
+      ffpred_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       metsite_waiting_message: 'Please wait for your '+this.props.job_strings.metsite.shortName+' job to process',
-      metsite_wating_icon: '',
+      metsite_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       hspred_waiting_message: 'Please wait for your '+this.props.job_strings.hspred.shortName+' job to process',
-      hspred_wating_icon: '',
+      hspred_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       memembed_waiting_message: 'Please wait for your '+this.props.job_strings.memembed.shortName+' job to process',
-      memembed_wating_icon: '',
+      memembed_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       
     };
   }
@@ -126,7 +126,7 @@ class ResultsMain extends React.Component{
     // console.log(config_data.props);
     console.log('Posting Job URI request: POST: '+config_data.props.submit_url );
     let sending_data = configurePost({...{...config_data.state, ...config_data.props}});
-   for (const pair of sending_data.entries()) {
+    for (const pair of sending_data.entries()) {
       console.log(`${pair[0]}, ${pair[1]}`);
     }
     fetch(config_data.props.submit_url, {
@@ -166,7 +166,7 @@ class ResultsMain extends React.Component{
        }
        //DO SOME THINGS
      }).catch(async error => {
-        let message = '';
+        let message = {};
         try {
           let obj = await error.json().then(json => {return(json);});
           console.log(obj);
@@ -183,8 +183,7 @@ class ResultsMain extends React.Component{
         catch{
           message.message=error
         }
-        console.log(message.message);
-       console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
        return null;
      });

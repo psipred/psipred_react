@@ -89,8 +89,8 @@ class MemembedOptions extends React.Component {
             <option value="3">GA x 5</option>
           </select><br /><br />
         <strong>Target is Beta Barrel:</strong><br />
-          <input type="radio" id="memembed_barrel_yes" name="memembed_barrel" value="true" checked={this.props.memembed_barrel === "true"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_barrel_yes">Yes</label><br />
-          <input type="radio" id="memembed_barrel_no" name="memembed_barrel" value="false" checked={this.props.memembed_barrel === "false"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_barrel_no">No</label><br /><br />
+          <input type="radio" id="memembed_barrel_yes" name="memembed_barrel" value="TRUE" checked={this.props.memembed_barrel === "TRUE"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_barrel_yes">Yes</label><br />
+          <input type="radio" id="memembed_barrel_no" name="memembed_barrel" value="FALSE" checked={this.props.memembed_barrel === "FALSE"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_barrel_no">No</label><br /><br />
         <strong>N-Terminal Location:</strong><br />
           <input type="radio" id="memembed_terminal_in" name="memembed_terminal" value="in" checked={this.props.memembed_terminal === "in"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_terminal_in">Cytoplasmic</label><br />
           <input type="radio" id="memembed_terminal_out" name="memembed_terminal" value="out" checked={this.props.memembed_terminal === "out"} onChange={this.props.handleSidebarChange} /> <label htmlFor="memembed_terminal_out">Extra Cellular</label><br /><br />
