@@ -10,7 +10,7 @@ import {parse_hspred} from './parsers.js';
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
-    this.state = {copied: false,};
+    this.state = {};
     this.metsite_pdb = React.createRef();
     this.metsite_table = React.createRef();
     this.hspred_initial_pdb = React.createRef();
@@ -237,8 +237,8 @@ class ResultsStructure extends React.Component{
             <div className="job_info_text job_info_text_left">
               <p className="name_text">Name : {this.props.name}</p>
             </div>
-            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><CopyToClipboard text={this.props.result_uri} onCopy={() => this.setState({copied: true})}><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink"
-><img src={process.env.PUBLIC_URL+"/static/images/clippy.svg"} alt="Copy to clipboard" width="16" /></button></CopyToClipboard>{this.state.copySuccess}</div>
+            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><CopyToClipboard text={this.props.result_uri}><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink"
+><img src={process.env.PUBLIC_URL+"/static/images/clippy.svg"} alt="Copy to clipboard" width="16" /></button></CopyToClipboard></div>
           </div>
         </div>
         }

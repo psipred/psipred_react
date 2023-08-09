@@ -2,7 +2,8 @@ import React from 'react';
 import {draw_empty_annotation_panel} from '../shared/index.js';
 import {request_data} from '../shared/index.js';
 import {config_table} from '../shared/index.js'; 
-import {display_structure} from '../shared/index.js'; 
+import {display_structure} from '../shared/index.js';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 // import {request_binary_data} from './results_helper.js';
 import {parse_config} from '../shared/index.js';
 import { parse_ss2 } from './parsers.js';
@@ -544,14 +545,8 @@ class ResultsSequence extends React.Component{
             <div className="job_info_text job_info_text_left">
               <p className="name_text">Name : {this.props.name}</p>
             </div>
-            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink" onClick={async () => {
-  if ("clipboard" in navigator) {
-    await navigator.clipboard.writeText(this.props.result_uri);
-  } else {
-    document.execCommand("copy", true, this.props.result_uri);
-  }
-}}
-><img src={process.env.PUBLIC_URL+"/static/images/clippy.svg"} alt="Copy to clipboard" width="16" /></button></div>
+            <div className="job_info_text box-tools pull-right job_info_text_right">Copy Link: <input id="retrievalLink" value={this.props.result_uri} width="160" readOnly /><CopyToClipboard text={this.props.result_uri}><button className="copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#retrievalLink"
+><img src={process.env.PUBLIC_URL+"/static/images/clippy.svg"} alt="Copy to clipboard" width="16" /></button></CopyToClipboard></div>
           </div>
         </div>
         }
