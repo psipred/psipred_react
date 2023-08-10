@@ -22,13 +22,14 @@ document.addEventListener('keydown', function(e) {
   var requiredKey = konamiCode[konamiCodePosition];
 
   // compare the key with the required key
-  if (key == requiredKey) {
+  if (key === requiredKey) {
 
     // move to the next key in the konami code sequence
     konamiCodePosition++;
 
     // if the last key is reached, activate cheats
-    if (konamiCodePosition == konamiCode.length) {
+    if (konamiCodePosition === konamiCode.length) {
+      //alert("INPUTTED");
       activateCheats();
       konamiCodePosition = 0;
     }
@@ -38,5 +39,5 @@ document.addEventListener('keydown', function(e) {
 });
 
 function activateCheats() {
-  document.getElementsByClassName('helixy')[0].style.visibility = 'visible';
+  document.getElementById('helixy').style.visibility = 'visible';
 }
