@@ -1,3 +1,43 @@
+import * as colours from '../shared/colour_names.js';
+
+export function merizo_html(dat_string){
+  //console.log(dat_string);
+  let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 60%" >';
+  merizo_table += '<tr><th>Domain ID</th><th>Domain Region</th><th>Colour</th></tr>';
+  let data = dat_string.split("\t");
+  let domains = data[7].split(",");
+  domains.forEach((domain, idx) => {
+     merizo_table += '<tr><td>'+idx+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';
+  });
+  merizo_table += '</table>';
+  // <tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Hotspot Residue</td></tr>';;
+  return(merizo_table);
+}
+
+export function parse_merizo(string){
+  let merizo_labels = [];
+  let domain_count = 1;
+  let data = string.split("\t");
+  let domain_data = data[7];
+  merizo_labels = new Array(Number(data[1]));
+  merizo_labels.fill(0);
+  let domains = domain_data.split(",");
+  domains.forEach((domain) => {
+    let segments = domain.split("_");
+    segments.forEach((segment) =>{
+      let range = segment.split("-").map(Number);
+      merizo_labels.forEach((val, idx) => {
+        //console.log(range[0], range[1], idx);
+        if(idx >= range[0]-1 && idx <= range[1]-1){
+          merizo_labels[idx] = domain_count;
+        }
+      });
+    });
+    domain_count++;
+  });
+  return([merizo_labels, domain_count]);
+}
+
 //https://stackoverflow.com/questions/23616226/insert-html-with-react-variable-statements-jsx
 
 export function parse_hspred(file)
