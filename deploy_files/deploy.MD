@@ -16,7 +16,7 @@ sudo git clone https://github.com/psipred/psipred_react.git
 ``` bash
 cd psipred_react
 sudo npm install
-sudo npm run build
+sudo PUBLIC_URL=http://bioinf.cs.ucl.ac.uk/psipred_beta npm run build
 ```
 
 4. Enable site

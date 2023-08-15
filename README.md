@@ -115,6 +115,10 @@ See also class_layout.odp
 
 If you added a new file type then you have to update the staging and production apache config to serve that file type, see the ansible scripts/files
 
+# Server suspensions and messages
+
+Now and again we have to take the server offline. You can add messages and suspensions by editing the appropriate variables in `psipred_site.js` in the `PsipredSite` class. `suspension_message` will add a message to the top and the bottom of the page and remove the submit button on the form. `server_message` will add a message to the top of the page. toggle these to `null` to not display such a message.
+
 # TODO
 
 1. ensure memembed and mempack work (need to use staging to debug as won't compile)

@@ -5,8 +5,6 @@ import * as $3Dmol from '3dmol/build/3Dmol.js';
 
 var moment = require('moment');
 
-
-
 export function display_structure(mol_container, pdb_data, cartoon, memembed)
 {
   let cartoon_color = function(atom) {

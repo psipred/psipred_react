@@ -434,7 +434,7 @@ class DisplayArea extends React.Component{
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          <div className="col-md-9"><MainForm  {...this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
+          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
           <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
         </div>
       :
@@ -472,6 +472,10 @@ export class PsipredSite extends React.Component{
     console.log("PAGE LOAD href: "+href);
     console.log("PAGE LOAD uuid: "+uuid);
     this.state = {
+      suspension_message: null,
+      server_message: null,
+      //suspension_message: "The sever will be offline between the 1st and the 2nd of August 2023",
+      //server_message: "We are going to change some shit",
       endpoints_url: null,
       submit_url: null,
       times_url: null,
@@ -497,10 +501,16 @@ export class PsipredSite extends React.Component{
       <section className="content">
         <div id="psipred_site">
           { this.state.location === "Dev" &&
-              <div><h3 className="form_error">WARNING: This is Dev</h3></div>
+            <div><h3 className="form_error">WARNING: This is Dev</h3></div>
           }
           { this.state.location === "Staging" &&
-              <div><h3 className="form_error">WARNING: This is Staging</h3></div>
+            <div><h3 className="form_error">WARNING: This is Staging</h3></div>
+          }
+          { this.state.server_message !== null &&
+            <div><h3 className="form_error">{this.state.server_message}</h3></div>
+          }
+          { this.state.suspension_message !== null &&
+            <div><h3 className="form_error">{this.state.suspension_message}</h3></div>
           }
           <DisplayArea {...this.state}/>
           <div className="row">
@@ -514,6 +524,3 @@ export class PsipredSite extends React.Component{
     );
   }
 }
-//export const App = () => PsipredSite();
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(<PsipredSite />);

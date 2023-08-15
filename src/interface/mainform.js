@@ -92,9 +92,13 @@ class SeqForm extends React.Component {
                 <label className="control-label" htmlFor="id_email">Email (optional)</label><input className="form-control" type="email" placeholder="Email (optional)" title="" id="id_email" name="email" value={this.props.email} onChange={this.handleChange} />
               </div>
             </div>
-            <div className="form-group">
-              <input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset} /> <input className="btn btn-primary" name="submit" type="submit" value="submit" />
-            </div>
+            { this.props.suspension_message !== null ?
+              <div><h3 className="form_error">{this.props.suspension_message}</h3></div>
+            :
+              <div className="form-group">
+                <input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset} /> <input className="btn btn-primary" name="submit" type="submit" value="submit" />
+              </div>
+            }
           </form>
           </div>
         </div>
@@ -152,7 +156,11 @@ class StructForm extends React.Component {
                 <label className="control-label" htmlFor="id_email">Email (optional)</label><input className="form-control" type="email" placeholder="Email (optional)" title="" id="id_email" name="email" value={this.props.email} onChange={this.handleChange}  />
               </div>
             </div>
-            <div className="form-group"><input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset}/> <input className="btn btn-primary" type="submit" value="Submit" /></div>
+            { this.props.suspension_message !== null ?
+              <div><h3 className="form_error">{this.props.suspension_message}</h3></div>
+            :
+              <div className="form-group"><input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset}/> <input className="btn btn-primary" type="submit" value="Submit" /></div>    
+            }
           </form>
         </div>
       </div>
