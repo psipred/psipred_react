@@ -131,7 +131,7 @@ class StructForm extends React.Component {
                 </tr>
                 <tr>
                   <td data-toggle="tool-tip" title={this.props.job_strings.memembed.tooltip}><input type="checkbox" id="id_memembed_job" name={this.props.job_strings.memembed.jobName} value={this.props.job_strings.memembed.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.memembed.jobName)} />&nbsp;<label htmlFor="id_memembed_job">{this.props.job_strings.memembed.describedName}</label></td>
-                  <td></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.merizo.tooltip}><input type="checkbox" id="id_merizo_job" name={this.props.job_strings.merizo.jobName} value={this.props.job_strings.merizo.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.merizo.jobName)} />&nbsp;<label htmlFor="id_merizo_job">{this.props.job_strings.merizo.describedName}</label></td>
                 </tr>
                 <tr><td colSpan="2"><a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /></td>
                 </tr>

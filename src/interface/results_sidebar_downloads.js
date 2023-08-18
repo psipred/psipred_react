@@ -136,6 +136,10 @@ class ResultsSidebarDownloads extends React.Component{
           link_data = this.createDownloadLinks(count, [['.pdb', 'PDB Embedding'], ], this.props.job_strings.memembed.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
         }
+        if(name === this.props.job_strings.merizo.varName){
+          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' PDB'], ['.merizo', this.props.job_strings.merizo.shortName+' Boundaries']], this.props.job_strings.merizo.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
         
         count = link_data[1];
       }
@@ -194,7 +198,7 @@ class ResultsSidebarDownloads extends React.Component{
             link_data = this.createDownloadLinks(count, [['_LIPID_EXPOSURE.results', this.props.job_strings.mempack.shortName+' Lipid Exposure Results'], ['_CONTACT_DEF1.results', this.props.job_strings.mempack.shortName+' Contacts']], this.props.job_strings.mempack.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
-          
+
           count = link_data[1];
         }
         // downloads_text.push(link_data[0]);

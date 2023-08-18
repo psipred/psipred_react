@@ -2,16 +2,28 @@ import $ from 'jquery';
 import DataTable from 'datatables.net-dt';
 import { annotationGrid } from '../interface/biod3/main.js';
 import * as $3Dmol from '3dmol/build/3Dmol.js';
+import * as colours from './colour_names.js';
+import { parse_merizo } from '../interface/parsers.js';
+
 
 var moment = require('moment');
 
-export function display_structure(mol_container, pdb_data, cartoon, memembed)
+export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo)
 {
+  let merizo_labels = [];
   let cartoon_color = function(atom) {
     if(atom.ss === 'h'){atom.color = '#e353e3'; return '#e353e3';}
     if(atom.ss === 's'){atom.color = '#e5dd55'; return '#e5dd55';}
     atom.color = 'grey';
     return('grey');
+  };
+  let merizo_color = function(atom){
+    let domain_number = merizo_labels[atom.resi];
+    if(colours.colourNames[domain_number]){
+      atom.color = colours.colourNames[domain_number]; return(colours.colourNames[domain_number]);
+    }
+    atom.color = 'White';
+    return('White');  
   };
   let hotspot_color = function(atom){
     if(atom.b === 1.0){atom.color = 'red'; return 'red';}
@@ -25,7 +37,10 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed)
   let config = { backgroundColor: '#ffffff' };
   let viewer = $3Dmol.createViewer( element, config );
   viewer.addModel( pdb_data, "pdb" );                       /* load data */
-  if(cartoon)
+  if(merizo){
+    viewer.setStyle({}, {cartoon: {colorfunc: merizo_color}});
+  }
+  else if(cartoon)
   {
     viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
   }
@@ -34,6 +49,10 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed)
   }
   if(memembed){
     viewer.addSurface($3Dmol.SurfaceType.VDW, {'opacity':0.8, colorscheme: 'whiteCarbon'});
+  }
+  if(merizo){
+    let merizo_data = parse_merizo(merizo);
+    merizo_labels = merizo_data[0];
   }
   viewer.zoomTo();                                      /* set camera */
   viewer.render();                                      /* render scene */

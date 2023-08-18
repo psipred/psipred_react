@@ -46,6 +46,8 @@ class ResultsMain extends React.Component{
       hspred_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       memembed_waiting_message: 'Please wait for your '+this.props.job_strings.memembed.shortName+' job to process',
       memembed_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
+      merizo_waiting_message: 'Please wait for your '+this.props.job_strings.merizo.shortName+' job to process',
+      merizo_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       
     };
   }

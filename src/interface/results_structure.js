@@ -6,6 +6,8 @@ import {display_structure} from '../shared/index.js';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
+import {merizo_html} from './parsers.js';
+
 
 class ResultsStructure extends React.Component{
   constructor(props){
@@ -17,6 +19,8 @@ class ResultsStructure extends React.Component{
     this.hspred_second_pdb = React.createRef();
     this.hspred_table = React.createRef();
     this.memembed_pdb = React.createRef();
+    this.merizo_pdb = React.createRef();
+    this.merizo_boundaries = React.createRef();
     this.timer = null;
   }
 
@@ -68,6 +72,20 @@ class ResultsStructure extends React.Component{
     for(let key in this.state.memembed_results){
       if(key.includes(".pdb")){
         display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false, true);    
+      }
+    }
+    for(let key in this.state.merizo_results){
+      if(key.includes(".pdb2")){
+        let merizo_dat = this.state.merizo_results[key.slice(0,-16)+'merizo'];
+        //console.log(merizo_dat);
+        display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_dat);
+      }
+      if(key.includes(".merizo")){
+        let file_data = this.state.merizo_results[key];
+        let html_data = merizo_html(file_data);
+        var mr = document.createElement('template');
+        mr.innerHTML = html_data;
+        this.merizo_boundaries.current.appendChild(mr.content);
       }
     }
   }
@@ -144,7 +162,8 @@ class ResultsStructure extends React.Component{
               // we assign the results files 
               this.setState({metsite_results: parsed_data.metsite,
                     hspred_results: parsed_data.hspred,
-                    memembed_results: parsed_data.memembed
+                    memembed_results: parsed_data.memembed,
+                    merizo_results: parsed_data.merizo
               });
             });
             this.props.updateResultsFiles(res);
@@ -292,7 +311,7 @@ class ResultsStructure extends React.Component{
           </div>
          }
         { this.props.analyses.includes("memembed_job") &&
-          <div className="box box-primary" id="hspred_preds">
+          <div className="box box-primary" id="memembed_preds">
             <div className="box-header with-border">
               <h5 className="box-title">{this.props.job_strings.memembed.shortName} Prediction</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
@@ -308,6 +327,28 @@ class ResultsStructure extends React.Component{
                 <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.memembed_waiting_icon} /></div>
               }
               <div className="memembed_pdb pdb_panel_class" id="memembed" ref={this.memembed_pdb}></div>
+        
+            </div>
+          </div>
+         }
+         { this.props.analyses.includes("merizo_job") &&
+          <div className="box box-primary" id="merizo_preds">
+            <div className="box-header with-border">
+              <h5 className="box-title">{this.props.job_strings.merizo.shortName} Prediction</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.merizo_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.merizo_waiting_icon} /></div>
+              }
+              <div className="merizo_pdb pdb_panel_class" id="merizo" ref={this.merizo_pdb}></div>
+              <div className="merizo_boundaries" id="merizo" ref={this.merizo_boundaries}></div>
         
             </div>
           </div>
