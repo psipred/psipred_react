@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@nightingale-elements/nightingale-manager": "^4.2.1-alpha.0",
-    "@nightingale-elements/nightingale-msa": "^4.2.1-alpha.0",
-    "@nightingale-elements/nightingale-navigation": "^4.2.1-alpha.0",
-    "@nightingale-elements/nightingale-sequence": "^4.2.1-alpha.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -31,8 +27,8 @@
   },
   "scripts": {
     "startCOMMENT": "export PORT=4000 && react-scripts start",
-    "start": "PUBLIC_URL=interface react-scripts start",
-    "build": "react-scripts build",
+    "start": "node serve.mjs",
+    "build": "node build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -53,5 +49,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.2",
+    "esbuild-serve": "^1.0.1"
   }
 }

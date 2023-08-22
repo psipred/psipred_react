@@ -1,0 +1,194 @@
+/* src/index.css */
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+code {
+  font-family:
+    source-code-pro,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Courier New",
+    monospace;
+}
+
+/* src/interface/index.css */
+body {
+  font: 12px Arial;
+}
+path {
+  fill: none;
+}
+text {
+  fill: black;
+}
+.line {
+  stroke: steelblue;
+  stroke-width: 2;
+}
+.axis {
+  stroke-width: 2;
+}
+.coil {
+  stroke: DimGrey;
+  stroke-width: 1;
+}
+.helix {
+  stroke: #f87fd3;
+  stroke-width: 3;
+}
+.strand {
+  stroke: #f8f87f;
+  stroke-width: 3;
+}
+.C {
+  stroke: DimGrey;
+  stroke-width: 10;
+}
+.H {
+  stroke: #f87fd3;
+  stroke-width: 10;
+}
+.E {
+  stroke: #f8f87f;
+  stroke-width: 10;
+}
+.pngbutton {
+  stroke: black;
+  fill: white;
+}
+.svgbutton {
+  stroke: black;
+  fill: white;
+}
+.pngbutton.active {
+  stroke: black;
+  fill: black;
+}
+.svgbutton.active {
+  stroke: black;
+  fill: black;
+}
+.aatypesbutton {
+  stroke: black;
+  fill: white;
+}
+.aatypesbutton.active {
+  stroke: black;
+  fill: black;
+}
+.leskbutton {
+  stroke: black;
+  fill: white;
+}
+.leskbutton.active {
+  stroke: black;
+  fill: black;
+}
+.clustalbutton {
+  stroke: black;
+  fill: white;
+}
+.clustalbutton.active {
+  stroke: black;
+  fill: black;
+}
+.custombutton {
+  stroke: black;
+  fill: white;
+}
+.custombutton.active {
+  stroke: black;
+  fill: black;
+}
+.psipredbutton {
+  stroke: black;
+  fill: white;
+}
+.psipredbutton.active {
+  stroke: black;
+  fill: black;
+}
+.memsatbutton {
+  stroke: black;
+  fill: white;
+}
+.memsatbutton.active {
+  stroke: black;
+  fill: black;
+}
+.buttonText {
+  fill: black;
+}
+.buttonText.active {
+  fill: white;
+}
+.cutoff_line {
+  stroke-width: 1;
+  stroke: DimGrey;
+  stroke-dasharray: 5, 5;
+}
+.cutoffText {
+  fill: black;
+}
+.pdb_panel_class {
+  display: inline-block;
+  width: 50%;
+  height: 400px;
+  position: relative;
+}
+.error {
+  font: 30px Arial;
+}
+.signif10p {
+  border: 1px solid #cccccc;
+  background: rgb(255, 220, 220);
+}
+.signif10n {
+  border: 1px solid #cccccc;
+  background: rgb(220, 220, 255);
+}
+.signif5p {
+  border: 1px solid #cccccc;
+  background: rgb(255, 150, 150);
+}
+.signif2p {
+  border: 1px solid #cccccc;
+  background: rgb(255, 100, 100);
+}
+.signif1p {
+  border: 1px solid #cccccc;
+  background: red;
+}
+.signif5n {
+  border: 1px solid #cccccc;
+  background: rgb(150, 150, 255);
+}
+.signif2n {
+  border: 1px solid #cccccc;
+  background: rgb(80, 80, 255);
+  color: #eeeeee;
+}
+.signif1n {
+  background: blue;
+  border: 1px solid #cccccc;
+  color: #eeeeee;
+}
+.center {
+  align: center;
+  text-align: center;
+}
