@@ -10,19 +10,21 @@ if(location.startsWith("/interface")){
       root.render(this_class.render());
     })
 }
-else if(location.startsWith("/msa")) {
+else if(location.includes("/msa")) {
   import('./index/index-msa').then(( this_class ) => {
     root.render(this_class.render());
   })
 }
-else if(location.startsWith("/model")) {
+else if(location.includes("/model")) {
   import('./index/index-model').then(( this_class ) => {
     root.render(this_class.render());
   })
 }
 else
 {
-  console.log("NO VALID ROUTE")
+  import('./index/index-interface').then(( this_class ) => {
+    root.render(this_class.render());
+  })
 }
 
   // if(location.startsWith("/msa")){
