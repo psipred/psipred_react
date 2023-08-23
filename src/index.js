@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import * as $3Dmol from '3dmol/build/3Dmol.js';
+Window.$3Dmol = $3Dmol;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 //const getIndexFile = () => {

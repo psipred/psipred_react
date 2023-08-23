@@ -442,6 +442,10 @@ export function parse_memsatdata(annotations, file)
 //type is one of gen, pgen and dgen
 export function parse_presults(file, ann_list, type)
 {
+  let uri_stub = 'http://127.0.0.1:3000';
+  if(process.env.PUBLIC_URL.length > 0){
+    uri_stub = process.env.PUBLIC_URL;
+  }
   let lines = file.split('\n');
   let pseudo_table = null;
   if(Object.keys(ann_list).length > 0){
@@ -499,16 +503,16 @@ export function parse_presults(file, ann_list, type)
       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/version/latest/domain/"+table_hit+"'>"+table_hit+"</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/msa/?aln="+(ann_list[table_hit+"_"+i].aln)+"&ann="+(ann_list[table_hit+"_"+i].ann)+"\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=1000 height=400 top=30\")' value='View' /></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=cath\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\""+uri_stub+"/msa/?aln="+(ann_list[table_hit+"_"+i].aln)+"&ann="+(ann_list[table_hit+"_"+i].ann)+"\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=1000 height=400 top=30\")' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\""+uri_stub+"/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=cath\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
     }
     else{
       pseudo_table += "<td><a target='_blank' href='https://www.rcsb.org/pdb/explore/explore.do?structureId="+pdb+"'>"+table_hit+"</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://scop.mrc-lmb.cam.ac.uk/search?t=txt;q="+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.cathdb.info/pdb/"+pdb+"'>SEARCH</a></td>";
       pseudo_table += "<td><a target='_blank' href='http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="+pdb+"'>Open</a></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/msa/?aln="+(ann_list[table_hit+"_"+i].aln)+"&ann="+(ann_list[table_hit+"_"+i].ann)+"\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=1000 height=400 top=30\")' value='View' /></td>";
-      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\"http://127.0.0.1:3000/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=pdb\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\""+uri_stub+"/msa/?aln="+(ann_list[table_hit+"_"+i].aln)+"&ann="+(ann_list[table_hit+"_"+i].ann)+"\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=1000 height=400 top=30\")' value='View' /></td>";
+      pseudo_table += "<td><input class='button' type='button' onClick='window.open(\""+uri_stub+"/model/?aln="+(ann_list[table_hit+"_"+i].aln)+"&type=pdb\", \"Popup\", \"scrolling=yes, scrollbars=yes status width=500 height=600 top=30\")' value='View' /></td>";
       
       //pseudo_table += "<td><input class='button' type='button' onClick='psipred.buildModel(\""+(ann_list[table_hit+"_"+i].aln)+"\", \"pdb_modeller\");' value='Model' /></td>";
     }
