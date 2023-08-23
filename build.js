@@ -3,7 +3,7 @@ const esbuild = require("esbuild");
 
 esbuild.build({
   entryPoints: ["./src/index.js"],
-  outfile: "./public/assets/app.js",
+  outfile: "./public/static/js/app.js",
   minify: true,
   bundle: true,
   loader: {
