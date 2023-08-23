@@ -13,6 +13,7 @@ const serve = async (servedir, listen) => {
       ".js": "jsx",
     },
     plugins: [],
+    define: {"process.env.PUBLIC_URL": JSON.stringify(process.env.PUBLIC_URL) }
   })
   
   // Start esbuild's local web server. Random port will be chosen by esbuild.
