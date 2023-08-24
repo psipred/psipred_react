@@ -237,6 +237,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".png")){
         let img_url = this.state.dompred_results[key];
         let newElement = document.createElement('img');
+        newElement.className = "rotate90";
         newElement.src = img_url;
         newElement.alt = "Dompred Chart";
         this.dompred_chart.current.appendChild(newElement);
@@ -645,7 +646,7 @@ class ResultsSequence extends React.Component{
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.dompred_waiting_icon} /></div>
               }
-              <div className="dompred_chart rotate90" id="dompred_chart" ref={this.dompred_chart}></div>
+              <div className="dompred_chart" id="dompred_chart" ref={this.dompred_chart}></div>
               <div className="dompred_results" id="dompread_results" ref={this.dompred_results} ></div>
 
             </div>
