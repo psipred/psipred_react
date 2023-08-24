@@ -203,6 +203,6 @@ text {
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
-  transform: translate(-500px) rotate(90deg) ;
+  transform: translate(0px -500px) rotate(90deg) ;
   transform-origin: left bottom;
 }
