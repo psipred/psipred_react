@@ -166,8 +166,8 @@ export class Model extends React.Component{
 
 
   componentDidUpdate(prevProps) {
-    // console.log(this.state.pdb_data);
-    // console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
+    console.log(this.state.pdb_data);
+    console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
     var data = this.state.pdb_data[Object.keys(this.state.pdb_data)[0]];
     display_structure(this.model.current, data, true, false);
   }
