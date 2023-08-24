@@ -205,4 +205,5 @@ text {
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
   transform-origin: left bottom;
+  align: top;
 }
