@@ -136,7 +136,7 @@ class DisplayArea extends React.Component{
                                 'fullName': 'DomPred',
                                 'describedName': 'DomPred (Domain Boundary Prediction)',
                                 'varName': 'dompred',
-                                'jobName': 'dompref_job',
+                                'jobName': 'dompred_job',
                                 'tooltip': 'Predict protein structural domain boundaries', },    
                       "ffpred": { 'shortName': 'FFPred',
                                 'fullName': 'FFPred 4',
