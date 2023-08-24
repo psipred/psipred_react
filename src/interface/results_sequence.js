@@ -237,7 +237,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".png")){
         let img_url = this.state.dompred_results[key];
         let newElement = document.createElement('img');
-        newElement.className = "rotate90";
+        // newElement.className = "rotate90";
         newElement.src = img_url;
         newElement.alt = "Dompred Chart";
         this.dompred_chart.current.appendChild(newElement);
