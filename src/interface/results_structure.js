@@ -28,7 +28,7 @@ class ResultsStructure extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    console.log(this.state);
+    // console.log(this.state);
 
 
     for(let key in this.state.metsite_results){
@@ -77,7 +77,7 @@ class ResultsStructure extends React.Component{
       let uid = key.slice(0,-15)
 
       if(key.includes(".pdb2")){
-        console.log(key);
+        // console.log(key);
         let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
         display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx);
       }
