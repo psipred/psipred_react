@@ -15,26 +15,17 @@ export function merizo_html(dat_string){
 }
 
 export function parse_merizo(string){
-  let merizo_labels = [];
-  let domain_count = 1;
-  let data = string.split("\t");
-  let domain_data = data[7];
-  merizo_labels = new Array(Number(data[1]));
-  merizo_labels.fill(0);
-  let domains = domain_data.split(",");
-  domains.forEach((domain) => {
-    let segments = domain.split("_");
-    segments.forEach((segment) =>{
-      let range = segment.split("-").map(Number);
-      merizo_labels.forEach((val, idx) => {
-        //console.log(range[0], range[1], idx);
-        if(idx >= range[0]-1 && idx <= range[1]-1){
-          merizo_labels[idx] = domain_count;
-        }
-      });
-    });
-    domain_count++;
-  });
+  let merizo_labels = {};
+
+  let resi = string.split(",");
+  for (var i = 0; i < resi.length; i++) {
+    let ele = resi[i].split(":")
+    let r = parseInt(ele[0], 10)
+    let idx = parseInt(ele[1], 10)
+    merizo_labels[r] = idx;
+  }
+  var domain_labels = Object.values(merizo_labels);
+  var domain_count = Math.max(...domain_labels)
   return([merizo_labels, domain_count]);
 }
 

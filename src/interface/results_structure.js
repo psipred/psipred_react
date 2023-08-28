@@ -8,7 +8,6 @@ import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 import {merizo_html} from './parsers.js';
 
-
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
@@ -29,7 +28,7 @@ class ResultsStructure extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    //console.log(this.state);
+    console.log(this.state);
 
 
     for(let key in this.state.metsite_results){
@@ -75,10 +74,12 @@ class ResultsStructure extends React.Component{
       }
     }
     for(let key in this.state.merizo_results){
+      let uid = key.slice(0,-15)
+
       if(key.includes(".pdb2")){
-        let merizo_dat = this.state.merizo_results[key.slice(0,-16)+'merizo'];
-        //console.log(merizo_dat);
-        display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_dat);
+        console.log(key);
+        let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
+        display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx);
       }
       if(key.includes(".merizo")){
         let file_data = this.state.merizo_results[key];
