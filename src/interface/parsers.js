@@ -7,7 +7,7 @@ export function merizo_html(dat_string){
   let data = dat_string.split("\t");
   let domains = data[7].split(",");
   domains.forEach((domain, idx) => {
-     merizo_table += '<tr><td>'+idx+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';
+     merizo_table += '<tr><td>'+(idx+1)+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';
   });
   merizo_table += '</table>';
   // <tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Hotspot Residue</td></tr>';;
@@ -27,6 +27,20 @@ export function parse_merizo(string){
   var domain_labels = Object.values(merizo_labels);
   var domain_count = Math.max(...domain_labels)
   return([merizo_labels, domain_count]);
+}
+
+export function extractBFactors(pdbContent) {
+  let lines = pdbContent.split('\n');
+  let bFactors = [];
+
+  for (const line of lines) {
+    if (line.startsWith('ATOM')) {
+      const bFactor = parseFloat(line.substr(60, 6));
+      bFactors.push(bFactor);
+    }
+  }
+
+  return bFactors;
 }
 
 //https://stackoverflow.com/questions/23616226/insert-html-with-react-variable-statements-jsx

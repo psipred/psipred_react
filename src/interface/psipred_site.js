@@ -30,19 +30,19 @@ class DisplayArea extends React.Component{
     let email = '';
 
     if(this.props.location === 'Dev'){
-      input_data = 'ASDASDASDASDASDASDASDASDASDASD';
-      seq = 'ASDASDASDASDASDASDASDASDASDASD';
+      // input_data = 'ASDASDASDASDASDASDASDASDASDASD';
+      // seq = 'ASDASDASDASDASDASDASDASDASDASD';
       name = "test";
       email = 'a@b.com'
     }
     this.state = {
       displayType: 'input',
       displayTime: true,
-      formSelectedOption: 'SeqForm',
+      formSelectedOption: 'StructForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", "dmpfold", 's4pred' ],
       struct_job_names: ["metsite", "hspred", "memembed", "merizo", ],
-      analyses: ['psipred_job'],
+      analyses: ['merizo_job'],
       jobs: [],
       input_data: input_data,
       seq: seq,
@@ -64,6 +64,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
+      // merizo_iterate: '0',
       svgs: null,
       results_files: false,
       config_data: null,
@@ -71,7 +72,7 @@ class DisplayArea extends React.Component{
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
                     'presult', 'align', 'presults', 'dom_presults', 'parseds', 'featcfg',
                     'full_formatted', 'csv', 'ann', 'aln', 'con', 'pdb', 'merizo', 'idx',
-                    'boundary', 'Metpred', 'MetPred', 'out', 'results', 'pdb2'],
+                    'boundary', 'Metpred', 'MetPred', 'out', 'results', 'pdb2', 'pdf'],
       job_strings: { "psipred": { 'shortName': 'PSIPRED',
                                   'fullName': 'PSIPRED 4.0',
                                   'describedName': 'PSIPRED 4.0 (Predict Secondary Structure)',
@@ -198,6 +199,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
+      // merizo_iterate: '0',
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -240,6 +242,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
+      // merizo_iterate: '0',
       annotation_svg: null,
       results_files: false,
       config_data: null,

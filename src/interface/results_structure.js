@@ -7,6 +7,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 import {merizo_html} from './parsers.js';
+import {extractBFactors} from './parsers.js';
 
 class ResultsStructure extends React.Component{
   constructor(props){
@@ -28,8 +29,7 @@ class ResultsStructure extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    // console.log(this.state);
-
+    console.log(this.state);
 
     for(let key in this.state.metsite_results){
       if(key.includes(".MetPred")){
@@ -77,13 +77,15 @@ class ResultsStructure extends React.Component{
       let uid = key.slice(0,-15)
 
       if(key.includes(".pdb2")){
-        // console.log(key);
         let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
+        // let bFactors = extractBFactors(this.state.merizo_results[key])
+
         display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx);
       }
       if(key.includes(".merizo")){
         let file_data = this.state.merizo_results[key];
         let html_data = merizo_html(file_data);
+
         var mr = document.createElement('template');
         mr.innerHTML = html_data;
         this.merizo_boundaries.current.appendChild(mr.content);
@@ -332,28 +334,42 @@ class ResultsStructure extends React.Component{
             </div>
           </div>
          }
-         { this.props.analyses.includes("merizo_job") &&
+         {this.props.analyses.includes("merizo_job") && (
           <div className="box box-primary" id="merizo_preds">
             <div className="box-header with-border">
               <h5 className="box-title">{this.props.job_strings.merizo.shortName} Prediction</h5>
-              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+              <div className="box-tools pull-right">
+                <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i className="fa fa-plus"></i>
+                </button>
+              </div>
             </div>
             <div className="box-body">
-              { this.state.error_message &&
-                <div className="error">{this.state.error_message}</div>
-              }
-              { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.merizo_waiting_message}</h4></div>
-              }
-              { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.merizo_waiting_icon} /></div>
-              }
-              <div className="merizo_pdb pdb_panel_class" id="merizo" ref={this.merizo_pdb}></div>
+              {this.state.error_message && <div className="error">{this.state.error_message}</div>}
+              {this.props.waiting && (
+                <div className="waiting" intro="slide" outro="slide">
+                  <br />
+                  <h4>{this.props.merizo_waiting_message}</h4>
+                </div>
+              )}
+              {this.props.waiting && (
+                <div className="waiting_icon" intro="slide" outro="slide">
+                  <img alt="waiting icon" src={this.props.merizo_waiting_icon} />
+                </div>
+              )}
+              <div className="pdb_panel_class_merizo_options">
+                <h4><b>PDB Options</b></h4>
+                
+                <h5>Colouration</h5>
+                <button id="colorByDomains">Colour by Domains</button>
+                <button id="colorByBFactor">Colour by b-factor</button>
+                <button id="colorByplDDT">Colour by plDDT (bins)</button>
+              </div>
+              <div className="merizo_pdb pdb_panel_class_merizo" id="merizo" ref={this.merizo_pdb}></div>
               <div className="merizo_boundaries" id="merizo" ref={this.merizo_boundaries}></div>
-        
             </div>
           </div>
-         }
+        )}
          
          
       </div>
