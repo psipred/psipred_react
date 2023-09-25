@@ -23,14 +23,15 @@ async function readPDBFile(file) {
 class DisplayArea extends React.Component{
   constructor(props){
     super(props);
-    let input_data = "";
-    let seq = "";
+    let input_data = '';
+    let seq = '';
+    let pdb_data = null;
     let name = "";
     let email = '';
 
     if(this.props.location === 'Dev'){
-      input_data = "ASDASDASDASDASDASDASDASDASDASDASDASDASDASD";
-      seq = "ASDASDASDASDASDASDASDASDASDASDASDASDASDASD";
+      input_data = 'ASDASDASDASDASDASDASDASDASDASD';
+      seq = 'ASDASDASDASDASDASDASDASDASDASD';
       name = "test";
       email = 'a@b.com'
     }
@@ -40,14 +41,14 @@ class DisplayArea extends React.Component{
       formSelectedOption: 'SeqForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", "dmpfold", 's4pred' ],
-      struct_job_names: ["metsite", "hspred", "memembed", "gentdb"],
-      analyses: ['dompred_job', ],
+      struct_job_names: ["metsite", "hspred", "memembed", "merizo", ],
+      analyses: ['psipred_job'],
       jobs: [],
       input_data: input_data,
       seq: seq,
       name: name,
       email: email,
-      pdbData: '',
+      pdbData: pdb_data,
       waiting: false,
       uuid: null,
       bioserf_modeller_key: '',
@@ -61,22 +62,121 @@ class DisplayArea extends React.Component{
       hspred_protein_1: 'A',
       hspred_protein_2: 'B',
       memembed_algorithm: '0',
-      memembed_barrel: 'true',
+      memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
       svgs: null,
       results_files: false,
       config_data: null,
       resubmit: false,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
-                    'presult', 'align', 'presults', 'dom_presults', 'parseds', 'ffpredfeatures',
-                    'ffpredpredictions', 'metsite', 'hspred', 'csv', 'ann', 'aln', 'con', 'pdb',
-                    'boundary'],
+                    'presult', 'align', 'presults', 'dom_presults', 'parseds', 'featcfg',
+                    'full_formatted', 'csv', 'ann', 'aln', 'con', 'pdb', 'merizo', 
+                    'boundary', 'Metpred', 'MetPred', 'out', 'results', 'pdb2'],
+      job_strings: { "psipred": { 'shortName': 'PSIPRED',
+                                  'fullName': 'PSIPRED 4.0',
+                                  'describedName': 'PSIPRED 4.0 (Predict Secondary Structure)',
+                                  'varName': 'psipred',
+                                  'jobName': 'psipred_job',
+                                  'tooltip': 'Predict helices, beta sheets and coils from AA sequence', },
+                      "disopred": { 'shortName': 'DISOPRED3',
+                                  'fullName': 'DISOPRED3',
+                                  'describedName': 'DISOPRED3 (Disored Prediction)',
+                                  'varName': 'disopred',
+                                  'jobName': 'disopred_job',
+                                  'tooltip': 'Detect intrinsically disordered regions in proteins', },
+                      "pgenthreader": { 'shortName': 'pGenTHREADER',
+                                    'fullName': 'pGenTHREADER',
+                                    'describedName': 'pGenTHREADER (Profile Based Fold Recognition)',
+                                    'varName': 'pgenthreader',
+                                    'jobName': 'pgenthreader_job',
+                                    'tooltip': 'Protein fold recognition with protein templates of known structure', },
+                      "memsatsvm": { 'shortName': 'MEMSAT-SVM',
+                                    'fullName': 'MEMSAT-SVM',
+                                    'describedName': 'MEMSAT-SVM (Membrane Helix Prediction)',
+                                    'varName': 'memsatsvm',
+                                    'jobName': 'memsatsvm_job',
+                                    'tooltip': 'Calculate length, location and topology of transmembrane helices', },
+                      "dmp": { 'shortName': 'DeepMetaPSICOV',
+                                'fullName': 'DeepMetaPSICOV 1.0',
+                                'describedName': 'DeepMetaPSICOV 1.0 (Structural Contact Prediction)',
+                                'varName': 'dmp',
+                                'jobName': 'dmp_job',
+                                'tooltip': 'Predict inter-residue contacts using a convolutional neural network', },
+                      "mempack": { 'shortName': 'MEMPACK',
+                                'fullName': 'MEMPACK',
+                                'describedName': 'MEMPACK (TM Topology and Helix Packing)',
+                                'varName': 'mempack',
+                                'jobName': 'mempack_job',
+                                'tooltip': 'Predict membrane helix packing', },
+                      "genthreader": { 'shortName': 'genTHREADER',
+                                'fullName': 'genTHREADER',
+                                'describedName': 'genTHREADER (Rapid Fold Recognition)',
+                                'varName': 'genthreader',
+                                'jobName': 'genthreader_job',
+                                'tooltip': 'Fast fold recognition method using template structures', },    
+                      "pdomthreader": { 'shortName': 'pDomTHREADER',
+                                'fullName': 'pDomTHREADER',
+                                'describedName': 'pDomTHREADER (Protein Domain Fold Recognition)',
+                                'varName': 'pdomthreader',
+                                'jobName': 'pdomthreader_job',
+                                'tooltip': 'Fast protein domain fold recognition using template domain structures', },    
+                      "dmpfold": { 'shortName': 'DMPFold',
+                                'fullName': 'DMPFold 2.0',
+                                'describedName': 'DMPFold 2.0 (Protein Structure Prediction)',
+                                'varName': 'dmpfold',
+                                'jobName': 'dmpfold_job',
+                                'tooltip': 'Accurate structure prediction using residue-residue contacts', },    
+                      "s4pred": { 'shortName': 'S4Pred',
+                                'fullName': 'S4Pred',
+                                'describedName': 'S4Pred (Single Sequence SS Prediction)',
+                                'varName': 's4pred',
+                                'jobName': 's4pred_job',
+                                'tooltip': 'Predict Secondary Structure Prediction with a single sequence', },         
+                      "dompred": { 'shortName': 'DomPred',
+                                'fullName': 'DomPred',
+                                'describedName': 'DomPred (Domain Boundary Prediction)',
+                                'varName': 'dompred',
+                                'jobName': 'dompred_job',
+                                'tooltip': 'Predict protein structural domain boundaries', },    
+                      "ffpred": { 'shortName': 'FFPred',
+                                'fullName': 'FFPred 4',
+                                'describedName': 'FFPred 4 (Eurkaryotic Function Prediction)',
+                                'varName': 'ffpred',
+                                'jobName': 'ffpred_job',
+                                'tooltip': 'Predict protein function, using Gene Ontology annotations', },    
+                      "metsite": { 'shortName': 'Metsite',
+                                'fullName': 'Metsite',
+                                'describedName': 'Metsite (Protein-Metal Ion Contact Prediction)',
+                                'varName': 'metsite',
+                                'jobName': 'metsite_job',
+                                'tooltip': 'Detects metal-binding residues from protein structure', },    
+                      "hspred": { 'shortName': 'HSPred',
+                                'fullName': 'HSPred',
+                                'describedName': 'HSPred (Protein-Protein Hotspot Residue Prediction)',
+                                'varName': 'hspred',
+                                'jobName': 'hspred_job',
+                                'tooltip': 'Predicts protein-protein interaction hotspot residues', },    
+                      "memembed": { 'shortName': 'MEMEMBED',
+                                'fullName': 'MEMEMBED',
+                                'describedName': 'MEMEMBED (Membrane Protein Orientation Prediction)',
+                                'varName': 'memembed',
+                                'jobName': 'memembed_job',
+                                'tooltip': 'Orientate membrane proteins within the lipid bilayer', },    
+                      "merizo": { 'shortName': 'Merizo',
+                                'fullName': 'Merizo',
+                                'describedName': 'Merizo (Protein domain segmentation)',
+                                'varName': 'merizo',
+                                'jobName': 'merizo_job',
+                                'tooltip': 'Fast and accurate protein domain prediction', },    
+                                   
+                    
+      },
     };
   }
 
   handleReset = () => {
     this.setState({
-      analyses: ['dompred_job', ],
+      analyses: ['psipred_job', ],
       jobs: [],
       input_data: '',
       seq: '',
@@ -84,20 +184,19 @@ class DisplayArea extends React.Component{
       email: '',
       waiting: false,
       uuid: null,
-      // formSelectedOption: 'SeqForm',
       bioserf_modeller_key: '',
       domserf_modeller_key: '',
       dompred_e_value_cutoff: '0.01',
       dompred_psiblast_iterations: '5',
       ffpred_selection: 'human',
-      pdbData: '',
+      pdbData: null,
       metsite_metal_type: 'CA',
       metsite_chain_id: 'A',
       metsite_fpr: '1',
       hspred_protein_1: 'A',
       hspred_protein_2: 'B',
       memembed_algorithm: '0',
-      memembed_barrel: 'true',
+      memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
       annotation_svg: null,
       results_files: false,
@@ -139,7 +238,7 @@ class DisplayArea extends React.Component{
       hspred_protein_1: 'A',
       hspred_protein_2: 'B',
       memembed_algorithm: '0',
-      memembed_barrel: 'true',
+      memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
       annotation_svg: null,
       results_files: false,
@@ -184,13 +283,15 @@ class DisplayArea extends React.Component{
     //console.log(this.state);
   }
   handleInputChange = (event) =>  {
+    this.handleReset();
     //console.log(this.state.formSelectedOption);
     //console.log(event.target.value);
     this.setState({
       formSelectedOption: event.target.value,
+      analyses: [],
     });
     //console.log(this.state.formSelectedOption);
-    this.handleReset();
+
   }
   handleStructChange = (event) =>  {
     var value = event.target.value;
@@ -294,7 +395,7 @@ class DisplayArea extends React.Component{
     // Uppercase the seq data
     let jobs = this.state.analyses;
     jobs = jobs.map(elem => elem.replace("_job", ""));
-    console.log(jobs);
+    //console.log(jobs);
     let pdbFile = null;
     let pdbData = null;
     try{
@@ -309,6 +410,7 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
+    this.state.seq = this.state.seq.replace(/\r?\n|\r/g, "");
     let checked = validateFormData(this.state, jobs, pdbData);
     //console.log(checked);
     if(checked.send){
@@ -338,7 +440,7 @@ class DisplayArea extends React.Component{
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          <div className="col-md-9"><MainForm  {...this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
+          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
           <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
         </div>
       :
@@ -351,7 +453,9 @@ class DisplayArea extends React.Component{
               <ResultsSidebarTimes {...{...this.state, ...this.props}} />
             }
             <ResultsSidebarDownloads {...{...this.state, ...this.props}} />
+            { this.state.formSelectedOption === 'SeqForm' &&
             <ResultsSidebarResubmission {...{...this.state, ...this.props}} handleResubmit={this.handleResubmit} />
+            }
           </div>
         </div>
       }
@@ -374,6 +478,10 @@ export class PsipredSite extends React.Component{
     console.log("PAGE LOAD href: "+href);
     console.log("PAGE LOAD uuid: "+uuid);
     this.state = {
+      suspension_message: null,
+      server_message: null,
+      //suspension_message: "The sever will be offline between the 1st and the 2nd of August 2023",
+      //server_message: "We are going to change some shit",
       endpoints_url: null,
       submit_url: null,
       times_url: null,
@@ -399,10 +507,16 @@ export class PsipredSite extends React.Component{
       <section className="content">
         <div id="psipred_site">
           { this.state.location === "Dev" &&
-              <div><h3 className="form_error">WARNING: This is Dev</h3></div>
+            <div><h3 className="form_error">WARNING: This is Dev</h3></div>
           }
           { this.state.location === "Staging" &&
-              <div><h3 className="form_error">WARNING: This is Staging</h3></div>
+            <div><h3 className="form_error">WARNING: This is Staging</h3></div>
+          }
+          { this.state.server_message !== null &&
+            <div><h3 className="form_error">{this.state.server_message}</h3></div>
+          }
+          { this.state.suspension_message !== null &&
+            <div><h3 className="form_error">{this.state.suspension_message}</h3></div>
           }
           <DisplayArea {...this.state}/>
           <div className="row">
@@ -416,6 +530,3 @@ export class PsipredSite extends React.Component{
     );
   }
 }
-//export const App = () => PsipredSite();
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(<PsipredSite />);

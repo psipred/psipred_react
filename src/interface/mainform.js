@@ -9,22 +9,6 @@ class SeqForm extends React.Component {
     this.props.handleSubmit(event);
   }
 
-  dmpfoldAlert = (event) => {
-    if(event.target.checked){
-      alert("DMPFold analyses can take up to 6 hours. We advise you submit DMPfold jobs seperately to other predictions\n\nNote that DMP gives less accurate results for sequences larger than 500 residues, you should divide your sequence into shorter domains before submission");
-    }
-  }
-  bioserfAlert = (event) => {
-    if(event.target.checked){
-      alert("Bioserf analyses can take longer than 6 hours. If you wish to run multiple analyses consdier running Bioserf as a seperate job submission");
-    }
-  }
-  domserfAlert = (event) => {
-    if(event.target.checked){
-      alert("Domserf analyses can take longer than 6 hours. If you wish to run multiple analyses consdier running Bioserf as a seperate job submission");
-    }
-  }
-
   render () {
     return(
       <div className="form-group">
@@ -37,47 +21,47 @@ class SeqForm extends React.Component {
                 <tbody>
                 <tr><td colSpan="2"><h4>Popular Analyses</h4></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Predict helices, beta sheets and coils from AA sequence"><input type="checkbox" id="id_psipred_job" name="psipred_job" value="psipred_job" onChange={this.handleChange} checked={this.props.analyses.includes('psipred_job')} />&nbsp;<label htmlFor="id_psipred_job" >PSIPRED 4.0 (Predict Secondary Structure)</label></td>
-                  <td data-toggle="tool-tip" title="Detect intrinsically disordered regions in proteins"><input type="checkbox" id="id_disopred_job" name="disopred_job" value="disopred_job" onChange={this.handleChange} checked={this.props.analyses.includes('disopred_job')} />&nbsp;<label htmlFor="id_disopred_job">DISOPRED3 (Disopred Prediction)</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.psipred.tooltip}><input type="checkbox" id="id_psipred_job" name={this.props.job_strings.psipred.jobName} value={this.props.job_strings.psipred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.psipred.jobName)} />&nbsp;<label htmlFor="id_psipred_job" >{this.props.job_strings.psipred.describedName}</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.disopred.tooltip}><input type="checkbox" id="id_disopred_job" name={this.props.job_strings.disopred.jobName} value={this.props.job_strings.disopred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.disopred.jobName)} />&nbsp;<label htmlFor="id_disopred_job">{this.props.job_strings.disopred.describedName}</label></td>
                 </tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Calculate length, location and topology of transmembrane helices"><input type="checkbox" id="id_memsatsvm_job" name="memsatsvm_job" value="memsatsvm_job" onChange={this.handleChange} checked={this.props.analyses.includes('memsatsvm_job')} />&nbsp;<label htmlFor="id_memsatsvm_job">MEMSAT-SVM (Membrane Helix Prediction)</label></td>
-                  <td data-toggle="tool-tip" title="Protein fold recognition with protein templates of known structure."><input type="checkbox" id="id_pgenthreader_job" name="pgenthreader_job" value="pgenthreader_job" onChange={this.handleChange} checked={this.props.analyses.includes('pgenthreader_job')} />&nbsp;<label htmlFor="id_pgenthreader_job">pGenTHREADER (Profile Based Fold Recognition)</label></td>
-                </tr>
-                <tr><td className="input_table" colSpan="2"><hr /></td></tr>
-                <tr><td colSpan="2"><h4>Contact Analysis</h4></td></tr>
-                <tr>
-                  <td data-toggle="tool-tip" title="Predict inter-residue contacts using a convolutional neural network"><input type="checkbox" id="id_dmp_job" name="dmp_job" value="dmp_job" onChange={this.handleChange} checked={this.props.analyses.includes('dmp_job')} />&nbsp;<label htmlFor="id_dmp_job">DeepMetaPSICOV 1.0 (Structural Contact Prediction)</label></td>
-                  <td data-toggle="tool-tip" title="Predict packing membrane helices"><input type="checkbox" id="id_mempack_job" name="mempack_job" value="mempack_job" onChange={this.handleChange} checked={this.props.analyses.includes('mempack_job')} />&nbsp;<label htmlFor="id_mempack_job">MEMPACK (TM Topology and Helix Packing)</label></td>
-                </tr>
-                <tr><td className="input_table" colSpan="2"><hr /></td></tr>
-                <tr><td><h4>Fold Recognition</h4></td><td></td></tr>
-                <tr>
-                  <td data-toggle="tool-tip" title="Fast fold recognition method using template structures"><input type="checkbox" id="id_genthreader_job" name="genthreader_job" value="genthreader_job" onChange={this.handleChange} checked={this.props.analyses.includes('genthreader_job')} />&nbsp;<label htmlFor="id_genthreader_job">GenTHREADER (Rapid Fold Recognition)</label></td>
-                  <td data-toggle="tool-tip" title="Fast protein domain fold recognition using domain templates"><input type="checkbox" id="id_pdomthreader_job" name="pdomthreader_job" value="pdomthreader_job" onChange={this.handleChange} checked={this.props.analyses.includes('pdomthreader_job')} />&nbsp;<label htmlFor="id_pdomthreader_job">pDomTHREADER (Protein Domain Fold Recognition)</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.memsatsvm.tooltip}><input type="checkbox" id="id_memsatsvm_job" name={this.props.job_strings.memsatsvm.jobName} value={this.props.job_strings.memsatsvm.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.memsatsvm.jobName)} />&nbsp;<label htmlFor="id_memsatsvm_job">{this.props.job_strings.memsatsvm.describedName}</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.pgenthreader.tooltip}><input type="checkbox" id="id_pgenthreader_job" name={this.props.job_strings.pgenthreader.jobName} value={this.props.job_strings.pgenthreader.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.pgenthreader.jobName)} />&nbsp;<label htmlFor="id_pgenthreader_job">{this.props.job_strings.pgenthreader.describedName}</label></td>
                 </tr>
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td><h4>Structure Modelling</h4></td><td></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Accurate structure prediction using residue-residue contacts."><input type="checkbox" onClick={this.dmpfoldAlert} id="id_dmpfold_job" name="dmpfold_job" value="dmpfold_job" onChange={this.handleChange} checked={this.props.analyses.includes('dmpfold_job')} />&nbsp;<label htmlFor="id_dmpfold_job">DMPfold 2.0 (Protein Structure Prediction)</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.dmpfold.tooltip}><input type="checkbox" id="id_dmpfold_job" name={this.props.job_strings.dmpfold.jobName} value={this.props.job_strings.dmpfold.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.dmpfold.jobName)} />&nbsp;<label htmlFor="id_dmpfold_job">{this.props.job_strings.dmpfold.describedName}</label></td>
                   <td></td>
                 </tr>
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td><h4>Single Sequence Prediction</h4></td><td></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Predict Secondary Structure Prediction with a single sequence."><input type="checkbox" id="id_s4pred_job" name="s4pred_job" value="s4pred_job" onChange={this.handleChange} checked={this.props.analyses.includes('s4pred_job')} />&nbsp;<label htmlFor="id_s4pred_job">S4Pred (Single Sequence SS Prediction)</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.s4pred.tooltip}><input type="checkbox" id="id_s4pred_job" name={this.props.job_strings.s4pred.jobName} value={this.props.job_strings.s4pred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.s4pred.jobName)} />&nbsp;<label htmlFor="id_s4pred_job">{this.props.job_strings.s4pred.describedName}</label></td>
                   <td></td>
+                </tr>
+                <tr><td className="input_table" colSpan="2"><hr /></td></tr>
+                <tr><td colSpan="2"><h4>Contact Analysis</h4></td></tr>
+                <tr>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.dmp.tooltip}><input type="checkbox" id="id_dmp_job" name={this.props.job_strings.dmp.jobName} value={this.props.job_strings.dmp.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.dmp.jobName)} />&nbsp;<label htmlFor="id_dmp_job">{this.props.job_strings.dmp.describedName}</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.mempack.tooltip}><input type="checkbox" id="id_mempack_job" name={this.props.job_strings.mempack.jobName} value={this.props.job_strings.mempack.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.mempack.jobName)} />&nbsp;<label htmlFor="id_mempack_job">{this.props.job_strings.mempack.describedName}</label></td>
+                </tr>
+                <tr><td className="input_table" colSpan="2"><hr /></td></tr>
+                <tr><td><h4>Fold Recognition</h4></td><td></td></tr>
+                <tr>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.genthreader.tooltip}><input type="checkbox" id="id_genthreader_job" name={this.props.job_strings.genthreader.jobName} value={this.props.job_strings.genthreader.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.genthreader.jobName)} />&nbsp;<label htmlFor="id_genthreader_job">{this.props.job_strings.genthreader.describedName}</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.pdomthreader.tooltip}><input type="checkbox" id="id_pdomthreader_job" name={this.props.job_strings.pdomthreader.jobName} value={this.props.job_strings.pdomthreader.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.pdomthreader.jobName)} />&nbsp;<label htmlFor="id_pdomthreader_job">{this.props.job_strings.pdomthreader.describedName}</label></td>
                 </tr>
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td><h4>Domain Prediction</h4></td><td></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Predict protein structural domain boundaries."><input type="checkbox" id="id_dompred_job" name="dompred_job" value="dompred_job" onChange={this.handleChange} checked={this.props.analyses.includes('dompred_job')} />&nbsp;<label htmlFor="id_dompred_job">DomPred (Protein Domain Prediction)</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.dompred.tooltip}><input type="checkbox" id="id_dompred_job" name={this.props.job_strings.dompred.jobName} value={this.props.job_strings.dompred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.dompred.jobName)} />&nbsp;<label htmlFor="id_dompred_job">{this.props.job_strings.dompred.describedName}</label></td>
                   <td></td>
                 </tr>
                 <tr><td className="input_table" colSpan="2"><hr /></td></tr>
                 <tr><td><h4>Function Prediction</h4></td><td></td></tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Predict protein function, using Gene Ontology annotations"><input type="checkbox" id="id_ffpred_job" name="ffpred_job" value="ffpred_job" onChange={this.handleChange} checked={this.props.analyses.includes('ffpred_job')} />&nbsp;<label htmlFor="id_ffpred_job">FFPred 3 (Eurkaryotic Function Prediction)</label> </td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.ffpred.tooltip}><input type="checkbox" id="id_ffpred_job" name={this.props.job_strings.ffpred.jobName} value={this.props.job_strings.ffpred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.ffpred.jobName)} />&nbsp;<label htmlFor="id_ffpred_job">{this.props.job_strings.ffpred.describedName}</label> </td>
                   <td></td>
                 </tr>
                 <tr><td colSpan="2"><a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /></td></tr>
@@ -108,9 +92,13 @@ class SeqForm extends React.Component {
                 <label className="control-label" htmlFor="id_email">Email (optional)</label><input className="form-control" type="email" placeholder="Email (optional)" title="" id="id_email" name="email" value={this.props.email} onChange={this.handleChange} />
               </div>
             </div>
-            <div className="form-group">
-              <input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset} /> <input className="btn btn-primary" name="submit" type="submit" value="submit" />
-            </div>
+            { this.props.suspension_message !== null ?
+              <div><h3 className="form_error">{this.props.suspension_message}</h3></div>
+            :
+              <div className="form-group">
+                <input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset} /> <input className="btn btn-primary" name="submit" type="submit" value="submit" />
+              </div>
+            }
           </form>
           </div>
         </div>
@@ -138,12 +126,12 @@ class StructForm extends React.Component {
               <table className="full-width-table">
               <tbody>
                 <tr>
-                  <td data-toggle="tool-tip" title="Detects metal-binding residues from protein structure"><input type="checkbox" id="id_metsite_job" name="metsite_job" value="metsite_job" onChange={this.handleChange} checked={this.props.analyses.includes('metsite_job')} />&nbsp;<label htmlFor="id_metsite_job">Metsite (Protein-metal Ion Contact Prediction)</label></td>
-                  <td data-toggle="tool-tip" title="Predicts protein-protein interaction hotspot residues"><input type="checkbox" id="id_hspred_job" name="hspred_job" value="hspred_job" onChange={this.handleChange} checked={this.props.analyses.includes('hspred_job')} />&nbsp;<label htmlFor="id_hspred_job">HSPred (Protein-Protein Hotspot Residue Prediction)</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.metsite.tooltip}><input type="checkbox" id="id_metsite_job" name={this.props.job_strings.metsite.jobName} value={this.props.job_strings.metsite.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.metsite.jobName)} />&nbsp;<label htmlFor="id_metsite_job">{this.props.job_strings.metsite.describedName}</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.hspred.tooltip}><input type="checkbox" id="id_hspred_job" name={this.props.job_strings.hspred.jobName} value={this.props.job_strings.hspred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.hspred.jobName)} />&nbsp;<label htmlFor="id_hspred_job">{this.props.job_strings.hspred.describedName}</label></td>
                 </tr>
                 <tr>
-                  <td data-toggle="tool-tip" title="Orientate membrane proteins within the lipid bilayer"><input type="checkbox" id="id_memembed_job" name="memembed_job" value="memembed_job" onChange={this.handleChange} checked={this.props.analyses.includes('memembed_job')} />&nbsp;<label htmlFor="id_memembed_job">MEMEMBED (Membrane Protein Orientation Prediction)</label></td>
-                  <td data-toggle="tool-tip" title="Generate TDB file from structure for use with genTHREADER, pGenTHREADER and pDomTHREADER"><input type="checkbox" id="id_gentdb_job" name="gentdb_job" value="gentdb_job" onChange={this.handleChange} checked={this.props.analyses.includes('gentdb_job')} />&nbsp;<label htmlFor="id_gentdb_job">Generate TDB (Custom Generated Threading File)</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.memembed.tooltip}><input type="checkbox" id="id_memembed_job" name={this.props.job_strings.memembed.jobName} value={this.props.job_strings.memembed.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.memembed.jobName)} />&nbsp;<label htmlFor="id_memembed_job">{this.props.job_strings.memembed.describedName}</label></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.merizo.tooltip}><input type="checkbox" id="id_merizo_job" name={this.props.job_strings.merizo.jobName} value={this.props.job_strings.merizo.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.merizo.jobName)} />&nbsp;<label htmlFor="id_merizo_job">{this.props.job_strings.merizo.describedName}</label></td>
                 </tr>
                 <tr><td colSpan="2"><a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /></td>
                 </tr>
@@ -157,7 +145,7 @@ class StructForm extends React.Component {
             </div>
             <p className="form_error"></p> <br /><br /><br /> Select PDB file<br /> <input type="file" id="pdbFile" name="pdbFile" defaultValue='' /><br /><br />
             <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br />
-            If you wish to Metsite or HSPred follow this link to retrieve <a className="form-link" href="http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&amp;compression=NO&amp;structureId=1IAR">a test pdb file.</a><br /><br />
+            If you wish to tryMetsite or HSPred follow this link to retrieve <a className="form-link" href="http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&amp;compression=NO&amp;structureId=1IAR">a test pdb file.</a><br /><br />
             <div className="form-group">
               <div className="form-group">
                 <label className="control-label" htmlFor="id_job_name">Job name</label><input className="form-control" type="text" placeholder="Job name" title="" required="" id="id_job_name" name="job_name" value={this.props.name} onChange={this.handleChange} />
@@ -168,7 +156,11 @@ class StructForm extends React.Component {
                 <label className="control-label" htmlFor="id_email">Email (optional)</label><input className="form-control" type="email" placeholder="Email (optional)" title="" id="id_email" name="email" value={this.props.email} onChange={this.handleChange}  />
               </div>
             </div>
-            <div className="form-group"><input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset}/> <input className="btn btn-primary" type="submit" value="Submit" /></div>
+            { this.props.suspension_message !== null ?
+              <div><h3 className="form_error">{this.props.suspension_message}</h3></div>
+            :
+              <div className="form-group"><input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset}/> <input className="btn btn-primary" type="submit" value="Submit" /></div>    
+            }
           </form>
         </div>
       </div>
@@ -176,7 +168,8 @@ class StructForm extends React.Component {
   );
   }
 }
-
+//  <td data-toggle="tool-tip" title="Generate TDB file from structure for use with genTHREADER, pGenTHREADER and pDomTHREADER"><input type="checkbox" id="id_gentdb_job" name="gentdb_job" value="gentdb_job" onChange={this.handleChange} checked={this.props.analyses.includes('gentdb_job')} />&nbsp;<label htmlFor="id_gentdb_job">Generate TDB (Custom Generated Threading File)</label></td>
+                
 
 class FormInteractivity extends React.Component{
   render(props) {

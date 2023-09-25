@@ -1,6 +1,8 @@
 import React from 'react';
 import { saveAs } from 'file-saver';
 //import { link } from 'd3';
+import {request_data} from '../shared/index.js';
+
 const JSZip = require('jszip');
 const JSZipUtils = require('jszip-utils');
 
@@ -11,9 +13,27 @@ class ResultsSidebarDownloads extends React.Component{
     };
   }
 
-  returnJobConfig = () => {
+
+  getConf = () => {
     let header = "job,step_number,type,name,version,parameters\n";
-    let file_data = header+this.props.config_data;
+    let conf = '';
+    this.props.analyses.forEach((job)=> {
+      job = job.replace(/_job/, '')
+      console.log("Getting config for "+job);
+      let config_data = JSON.parse(request_data(job, this.props.joblist_url, 'application/json'));
+      config_data.steps.forEach((step) => {
+        if(step.task.configuration.length !== 0){
+          step.task.configuration.forEach((info) => {
+            conf += job+","+step.ordering+","+info.type+","+info.name+","+info.version+","+info.parameters+"\n";
+          });
+        }
+      });
+    });
+    return(header+conf);
+  }
+
+  returnJobConfig = () => {
+    let file_data = this.getConf();
     saveAs(new Blob(file_data.split()), this.props.uuid+".csv");
   }
 
@@ -33,7 +53,7 @@ class ResultsSidebarDownloads extends React.Component{
     Object.keys(this.props.results_files).forEach((job) => {
       Object.keys(this.props.results_files[job]).forEach((file) => {
         //console.log(file);
-        if(file.includes(".png") ||file.includes(".jpg") ||file.includes(".jpeg") ||file.includes(".gif"))
+        if(file.includes(".png") ||file.includes(".jpg") || file.includes(".jpeg") ||file.includes(".gif"))
         {
           let url = this.props.files_url+"/submissions/"+file;
           var imgdata = null;
@@ -50,6 +70,7 @@ class ResultsSidebarDownloads extends React.Component{
         }
       });
     });
+    zip.file("job_configuration.csv", this.getConf());
     var svg = this.getSVGArea('sequence_plot');
     if(svg){
       zip.file('seq_annotation.svg', svg)
@@ -96,55 +117,88 @@ class ResultsSidebarDownloads extends React.Component{
 
   //<button className="fake-link" onClick="@this.fire('get_zip'), false">Get Zip file</button><br /><br />
   //<button className="fake-link" onClick="@this.fire('get_job_details'), false">Get Job details</button><br /><br />
-  renderDownloads = (job, file_data, title_string) => {
+  renderDownloads = () => {
     let downloads_text = [];
     let count = 0;
+    
+    this.props.struct_job_names.forEach((name) =>{
+      let link_data = [];
+      if(this.props.analyses.includes(name+'_job')){
+        if(name === this.props.job_strings.metsite.varName){
+          link_data = this.createDownloadLinks(count, [['.MetPred', 'Metsite PDB'], ['.Metpred', 'Mesite Predictions']], this.props.job_strings.metsite.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
+        if(name === this.props.job_strings.hspred.varName){
+          link_data = this.createDownloadLinks(count, [['initial.pdb', 'HSPred First PDB File'], ['second.pdb', 'HSPred Second PDB File'], ['.out', 'HSPRed Predictions']], this.props.job_strings.hspred.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
+        if(name === this.props.job_strings.memembed.varName){
+          link_data = this.createDownloadLinks(count, [['.pdb', 'PDB Embedding'], ], this.props.job_strings.memembed.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
+        if(name === this.props.job_strings.merizo.varName){
+          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' PDB'], ['.merizo', this.props.job_strings.merizo.shortName+' Boundaries']], this.props.job_strings.merizo.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
+        
+        count = link_data[1];
+      }
+    });
+
     this.props.seq_job_names.forEach((name) =>{
       // console.log(name);
       // console.log(this.props.analyses);
       let link_data = [];
         if(this.props.analyses.includes(name+'_job')){
-          if(name === 'psipred' || name === 'dmp'){
-            link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'PSIPRED DOWNLOADS');
+          if(name === this.props.job_strings.psipred.varName || name === this.props.job_strings.dmp.varName){
+            link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], this.props.job_strings.psipred.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
-          if(name === 'pgenthreader'){
-            link_data = this.createDownloadLinks(count, [['.presults', 'pGenTHREADER Hits'], ], 'pGenTHREADER DOWNLOADS')
+          if(name === this.props.job_strings.pgenthreader.varName){
+            link_data = this.createDownloadLinks(count, [['.presults', this.props.job_strings.pgenthreader.shortName+' Hits'], ], this.props.job_strings.pgenthreader.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
-          if(name === 'disopred'){
-            link_data = this.createDownloadLinks(count, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], 'DISOPRED DOWNLOADS')
+          if(name === this.props.job_strings.disopred.varName){
+            link_data = this.createDownloadLinks(count, [['.comb', 'COMB Format Output'],['.pbdat', 'PBDAT Format Output']], this.props.job_strings.disopred.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
-          if(name === 'memsatsvm'){
-            link_data = this.createDownloadLinks(count, [['.memsat_svm', 'MEMSAT-SVM text format'], ], 'MEMSAT-SVM DOWNLOADS')
+          if(name === this.props.job_strings.memsatsvm.varName){
+            link_data = this.createDownloadLinks(count, [['.memsat_svm', this.props.job_strings.memsatsvm.shortName+' text format'], ], this.props.job_strings.memsatsvm.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
-          if(name === 'dmp'){
-            link_data = this.createDownloadLinks(count, [['.con', 'DMP Contacts'], ], 'DMP DOWNLOADS')
+          if(name === this.props.job_strings.dmp.varName){
+            link_data = this.createDownloadLinks(count, [['.con', this.props.job_strings.dmp.shortName+' Contact List'], ], this.props.job_strings.dmp.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
-          if(name === 'genthreader'){
-            link_data = this.createDownloadLinks(count, [['.presults', 'GenTHREADER Hits'], ], 'GenTHREADER DOWNLOADS')
+          if(name === this.props.job_strings.genthreader.varName){
+            link_data = this.createDownloadLinks(count, [['.presults', this.props.job_strings.genthreader.shortName+' Hits'], ], this.props.job_strings.genthreader.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
-          if(name === 'pdomthreader'){
-            link_data = this.createDownloadLinks(count, [['.presults', 'pDomTHREADER Hits'], ], 'pDomTHREADER DOWNLOADS')
+          if(name === this.props.job_strings.pdomthreader.varName){
+            link_data = this.createDownloadLinks(count, [['.presults', this.props.job_strings.pdomthreader.shortName+' Hits'], ], this.props.job_strings.pdomthreader.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
-          if(name === 'dmpfold'){
-            link_data = this.createDownloadLinks(count, [['.pdb', 'PDB Model'], ], 'DMPFold DOWNLOADS')
+          if(name === this.props.job_strings.dmpfold.varName){
+            link_data = this.createDownloadLinks(count, [['.pdb', 'PDB Model'], ], this.props.job_strings.dmpfold.shortName+' DOWNLOADS')
             downloads_text.push(link_data[0]);
           }
-          if(name === 's4pred'){
-            link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], 'S4Pred DOWNLOADS');
+          if(name === this.props.job_strings.s4pred.varName){
+            link_data = this.createDownloadLinks(count, [['.horiz','Horiz Format Output'],['.ss2','SS2 Format Output']], this.props.job_strings.s4pred.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
-          if(name === 'dompred'){
-            link_data = this.createDownloadLinks(count, [['.boundary','DomPred Boundaries']], 'DomPred DOWNLOADS');
+          if(name === this.props.job_strings.dompred.varName){
+            link_data = this.createDownloadLinks(count, [['.boundary',this.props.job_strings.dompred.shortName+' Boundaries']], this.props.job_strings.dompred.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
-    
+          if(name === this.props.job_strings.ffpred.varName){
+            link_data = this.createDownloadLinks(count, [['.featcfg', this.props.job_strings.ffpred.shortName+' Predicted Features'], ['.full_formatted', this.props.job_strings.ffpred.shortName+' Predictions']], this.props.job_strings.ffpred.shortName+' DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
+          if(name === this.props.job_strings.mempack.varName){
+            link_data = this.createDownloadLinks(count, [['_LIPID_EXPOSURE.results', this.props.job_strings.mempack.shortName+' Lipid Exposure Results'], ['_CONTACT_DEF1.results', this.props.job_strings.mempack.shortName+' Contacts']], this.props.job_strings.mempack.shortName+' DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
+
           count = link_data[1];
         }
         // downloads_text.push(link_data[0]);
@@ -167,10 +221,10 @@ class ResultsSidebarDownloads extends React.Component{
            </div>
        </div>
        <div className="box-body">
-           <h5>ZIP FILE</h5>
-           <button className="fake-link" onClick={this.returnZip} >Get Zip file</button><br /><br />
+           <h5>RESULTS ZIP FILE</h5>
+           <button className="fake-link" onClick={this.returnZip} >Get Zip File</button><br /><br />
            <h5>JOB CONFIGURATION</h5>
-           <button className="fake-link" onClick={this.returnJobConfig} >Get Job details</button><br /><br />
+           <button className="fake-link" onClick={this.returnJobConfig} >Get Job Details</button><br /><br />
            { (this.props.results_files) ?
                 this.renderDownloads()
               :

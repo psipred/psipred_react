@@ -1,5 +1,5 @@
 import React from 'react';
-import {parse_times} from './requests_helper.js'; // eslint-disable-line no-unused-vars
+import {parse_times} from '../shared/index.js'; // eslint-disable-line no-unused-vars
 
 class ResultsSidebarTimes extends React.Component{
   constructor(props){
@@ -33,9 +33,10 @@ class ResultsSidebarTimes extends React.Component{
          this.setState(times);
        }
        //DO SOME THINGS
-     }).catch(error => {
-       console.log("Getting Times data "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Getting Times data "+this.props.times_url+" Failed. "+error.responseText+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+     }).catch(async error => {
+       let obj = await error.json().then(json => {return(json);});
+       console.log("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       alert("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
       return null;
      })
   }
@@ -49,35 +50,50 @@ class ResultsSidebarTimes extends React.Component{
               { this.state.loading_message &&
                 <div><span className="info-box-number">{this.state.loading_message}</span><br /></div>
               }
-              { this.props.analyses.includes('psipred_job') &&
-                <div><span className="info-box-number">PSIPRED runtime: {this.state.psipred}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.psipred.jobName) &&
+                <div><span className="info-box-number">{this.props.job_strings.psipred.shortName} runtime: {this.state.psipred}</span><br /></div>
               }
-              { this.props.analyses.includes('disopred_job') &&
-              <div><span className="info-box-number">DISOPRED runtime: {this.state.disopred}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.disopred.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.disopred.shortName} runtime: {this.state.disopred}</span><br /></div>
               }
-              { this.props.analyses.includes('memsatsvm_job') &&
-              <div><span className="info-box-number">MEMSAT-SVM runtime: {this.state.memsatsvm}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.memsatsvm.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.memsatsvm.shortName} runtime: {this.state.memsatsvm}</span><br /></div>
               }
-              { this.props.analyses.includes('pgenthreader_job') &&
-              <div><span className="info-box-number">pGenTHREADER runtime: {this.state.pgenthreader}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.pgenthreader.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.pgenthreader.shortName} runtime: {this.state.pgenthreader}</span><br /></div>
               }
-              { this.props.analyses.includes('dmp_job') &&
-              <div><span className="info-box-number">DeepMetaPSICOV runtime: {this.state.dmp}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.dmp.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.dmp.shortName} runtime: {this.state.dmp}</span><br /></div>
               }
-               { this.props.analyses.includes('mempack_job') &&
-              <div><span className="info-box-number">MEMPACK runtime: {this.state.mempack}</span><br /></div>
+               { this.props.analyses.includes(this.props.job_strings.mempack.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.mempack.shortName} runtime: {this.state.mempack}</span><br /></div>
               }
-              { this.props.analyses.includes('genthreader_job') &&
-              <div><span className="info-box-number">GenTHREADER runtime: {this.state.genthreader}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.genthreader.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.genthreader.shortName} runtime: {this.state.genthreader}</span><br /></div>
               }
-              { this.props.analyses.includes('pdomthreader_job') &&
-              <div><span className="info-box-number">pDomTHREADER runtime: {this.state.pdomthreader}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.pdomthreader.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.pdomthreader.shortName} runtime: {this.state.pdomthreader}</span><br /></div>
               }
-              { this.props.analyses.includes('s4pred_job') &&
-              <div><span className="info-box-number">S4Pred runtime: {this.state.s4pred}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.s4pred.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.s4pred.shortName} runtime: {this.state.s4pred}</span><br /></div>
               }
-              { this.props.analyses.includes('dompred_job') &&
-              <div><span className="info-box-number">DomPred runtime: {this.state.dompred}</span><br /></div>
+              { this.props.analyses.includes(this.props.job_strings.dompred.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.dompred.shortName} runtime: {this.state.dompred}</span><br /></div>
+              }
+              { this.props.analyses.includes(this.props.job_strings.ffpred.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.ffpred.shortName} runtime: {this.state.ffpred}</span><br /></div>
+              }
+              { this.props.analyses.includes(this.props.job_strings.metsite.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.metsite.shortName} runtime: {this.state.mesite}</span><br /></div>
+              }
+              { this.props.analyses.includes(this.props.job_strings.hspred.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.hspred.shortName} runtime: {this.state.hspred}</span><br /></div>
+              }
+              { this.props.analyses.includes(this.props.job_strings.memembed.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.memembed.shortName} runtime: {this.state.memembed}</span><br /></div>
+              }
+              { this.props.analyses.includes(this.props.job_strings.merizo.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.merizo.shortName} runtime: {this.state.merizo}</span><br /></div>
               }
               
             </div>

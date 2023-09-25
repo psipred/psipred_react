@@ -134,7 +134,75 @@ text {
 }
 
 .pdb_panel_class {
-  width: 60%;
+  display: inline-block;
+  width: 50%;
   height: 400px;
   position: relative;
+}
+
+.error {
+  font: 30px Arial;
+}
+
+.signif10p
+{
+ border:     1px solid #cccccc;
+ background: rgb(255,220,220);
+}
+.signif10n
+{
+ border:     1px solid #cccccc;
+ background: rgb(220,220,255);
+}
+.signif5p
+{
+  border:     1px solid #cccccc;
+  background: rgb(255,150,150);
+}
+
+.signif2p
+{
+ border:     1px solid #cccccc;
+ background:  rgb(255,100,100);
+}
+
+.signif1p
+{
+ border:     1px solid #cccccc;
+ background: red;
+}
+
+.signif5n
+{
+  border:     1px solid #cccccc;
+  background: rgb(150,150,255);
+}
+
+.signif2n
+{
+ border:     1px solid #cccccc;
+ background: rgb(80,80,255);
+ color: #eeeeee;
+}
+
+.signif1n
+{
+ background: blue;
+ border:     1px solid #cccccc;
+ color:      #eeeeee;
+}
+
+.center
+{
+  align: center;
+  text-align: center;
+}
+
+.rotate90 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: translate(0px, -100%) rotate(90deg) ;
+  transform-origin: left bottom;
 }

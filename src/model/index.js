@@ -1,7 +1,7 @@
 import React from 'react';
 import {decide_location} from '../shared/index.js' // eslint-disable-line no-unused-vars
-import {request_data} from '../shared/index.js';
-import * as $3Dmol from '3dmol/build/3Dmol.js';
+import {request_data} from '../shared/index.js'; 
+import {display_structure} from '../shared/index.js';
 
 export class Model extends React.Component{
     constructor (props){
@@ -121,8 +121,6 @@ export class Model extends React.Component{
         if(data.state !== "Running"){
           if(data.state === "Complete"){
             // Here we loop over data.submissions
-            let parsed_data = {};
-            let model_data = null;
             data.submissions.forEach((submission) => {
               // get an array of all the results files for our job
               results_data = this.getResultsFiles(submission.results, this.state);
@@ -141,11 +139,26 @@ export class Model extends React.Component{
           }
 
         }
-      }).catch(error => {
-        console.log("Fetching 3D MODEL: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        alert("Fetching 3D MODEL: "+result_uri+" Failed. \n"+error.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        this.setState({waiting: false});
-        clearInterval(this.timer);
+      }).catch(async error => {
+        //console.log("THIS ERROR?"+error);
+        let message = '';
+        try {
+          let obj = await error.json().then(json => {return(json);});
+          if(obj.error){
+            message.message = obj.error;
+          }
+          if(obj.error.input_data){
+            message.message = obj.error.input_data
+          }
+        }
+        catch{
+          message=error
+        }
+        console.log(message.message);
+        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        //alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+        this.setState({error_message: message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk"});
+        this.props.updateWaiting(false);
         return null;
       });
     };
@@ -153,23 +166,10 @@ export class Model extends React.Component{
 
 
   componentDidUpdate(prevProps) {
-    // console.log(this.state.pdb_data);
-    // console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
+    //console.log(this.state.pdb_data);
+    //console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
     var data = this.state.pdb_data[Object.keys(this.state.pdb_data)[0]];
-    var cartoon_color = function(atom) {
-      if(atom.ss === 'h'){return '#e353e3';}
-      if(atom.ss === 's'){return '#e5dd55';}
-      return('grey');
-    };
-    //https://www.npmjs.com/package/3dmol
-    let element = this.model.current;
-    let config = { backgroundColor: '#ffffff' };
-    let viewer = $3Dmol.createViewer( element, config );
-    viewer.addModel( data, "pdb" );                       /* load data */
-    viewer.setStyle({}, {cartoon: {colorfunc: cartoon_color}});  /* style all atoms */
-    viewer.zoomTo();                                      /* set camera */
-    viewer.render();                                      /* render scene */
-    viewer.zoom(1.7, 3000);     
+    display_structure(this.model.current, data, true, false);
   }
 
     componentDidMount(){
