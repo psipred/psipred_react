@@ -341,7 +341,7 @@ export function configurePost(formState)
     fd.append("ffpred_selection", formState.ffpred_selection);
   }
   if(formState.jobs.includes('merizo')){
-    // fd.append("merizo_iterate", formState.merizo_iterate);
+    fd.append("merizo_iterate", formState.merizo_iterate);
   }
   return(fd);
 }

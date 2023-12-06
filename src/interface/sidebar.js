@@ -130,8 +130,8 @@ class MerizoOptions extends React.Component {
       <div className="row form-header-row">
         <h4>{this.props.job_strings.merizo.fullName}</h4>
         <strong>Segmentation Mode:</strong><br />
-          {/* <input type="radio" id="merizo_mode_default" name="merizo_iterate" value="0" checked={this.props.merizo_iterate === "0"} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Default</label><br />
-          <input type="radio" id="merizo_mode_iterative" name="merizo_iterate" value="1" checked={this.props.merizo_iterate === "1"} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Iterative</label><br /> */}
+          <input type="radio" id="merizo_mode_default" name="merizo_iterate" value="FALSE" checked={this.props.merizo_iterate === 'FALSE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Default</label><br />
+          <input type="radio" id="merizo_mode_iterative" name="merizo_iterate" value="TRUE" checked={this.props.merizo_iterate === 'TRUE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Iterative</label><br />
       </div>
     );
   }

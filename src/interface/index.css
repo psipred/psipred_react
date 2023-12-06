@@ -148,16 +148,6 @@ text {
   left: 100px;
 }
 
-.pdb_panel_class_merizo_options {
-  display: inline-block;
-  vertical-align: top;
-  width: 150px;
-  height: 400px;
-  position: relative;
-  left: 0px;
-  background-color:rgb(232,232,232);
-}
-
 .pdb_panel_class_merizo_options > * {
   margin-left: 5px; /* Apply left margin to all direct children */
 }

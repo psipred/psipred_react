@@ -7,7 +7,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 import {merizo_html} from './parsers.js';
-import {extractBFactors} from './parsers.js';
+// import {extractBFactors} from './parsers.js';
 
 class ResultsStructure extends React.Component{
   constructor(props){
@@ -21,6 +21,7 @@ class ResultsStructure extends React.Component{
     this.memembed_pdb = React.createRef();
     this.merizo_pdb = React.createRef();
     this.merizo_boundaries = React.createRef();
+    this.merizo_pdb_sidebar = React.createRef();
     this.timer = null;
   }
 
@@ -79,6 +80,21 @@ class ResultsStructure extends React.Component{
       if(key.includes(".pdb2")){
         let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
         // let bFactors = extractBFactors(this.state.merizo_results[key])
+
+        var merizo_panel = document.getElementById("merizo_sidebar_bg");
+        merizo_panel.style.display = "inline-block";
+        merizo_panel.style.verticalAlign = "top";
+        merizo_panel.style.width = "150px";
+        merizo_panel.style.height = "400px";
+        merizo_panel.style.position = "relative";
+        merizo_panel.style.left = "0px";
+        merizo_panel.style.backgroundColor = "#e8e8e8";
+
+
+        var pdb_options = document.createElement('template');
+        pdb_options.innerHTML = '<h4><b>PDB Options</b></h4> <h5>Colouration</h5>  <button id="colorByDomains">Colour by Domains</button> <button id="colorByBFactor">Colour by b-factor</button> <button id="colorByplDDT">Colour by plDDT (bins)</button> '
+
+        this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
 
         display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx);
       }
@@ -357,16 +373,9 @@ class ResultsStructure extends React.Component{
                   <img alt="waiting icon" src={this.props.merizo_waiting_icon} />
                 </div>
               )}
-              <div className="pdb_panel_class_merizo_options">
-                <h4><b>PDB Options</b></h4>
-                
-                <h5>Colouration</h5>
-                <button id="colorByDomains">Colour by Domains</button>
-                <button id="colorByBFactor">Colour by b-factor</button>
-                <button id="colorByplDDT">Colour by plDDT (bins)</button>
-              </div>
-              <div className="merizo_pdb pdb_panel_class_merizo" id="merizo" ref={this.merizo_pdb}></div>
-              <div className="merizo_boundaries" id="merizo" ref={this.merizo_boundaries}></div>
+              <div className="pdb_panel_class_merizo_options" id="merizo_sidebar_bg" ref={this.merizo_pdb_sidebar}></div>
+              <div className="merizo_pdb pdb_panel_class_merizo" id="merizo_pdb_panel" ref={this.merizo_pdb}></div>
+              <div className="merizo_boundaries" id="merizo_boundary_table" ref={this.merizo_boundaries}></div>
             </div>
           </div>
         )}

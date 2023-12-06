@@ -2,7 +2,7 @@ import * as colours from '../shared/colour_names.js';
 
 export function merizo_html(dat_string){
   //console.log(dat_string);
-  let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 60%" >';
+  let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 30%" >';
   merizo_table += '<tr><th>Domain ID</th><th>Domain Region</th><th>Colour</th></tr>';
   let data = dat_string.split("\t");
   let domains = data[7].split(",");
@@ -10,9 +10,32 @@ export function merizo_html(dat_string){
      merizo_table += '<tr><td>'+(idx+1)+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';
   });
   merizo_table += '</table>';
-  // <tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Hotspot Residue</td></tr>';;
+
+  //B-factor colours
+  merizo_table += '<div style="width: 100%;"><div style="display: inline-block; width: 100%;">';
+  merizo_table += '<h3>B-factor Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
+  merizo_table += '<tr><th>Range</th><th>Colour</th></tr>';
+  merizo_table += '<tr><td>Min</td><td style="background-color:#000080">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Mid</td><td style="background-color:#008000">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Max</td><td style="background-color:#800000">&nbsp;</td></tr>';
+  merizo_table += '</table>';
+  merizo_table += '</div>';
+  
+  //plDDT bins
+  merizo_table += '<div style="display: inline-block; width: 100%;">';
+  merizo_table += '<h3>plDDT Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
+  merizo_table += '<tr><th NOWRAP>Confidence Bin</th><th>plDDT</th><th>Colour</th></tr>';
+  merizo_table += '<tr><td>Very High</td><td>\>90</td><td style="background-color:rgb(0, 81, 214)">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>High</td><td>70-90</td><td style="background-color:rgb(101, 203, 243)">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Low</td><td>50-70</td><td style="background-color:rgb(255, 219, 19)">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Very Low</td><td>\<50</td><td style="background-color:rgb(255, 125, 69)">&nbsp;</td></tr>';
+  merizo_table += '</table>';
+  merizo_table += '</div></div>';
+
   return(merizo_table);
 }
+
+
 
 export function parse_merizo(string){
   let merizo_labels = {};
