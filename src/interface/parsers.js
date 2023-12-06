@@ -2,40 +2,68 @@ import * as colours from '../shared/colour_names.js';
 
 export function merizo_html(dat_string){
   //console.log(dat_string);
-  let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 60%" >';
+  let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 30%" >';
   merizo_table += '<tr><th>Domain ID</th><th>Domain Region</th><th>Colour</th></tr>';
   let data = dat_string.split("\t");
   let domains = data[7].split(",");
   domains.forEach((domain, idx) => {
-     merizo_table += '<tr><td>'+idx+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';
+     merizo_table += '<tr><td>'+(idx+1)+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';
   });
   merizo_table += '</table>';
-  // <tr><td bgcolor="#ff0000" style="border-style:solid; border-width:1px; border-color:#000000">&nbsp;&nbsp;</td><td>&nbsp;Hotspot Residue</td></tr>';;
+
+  //B-factor colours
+  merizo_table += '<div style="width: 100%;"><div style="display: inline-block; width: 100%;">';
+  merizo_table += '<h3>B-factor Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
+  merizo_table += '<tr><th>Range</th><th>Colour</th></tr>';
+  merizo_table += '<tr><td>Min</td><td style="background-color:#000080">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Mid</td><td style="background-color:#008000">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Max</td><td style="background-color:#800000">&nbsp;</td></tr>';
+  merizo_table += '</table>';
+  merizo_table += '</div>';
+  
+  //plDDT bins
+  merizo_table += '<div style="display: inline-block; width: 100%;">';
+  merizo_table += '<h3>plDDT Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
+  merizo_table += '<tr><th NOWRAP>Confidence Bin</th><th>plDDT</th><th>Colour</th></tr>';
+  merizo_table += '<tr><td>Very High</td><td>\>90</td><td style="background-color:rgb(0, 81, 214)">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>High</td><td>70-90</td><td style="background-color:rgb(101, 203, 243)">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Low</td><td>50-70</td><td style="background-color:rgb(255, 219, 19)">&nbsp;</td></tr>';
+  merizo_table += '<tr><td>Very Low</td><td>\<50</td><td style="background-color:rgb(255, 125, 69)">&nbsp;</td></tr>';
+  merizo_table += '</table>';
+  merizo_table += '</div></div>';
+
   return(merizo_table);
 }
 
+
+
 export function parse_merizo(string){
-  let merizo_labels = [];
-  let domain_count = 1;
-  let data = string.split("\t");
-  let domain_data = data[7];
-  merizo_labels = new Array(Number(data[1]));
-  merizo_labels.fill(0);
-  let domains = domain_data.split(",");
-  domains.forEach((domain) => {
-    let segments = domain.split("_");
-    segments.forEach((segment) =>{
-      let range = segment.split("-").map(Number);
-      merizo_labels.forEach((val, idx) => {
-        //console.log(range[0], range[1], idx);
-        if(idx >= range[0]-1 && idx <= range[1]-1){
-          merizo_labels[idx] = domain_count;
-        }
-      });
-    });
-    domain_count++;
-  });
+  let merizo_labels = {};
+
+  let resi = string.split(",");
+  for (var i = 0; i < resi.length; i++) {
+    let ele = resi[i].split(":")
+    let r = parseInt(ele[0], 10)
+    let idx = parseInt(ele[1], 10)
+    merizo_labels[r] = idx;
+  }
+  var domain_labels = Object.values(merizo_labels);
+  var domain_count = Math.max(...domain_labels)
   return([merizo_labels, domain_count]);
+}
+
+export function extractBFactors(pdbContent) {
+  let lines = pdbContent.split('\n');
+  let bFactors = [];
+
+  for (const line of lines) {
+    if (line.startsWith('ATOM')) {
+      const bFactor = parseFloat(line.substr(60, 6));
+      bFactors.push(bFactor);
+    }
+  }
+
+  return bFactors;
 }
 
 //https://stackoverflow.com/questions/23616226/insert-html-with-react-variable-statements-jsx

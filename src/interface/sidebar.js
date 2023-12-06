@@ -25,6 +25,9 @@ class Sidebar extends React.Component{
           { this.props.analyses.includes(this.props.job_strings.memembed.jobName) &&
             <MemembedOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
+          { this.props.analyses.includes(this.props.job_strings.merizo.jobName) &&
+            <MerizoOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
+          }
           </div>
         </div>
       </div>
@@ -117,6 +120,18 @@ class FfpredOptions extends React.Component {
         <h4>{this.props.job_strings.ffpred.fullName}</h4>
         <input type="radio" id="ffpred_human" name="ffpred_selection" value="human" checked={this.props.ffpred_selection === 'human'} onChange={this.props.handleSidebarChange} /> <label htmlFor="ffpred_human">Human Prediction</label><br />
         <input type="radio" id="ffpred_fly" name="ffpred_selection" value="fly" checked={this.props.ffpred_selection === 'fly'} onChange={this.props.handleSidebarChange} /> <label htmlFor="ffpred_fly">Fly Prediction</label>
+      </div>
+    );
+  }
+}
+class MerizoOptions extends React.Component {
+  render () {
+    return(
+      <div className="row form-header-row">
+        <h4>{this.props.job_strings.merizo.fullName}</h4>
+        <strong>Segmentation Mode:</strong><br />
+          <input type="radio" id="merizo_mode_default" name="merizo_iterate" value="FALSE" checked={this.props.merizo_iterate === 'FALSE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Default</label><br />
+          <input type="radio" id="merizo_mode_iterative" name="merizo_iterate" value="TRUE" checked={this.props.merizo_iterate === 'TRUE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Iterative</label><br />
       </div>
     );
   }
