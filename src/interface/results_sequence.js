@@ -3,7 +3,7 @@ import {draw_empty_annotation_panel} from '../shared/index.js';
 import {request_data} from '../shared/index.js';
 import {config_table} from '../shared/index.js'; 
 import {display_structure} from '../shared/index.js';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+//import {CopyToClipboard} from 'react-copy-to-clipboard';
 // import {request_binary_data} from './results_helper.js';
 import {parse_config} from '../shared/index.js';
 import { parse_ss2 } from './parsers.js';
