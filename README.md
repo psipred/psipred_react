@@ -125,5 +125,5 @@ Now and again we have to take the server offline. You can add messages and suspe
 2. Set polling time correctly in `results_sequence.js` and `results_structure.js`
 
 4. in model/index.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all httprequest uses with this pattern.
-5. Maybe there is a way to dry out some of the creatElement creation stuff in `results_sequence.js` and `results_structure.js`, especially for the img tag stuff.
+5. Maybe there is a way to dry out some of the createElement creation stuff in `results_sequence.js` and `results_structure.js`, especially for the img tag stuff.
 6. Change all parsers to correctly be JSX and/or new react classes.
