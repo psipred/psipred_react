@@ -140,6 +140,18 @@ text {
   position: relative;
 }
 
+.pdb_panel_class_merizo {
+  display: inline-block;
+  width: 50%;
+  height: 400px;
+  position: relative;
+  left: 100px;
+}
+
+.pdb_panel_class_merizo_options > * {
+  margin-left: 5px; /* Apply left margin to all direct children */
+}
+
 .error {
   font: 30px Arial;
 }
