@@ -67,19 +67,19 @@ This is just a simple class that reads the alignment files it needs, dispatches 
 
 See also class_layout.odp
 
-* PsipredSite (index.js): Outer container for whole page with URI initialisation
-  * DisplayArea: Main container for the app that has all the shared the application state variables
-    * MainForm: Small class that wraps the interactive parts of the form
-      * FormInteractivity: Small class that warps the form selector
-        * SeqForm: Main form that the user can use to select methods and submit Seq data
-        * StructForm:  Main form that the user can use to select methods and submit Structural data
-    * Sidebar: Class shows the sidebar with advanced options
-    * ResultsMain: Class is called after data submission and handles submitting a job and then displaying the results
-      * ResultsSequence: Class handles getting the results files for a sequence job and displaying them
-      * ResultsStructure: TO BE IMPLEMENTED
-    * ResultsSidebarTimes: Small class handles getting the RunTimes and displaying them while the user waits
-    * ResultsSidebarDownloads: This class handles showing the download files panel and bundling files in to a zip for the users
-    * ResultsSidebarResubmission: This shows the resubmission panel on the results page and handles submitting a new job
+* PsipredSite (psipred_site.js): Outer container for whole page with URI initialisation
+  * DisplayArea (psipred_site.js): Main container for the app that has all the shared the application state variables
+    * MainForm (MainForm.js): Small class that wraps the interactive parts of the form
+      * FormInteractivity (MainForm.js): Small class that warps the form selector
+        * SeqForm (MainForm.js): Main form that the user can use to select methods and submit Seq data
+        * StructForm (MainForm.js):  Main form that the user can use to select methods and submit Structural data
+    * Sidebar (sidebar.js): Class shows the sidebar with advanced options
+    * ResultsMain (results.js): Class is called after data submission and handles submitting a job and then displaying the results
+      * ResultsSequence (results_sequence.js): Class handles getting the results files for a sequence job and displaying them
+      * ResultsStructure (results_strucutre.js): TO BE IMPLEMENTED
+    * ResultsSidebarTimes (results_sidebar_times.js): Small class handles getting the RunTimes and displaying them while the user waits
+    * ResultsSidebarDownloads (results_sidebar_downloads.js): This class handles showing the download files panel and bundling files in to a zip for the users
+    * ResultsSidebarResubmission (results_sidebar_resubmission.js): This shows the resubmission panel on the results page and handles submitting a new job
 
 # Adding services to PSIPRED web server
 

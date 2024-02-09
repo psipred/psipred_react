@@ -80,7 +80,7 @@ class SeqForm extends React.Component {
                 <label className="control-label" htmlFor="id_input_data">Protein Sequence</label><textarea className="form-control" cols="40" rows="3" placeholder="Protein Sequence" title="" required="" id="id_input_data" name="input_data" value={this.props.input_data} onChange={this.handleChange}></textarea>
               </div>
             </div>
-            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a>.
+            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a> or <button onClick={this.props.setTestSeq} type="button" class="fake-link">click here to load a test seq</button>.
             <br /><br />
             <div className="form-group">
               <div className="form-group">
@@ -211,7 +211,7 @@ class FormInteractivity extends React.Component{
           </div>
         }
         </div>
-        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />}
+        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />}
 
       </div>
       );
@@ -228,7 +228,7 @@ class MainForm extends React.Component{
           <hr id="hr_form"></hr>
         </div>
         <div className="box-header with-border"><h5 className="box-title">Data Input</h5></div>
-          <FormInteractivity {...this.props} handleSubmit={this.props.handleSubmit} handleInputChange={this.props.handleInputChange} handleStructChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSeqChange={this.props.handleSeqChange} />
+          <FormInteractivity {...this.props} handleSubmit={this.props.handleSubmit} handleInputChange={this.props.handleInputChange} handleStructChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSeqChange={this.props.handleSeqChange} setTestSeq={this.props.setTestSeq} />
       </div>
     );
   }
