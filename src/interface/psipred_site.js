@@ -505,17 +505,19 @@ export class PsipredSite extends React.Component{
       incoming_uuid: uuid,
       href: href,
     };
+    let new_state = decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path);
+    this.state = {...this.state, ...new_state};
   }
 
-  componentDidMount() {
-    let new_state = decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path);
-    console.log(new_state);
-    this.setState(decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path));
-    //defaults for dev server
-  }
+  // componentDidMount() {
+  //   let new_state = decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path);
+  //   console.log(new_state);
+  //   this.setState(decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path));
+  //   //defaults for dev server
+  // }
 
   render(){
-    console.log(this.state.location);
+    console.log("RENDERING AREA", this.state.location);
     return(
       <section className="content">
         <div id="psipred_site">
