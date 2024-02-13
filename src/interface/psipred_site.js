@@ -488,9 +488,9 @@ export class PsipredSite extends React.Component{
     console.log("PAGE LOAD href: "+href);
     console.log("PAGE LOAD uuid: "+uuid);
     this.state = {
-      suspension_message: null,
+      //suspension_message: null,
       server_message: null,
-      //suspension_message: "The sever will be offline between the 1st and the 2nd of August 2023",
+      suspension_message: "The sever will be offline until the 14th of Feb 2023",
       //server_message: "We are going to change some shit",
       endpoints_url: null,
       submit_url: null,
