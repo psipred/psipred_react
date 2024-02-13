@@ -31,7 +31,6 @@ class DisplayArea extends React.Component{
     let email = '';
       
     if(this.props.location === 'Dev'){
-      console.log(this.props.location);
       // input_data = 'ASDASDASDASDASDASDASDASDASDASD';
       // seq = 'ASDASDASDASDASDASDASDASDASDASD';
       name = "test";
@@ -509,6 +508,8 @@ export class PsipredSite extends React.Component{
   }
 
   componentDidMount() {
+    let new_state = decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path);
+    console.log(new_state);
     this.setState(decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path));
     //defaults for dev server
   }
