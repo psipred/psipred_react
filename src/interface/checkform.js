@@ -95,6 +95,8 @@ const validateFormData = (state, jobs, pdbData) => {
     checked.message = "You can not submit both sequence and structure analysis jobs";
     return(checked);
   }
+  //console.log(jobs);
+  //console.log(seq_job_list);
   if((compare(jobs, seq_job_list) === 0) && (compare(jobs, struct_job_list) === 0)) {
     checked.message = "You must select at least one analysis job";
     return(checked);

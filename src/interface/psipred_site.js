@@ -21,6 +21,7 @@ async function readPDBFile(file) {
 }
 
 class DisplayArea extends React.Component{
+ 
   constructor(props){
     super(props);
     let input_data = '';
@@ -28,7 +29,7 @@ class DisplayArea extends React.Component{
     let pdb_data = null;
     let name = "";
     let email = '';
-
+      
     if(this.props.location === 'Dev'){
       // input_data = 'ASDASDASDASDASDASDASDASDASDASD';
       // seq = 'ASDASDASDASDASDASDASDASDASDASD';
@@ -38,11 +39,11 @@ class DisplayArea extends React.Component{
     this.state = {
       displayType: 'input',
       displayTime: true,
-      formSelectedOption: 'StructForm',
+      formSelectedOption: 'SeqForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", "dmpfold", 's4pred' ],
       struct_job_names: ["metsite", "hspred", "memembed", "merizo", ],
-      analyses: ['merizo_job'],
+      analyses: ['psipred_job'],
       jobs: [],
       input_data: input_data,
       seq: seq,
@@ -137,7 +138,7 @@ class DisplayArea extends React.Component{
                                 'fullName': 'DomPred',
                                 'describedName': 'DomPred (Domain Boundary Prediction)',
                                 'varName': 'dompred',
-                                'jobName': 'dompref_job',
+                                'jobName': 'dompred_job',
                                 'tooltip': 'Predict protein structural domain boundaries', },    
                       "ffpred": { 'shortName': 'FFPred',
                                 'fullName': 'FFPred 4',
@@ -168,9 +169,7 @@ class DisplayArea extends React.Component{
                                 'describedName': 'Merizo (Protein domain segmentation)',
                                 'varName': 'merizo',
                                 'jobName': 'merizo_job',
-                                'tooltip': 'Fast and accurate protein domain prediction', },    
-                                   
-                    
+                                'tooltip': 'Fast and accurate protein domain prediction', },              
       },
     };
   }
@@ -255,6 +254,14 @@ class DisplayArea extends React.Component{
     this.setState({
       seq: newValue});
   }
+
+  setTestSeq = () => {
+    let test_seq = 'MLELLPTAVEGVSQAQITGRPEWIWLALGTALMGLGTLYFLVKGMGVSDPDAKKFYAITTLVPAIAFTMYLSMLLGYGLTMVPFGGEQNPIYWARYADWLFTTPLLLLDLALLVDADQGTILALVGADGIMIGTGLVGALTKVYSYRFVWWAISTAAMLYILYVLFFGFTSKAESMRPEVASTFKVLRNVTVVLWSAYPVVWLIGSEGAGIVPLNIETLLFMVLDVSAKVGFGLILLRSRAIFGEAEAPEPSAGDGAAATSD';
+    this.setState({
+      seq: test_seq,
+      input_data: test_seq});
+  }
+
   updateResubmit = (change) => {
     this.setState({
       resubmit: change});
@@ -443,7 +450,7 @@ class DisplayArea extends React.Component{
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
+          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} /></div>
           <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
         </div>
       :
@@ -481,9 +488,9 @@ export class PsipredSite extends React.Component{
     console.log("PAGE LOAD href: "+href);
     console.log("PAGE LOAD uuid: "+uuid);
     this.state = {
-      suspension_message: null,
+      //suspension_message: null,
       server_message: null,
-      //suspension_message: "The sever will be offline between the 1st and the 2nd of August 2023",
+      suspension_message: "The server will be offline until the 14th of Feb 2023",
       //server_message: "We are going to change some shit",
       endpoints_url: null,
       submit_url: null,
