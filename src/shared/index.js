@@ -158,7 +158,7 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['times_url'] = main_url+uris['app_path']+'/api/jobtimes/';
       uris['files_url'] = main_url+uris['app_path']+"/api";
       uris['gears_svg'] = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
-      uris['location ']= "Production";
+      uris['location']= "Production";
     }
     else if(hostname === "bioinfstage1.cs.ucl.ac.uk")
     { //update for staging paths
