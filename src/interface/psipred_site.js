@@ -31,7 +31,7 @@ class DisplayArea extends React.Component{
     let email = '';
       
     if(this.props.location === 'Dev'){
-      console.alert(this.props.location);
+      console.log(this.props.location);
       // input_data = 'ASDASDASDASDASDASDASDASDASDASD';
       // seq = 'ASDASDASDASDASDASDASDASDASDASD';
       name = "test";
