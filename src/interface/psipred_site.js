@@ -515,6 +515,7 @@ export class PsipredSite extends React.Component{
   }
 
   render(){
+    console.log(this.state.location);
     return(
       <section className="content">
         <div id="psipred_site">
