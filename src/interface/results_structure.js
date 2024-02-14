@@ -228,7 +228,7 @@ class ResultsStructure extends React.Component{
 
   componentDidMount(){
     //here is a good place to send the results and set up the polling.
-    this.timer = setInterval(() => this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 20000);
   }
 
   renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
