@@ -149,6 +149,7 @@ class ResultsSequence extends React.Component{
       }
     }
     if(this.state.pgenthreader_results){
+      console.log("PGEN TABLE INITIALISATION");
       config_table('#pgen_table', 50, '#min_pgen_pval', '#max_pgen_pval', 'pgen_table', 2, null);
     }
 
@@ -171,7 +172,7 @@ class ResultsSequence extends React.Component{
     }
 
     if(this.state.genthreader_results){
-      console.log("TABLE INITIALISATION");
+      console.log("GEN TABLE INITIALISATION");
       config_table('#gen_table', 50, '#min_gen_pval', '#max_gen_pval', 'gen_table', 2, null);
     }
 
@@ -196,6 +197,7 @@ class ResultsSequence extends React.Component{
     }
 
     if(this.state.pdomthreader_results){
+      console.log("DOM TABLE INITIALISATION");
       config_table('#pdom_table', 50, '#min_pdom_pval', '#max_pdom_pval', 'pdom_table', 2, null);
     }
 
