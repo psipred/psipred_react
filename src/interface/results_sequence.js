@@ -608,11 +608,11 @@ class ResultsSequence extends React.Component{
             { this.renderPanel("dmp_contact_map", this.props.job_strings.dmp.shortName+" Contact Plot", "dmp_plot_div", 'dmp_plot', this.dmp_plot, this.props.dmp_waiting_message, this.props.dmp_waiting_icon) }
           </div>
          }
-         { this.props.analyses.includes("genthreader_job") &&
+         {/* { this.props.analyses.includes("genthreader_job") &&
           <div>
             { this.renderPanel("gen_table_box", this.props.job_strings.genthreader.shortName+" Structural Results", "gen_table_div", 'genthreader_table', this.genthreaderTable, this.props.genthreader_waiting_message, this.props.genthreader_waiting_icon) }
           </div>
-         }
+         } */}
          { this.props.analyses.includes("pdomthreader_job") &&
           <div>
             { this.renderPanel("pdom_table_box", this.props.job_strings.pdomthreader.shortName+" Structural Results", "pdom_table_div", 'pdomthreader_table', this.pdomthreaderTable, this.props.pdomthreader_waiting_message, this.props.pdomthreader_waiting_icon) }
