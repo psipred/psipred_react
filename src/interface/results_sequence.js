@@ -56,6 +56,10 @@ class ResultsSequence extends React.Component{
     this.aa_comp = React.createRef();
     this.global_features = React.createRef();
     this.mempack_plot = React.createRef();
+    this.gen_table_initialised = false;
+    this.pdom_table_initialised = false;
+    this.pgen_table_initialised = false;
+
     this.timer = null;
   }
 
@@ -123,7 +127,7 @@ class ResultsSequence extends React.Component{
     let ann_set = {};
     let ann_gen_set = {};
     let ann_dom_set = {};
-
+    
     for(let key in this.state.pgenthreader_results){
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
@@ -148,8 +152,9 @@ class ResultsSequence extends React.Component{
         this.pgenthreaderTable.current.appendChild(t.content);
       }
     }
-    if(this.state.pgenthreader_results){
+    if(this.state.pgenthreader_results && this.pgen_table_initialised === false){
       config_table('#pgen_table', 50, '#min_pgen_pval', '#max_pgen_pval', 'pgen_table', 2, null);
+      this.pgen_table_initialised = true;
     }
 
     for(let key in this.state.genthreader_results){
@@ -170,8 +175,9 @@ class ResultsSequence extends React.Component{
       }
     }
 
-    if(this.state.genthreader_results){
+    if(this.state.genthreader_results && this.gen_table_initialised === false){
       config_table('#gen_table', 50, '#min_gen_pval', '#max_gen_pval', 'gen_table', 2, null);
+      this.gen_table_initialised = true;
     }
 
     for(let key in this.state.pdomthreader_results){
@@ -194,8 +200,9 @@ class ResultsSequence extends React.Component{
       }
     }
 
-    if(this.state.pdomthreader_results){
+    if(this.state.pdomthreader_results && this.pdom_table_initialised === false){
       config_table('#pdom_table', 50, '#min_pdom_pval', '#max_pdom_pval', 'pdom_table', 2, null);
+      this.pdom_table_initialised = true;
     }
 
     for(let key in this.state.dmp_results){
@@ -439,35 +446,22 @@ class ResultsSequence extends React.Component{
                 
               }
               // we assign the results files 
-              // this.setState({psipred_results: parsed_data.psipred,
-              //   disopred_results: parsed_data.disopred,
-              //   memsatsvm_results: parsed_data.memsatsvm,
-              //   pgenthreader_results: parsed_data.pgenthreader,
-              //   dmp_results: parsed_data.dmp,
-              //   genthreader_results: parsed_data.genthreader,
-              //   pdomthreader_results: parsed_data.pdomthreader,
-              //   dmpfold_results: parsed_data.dmpfold,
-              //   s4pred_results: parsed_data.s4pred,
-              //   dompred_results: parsed_data.dompred,
-              //   ffpred_results: parsed_data.ffpred,
-              //   mempack_results: parsed_data.mempack,
-              //   annotations: local_annotations});
+              this.setState({psipred_results: parsed_data.psipred,
+                disopred_results: parsed_data.disopred,
+                memsatsvm_results: parsed_data.memsatsvm,
+                pgenthreader_results: parsed_data.pgenthreader,
+                dmp_results: parsed_data.dmp,
+                genthreader_results: parsed_data.genthreader,
+                pdomthreader_results: parsed_data.pdomthreader,
+                dmpfold_results: parsed_data.dmpfold,
+                s4pred_results: parsed_data.s4pred,
+                dompred_results: parsed_data.dompred,
+                ffpred_results: parsed_data.ffpred,
+                mempack_results: parsed_data.mempack,
+                annotations: local_annotations});
             });
             console.log(parsed_data);
-            // we assign the results files 
-            this.setState({psipred_results: parsed_data.psipred,
-              disopred_results: parsed_data.disopred,
-              memsatsvm_results: parsed_data.memsatsvm,
-              pgenthreader_results: parsed_data.pgenthreader,
-              dmp_results: parsed_data.dmp,
-              genthreader_results: parsed_data.genthreader,
-              pdomthreader_results: parsed_data.pdomthreader,
-              dmpfold_results: parsed_data.dmpfold,
-              s4pred_results: parsed_data.s4pred,
-              dompred_results: parsed_data.dompred,
-              ffpred_results: parsed_data.ffpred,
-              mempack_results: parsed_data.mempack,
-              annotations: local_annotations});
+
             this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
             this.props.updateWaiting(false);

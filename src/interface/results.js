@@ -86,7 +86,7 @@ class ResultsMain extends React.Component{
          //console.log("ARRAY TEST:"+found)
         if(this.checkSubset(config_data.props.seq_job_names, submission_jobs))
          {
-           console.log(submission_jobs);
+           //console.log(submission_jobs);
            if(submission_jobs.includes("pdomthreader") || submission_jobs.includes("pgenthreader") )
            {
             submission_jobs.push('psipred');
