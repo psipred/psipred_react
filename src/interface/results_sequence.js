@@ -171,6 +171,7 @@ class ResultsSequence extends React.Component{
     }
 
     if(this.state.genthreader_results){
+      console.log("TABLE INITIALISATION");
       config_table('#gen_table', 50, '#min_gen_pval', '#max_gen_pval', 'gen_table', 2, null);
     }
 
