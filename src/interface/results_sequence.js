@@ -3,7 +3,7 @@ import {draw_empty_annotation_panel} from '../shared/index.js';
 import {request_data} from '../shared/index.js';
 import {config_table} from '../shared/index.js'; 
 import {display_structure} from '../shared/index.js';
-//import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 // import {request_binary_data} from './results_helper.js';
 import {parse_config} from '../shared/index.js';
 import { parse_ss2 } from './parsers.js';
@@ -498,7 +498,7 @@ class ResultsSequence extends React.Component{
     console.log("DRAWING EMPTY ANNOTATION PANEL");
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
-    this.timer = setInterval(() => this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 20000);
   }
 
   renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
