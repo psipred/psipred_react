@@ -453,6 +453,7 @@ class ResultsSequence extends React.Component{
               //   mempack_results: parsed_data.mempack,
               //   annotations: local_annotations});
             });
+            console.log(parsed_data);
             // we assign the results files 
             this.setState({psipred_results: parsed_data.psipred,
               disopred_results: parsed_data.disopred,
