@@ -160,8 +160,6 @@ class ResultsSequence extends React.Component{
         ann_gen_set[id]['ann'] = path+".ann";
         ann_gen_set[id]['aln'] = path+".aln";
       }
-    }
-    for(let key in this.state.genthreader_results){
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
         //console.log(file_data);
