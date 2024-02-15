@@ -64,7 +64,7 @@ class ResultsSequence extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    //console.log(this.state);
+    console.log("RUNNING COMPONENET DID UPDATE", this.state);
     for(let key in this.state.psipred_results){
       if(key.includes(".horiz")){
         let file_data = this.state.psipred_results[key];
@@ -149,7 +149,6 @@ class ResultsSequence extends React.Component{
       }
     }
     if(this.state.pgenthreader_results){
-      console.log("PGEN TABLE INITIALISATION");
       config_table('#pgen_table', 50, '#min_pgen_pval', '#max_pgen_pval', 'pgen_table', 2, null);
     }
 
@@ -172,7 +171,6 @@ class ResultsSequence extends React.Component{
     }
 
     if(this.state.genthreader_results){
-      console.log("GEN TABLE INITIALISATION");
       config_table('#gen_table', 50, '#min_gen_pval', '#max_gen_pval', 'gen_table', 2, null);
     }
 
@@ -197,7 +195,6 @@ class ResultsSequence extends React.Component{
     }
 
     if(this.state.pdomthreader_results){
-      console.log("DOM TABLE INITIALISATION");
       config_table('#pdom_table', 50, '#min_pdom_pval', '#max_pdom_pval', 'pdom_table', 2, null);
     }
 
@@ -315,6 +312,7 @@ class ResultsSequence extends React.Component{
       config_table('#mf_table', 50, '#min_mf_prob', '#max_mf_prob', 'mf_table', 2, [3, 'asc']);
       config_table('#cc_table', 50, '#min_cc_prob', '#max_cc_prob', 'cc_table', 2, [3, 'asc']);
     }
+
     for(let key in this.state.mempack_results){
       if(key.includes("_Kamada-Kawai_1.png")){
         let img_url = this.state.mempack_results[key];
@@ -441,20 +439,34 @@ class ResultsSequence extends React.Component{
                 
               }
               // we assign the results files 
-              this.setState({psipred_results: parsed_data.psipred,
-                disopred_results: parsed_data.disopred,
-                memsatsvm_results: parsed_data.memsatsvm,
-                pgenthreader_results: parsed_data.pgenthreader,
-                dmp_results: parsed_data.dmp,
-                genthreader_results: parsed_data.genthreader,
-                pdomthreader_results: parsed_data.pdomthreader,
-                dmpfold_results: parsed_data.dmpfold,
-                s4pred_results: parsed_data.s4pred,
-                dompred_results: parsed_data.dompred,
-                ffpred_results: parsed_data.ffpred,
-                mempack_results: parsed_data.mempack,
-                annotations: local_annotations});
+              // this.setState({psipred_results: parsed_data.psipred,
+              //   disopred_results: parsed_data.disopred,
+              //   memsatsvm_results: parsed_data.memsatsvm,
+              //   pgenthreader_results: parsed_data.pgenthreader,
+              //   dmp_results: parsed_data.dmp,
+              //   genthreader_results: parsed_data.genthreader,
+              //   pdomthreader_results: parsed_data.pdomthreader,
+              //   dmpfold_results: parsed_data.dmpfold,
+              //   s4pred_results: parsed_data.s4pred,
+              //   dompred_results: parsed_data.dompred,
+              //   ffpred_results: parsed_data.ffpred,
+              //   mempack_results: parsed_data.mempack,
+              //   annotations: local_annotations});
             });
+            // we assign the results files 
+            this.setState({psipred_results: parsed_data.psipred,
+              disopred_results: parsed_data.disopred,
+              memsatsvm_results: parsed_data.memsatsvm,
+              pgenthreader_results: parsed_data.pgenthreader,
+              dmp_results: parsed_data.dmp,
+              genthreader_results: parsed_data.genthreader,
+              pdomthreader_results: parsed_data.pdomthreader,
+              dmpfold_results: parsed_data.dmpfold,
+              s4pred_results: parsed_data.s4pred,
+              dompred_results: parsed_data.dompred,
+              ffpred_results: parsed_data.ffpred,
+              mempack_results: parsed_data.mempack,
+              annotations: local_annotations});
             this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
             this.props.updateWaiting(false);
