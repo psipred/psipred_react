@@ -190,6 +190,12 @@ class ResultsSequence extends React.Component{
       }
     }
     for(let key in this.state.pdomthreader_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.pdomthreader_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
         //console.log(file_data);
