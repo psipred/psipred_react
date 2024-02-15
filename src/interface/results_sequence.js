@@ -16,7 +16,7 @@ import { parse_featcfg } from './parsers.js';
 import { parse_ffpreds} from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
-//import DataTable from 'datatables.net-dt';
+import DataTable from 'datatables.net-dt';
 import { annotationGrid } from './biod3/main.js';
 
 class ResultsSequence extends React.Component{
