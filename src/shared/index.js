@@ -94,23 +94,22 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   viewer.addModel( pdb_data, "pdb" );                       /* load data */
   console.log(viewer);
 
-  // Add event listeners to buttons
-  document.getElementById("colorByBFactor").addEventListener("click", function() {
-    viewer.setStyle({}, { cartoon: { colorfunc: bFactor_color } });
-    viewer.render();
-  });
-
-  document.getElementById("colorByDomains").addEventListener("click", function() {
-    viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
-    viewer.render();
-  });
-
-  document.getElementById("colorByplDDT").addEventListener("click", function() {
-    viewer.setStyle({}, { cartoon: { colorfunc: bFactorBins_color } });
-    viewer.render();
-  });
-
   if(merizo){
+      //Add event listeners to buttons
+    document.getElementById("colorByBFactor").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: bFactor_color } });
+      viewer.render();
+    });
+  
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
+  
+    document.getElementById("colorByplDDT").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: bFactorBins_color } });
+      viewer.render();
+    });
     viewer.setStyle({}, {cartoon: {colorfunc: merizo_color}});
   }
   else if(cartoon)
