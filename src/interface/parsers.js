@@ -13,7 +13,7 @@ export function merizo_html(dat_string){
 
   //B-factor colours
   merizo_table += '<div style="width: 100%;"><div style="display: inline-block; width: 100%;">';
-  merizo_table += '<h3>B-factor Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
+  merizo_table += '<h3>B-factor Temperature Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
   merizo_table += '<tr><th>Range</th><th>Colour</th></tr>';
   merizo_table += '<tr><td>Min</td><td style="background-color:#000080">&nbsp;</td></tr>';
   merizo_table += '<tr><td>Mid</td><td style="background-color:#008000">&nbsp;</td></tr>';
@@ -23,7 +23,7 @@ export function merizo_html(dat_string){
   
   //plDDT bins
   merizo_table += '<div style="display: inline-block; width: 100%;">';
-  merizo_table += '<h3>plDDT Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
+  merizo_table += '<h3>B-factor plDDT Key</h3><table class="small-table table-striped table-bordered" style="width: 30%;">';
   merizo_table += '<tr><th NOWRAP>Confidence Bin</th><th>plDDT</th><th>Colour</th></tr>';
   merizo_table += '<tr><td>Very High</td><td>\>90</td><td style="background-color:rgb(0, 81, 214)">&nbsp;</td></tr>';
   merizo_table += '<tr><td>High</td><td>70-90</td><td style="background-color:rgb(101, 203, 243)">&nbsp;</td></tr>';
