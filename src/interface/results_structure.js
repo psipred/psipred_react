@@ -92,7 +92,7 @@ class ResultsStructure extends React.Component{
 
 
         var pdb_options = document.createElement('template');
-        pdb_options.innerHTML = '<h4><b>PDB Options</b></h4> <h5>Colouration</h5>  <button id="colorByDomains">Domains</button></ br><button id="colorByBFactor">B-factor as temp</button></ br><button id="colorByplDDT">B-factor as plDDT</button> '
+        pdb_options.innerHTML = '<h4><b>Display Options</b></h4> <h5>Colouration</h5>  <button id="colorByDomains">Domains</button></ br></ br><button id="colorByBFactor">B-factor as temp</button></ br></ br><button id="colorByplDDT">B-factor as plDDT</button> '
 
         this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
 
