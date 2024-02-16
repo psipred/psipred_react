@@ -93,8 +93,8 @@ class ResultsStructure extends React.Component{
 
         var pdb_options = document.createElement('template');
         pdb_options.innerHTML = '<h4><b>Colouring Options</b></h4>';
-        pdb_options.innerHTML += '<table class="merizo_buttons"><tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByDomains">Domains</button><br /></td></tr>';
-        pdb_options.innerHTML += '<tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByBFactor">B-factor as temperature</button></td></tr>';
+        pdb_options.innerHTML += '<table class="merizo_buttons"><tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByDomains">Domains</button>&nbsp;<br /></td></tr>';
+        pdb_options.innerHTML += '<tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByBFactor">B-factor as temperature</button>&nbsp;<br /></td></tr>';
         pdb_options.innerHTML += '<tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByplDDT">B-factor as plDDT score</button></td></tr>';
         pdb_options.innerHTML += '</table>';
 
