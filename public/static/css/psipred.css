@@ -547,3 +547,13 @@ input:invalid {
   color: #fff;
   background-color: #5bc0de;
 }
+
+.merizo_buttons { 
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: red; 
+}
+.merizo_buttons merizo_button { 
+  width: 100%;
+}
