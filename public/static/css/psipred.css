@@ -549,7 +549,6 @@ input:invalid {
 }
 
 .merizo_buttons { 
-  margin: 5px;
-  width: 100%;
+  margin-bottom: 5px;
 }
 
