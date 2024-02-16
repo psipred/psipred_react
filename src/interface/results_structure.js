@@ -92,11 +92,11 @@ class ResultsStructure extends React.Component{
 
 
         var pdb_options = document.createElement('template');
-        pdb_options.innerHTML = '<h4><b>Colouring Options</b></h4>';
-        pdb_options.innerHTML += '<table class="merizo_buttons"><tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByDomains">Domains</button>&nbsp;<br /></td></tr>';
-        pdb_options.innerHTML += '<tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByBFactor">B-factor as temperature</button>&nbsp;<br /></td></tr>';
-        pdb_options.innerHTML += '<tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByplDDT">B-factor as plDDT score</button></td></tr>';
-        pdb_options.innerHTML += '</table>';
+        pdb_options.innerHTML = '<h4><b>Colouring Options</b></h4><div class="btn-group-vertical">';
+        pdb_options.innerHTML += '<button class="btn btn-secondary merizo_button" id="colorByDomains">Domains</button>';
+        pdb_options.innerHTML += '<button class="btn btn-secondary merizo_button" id="colorByBFactor">B-factor as temperature</button>';
+        pdb_options.innerHTML += '<button class="btn btn-secondary merizo_button" id="colorByplDDT">B-factor as plDDT score</button>';
+        pdb_options.innerHTML += '</div>';
 
         this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
 

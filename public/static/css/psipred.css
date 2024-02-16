@@ -549,10 +549,6 @@ input:invalid {
 }
 
 .merizo_buttons { 
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+  margin: 5px
 }
-.merizo_buttons merizo_button { 
-  width: 100%;
-}
+
