@@ -552,7 +552,6 @@ input:invalid {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  background-color: red; 
 }
 .merizo_buttons merizo_button { 
   width: 100%;
