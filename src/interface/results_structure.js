@@ -84,14 +84,16 @@ class ResultsStructure extends React.Component{
         var merizo_panel = document.getElementById("merizo_sidebar_bg");
         merizo_panel.style.display = "inline-block";
         merizo_panel.style.verticalAlign = "top";
+        merizo_panel.style.width = "200px";
         merizo_panel.style.height = "400px";
         merizo_panel.style.position = "relative";
         merizo_panel.style.left = "0px";
         merizo_panel.style.backgroundColor = "#ffffff";
 
+
         var pdb_options = document.createElement('template');
-        pdb_options.innerHTML = '<h4><b>Display Options</b></h4> <h5>Colouration</h5>';
-        pdb_options.innerHTML += '<table class="merizo_buttons"><tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByDomains">Domains</button></td></tr>';
+        pdb_options.innerHTML = '<h4><b>Colouring Options</b></h4>';
+        pdb_options.innerHTML += '<table class="merizo_buttons"><tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByDomains">Domains</button><br /></td></tr>';
         pdb_options.innerHTML += '<tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByBFactor">B-factor as temperature</button></td></tr>';
         pdb_options.innerHTML += '<tr><td><button class="btn btn-secondary" type="merizo_button" id="colorByplDDT">B-factor as plDDT score</button></td></tr>';
         pdb_options.innerHTML += '</table>';
