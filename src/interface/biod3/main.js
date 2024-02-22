@@ -28,13 +28,14 @@ EC: {fill: 'Orange', name: 'Extracellular'},
 RH: {fill: 'Green', name: 'Re-entrant Helix'},
 CY: {fill: 'White', name: 'Cytoplasmic'},
 S: {fill: 'Pink', name: 'Signal Peptide'},
+MB: {stroke: 'red', name: 'Metal Binding'}
 };
 
 const annotations = [ // eslint-disable-line no-unused-vars
 {name: 'lesk', values: ['res']},
 {name: 'clustal', values: ['res']},
 {name: 'aatypes', values: ['res']},
-{name: 'custom', values: ["ss", "disopred", "dompred"], label: 'psipred'},
+{name: 'custom', values: ["ss", "disopred", "dompred", "dmpmetal"], label: 'psipred'},
 {name: 'custom', values: ["memsat"], label: 'memsat'},
 ];
 

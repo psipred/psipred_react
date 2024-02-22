@@ -62,7 +62,7 @@ class SeqForm extends React.Component {
                 <tr><td><h4>Function Prediction</h4></td><td></td></tr>
                 <tr>
                   <td data-toggle="tool-tip" title={this.props.job_strings.ffpred.tooltip}><input type="checkbox" id="id_ffpred_job" name={this.props.job_strings.ffpred.jobName} value={this.props.job_strings.ffpred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.ffpred.jobName)} />&nbsp;<label htmlFor="id_ffpred_job">{this.props.job_strings.ffpred.describedName}</label> </td>
-                  <td></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.dmpmetal.tooltip}><input type="checkbox" id="id_dmpmetal_job" name={this.props.job_strings.dmpmetal.jobName} value={this.props.job_strings.dmpmetal.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.dmpmetal.jobName)} />&nbsp;<label htmlFor="id_dmpmetal_job">{this.props.job_strings.dmpmetal.describedName}</label> </td>
                 </tr>
                 <tr><td colSpan="2"><a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /></td></tr>
                 </tbody>

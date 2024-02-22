@@ -128,65 +128,75 @@ class ResultsSidebarResubmission extends React.Component{
             <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.psipred.shortName}</label>
           </td>
           <td data-toggle="tool-tip" title={this.props.job_strings.disopred.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.disopred.jobName} value={this.props.job_strings.disopred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.disopred.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.disopred.shortName}</label>
+            <input type="checkbox" id="id_diospred_job" name={this.props.job_strings.disopred.jobName} value={this.props.job_strings.disopred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.disopred.jobName)}/>
+            <label htmlFor="id_disopred_job">&nbsp;{this.props.job_strings.disopred.shortName}</label>
           </td>
           </tr>
 
           <tr>
           <td data-toggle="tool-tip" title={this.props.job_strings.memsatsvm.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.memsatsvm.jobName} value={this.props.job_strings.memsatsvm.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.memsatsvm.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.memsatsvm.shortName}</label>
+            <input type="checkbox" id="id_memsatsvm_job" name={this.props.job_strings.memsatsvm.jobName} value={this.props.job_strings.memsatsvm.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.memsatsvm.jobName)}/>
+            <label htmlFor="id_memsatsvm_job">&nbsp;{this.props.job_strings.memsatsvm.shortName}</label>
           </td>
           <td data-toggle="tool-tip" title={this.props.job_strings.pgenthreader.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.pgenthreader.jobName} value={this.props.job_strings.pgenthreader.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.pgenthreader.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.pgenthreader.shortName}</label>
+            <input type="checkbox" id="id_pgenthreader_job" name={this.props.job_strings.pgenthreader.jobName} value={this.props.job_strings.pgenthreader.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.pgenthreader.jobName)}/>
+            <label htmlFor="id_pgenthreader_job">&nbsp;{this.props.job_strings.pgenthreader.shortName}</label>
           </td>
           </tr>
 
           <tr>
           <td data-toggle="tool-tip" title={this.props.job_strings.dmp.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.dmp.jobName} value={this.props.job_strings.dmp.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.dmp.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.dmp.shortName}</label>
+            <input type="checkbox" id="id_dmp_job" name={this.props.job_strings.dmp.jobName} value={this.props.job_strings.dmp.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.dmp.jobName)}/>
+            <label htmlFor="id_dmp_job">&nbsp;{this.props.job_strings.dmp.shortName}</label>
           </td>
           <td data-toggle="tool-tip" title={this.props.job_strings.mempack.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.mempack.jobName} value={this.props.job_strings.mempack.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.mempack.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.mempack.shortName}</label>
+            <input type="checkbox" id="id_mempack_job" name={this.props.job_strings.mempack.jobName} value={this.props.job_strings.mempack.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.mempack.jobName)}/>
+            <label htmlFor="id_mempack_job">&nbsp;{this.props.job_strings.mempack.shortName}</label>
           </td>
           </tr>
 
           <tr>
           <td data-toggle="tool-tip" title={this.props.job_strings.genthreader.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.genthreader.jobName} value={this.props.job_strings.genthreader.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.genthreader.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.genthreader.shortName}</label>
+            <input type="checkbox" id="id_genthreader_job" name={this.props.job_strings.genthreader.jobName} value={this.props.job_strings.genthreader.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.genthreader.jobName)}/>
+            <label htmlFor="id_genthreader_job">&nbsp;{this.props.job_strings.genthreader.shortName}</label>
           </td>
           <td data-toggle="tool-tip" title={this.props.job_strings.pdomthreader.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.pdomthreader.jobName} value={this.props.job_strings.pdomthreader.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.pdomthreader.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.pdomthreader.shortName}</label>
+            <input type="checkbox" id="id_pdomthreader_job" name={this.props.job_strings.pdomthreader.jobName} value={this.props.job_strings.pdomthreader.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.pdomthreader.jobName)}/>
+            <label htmlFor="id_pdomthreader_job">&nbsp;{this.props.job_strings.pdomthreader.shortName}</label>
           </td>
           </tr>
           
           <tr>
           <td data-toggle="tool-tip" title={this.props.job_strings.dmpfold.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.dmpfold.jobName} value={this.props.job_strings.dmpfold.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.dmpfold.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.dmpfold.shortName}</label>
+            <input type="checkbox" id="id_dmpfold_job" name={this.props.job_strings.dmpfold.jobName} value={this.props.job_strings.dmpfold.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.dmpfold.jobName)}/>
+            <label htmlFor="id_dmpfold_job">&nbsp;{this.props.job_strings.dmpfold.shortName}</label>
           </td>
           <td data-toggle="tool-tip" title={this.props.job_strings.dompred.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.dompred.jobName} value={this.props.job_strings.dompred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.dompred.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.dompred.shortName}</label>
+            <input type="checkbox" id="id_dompred_job" name={this.props.job_strings.dompred.jobName} value={this.props.job_strings.dompred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.dompred.jobName)}/>
+            <label htmlFor="id_dompred_job">&nbsp;{this.props.job_strings.dompred.shortName}</label>
           </td>
           </tr>
 
           <tr>
           <td data-toggle="tool-tip" title={this.props.job_strings.s4pred.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.s4pred.jobName} value={this.props.job_strings.s4pred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.s4pred.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.s4pred.shortName}</label>
+            <input type="checkbox" id="id_s4pred_job" name={this.props.job_strings.s4pred.jobName} value={this.props.job_strings.s4pred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.s4pred.jobName)}/>
+            <label htmlFor="id_s4pred_job">&nbsp;{this.props.job_strings.s4pred.shortName}</label>
           </td>
           <td data-toggle="tool-tip" title={this.props.job_strings.ffpred.tooltip}>
-            <input type="checkbox" id="id_psipred_job" name={this.props.job_strings.ffpred.jobName} value={this.props.job_strings.ffpred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.ffpred.jobName)}/>
-            <label htmlFor="id_psipred_job">&nbsp;{this.props.job_strings.ffpred.shortName}</label>
+            <input type="checkbox" id="id_ffpred_job" name={this.props.job_strings.ffpred.jobName} value={this.props.job_strings.ffpred.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.ffpred.jobName)}/>
+            <label htmlFor="id_ffpred_job">&nbsp;{this.props.job_strings.ffpred.shortName}</label>
           </td>
           </tr>
+
+          <tr>
+          <td data-toggle="tool-tip" title={this.props.job_strings.dmpmetal.tooltip}>
+            <input type="checkbox" id="id_dmpmetal_job" name={this.props.job_strings.dmpmetal.jobName} value={this.props.job_strings.dmpmetal.jobName} onChange={this.handleChange} checked={this.state.analyses.includes(this.props.job_strings.dmpmetal.jobName)}/>
+            <label htmlFor="id_dmpmetal_job">&nbsp;{this.props.job_strings.dmpmetal.shortName}</label>
+          </td>
+          <td>
+          </td>
+          </tr>
+          
         </tbody>
         </table>
       </div>

@@ -95,6 +95,9 @@ class ResultsSidebarTimes extends React.Component{
               { this.props.analyses.includes(this.props.job_strings.merizo.jobName) &&
               <div><span className="info-box-number">{this.props.job_strings.merizo.shortName} runtime: {this.state.merizo}</span><br /></div>
               }
+              { this.props.analyses.includes(this.props.job_strings.dmpmetal.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.dmpmetal.shortName} runtime: {this.state.dmpmetal}</span><br /></div>
+              }
               
             </div>
       </div>
