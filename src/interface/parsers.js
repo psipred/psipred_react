@@ -51,7 +51,7 @@ export function parse_dmpmetal(file)
       'CHEBI:60504': 'iron-sulfur-iron cofactor',
       'CHEBI:25213': 'metal cation',
     };
-    let dmp_table = '<br /><p>Binding residues are reported where estimated probability is 1% or greater./p><table class="small-table table-striped table-bordered" style="width: 100%">';
+    let dmp_table = '<br /><p>Binding residues are reported where estimated probability is 1% or greater.</p><table class="small-table table-striped table-bordered" style="width: 100%">';
     dmp_table += '<tr><th style="width: 10%">Residue ID</th><th style="width: 30%">CHEBI ID</th><th style="width: 30%">Metal</th><th style="width: 30%">Probability</th></tr>';
     lines.forEach((line) => {
       let entries = line.split("\t");
