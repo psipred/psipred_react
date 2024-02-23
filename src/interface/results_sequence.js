@@ -532,8 +532,8 @@ class ResultsSequence extends React.Component{
     console.log("DRAWING EMPTY ANNOTATION PANEL");
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
-    //this.timer = setInterval(() => this.getResults(), 20000);
-    this.timer = setInterval(() => this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 20000);
+    //this.timer = setInterval(() => this.getResults(), 500);
     
   }
 
