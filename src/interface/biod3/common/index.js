@@ -1,8 +1,10 @@
 import {select as d3Select } from 'd3-selection';
 import * as d3 from 'd3';
-require('/home/dbuchan/Code/biod3/node_modules/blueimp-canvas-to-blob');
+require('blueimp-canvas-to-blob');
+var FileSaver = require('file-saver');
+//require('/home/dbuchan/Code/biod3/node_modules/blueimp-canvas-to-blob');
 //require('/Users/dbuchan/Code/biod3/node_modules/blueimp-canvas-to-blob');
-const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
+//const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
 //const FileSaver = require('/Users/dbuchan/Code/biod3/node_modules/file-saver');
 
 const protoChart = {
