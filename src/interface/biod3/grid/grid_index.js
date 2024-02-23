@@ -10,7 +10,8 @@ import { innerArrayValues } from '../common/index';
 import { returnRange } from '../common/index';
 import { printDebug } from '../common/index';
 const cb = require('../common/palette.js');
-const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
+var FileSaver = require('file-saver');
+//const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
 const custom = {
 E: {fill: 'Gold', name: 'Strand'},
 H: {fill: 'HotPink', name: 'Helix'},
