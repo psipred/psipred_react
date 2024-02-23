@@ -9,7 +9,8 @@ import { save_handler } from '../common/index';
 import { innerArrayValues } from '../common/index';
 import { returnRange } from '../common/index';
 const cb = require('../common/palette.js');
-const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
+var FileSaver = require('file-saver');
+//const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
 
 export function biod3_psipred(data, label="psipredChart", opts={})
 {
