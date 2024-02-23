@@ -9,14 +9,15 @@ import { save_handler } from '../common/index';
 import { innerArrayValues } from '../common/index';
 import { returnRange } from '../common/index';
 const cb = require('../common/palette.js');
-var FileSaver = require('file-saver');
+const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
+
 export function biod3_psipred(data, label="psipredChart", opts={})
 {
   const xdimension = 50;
   //console.log(data);
   const data_array = parseHFormat(data);
   const sets = Math.ceil(data_array.length/50);
-  opts = Object.assign(opts, {key_panel: false, download_buttons: true, id: "psipredChart"});
+  opts = Object.assign(opts, {key_panel: false, download_buttons: true, id: label});
   const chart = chartFactory(opts);
   chart.height = (7*chart.em_size)*(sets+1);
   chart.container_height = chart.height;

@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import '../index.css';
 import { biod3_psipredxyLineChart } from './line_chart/line_index.js';
 import { biod3_genericxyLineChart } from './line_chart/line_index.js';
@@ -8,14 +9,14 @@ import { biod3_psipred } from './psipred_chart/psipred_index.js';
 import { biod3_clearSelection } from './common/index.js';
 
 // d3.queue()
-//   .defer(d3.csv, '../test_data/ginormous_sequence.ss')
+//   .defer(d3.csv, '../test_data/example.ss')
 //   .await(drawChart);
 
 // d3.queue()
 //   .defer(d3.text, '../test_data/example.horiz')
 //   .await(drawChart);
 
-const custom = { // eslint-disable-line no-unused-vars
+const custom = {
 E: {fill: 'Gold', name: 'Strand'},
 H: {fill: 'HotPink', name: 'Helix'},
 C: {fill: 'LightGrey', name: 'Coil'},
@@ -31,7 +32,7 @@ S: {fill: 'Pink', name: 'Signal Peptide'},
 MB: {stroke: 'red', name: 'Metal Binding'}
 };
 
-const annotations = [ // eslint-disable-line no-unused-vars
+const annotations = [
 {name: 'lesk', values: ['res']},
 {name: 'clustal', values: ['res']},
 {name: 'aatypes', values: ['res']},
@@ -39,13 +40,13 @@ const annotations = [ // eslint-disable-line no-unused-vars
 {name: 'custom', values: ["memsat"], label: 'memsat'},
 ];
 
-function drawChart(error, exampleSS){ // eslint-disable-line no-unused-vars
-  //biod3_psipredxyLineChart(exampleSS);
+function drawChart(error, exampleSS){
+  biod3_psipredxyLineChart(exampleSS);
   //biod3_genericxyLineChart(exampleSS, 'pos', ['coil','helix'], ['DimGrey', 'HotPink', 'Gold'], 'yoChart', {chartType: 'line', x_cutoff: 20, y_cutoff: 0.3});
   //console.log(exampleSS);
   //biod3_genericGrid(exampleSS, 'ss', 50, "psipredChart", {chartType: 'grid', annotation_sets: annotations, download_buttons: true, grid_label: true, grid_colour_type: "custom", grid_colour_annotations: ["ss", "disopred", "dompred"], custom_grid_palette: custom });
   //biod3_heatmap(exampleSS, 'ss', 70, 'coil', {x_labels: ['a', 'b',]} );
-  // biod3_psipred(exampleSS, 'psipredChart', {parent: 'div.results_container'});
+  //biod3_psipred(exampleSS, 'psipredChart', {parent: 'div.results_container'});
   //biod3_annotationGrid(exampleSS);
 }
 

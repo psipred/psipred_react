@@ -1,5 +1,72 @@
 import * as colours from '../shared/colour_names.js';
 
+// take and ss2 (file) and parse the details and write the new annotation grid
+export function parse_dmpmetal_annotations(annotations, file)
+{
+    let lines = file.split('\n');
+    lines.forEach((line) => {
+      let entries = line.split("\t");
+      let idx = parseInt(entries[2])-1;
+      //console.log(idx);
+      if(entries.length == 4){
+        annotations[idx].dmpmetal = 'MB';
+      }
+    });
+    // TO DO
+    return(annotations);
+}
+
+
+export function parse_dmpmetal(file)
+{
+    let lines = file.split('\n');
+    let metal_ions = {
+      'CHEBI:48775': 'Cd2+',
+      'CHEBI:29108': 'Ca2+',
+      'CHEBI:48828': 'Co2+',
+      'CHEBI:49415': 'Co3+',
+      'CHEBI:23378': 'Cu cation',
+      'CHEBI:49552': 'Cu+',
+      'CHEBI:29036': 'Cu2+',
+      'CHEBI:60240': 'divalent metal cation',
+      'CHEBI:190135': 'di-μ-sulfido-diiron',
+      'CHEBI:24875': 'iron cation',
+      'CHEBI:29033': 'Fe2+',
+      'CHEBI:29034': 'Fe3+',
+      'CHEBI:30408': 'iron-sulfur cluster',
+      'CHEBI:49713': 'Li+',
+      'CHEBI:18420': 'Mg2+',
+      'CHEBI:29035': 'Mn2+',
+      'CHEBI:16793': 'Hg2+',
+      'CHEBI:49786': 'Ni2+',
+      'CHEBI:60400': 'nickel-iron-sulfur cluster',
+      'CHEBI:47739': 'NiFe4S4 cluster',
+      'CHEBI:29103': 'K+',
+      'CHEBI:29101': 'Na+',
+      'CHEBI:49883': 'tetra-μ3-sulfido-tetrairon',
+      'CHEBI:21137': 'tri-μ-sulfido-μ3-sulfido-triiron',
+      'CHEBI:29105': 'Zn2+',
+      'CHEBI:177874': 'NiFe4S5 cluster',
+      'CHEBI:21143': 'Fe8S7 iron-sulfur cluster',
+      'CHEBI:60504': 'iron-sulfur-iron cofactor',
+      'CHEBI:25213': 'metal cation',
+    };
+    let dmp_table = '<br /><p>Binding residues are reported where estimated probability is 1% or greater./p><table class="small-table table-striped table-bordered" style="width: 100%">';
+    dmp_table += '<tr><th style="width: 10%">Residue ID</th><th style="width: 30%">CHEBI ID</th><th style="width: 30%">Metal</th><th style="width: 30%">Probability</th></tr>';
+    lines.forEach((line) => {
+      let entries = line.split("\t");
+      if(entries.length == 4){
+        dmp_table += '<tr><td style="width: 10%">'+entries[2]+'</td>';
+        dmp_table += '<td style="width: 30%"><a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId='+entries[1]+'">'+entries[1]+'</a></td>';
+        dmp_table += '<td style="width: 30%">'+metal_ions[entries[1]]+'</td>';
+        dmp_table += '<td style="width: 30%">'+entries[3]+'</td></tr>';
+      }
+    });
+    
+    dmp_table += '</table>';
+    return(dmp_table);
+}
+
 export function merizo_html(dat_string){
   //console.log(dat_string);
   let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 30%" >';

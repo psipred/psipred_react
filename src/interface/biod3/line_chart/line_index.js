@@ -6,7 +6,7 @@ import { chartFactory } from '../common/index';
 import { button_helper } from '../common/index';
 import { save_handler } from '../common/index';
 import { keysrt } from '../common/index';
-var FileSaver = require('file-saver');
+const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
 //const FileSaver = require('/Users/dbuchan/Code/biod3/node_modules/file-saver');
 
 //takes the contents of an ss or ss2 file formatted as
