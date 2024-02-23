@@ -80,7 +80,7 @@ class SeqForm extends React.Component {
                 <label className="control-label" htmlFor="id_input_data">Protein Sequence</label><textarea className="form-control" cols="40" rows="3" placeholder="Protein Sequence" title="" required="" id="id_input_data" name="input_data" value={this.props.input_data} onChange={this.handleChange}></textarea>
               </div>
             </div>
-            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a> or <button onClick={this.props.setTestSeq} type="button" class="fake-link">click here to load a test seq</button>. For DMPmetal, <button onClick={this.props.setDMPMetSeq} type="button" class="fake-link">click here to set a test sequence</button>.
+            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a> or <button onClick={this.props.setTestSeq} type="button" class="fake-link">click here to load a test seq</button>.<br />For DMPmetal, <button onClick={this.props.setDMPMetSeq} type="button" class="fake-link">click here to set a test sequence</button>.
             <br /><br />
             <div className="form-group">
               <div className="form-group">
