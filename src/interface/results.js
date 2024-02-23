@@ -48,6 +48,8 @@ class ResultsMain extends React.Component{
       memembed_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       merizo_waiting_message: 'Please wait for your '+this.props.job_strings.merizo.shortName+' job to process',
       merizo_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
+      dmpmetal_waiting_message: 'Please wait for your '+this.props.job_strings.dmpmetal.shortName+' job to process',
+      dmpmetal_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       
     };
   }
@@ -86,6 +88,11 @@ class ResultsMain extends React.Component{
          //console.log("ARRAY TEST:"+found)
         if(this.checkSubset(config_data.props.seq_job_names, submission_jobs))
          {
+           //console.log(submission_jobs);
+           if(submission_jobs.includes("pdomthreader") || submission_jobs.includes("pgenthreader") )
+           {
+            submission_jobs.push('psipred');
+           }
            let seq = request_data(submission_data.input_file, config_data.props.files_url);
            seq = seq.replace(/\r?\n|\r/g, "");
            config_data.props.updateAnalyses(submission_jobs.map(item => `${item}_job`));

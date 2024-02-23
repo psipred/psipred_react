@@ -37,7 +37,7 @@ hr {  color: grey !important;
   /*optional*/
   font-family: arial, sans-serif;
   /*input has OS specific font-family*/
-  color: #069;
+  color: #972646;
   text-decoration: none;
   cursor: pointer;
 }
@@ -547,3 +547,8 @@ input:invalid {
   color: #fff;
   background-color: #5bc0de;
 }
+
+.merizo_buttons { 
+  margin-bottom: 2px;
+}
+

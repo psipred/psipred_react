@@ -62,7 +62,7 @@ class SeqForm extends React.Component {
                 <tr><td><h4>Function Prediction</h4></td><td></td></tr>
                 <tr>
                   <td data-toggle="tool-tip" title={this.props.job_strings.ffpred.tooltip}><input type="checkbox" id="id_ffpred_job" name={this.props.job_strings.ffpred.jobName} value={this.props.job_strings.ffpred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.ffpred.jobName)} />&nbsp;<label htmlFor="id_ffpred_job">{this.props.job_strings.ffpred.describedName}</label> </td>
-                  <td></td>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.dmpmetal.tooltip}><input type="checkbox" id="id_dmpmetal_job" name={this.props.job_strings.dmpmetal.jobName} value={this.props.job_strings.dmpmetal.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.dmpmetal.jobName)} />&nbsp;<label htmlFor="id_dmpmetal_job">{this.props.job_strings.dmpmetal.describedName}</label> </td>
                 </tr>
                 <tr><td colSpan="2"><a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /></td></tr>
                 </tbody>
@@ -80,7 +80,7 @@ class SeqForm extends React.Component {
                 <label className="control-label" htmlFor="id_input_data">Protein Sequence</label><textarea className="form-control" cols="40" rows="3" placeholder="Protein Sequence" title="" required="" id="id_input_data" name="input_data" value={this.props.input_data} onChange={this.handleChange}></textarea>
               </div>
             </div>
-            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a>.
+            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a> or <button onClick={this.props.setTestSeq} type="button" class="fake-link">click here to load a test seq</button>.
             <br /><br />
             <div className="form-group">
               <div className="form-group">
@@ -145,7 +145,7 @@ class StructForm extends React.Component {
             </div>
             <p className="form_error"></p> <br /><br /><br /> Select PDB file<br /> <input type="file" id="pdbFile" name="pdbFile" defaultValue='' /><br /><br />
             <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br />
-            If you wish to tryMetsite or HSPred follow this link to retrieve <a className="form-link" href="http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&amp;compression=NO&amp;structureId=1IAR">a test pdb file.</a><br /><br />
+            If you wish to try Metsite or HSPred follow this link to retrieve <a className="form-link" href="http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&amp;compression=NO&amp;structureId=1IAR">a test pdb file.</a><br /><br />
             <div className="form-group">
               <div className="form-group">
                 <label className="control-label" htmlFor="id_job_name">Job name</label><input className="form-control" type="text" placeholder="Job name" title="" required="" id="id_job_name" name="job_name" value={this.props.name} onChange={this.handleChange} />
@@ -211,7 +211,7 @@ class FormInteractivity extends React.Component{
           </div>
         }
         </div>
-        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />}
+        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />}
 
       </div>
       );
@@ -228,7 +228,7 @@ class MainForm extends React.Component{
           <hr id="hr_form"></hr>
         </div>
         <div className="box-header with-border"><h5 className="box-title">Data Input</h5></div>
-          <FormInteractivity {...this.props} handleSubmit={this.props.handleSubmit} handleInputChange={this.props.handleInputChange} handleStructChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSeqChange={this.props.handleSeqChange} />
+          <FormInteractivity {...this.props} handleSubmit={this.props.handleSubmit} handleInputChange={this.props.handleInputChange} handleStructChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSeqChange={this.props.handleSeqChange} setTestSeq={this.props.setTestSeq} />
       </div>
     );
   }

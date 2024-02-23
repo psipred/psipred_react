@@ -4,9 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+Note that you must set PUBLIC_URL env var to the domain name this is hosted on. Dev example given here
 In the project directory, you can run:
 
-### `npm start`
+### `PUBLIC_URL='http://127.0.0.1:3000/' npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -14,12 +15,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+### `PUBLIC_URL='http://127.0.0.1:3000/' npm test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### `PUBLIC_URL='http://127.0.0.1:3000/' npm run build`
 
 You need to set environment variable PUBLIC_URL=''
 
@@ -73,19 +74,19 @@ This is just a simple class that reads the alignment files it needs, dispatches 
 
 See also class_layout.odp
 
-* PsipredSite (index.js): Outer container for whole page with URI initialisation
-  * DisplayArea: Main container for the app that has all the shared the application state variables
-    * MainForm: Small class that wraps the interactive parts of the form
-      * FormInteractivity: Small class that warps the form selector
-        * SeqForm: Main form that the user can use to select methods and submit Seq data
-        * StructForm:  Main form that the user can use to select methods and submit Structural data
-    * Sidebar: Class shows the sidebar with advanced options
-    * ResultsMain: Class is called after data submission and handles submitting a job and then displaying the results
-      * ResultsSequence: Class handles getting the results files for a sequence job and displaying them
-      * ResultsStructure: TO BE IMPLEMENTED
-    * ResultsSidebarTimes: Small class handles getting the RunTimes and displaying them while the user waits
-    * ResultsSidebarDownloads: This class handles showing the download files panel and bundling files in to a zip for the users
-    * ResultsSidebarResubmission: This shows the resubmission panel on the results page and handles submitting a new job
+* PsipredSite (psipred_site.js): Outer container for whole page with URI initialisation
+  * DisplayArea (psipred_site.js): Main container for the app that has all the shared the application state variables
+    * MainForm (MainForm.js): Small class that wraps the interactive parts of the form
+      * FormInteractivity (MainForm.js): Small class that warps the form selector
+        * SeqForm (MainForm.js): Main form that the user can use to select methods and submit Seq data
+        * StructForm (MainForm.js):  Main form that the user can use to select methods and submit Structural data
+    * Sidebar (sidebar.js): Class shows the sidebar with advanced options
+    * ResultsMain (results.js): Class is called after data submission and handles submitting a job and then displaying the results
+      * ResultsSequence (results_sequence.js): Class handles getting the results files for a sequence job and displaying them
+      * ResultsStructure (results_strucutre.js): TO BE IMPLEMENTED
+    * ResultsSidebarTimes (results_sidebar_times.js): Small class handles getting the RunTimes and displaying them while the user waits
+    * ResultsSidebarDownloads (results_sidebar_downloads.js): This class handles showing the download files panel and bundling files in to a zip for the users
+    * ResultsSidebarResubmission (results_sidebar_resubmission.js): This shows the resubmission panel on the results page and handles submitting a new job
 
 # Adding services to PSIPRED web server
 
@@ -132,5 +133,5 @@ Now and again we have to take the server offline. You can add messages and suspe
 2. Set polling time correctly in `results_sequence.js` and `results_structure.js`
 
 4. in model/index.js there is a correct use of fetch with async/await to synchronously make a request. Should replace all httprequest uses with this pattern.
-5. Maybe there is a way to dry out some of the creatElement creation stuff in `results_sequence.js` and `results_structure.js`, especially for the img tag stuff.
+5. Maybe there is a way to dry out some of the createElement creation stuff in `results_sequence.js` and `results_structure.js`, especially for the img tag stuff.
 6. Change all parsers to correctly be JSX and/or new react classes.

@@ -24,12 +24,13 @@ EC: {fill: 'Orange', name: 'Extracellular'},
 RH: {fill: 'Green', name: 'Re-entrant Helix'},
 CY: {fill: 'White', name: 'Cytoplasmic'},
 S: {fill: 'Pink', name: 'Signal Peptide'},
+MB: {fill: 'FireBrick', name: 'Metal Binding'},
 };
 
 const annotations = [
 //{name: 'lesk', values: ['res']},
 //{name: 'clustal', values: ['res']},
-{name: 'custom', values: ["ss", "disopred", "dompred"], label: 'psipred'},
+{name: 'custom', values: ["ss", "disopred", "dompred", "dmpmetal"], label: 'psipred'},
 {name: 'custom', values: ["memsat"], label: 'memsat'},
 {name: 'aatypes', values: ['res']},
 ];
@@ -47,7 +48,7 @@ const annotations = [
 //
 export function biod3_annotationGrid(data, opts={})
 {
-  let psipred_opts = {id: "annotationGrid", chartType: 'annotationGrid', annotation_sets: annotations, download_buttons: true, grid_label: true, grid_colour_type: "custom", grid_colour_annotations: ["ss", "disopred", "dompred", 'memsat'], custom_grid_palette: custom };
+  let psipred_opts = {id: "annotationGrid", chartType: 'annotationGrid', annotation_sets: annotations, download_buttons: true, grid_label: true, grid_colour_type: "custom", grid_colour_annotations: ["ss", "disopred", "dompred", 'dmpmetal','memsat'], custom_grid_palette: custom };
   psipred_opts = Object.assign(psipred_opts, opts);
   biod3_genericGrid(data, 'res', 50, "annotationGrid", psipred_opts);
 }

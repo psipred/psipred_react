@@ -19,6 +19,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   };
   let merizo_color = function(atom){
     let domain_number = merizo_labels[atom.resi];
+    console.log(merizo_labels);
     if(colours.colourNames[domain_number]){
       atom.color = colours.colourNames[domain_number]; return(colours.colourNames[domain_number]);
     }
@@ -33,11 +34,82 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
     atom.color = 'blue';
     return("blue");
   };
+  let bFactor_color = function(atom) {
+    let minBFactor = 0;
+    let maxBFactor = 100;
+    let normalizedBFactor = (atom.b - minBFactor) / (maxBFactor - minBFactor);
+    let hue = (1 - normalizedBFactor) * 240;
+    let rgbColor = hslToRgb(hue / 360, 1, 0.5);
+  
+    let color = `rgb(${rgbColor.join(',')})`;
+    atom.color = color;
+    return color;
+  };
+  
+  function hslToRgb(h, s, l) {
+    let r, g, b;
+  
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      let hueToRgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      };
+  
+      let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      let p = 2 * l - q;
+      r = hueToRgb(p, q, h + 1 / 3);
+      g = hueToRgb(p, q, h);
+      b = hueToRgb(p, q, h - 1 / 3);
+    }
+  
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  }
+
+  let bFactorBins_color = function(atom) {
+    if (atom.b > 90) {
+      atom.color = "rgb(0, 81, 214)";
+      return "rgb(0, 81, 214)";
+    } else if (atom.b > 70) {
+      atom.color = "rgb(101, 203, 243)";
+      return "rgb(101, 203, 243)";
+    } else if (atom.b > 50) {
+      atom.color = "rgb(255, 219, 19)";
+      return "rgb(255, 219, 19)";
+    } else {
+      atom.color = "rgb(255, 125, 69)";
+      return "rgb(255, 125, 69)";
+    }
+  };
+
+  // Function to color atoms by occupancy values
   let element = mol_container;
   let config = { backgroundColor: '#ffffff' };
   let viewer = Window.$3Dmol.createViewer( element, config );
   viewer.addModel( pdb_data, "pdb" );                       /* load data */
+  console.log(viewer);
+
   if(merizo){
+      //Add event listeners to buttons
+    document.getElementById("colorByBFactor").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: bFactor_color } });
+      viewer.render();
+    });
+  
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
+  
+    document.getElementById("colorByplDDT").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: bFactorBins_color } });
+      viewer.render();
+    });
     viewer.setStyle({}, {cartoon: {colorfunc: merizo_color}});
   }
   else if(cartoon)
@@ -57,7 +129,6 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   viewer.zoomTo();                                      /* set camera */
   viewer.render();                                      /* render scene */
   viewer.zoom(1.7, 3000);
-
 }
 
 export function decide_location(href, hostname, main_url, app_path){
@@ -86,7 +157,7 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['times_url'] = main_url+uris['app_path']+'/api/jobtimes/';
       uris['files_url'] = main_url+uris['app_path']+"/api";
       uris['gears_svg'] = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
-      uris['location ']= "Production";
+      uris['location']= "Production";
     }
     else if(hostname === "bioinfstage1.cs.ucl.ac.uk")
     { //update for staging paths
@@ -245,28 +316,31 @@ export function configurePost(formState)
   fd.append("submission_name", formState.name);
   fd.append("email", formState.email);
   if(formState.jobs.includes('dompred')){
-  fd.append("psiblast_dompred_evalue", formState.dompred_e_value_cutoff);
-  fd.append("psiblast_dompred_iterations", formState.dompred_psiblast_iterations);}
+    fd.append("psiblast_dompred_evalue", formState.dompred_e_value_cutoff);
+    fd.append("psiblast_dompred_iterations", formState.dompred_psiblast_iterations);}
   if(formState.jobs.includes('metsite')){
-  fd.append("metsite_checkchains_chain", formState.metsite_chain_id);
-  fd.append("extract_fasta_chain", formState.metsite_chain_id);
-  fd.append("seedSiteFind_metal", formState.metsite_metal_type);
-  fd.append("seedSiteFind_chain", formState.metsite_chain_id);
-  fd.append("metpred_wrapper_chain", formState.metsite_chain_id);
-  fd.append("metpred_wrapper_metal", formState.metsite_metal_type);
-  fd.append("metpred_wrapper_fpr", formState.metsite_fpr);}
+    fd.append("metsite_checkchains_chain", formState.metsite_chain_id);
+    fd.append("extract_fasta_chain", formState.metsite_chain_id);
+    fd.append("seedSiteFind_metal", formState.metsite_metal_type);
+    fd.append("seedSiteFind_chain", formState.metsite_chain_id);
+    fd.append("metpred_wrapper_chain", formState.metsite_chain_id);
+    fd.append("metpred_wrapper_metal", formState.metsite_metal_type);
+    fd.append("metpred_wrapper_fpr", formState.metsite_fpr);}
   if(formState.jobs.includes('hspred')){
-  fd.append("hspred_checkchains_chains", formState.hspred_protein_1+formState.hspred_protein_2);
-  fd.append("hs_pred_first_chain", formState.hspred_protein_1);
-  fd.append("hs_pred_second_chain", formState.hspred_protein_2);
-  fd.append("split_pdb_files_first_chain", formState.hspred_protein_1);
-  fd.append("split_pdb_files_second_chain", formState.hspred_protein_2);}
+    fd.append("hspred_checkchains_chains", formState.hspred_protein_1+formState.hspred_protein_2);
+    fd.append("hs_pred_first_chain", formState.hspred_protein_1);
+    fd.append("hs_pred_second_chain", formState.hspred_protein_2);
+    fd.append("split_pdb_files_first_chain", formState.hspred_protein_1);
+    fd.append("split_pdb_files_second_chain", formState.hspred_protein_2);}
   if(formState.jobs.includes('memembed')){
-  fd.append("memembed_algorithm", formState.memembed_algorithm);
-  fd.append("memembed_barrel", formState.memembed_barrel);
-  fd.append("memembed_termini", formState.memembed_terminal);}
+    fd.append("memembed_algorithm", formState.memembed_algorithm);
+    fd.append("memembed_barrel", formState.memembed_barrel);
+    fd.append("memembed_termini", formState.memembed_terminal);}
   if(formState.jobs.includes('ffpred')){
-  fd.append("ffpred_selection", formState.ffpred_selection);
+    fd.append("ffpred_selection", formState.ffpred_selection);
+  }
+  if(formState.jobs.includes('merizo')){
+    fd.append("merizo_iterate", formState.merizo_iterate);
   }
   return(fd);
 }

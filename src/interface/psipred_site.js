@@ -21,6 +21,7 @@ async function readPDBFile(file) {
 }
 
 class DisplayArea extends React.Component{
+ 
   constructor(props){
     super(props);
     let input_data = '';
@@ -28,10 +29,10 @@ class DisplayArea extends React.Component{
     let pdb_data = null;
     let name = "";
     let email = '';
-
+      
     if(this.props.location === 'Dev'){
-      input_data = 'ASDASDASDASDASDASDASDASDASDASD';
-      seq = 'ASDASDASDASDASDASDASDASDASDASD';
+      // input_data = 'ASDASDASDASDASDASDASDASDASDASD';
+      // seq = 'ASDASDASDASDASDASDASDASDASDASD';
       name = "test";
       email = 'a@b.com'
     }
@@ -40,7 +41,8 @@ class DisplayArea extends React.Component{
       displayTime: true,
       formSelectedOption: 'SeqForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
-      "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", "dmpfold", 's4pred' ],
+      "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", 
+      "dmpfold", 's4pred', 'dmpmetal' ],
       struct_job_names: ["metsite", "hspred", "memembed", "merizo", ],
       analyses: ['psipred_job'],
       jobs: [],
@@ -64,14 +66,15 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
+      merizo_iterate: 'FALSE',
       svgs: null,
       results_files: false,
       config_data: null,
       resubmit: false,
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
                     'presult', 'align', 'presults', 'dom_presults', 'parseds', 'featcfg',
-                    'full_formatted', 'csv', 'ann', 'aln', 'con', 'pdb', 'merizo', 
-                    'boundary', 'Metpred', 'MetPred', 'out', 'results', 'pdb2'],
+                    'full_formatted', 'csv', 'ann', 'aln', 'con', 'pdb', 'merizo', 'idx',
+                    'boundary', 'Metpred', 'MetPred', 'out', 'results', 'pdb2', 'pdf', 'dmpmetal'],
       job_strings: { "psipred": { 'shortName': 'PSIPRED',
                                   'fullName': 'PSIPRED 4.0',
                                   'describedName': 'PSIPRED 4.0 (Predict Secondary Structure)',
@@ -167,9 +170,13 @@ class DisplayArea extends React.Component{
                                 'describedName': 'Merizo (Protein domain segmentation)',
                                 'varName': 'merizo',
                                 'jobName': 'merizo_job',
-                                'tooltip': 'Fast and accurate protein domain prediction', },    
-                                   
-                    
+                                'tooltip': 'Fast and accurate protein domain prediction', },
+                      "dmpmetal": {'shortName': 'DMPmetal',
+                                   'fullName': 'DMPmetal',
+                                   'describedName': 'DMPmetal (Metal Binding Site Prediction)',
+                                   'varName': 'dmpmetal',
+                                   'jobName': 'dmpmetal_job',
+                                   'tooltip': 'llm based prediction of metal binding sites', },              
       },
     };
   }
@@ -198,6 +205,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
+      merizo_iterate: 'FALSE',
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -240,6 +248,7 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
+      merizo_iterate: 'FALSE',
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -252,6 +261,14 @@ class DisplayArea extends React.Component{
     this.setState({
       seq: newValue});
   }
+
+  setTestSeq = () => {
+    let test_seq = 'MLELLPTAVEGVSQAQITGRPEWIWLALGTALMGLGTLYFLVKGMGVSDPDAKKFYAITTLVPAIAFTMYLSMLLGYGLTMVPFGGEQNPIYWARYADWLFTTPLLLLDLALLVDADQGTILALVGADGIMIGTGLVGALTKVYSYRFVWWAISTAAMLYILYVLFFGFTSKAESMRPEVASTFKVLRNVTVVLWSAYPVVWLIGSEGAGIVPLNIETLLFMVLDVSAKVGFGLILLRSRAIFGEAEAPEPSAGDGAAATSD';
+    this.setState({
+      seq: test_seq,
+      input_data: test_seq});
+  }
+
   updateResubmit = (change) => {
     this.setState({
       resubmit: change});
@@ -440,7 +457,7 @@ class DisplayArea extends React.Component{
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} /></div>
+          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} /></div>
           <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
         </div>
       :
@@ -480,8 +497,8 @@ export class PsipredSite extends React.Component{
     this.state = {
       suspension_message: null,
       server_message: null,
-      //suspension_message: "The sever will be offline between the 1st and the 2nd of August 2023",
-      //server_message: "We are going to change some shit",
+      //suspension_message: "The server will be offline until the 15th of Feb 2024",
+      //server_message: "Big changes a'comin'",
       endpoints_url: null,
       submit_url: null,
       times_url: null,
@@ -495,12 +512,16 @@ export class PsipredSite extends React.Component{
       incoming_uuid: uuid,
       href: href,
     };
+    let new_state = decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path);
+    this.state = {...this.state, ...new_state};
   }
 
-  componentDidMount() {
-    this.setState(decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path));
-    //defaults for dev server
-  }
+  // componentDidMount() {
+  //   let new_state = decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path);
+  //   console.log(new_state);
+  //   this.setState(decide_location(this.state.href, window.location.hostname, this.state.main_url, this.state.app_path));
+  //   //defaults for dev server
+  // }
 
   render(){
     return(

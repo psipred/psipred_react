@@ -16,7 +16,7 @@ import { parse_featcfg } from './parsers.js';
 import { parse_ffpreds} from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
-//import DataTable from 'datatables.net-dt';
+import DataTable from 'datatables.net-dt';
 import { annotationGrid } from './biod3/main.js';
 
 class ResultsSequence extends React.Component{
@@ -56,6 +56,10 @@ class ResultsSequence extends React.Component{
     this.aa_comp = React.createRef();
     this.global_features = React.createRef();
     this.mempack_plot = React.createRef();
+    this.gen_table_initialised = false;
+    this.pdom_table_initialised = false;
+    this.pgen_table_initialised = false;
+
     this.timer = null;
   }
 
@@ -64,7 +68,7 @@ class ResultsSequence extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    //console.log(this.state);
+    console.log("RUNNING COMPONENET DID UPDATE", this.state);
     for(let key in this.state.psipred_results){
       if(key.includes(".horiz")){
         let file_data = this.state.psipred_results[key];
@@ -123,7 +127,7 @@ class ResultsSequence extends React.Component{
     let ann_set = {};
     let ann_gen_set = {};
     let ann_dom_set = {};
-
+    
     for(let key in this.state.pgenthreader_results){
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
@@ -148,8 +152,9 @@ class ResultsSequence extends React.Component{
         this.pgenthreaderTable.current.appendChild(t.content);
       }
     }
-    if(this.state.pgenthreader_results){
+    if(this.state.pgenthreader_results && this.pgen_table_initialised === false){
       config_table('#pgen_table', 50, '#min_pgen_pval', '#max_pgen_pval', 'pgen_table', 2, null);
+      this.pgen_table_initialised = true;
     }
 
     for(let key in this.state.genthreader_results){
@@ -160,8 +165,6 @@ class ResultsSequence extends React.Component{
         ann_gen_set[id]['ann'] = path+".ann";
         ann_gen_set[id]['aln'] = path+".aln";
       }
-    }
-    for(let key in this.state.genthreader_results){
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
         //console.log(file_data);
@@ -172,8 +175,9 @@ class ResultsSequence extends React.Component{
       }
     }
 
-    if(this.state.genthreader_results){
+    if(this.state.genthreader_results && this.gen_table_initialised === false){
       config_table('#gen_table', 50, '#min_gen_pval', '#max_gen_pval', 'gen_table', 2, null);
+      this.gen_table_initialised = true;
     }
 
     for(let key in this.state.pdomthreader_results){
@@ -186,6 +190,12 @@ class ResultsSequence extends React.Component{
       }
     }
     for(let key in this.state.pdomthreader_results){
+      if(key.includes(".horiz")){
+        let file_data = this.state.pdomthreader_results[key];
+        let count = (file_data.match(/Conf/g) || []).length;
+        let panel_height = ((6*30)*(count+1))+120;
+        psipred(file_data, 'psipredChart', {parent: this.horizPlot.current, margin_scaler: 2, width: 900, container_width: 900, height: panel_height, container_height: panel_height});
+      }
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
         //console.log(file_data);
@@ -196,8 +206,9 @@ class ResultsSequence extends React.Component{
       }
     }
 
-    if(this.state.pdomthreader_results){
+    if(this.state.pdomthreader_results && this.pdom_table_initialised === false){
       config_table('#pdom_table', 50, '#min_pdom_pval', '#max_pdom_pval', 'pdom_table', 2, null);
+      this.pdom_table_initialised = true;
     }
 
     for(let key in this.state.dmp_results){
@@ -314,6 +325,7 @@ class ResultsSequence extends React.Component{
       config_table('#mf_table', 50, '#min_mf_prob', '#max_mf_prob', 'mf_table', 2, [3, 'asc']);
       config_table('#cc_table', 50, '#min_cc_prob', '#max_cc_prob', 'cc_table', 2, [3, 'asc']);
     }
+
     for(let key in this.state.mempack_results){
       if(key.includes("_Kamada-Kawai_1.png")){
         let img_url = this.state.mempack_results[key];
@@ -454,6 +466,8 @@ class ResultsSequence extends React.Component{
                 mempack_results: parsed_data.mempack,
                 annotations: local_annotations});
             });
+            console.log(parsed_data);
+
             this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
             this.props.updateWaiting(false);
@@ -498,7 +512,7 @@ class ResultsSequence extends React.Component{
     console.log("DRAWING EMPTY ANNOTATION PANEL");
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
-    this.timer = setInterval(() => this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 20000);
   }
 
   renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
