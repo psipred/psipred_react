@@ -20,6 +20,7 @@ export function parse_dmpmetal_annotations(annotations, file)
 export function parse_dmpmetal(file)
 {
     let lines = file.split('\n');
+    let result_count = 0;
     let metal_ions = {
       'CHEBI:48775': 'Cd2+',
       'CHEBI:29108': 'Ca2+',
@@ -56,14 +57,17 @@ export function parse_dmpmetal(file)
     lines.forEach((line) => {
       let entries = line.split("\t");
       if(entries.length == 4){
+        result_count++;
         dmp_table += '<tr><td style="width: 10%">'+entries[2]+'</td>';
         dmp_table += '<td style="width: 30%"><a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId='+entries[1]+'">'+entries[1]+'</a></td>';
         dmp_table += '<td style="width: 30%">'+metal_ions[entries[1]]+'</td>';
         dmp_table += '<td style="width: 30%">'+entries[3]+'</td></tr>';
       }
     });
-    
     dmp_table += '</table>';
+    if(result_count === 0){
+      dmp_table = "<h4>No binding site residues predicted for this sequence</h4>"
+    }
     return(dmp_table);
 }
 
