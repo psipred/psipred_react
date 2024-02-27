@@ -77,7 +77,7 @@ class ResultsStructure extends React.Component{
     for(let key in this.state.merizo_results){
       let uid = key.slice(0,-15)
 
-      if(key.includes(".pdb2")){
+      if(key.includes("_v2.pdb2")){
         let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
         // let bFactors = extractBFactors(this.state.merizo_results[key])
 
