@@ -9,7 +9,9 @@ export function parse_dmpmetal_annotations(annotations, file)
       let idx = parseInt(entries[2])-1;
       //console.log(idx);
       if(entries.length == 4){
-        annotations[idx].dmpmetal = 'MB';
+        if(parseFloat(entries[3]) >= 0.1){
+            annotations[idx].dmpmetal = 'MB';
+        }
       }
     });
     // TO DO
@@ -52,21 +54,24 @@ export function parse_dmpmetal(file)
       'CHEBI:60504': 'iron-sulfur-iron cofactor',
       'CHEBI:25213': 'metal cation',
     };
-    let dmp_table = '<br /><p>Binding residues are reported where estimated probability is 1% or greater.</p><table class="small-table table-striped table-bordered" style="width: 100%">';
-    dmp_table += '<tr><th style="width: 10%">Residue ID</th><th style="width: 30%">CHEBI ID</th><th style="width: 30%">Metal</th><th style="width: 30%">Probability</th></tr>';
+    let dmp_table = '<br /><p>Binding residues are reported where estimated p-value 0.1% or greater.</p><table class="small-table table-striped table-bordered" style="width: 100%">';
+    dmp_table += '<tr><th style="width: 10%">Residue ID</th><th style="width: 30%">CHEBI ID</th><th style="width: 30%">Metal</th><th style="width: 30%">P-Value</th></tr>';
     lines.forEach((line) => {
       let entries = line.split("\t");
       if(entries.length == 4){
-        result_count++;
-        dmp_table += '<tr><td style="width: 10%">'+entries[2]+'</td>';
-        dmp_table += '<td style="width: 30%"><a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId='+entries[1]+'">'+entries[1]+'</a></td>';
-        dmp_table += '<td style="width: 30%">'+metal_ions[entries[1]]+'</td>';
-        dmp_table += '<td style="width: 30%">'+entries[3]+'</td></tr>';
+        if(parseFloat(entries[3]) >= 0.1){
+            result_count++;
+            dmp_table += '<tr><td style="width: 10%">'+entries[2]+'</td>';
+            dmp_table += '<td style="width: 30%"><a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId='+entries[1]+'">'+entries[1]+'</a></td>';
+            dmp_table += '<td style="width: 30%">'+metal_ions[entries[1]]+'</td>';
+            dmp_table += '<td style="width: 30%">'+entries[3]+'</td></tr>';
+      
+          }
       }
     });
     dmp_table += '</table>';
     if(result_count === 0){
-      dmp_table = "<h4>No binding site residues predicted for this sequence</h4>"
+      dmp_table = "<h4>No binding site residues with p-value >= 0.1 predicted for this sequence. There may be lower probability predictions in the Residue Results file.</h4>"
     }
     return(dmp_table);
 }
