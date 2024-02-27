@@ -92,7 +92,7 @@ class ResultsSidebarDownloads extends React.Component{
   getFile = (event) => {
     Object.keys(this.props.results_files).forEach((job) => {
       Object.keys(this.props.results_files[job]).forEach((file) => {
-        console.log(file);
+        console.log("Getting "+file);
         if(file.includes(event.target.value)){
           saveAs(new Blob(this.props.results_files[job][file].split()), file);
         }
