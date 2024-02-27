@@ -30,7 +30,7 @@ class ResultsStructure extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    console.log(this.state);
+    //console.log(this.state);
 
     for(let key in this.state.metsite_results){
       if(key.includes(".MetPred")){
