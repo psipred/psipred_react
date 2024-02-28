@@ -232,8 +232,8 @@ class ResultsStructure extends React.Component{
 
   componentDidMount(){
     //here is a good place to send the results and set up the polling.
-    //this.timer = setInterval(() => this.getResults(), 20000);
-    this.timer = setInterval(() => this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 20000);
+    //this.timer = setInterval(() => this.getResults(), 500);
     
   }
 
