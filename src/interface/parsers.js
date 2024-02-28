@@ -69,7 +69,7 @@ export function parse_dmpmetal(file)
           }
       }
     });
-    dmp_table += '</table>';
+    dmp_table += '</table><p>There may be lower probability predictions in the Residue Results file.</p>';
     if(result_count === 0){
       dmp_table = "<h4>No binding site residues with p-value >= 0.1 predicted for this sequence. There may be lower probability predictions in the Residue Results file.</h4>"
     }
