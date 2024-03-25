@@ -175,7 +175,7 @@ export class Interface extends React.Component{
 
           <footer className="main-footer">
           <div className="pull-right hidden-xs">
-          <strong>Copyright &copy; 2022.<br /></strong>
+          <strong>Copyright &copy;<br /></strong>
           </div>
           &nbsp;
         </footer>
