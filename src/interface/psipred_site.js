@@ -357,7 +357,6 @@ class DisplayArea extends React.Component{
       // Here we handle fasta input and grab the name/header for the jobname if possible
       if(header_count === 1) {
         var fasta_regex = /^>(\S+).*\n(.+)/;
-        console.log("HEY THERE");
         var match = fasta_regex.exec(value);
         if(match){
           this.setState({
