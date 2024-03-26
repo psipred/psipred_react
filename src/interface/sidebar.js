@@ -5,7 +5,7 @@ class Sidebar extends React.Component{
     return(
       <div className="box box-primary" id="main_form">
         <div className="box-header with-border">
-          <h5 className="box-title">Required Options</h5>
+          <h5 className="box-title">Additional Settings</h5>
         </div>
         <div className="box-body">
           <div className="col-md-12">
@@ -34,12 +34,6 @@ class Sidebar extends React.Component{
     );
   }
 }
-// { this.props.analyses.includes("bioserf_job") &&
-// <BioSerfOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
-// }
-// { this.props.analyses.includes("domserf_job") &&
-// <DomSerfOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
-// }
 
 class MetsiteOptions extends React.Component {
   render () {
