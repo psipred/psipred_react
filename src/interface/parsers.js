@@ -517,7 +517,7 @@ export function parse_memsatdata(annotations, file)
   {
     let prev_end = 0;
     topo_regions.forEach(function(region){
-      tmp_anno = tmp_anno.fill('TM', region[0], region[1]);
+      tmp_anno = tmp_anno.fill('TM', region[0], region[1]+1);
       if(prev_end > 0){prev_end -= 1;}
       tmp_anno = tmp_anno.fill(coil_type, prev_end, region[0]);
       if(coil_type === 'EC'){ coil_type = 'CY';}else{coil_type = 'EC';}
@@ -529,13 +529,13 @@ export function parse_memsatdata(annotations, file)
   //signal_regions = [[70,83], [102,117]];
   if(signal_regions !== 'Not detected.'){
     signal_regions.forEach(function(region){
-      tmp_anno = tmp_anno.fill('S', region[0], region[1]);
+      tmp_anno = tmp_anno.fill('S', region[0], region[1]+1);
     });
   }
   //reentrant_regions = [[40,50], [200,218]];
   if(reentrant_regions !== 'Not detected.'){
     reentrant_regions.forEach(function(region){
-      tmp_anno = tmp_anno.fill('RH', region[0], region[1]);
+      tmp_anno = tmp_anno.fill('RH', region[0], region[1]+1);
     });
   }
   tmp_anno.forEach(function(anno, i){
