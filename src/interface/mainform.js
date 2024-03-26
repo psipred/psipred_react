@@ -225,6 +225,7 @@ class MainForm extends React.Component{
         <div className="box-header with-border">
           <p>The PSIPRED Workbench provides a range of protein structure prediction methods. The site can be used interactively via a web browser or programmatically via our REST API. For high-throughput analyses, downloads of all the algorithms are available.</p>
           <p><b>Amino acid</b> sequences enable: secondary structure prediction, including regions of disorder and transmembrane helix packing; contact analysis; fold recognition; structure modelling; and prediction of domains and function. In addition <b>PDB Structure files</b> allow prediction of protein-metal ion contacts, protein-protein hotspot residues, and membrane protein orientation.</p>
+          <p>For Help or Errors please email psipred-help@cs.ucl.ac.uk</p>
           <hr id="hr_form"></hr>
         </div>
         <div className="box-header with-border"><h5 className="box-title">Data Input</h5></div>

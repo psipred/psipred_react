@@ -423,8 +423,8 @@ export function get_memsat_ranges(regex, data)
       let regions = match[1].split(',');
       regions.forEach(function(region, i){
         regions[i] = region.split('-');
-        regions[i][0] = parseInt(regions[i][0]);
-        regions[i][1] = parseInt(regions[i][1]);
+        regions[i][0] = parseInt(regions[i][0]-1);
+        regions[i][1] = parseInt(regions[i][1]-1);
       });
       return(regions);
     }
@@ -433,8 +433,8 @@ export function get_memsat_ranges(regex, data)
         // console.log(match[1]);
         let seg = match[1].split('-');
         let regions = [[], ];
-        regions[0][0] = parseInt(seg[0]);
-        regions[0][1] = parseInt(seg[1]);
+        regions[0][0] = parseInt(seg[0]-1);
+        regions[0][1] = parseInt(seg[1]-1);
         return(regions);
     }
     return(match[1]);
@@ -517,7 +517,7 @@ export function parse_memsatdata(annotations, file)
   {
     let prev_end = 0;
     topo_regions.forEach(function(region){
-      tmp_anno = tmp_anno.fill('TM', region[0], region[1]+1);
+      tmp_anno = tmp_anno.fill('TM', region[0], region[1]);
       if(prev_end > 0){prev_end -= 1;}
       tmp_anno = tmp_anno.fill(coil_type, prev_end, region[0]);
       if(coil_type === 'EC'){ coil_type = 'CY';}else{coil_type = 'EC';}
@@ -529,18 +529,19 @@ export function parse_memsatdata(annotations, file)
   //signal_regions = [[70,83], [102,117]];
   if(signal_regions !== 'Not detected.'){
     signal_regions.forEach(function(region){
-      tmp_anno = tmp_anno.fill('S', region[0], region[1]+1);
+      tmp_anno = tmp_anno.fill('S', region[0], region[1]);
     });
   }
   //reentrant_regions = [[40,50], [200,218]];
   if(reentrant_regions !== 'Not detected.'){
     reentrant_regions.forEach(function(region){
-      tmp_anno = tmp_anno.fill('RH', region[0], region[1]+1);
+      tmp_anno = tmp_anno.fill('RH', region[0], region[1]);
     });
   }
   tmp_anno.forEach(function(anno, i){
     annotations[i].memsat = anno;
   });
+  console.log(annotations);
   return(annotations);
 }
 //type is one of gen, pgen and dgen
