@@ -156,12 +156,23 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['submit_url'] = main_url+uris['app_path']+'/api/submission/';
       uris['times_url'] = main_url+uris['app_path']+'/api/jobtimes/';
       uris['files_url'] = main_url+uris['app_path']+"/api";
-      uris['gears_svg'] = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
+      uris['gears_svg'] = "http://bioinf.cs.ucl.ac.uk/psipred/static/images/gears.svg";
       uris['location']= "Production";
     }
-    else if(hostname === "bioinfstage1.cs.ucl.ac.uk")
+    // else if(hostname === "bioinfstage1.cs.ucl.ac.uk")
+    // { //update for staging paths
+    //   uris['main_url'] = "bioinfstage1.cs.ucl.ac.uk";
+    //   uris['joblist_url'] = main_url+app_path+'/api/job/';
+    //   uris['endpoints_url'] = main_url+app_path+'/api/endpoints/';
+    //   uris['submit_url'] = main_url+app_path+'/api/submission/';
+    //   uris['times_url'] = main_url+app_path+'/api/jobtimes/';
+    //   uris['files_url'] = main_url+app_path+"/api";
+    //   uris['location'] = 'Staging';
+    //   //gears_svg = "../static/images/gears.svg";
+    // }
+    else if(hostname === "bioinfstaging1.cs.ucl.ac.uk")
     { //update for staging paths
-      uris['main_url'] = "bioinfstage1.cs.ucl.ac.uk";
+      uris['main_url'] = "bioinfstaging3.cs.ucl.ac.uk";
       uris['joblist_url'] = main_url+app_path+'/api/job/';
       uris['endpoints_url'] = main_url+app_path+'/api/endpoints/';
       uris['submit_url'] = main_url+app_path+'/api/submission/';
