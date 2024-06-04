@@ -187,7 +187,6 @@ export function decide_location(href, hostname, main_url, app_path){
         uris['times_url'] = main_url+'/psipred_alt/api/jobtimes/';
         uris['files_url'] = main_url+"/psipred_alt/api";
         uris['location'] = 'Staging';
-        console.log("ALT SERVER ACTIVATED")
         //gears_svg = "../static/images/gears.svg";
         console.log(uris);
         return(uris);
