@@ -212,7 +212,7 @@ export function decide_location(href, hostname, main_url, app_path){
         uris['gears_svg'] = "http://bioinf.cs.ucl.ac.uk/psipred/static/images/gears.svg";
         uris['location']= "Production";
         console.log("IN PROD");
-    } else if {
+    } else {
       alert('UNSETTING ENDPOINTS WARNING, WARNING! WEBSITE NON FUNCTIONAL');
       uris['joblist_url'] = '';
       uris['endpoints_url'] = '';
