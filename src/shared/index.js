@@ -162,7 +162,7 @@ export function decide_location(href, hostname, main_url, app_path){
       return(uris);
   
     }
-    if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || href.includes('psipred_beta'))
+    if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta" || href.includes('psipred_beta'))
     { //update for staging paths
       uris['app_path'] = app_path;
       uris['main_url'] = "bioinf.cs.ucl.ac.uk";
@@ -177,15 +177,15 @@ export function decide_location(href, hostname, main_url, app_path){
       return(uris);
   
     }
-    if(href  === "http://bioinfnew1.cs.ucl.ac.uk/interface/" || href  === "http://bioinf.cs.ucl.ac.uk/psipred_alt/" || href.includes('psipred_alt'))
+    if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_alt" || href.includes('psipred_alt'))
      { //update for staging paths
-        uris['app_path'] = app_path;
+        uris['app_path'] = '/psipred_alt';
         uris['main_url'] = "bioinf.cs.ucl.ac.uk";
-        uris['joblist_url'] = main_url+app_path+'/api/job/';
-        uris['endpoints_url'] = main_url+app_path+'/api/endpoints/';
-        uris['submit_url'] = main_url+app_path+'/api/submission/';
-        uris['times_url'] = main_url+app_path+'/api/jobtimes/';
-        uris['files_url'] = main_url+app_path+"/api";
+        uris['joblist_url'] = main_url+'/psipred_alt/api/job/';
+        uris['endpoints_url'] = main_url+'/psipred_alt/api/endpoints/';
+        uris['submit_url'] = main_url+'/psipred_alt/api/submission/';
+        uris['times_url'] = main_url+'/psipred_alt/api/jobtimes/';
+        uris['files_url'] = main_url+"/psipred_alt/api";
         uris['location'] = 'Staging';
         console.log("ALT SERVER ACTIVATED")
         //gears_svg = "../static/images/gears.svg";
