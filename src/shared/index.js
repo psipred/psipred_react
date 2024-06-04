@@ -192,7 +192,7 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['files_url'] = main_url+app_path+"/api";
       uris['location'] = 'Staging';
       //gears_svg = "../static/images/gears.svg";
-    } else if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_alt/" || href.includes('psipred_alt'))
+    } else if(href  === "http://bioinfnew1.cs.ucl.ac.uk/interface/" || href  === "http://bioinf.cs.ucl.ac.uk/psipred_alt/" || href.includes('psipred_alt'))
       { //update for staging paths
         uris['app_path'] = app_path;
         uris['main_url'] = "bioinf.cs.ucl.ac.uk";
@@ -202,6 +202,7 @@ export function decide_location(href, hostname, main_url, app_path){
         uris['times_url'] = main_url+app_path+'/api/jobtimes/';
         uris['files_url'] = main_url+app_path+"/api";
         uris['location'] = 'Staging';
+        console.log("ALT SERVER ACTIVATED")
         //gears_svg = "../static/images/gears.svg";
     } else if (hostname === "127.0.0.1" || hostname === "localhost"){
       console.log("dev server using default URIs");
