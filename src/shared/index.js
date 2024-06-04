@@ -170,7 +170,7 @@ export function decide_location(href, hostname, main_url, app_path){
     //   uris['location'] = 'Staging';
     //   //gears_svg = "../static/images/gears.svg";
     // }
-    else if(hostname === "bioinfstaging1.cs.ucl.ac.uk")
+    if(hostname === "bioinfstaging1.cs.ucl.ac.uk")
     { //update for staging paths
       uris['main_url'] = "bioinfstaging3.cs.ucl.ac.uk";
       uris['joblist_url'] = main_url+app_path+'/api/job/';
