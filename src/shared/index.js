@@ -147,7 +147,7 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['main_url'] = 'http://127.0.0.1:3000';
     }
 
-    if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (href.includes('psipred') && !  href.includes('psipred_beta')) )
+    if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (href.includes('psipred') && ! href.includes('psipred_beta') && ! href.includes('psipred_alt')) )
     {
       uris['main_url'] = "http://bioinf.cs.ucl.ac.uk/";
       uris['app_path'] = '/psipred';
@@ -192,6 +192,17 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['files_url'] = main_url+app_path+"/api";
       uris['location'] = 'Staging';
       //gears_svg = "../static/images/gears.svg";
+    } else if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_alt/" || href.includes('psipred_alt'))
+      { //update for staging paths
+        uris['app_path'] = app_path;
+        uris['main_url'] = "bioinf.cs.ucl.ac.uk";
+        uris['joblist_url'] = main_url+app_path+'/api/job/';
+        uris['endpoints_url'] = main_url+app_path+'/api/endpoints/';
+        uris['submit_url'] = main_url+app_path+'/api/submission/';
+        uris['times_url'] = main_url+app_path+'/api/jobtimes/';
+        uris['files_url'] = main_url+app_path+"/api";
+        uris['location'] = 'Staging';
+        //gears_svg = "../static/images/gears.svg";
     } else if (hostname === "127.0.0.1" || hostname === "localhost"){
       console.log("dev server using default URIs");
     } else {
