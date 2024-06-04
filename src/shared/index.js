@@ -132,6 +132,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
 }
 
 export function decide_location(href, hostname, main_url, app_path){
+    console.log("DECIDING WHERE I AM");
     let uris = {
         endpoints_url: 'http://127.0.0.1:8000/analytics_automated/endpoints/',
         submit_url: 'http://127.0.0.1:8000/analytics_automated/submission/',
