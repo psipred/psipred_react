@@ -125,6 +125,11 @@ class StructForm extends React.Component {
             <div className="form-group">
               <table className="full-width-table">
               <tbody>
+                <tr><td colSpan="2"><h4>Popular Analyses</h4></td></tr>
+                <tr>
+                  <td colspan="2" data-toggle="tool-tip" title={this.props.job_strings.merizosearch.tooltip}><input type="checkbox" id="id_merizosearch_job" name={this.props.job_strings.merizosearch.jobName} value={this.props.job_strings.merizosearch.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.merizosearch.jobName)} />&nbsp;<label htmlFor="id_merizosearch_job">{this.props.job_strings.merizosearch.describedName}</label></td>
+                </tr>
+                <tr><td colSpan="2"><h4>Structure Analyses</h4></td></tr>
                 <tr>
                   <td data-toggle="tool-tip" title={this.props.job_strings.metsite.tooltip}><input type="checkbox" id="id_metsite_job" name={this.props.job_strings.metsite.jobName} value={this.props.job_strings.metsite.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.metsite.jobName)} />&nbsp;<label htmlFor="id_metsite_job">{this.props.job_strings.metsite.describedName}</label></td>
                   <td data-toggle="tool-tip" title={this.props.job_strings.hspred.tooltip}><input type="checkbox" id="id_hspred_job" name={this.props.job_strings.hspred.jobName} value={this.props.job_strings.hspred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.hspred.jobName)} />&nbsp;<label htmlFor="id_hspred_job">{this.props.job_strings.hspred.describedName}</label></td>

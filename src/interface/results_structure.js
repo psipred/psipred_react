@@ -22,6 +22,8 @@ class ResultsStructure extends React.Component{
     this.merizo_pdb = React.createRef();
     this.merizo_boundaries = React.createRef();
     this.merizo_pdb_sidebar = React.createRef();
+    this.merizosearch_structures = React.createRef();
+    this.merizosearch_results_table = React.createRef();
     this.timer = null;
   }
 
@@ -186,7 +188,8 @@ class ResultsStructure extends React.Component{
               this.setState({metsite_results: parsed_data.metsite,
                     hspred_results: parsed_data.hspred,
                     memembed_results: parsed_data.memembed,
-                    merizo_results: parsed_data.merizo
+                    merizo_results: parsed_data.merizo,
+                    merizosearch_results: parsed_data.merizosearch,
               });
             });
             this.props.updateResultsFiles(res);
@@ -386,6 +389,36 @@ class ResultsStructure extends React.Component{
           </div>
         )}
          
+        {this.props.analyses.includes("merizosearch_job") && (
+          <div className="box box-primary" id="merizosearch_preds">
+            <div className="box-header with-border">
+              <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Domain Found</h5>
+              <div className="box-tools pull-right">
+                <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i className="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div className="box-body">
+              {this.state.error_message && <div className="error">{this.state.error_message}</div>}
+              {this.props.waiting && (
+                <div className="waiting" intro="slide" outro="slide">
+                  <br />
+                  <h4>{this.props.merizosearch_waiting_message}</h4>
+                </div>
+              )}
+              {this.props.waiting && (
+                <div className="waiting_icon" intro="slide" outro="slide">
+                  <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
+                </div>
+              )}
+              <div className="merizoseach_structures" id="merizoseach_structures" ref={this.merizosearch_structures}></div>
+              <div className="merizosearch_results_table" id="merizosearch_results_table" ref={this.merizosearch_results_table}></div>
+            </div>
+          </div>
+
+          // consider two panels here
+        )}
          
       </div>
     );

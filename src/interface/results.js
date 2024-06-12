@@ -50,7 +50,8 @@ class ResultsMain extends React.Component{
       merizo_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       dmpmetal_waiting_message: 'Please wait for your '+this.props.job_strings.dmpmetal.shortName+' job to process',
       dmpmetal_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
-      
+      merizosearch_waiting_message: 'Please wait for your '+this.props.job_strings.merizosearch.shortName+' job to process',
+      merizosearch_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
     };
   }
 
