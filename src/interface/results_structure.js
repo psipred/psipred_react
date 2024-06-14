@@ -7,6 +7,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 import {merizo_html} from './parsers.js';
+import {parse_merizosearch_search_results} from './parsers.js';
 // import {extractBFactors} from './parsers.js';
 
 class ResultsStructure extends React.Component{
@@ -111,6 +112,17 @@ class ResultsStructure extends React.Component{
         var mr = document.createElement('template');
         mr.innerHTML = html_data;
         this.merizo_boundaries.current.appendChild(mr.content);
+      }
+
+    }
+    for(let key in this.state.merizosearch_results){
+      if(key.includes("search.tsv")){
+        let file_data = this.state.merizosearch_results[key];
+        const { html, data} = parse_merizosearch_search_results(file_data);
+        console.log(html);
+        var dt = document.createElement('template');
+        dt.innerHTML = html;
+        this.merizosearch_results_table.current.appendChild(dt.content);
       }
     }
   }
@@ -235,8 +247,8 @@ class ResultsStructure extends React.Component{
 
   componentDidMount(){
     //here is a good place to send the results and set up the polling.
-    this.timer = setInterval(() => this.getResults(), 20000);
-    //this.timer = setInterval(() => this.getResults(), 500);
+    //this.timer = setInterval(() => this.getResults(), 20000);
+    this.timer = setInterval(() => this.getResults(), 500);
     
   }
 
@@ -390,9 +402,11 @@ class ResultsStructure extends React.Component{
         )}
          
         {this.props.analyses.includes("merizosearch_job") && (
-          <div className="box box-primary" id="merizosearch_preds">
+        <div>
+
+          <div className="box box-primary" id="merizosearch_structs">
             <div className="box-header with-border">
-              <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Domain Found</h5>
+              <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Domains Found</h5>
               <div className="box-tools pull-right">
                 <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                   <i className="fa fa-plus"></i>
@@ -413,11 +427,36 @@ class ResultsStructure extends React.Component{
                 </div>
               )}
               <div className="merizoseach_structures" id="merizoseach_structures" ref={this.merizosearch_structures}></div>
-              <div className="merizosearch_results_table" id="merizosearch_results_table" ref={this.merizosearch_results_table}></div>
             </div>
           </div>
 
-          // consider two panels here
+          <div className="box box-primary" id="merizosearch_table">
+          <div className="box-header with-border">
+            <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Hit Details</h5>
+            <div className="box-tools pull-right">
+              <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i className="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div className="box-body">
+            {this.state.error_message && <div className="error">{this.state.error_message}</div>}
+            {this.props.waiting && (
+              <div className="waiting" intro="slide" outro="slide">
+                <br />
+                <h4>{this.props.merizosearch_waiting_message}</h4>
+              </div>
+            )}
+            {this.props.waiting && (
+              <div className="waiting_icon" intro="slide" outro="slide">
+                <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
+              </div>
+            )}
+            <div className="merizosearch_results_table" id="merizosearch_results_table" ref={this.merizosearch_results_table}></div>
+          </div>
+          </div>
+
+        </div>
         )}
          
       </div>

@@ -191,14 +191,12 @@ export function decide_location(href, hostname, main_url, app_path){
         console.log(uris);
         return(uris);
     
-    }
-    
+    } 
     if (hostname === "127.0.0.1" || hostname === "localhost"){
       console.log("dev server using default URIs");
       console.log(uris);
       return(uris);  
     }
-    
     if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || href.includes('psipred')  )
     {
         uris['main_url'] = "http://bioinf.cs.ucl.ac.uk/";
@@ -369,6 +367,10 @@ export function configurePost(formState)
   }
   if(formState.jobs.includes('merizo')){
     fd.append("merizo_iterate", formState.merizo_iterate);
+  }
+  if(formState.jobs.includes('merizosearch')){
+    fd.append("merizosearch_iterate", formState.merizosearch_iterate);
+    fd.append("merizosearch_db", formState.merizosearch_db);
   }
   return(fd);
 }

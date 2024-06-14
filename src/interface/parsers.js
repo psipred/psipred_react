@@ -657,3 +657,32 @@ export function parse_parseds(annotations, file)
   }
   return(annotations);
 }
+
+export function parse_merizosearch_search_results(file)
+{ 
+  let lines = file.split("\n");
+  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr><th>Query</th>';
+  htmltab += "<th>Top K rank</th>";
+  htmltab += "<th>Hit</th>";
+  htmltab += "<th>Cosine Sim</th>";
+  htmltab += "<th>Query Length</th>";
+  htmltab += "<th>Hit Length</th>";
+  htmltab += "<th>Align Length</th>";
+  htmltab += "<th>Seq ID</th>";
+  htmltab += "<th>Q TM</th>";
+  htmltab += "<th>T TM</th>";
+  htmltab += "<th>Max TM</th>";
+  htmltab += "<th>RMSD</th></tr></thead><tbody>";
+  lines.forEach(function(line, i){
+    if(line.length > 0){
+      htmltab += "<tr>";
+      let entries = line.split(/\t+/);
+      entries.forEach(function(entry){
+        htmltab += "<td>"+entry+"</td>";
+      });
+      htmltab += "</tr>";
+  }
+  });
+  htmltab += "</tbody></table>";
+  return {html: htmltab, data: {}};
+}
