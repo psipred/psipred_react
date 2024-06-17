@@ -661,7 +661,10 @@ export function parse_parseds(annotations, file)
 export function parse_merizosearch_search_results(file)
 { 
   let lines = file.split("\n");
-  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr><th>Query</th>';
+  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
+  htmltab += "<th>Chopping</th>";
+  htmltab += "<th>conf</th>";
+  htmltab += "<th>plddt</th>";
   htmltab += "<th>Top K rank</th>";
   htmltab += "<th>Hit</th>";
   htmltab += "<th>Cosine Sim</th>";
@@ -677,6 +680,7 @@ export function parse_merizosearch_search_results(file)
     if(line.length > 0){
       htmltab += "<tr>";
       let entries = line.split(/\t+/);
+      entries.shift();
       entries.forEach(function(entry){
         htmltab += "<td>"+entry+"</td>";
       });

@@ -1,7 +1,9 @@
+import * as esbuild from 'esbuild'
+import {sassPlugin} from 'esbuild-sass-plugin'
 // build.js
-const esbuild = require("esbuild");
+//const esbuild = require("esbuild");
 //console.log(process.env.PUBLIC_URL);
-esbuild.build({
+await esbuild.build({
   entryPoints: ["./src/index.js"],
   outfile: "./public/static/js/app.js",
   minify: true,
@@ -9,6 +11,6 @@ esbuild.build({
   loader: {
     ".js": "jsx",
   },
-  plugins: [],
+  plugins: [sassPlugin()],
   define: {"process.env.PUBLIC_URL": JSON.stringify(process.env.PUBLIC_URL), }
 }).catch(() => process.exit(1));

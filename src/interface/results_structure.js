@@ -10,6 +10,12 @@ import {merizo_html} from './parsers.js';
 import {parse_merizosearch_search_results} from './parsers.js';
 // import {extractBFactors} from './parsers.js';
 
+import { useEffect, createRef } from "react";
+import { createPluginUI } from "molstar/lib/mol-plugin-ui";
+import { renderReact18 } from "molstar/lib/mol-plugin-ui/react18";
+import { PluginUIContext } from "molstar/lib/mol-plugin-ui/context";
+import "molstar/lib/mol-plugin-ui/skin/light.scss";
+
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
