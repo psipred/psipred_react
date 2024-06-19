@@ -10,12 +10,6 @@ import {merizo_html} from './parsers.js';
 import {parse_merizosearch_search_results} from './parsers.js';
 // import {extractBFactors} from './parsers.js';
 
-import { useEffect, createRef } from "react";
-import { createPluginUI } from "molstar/lib/mol-plugin-ui";
-import { renderReact18 } from "molstar/lib/mol-plugin-ui/react18";
-import { PluginUIContext } from "molstar/lib/mol-plugin-ui/context";
-import "molstar/lib/mol-plugin-ui/skin/light.scss";
-
 class ResultsStructure extends React.Component{
   constructor(props){
     super(props);
@@ -29,9 +23,10 @@ class ResultsStructure extends React.Component{
     this.merizo_pdb = React.createRef();
     this.merizo_boundaries = React.createRef();
     this.merizo_pdb_sidebar = React.createRef();
-    this.merizosearch_structures = React.createRef();
+    this.merizosearch_pdb = React.createRef();
     this.merizosearch_results_table = React.createRef();
     this.timer = null;
+    
   }
 
   componentDidUpdate(prevProps) {
@@ -84,7 +79,7 @@ class ResultsStructure extends React.Component{
       }
     }
     for(let key in this.state.merizo_results){
-      let uid = key.slice(0,-15)
+      let uid = key.slice(0,-15);
 
       if(key.includes("_v2.pdb2")){
         let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
@@ -121,16 +116,27 @@ class ResultsStructure extends React.Component{
       }
 
     }
+    let merizo_search = {};
     for(let key in this.state.merizosearch_results){
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
         const { html, data} = parse_merizosearch_search_results(file_data);
-        console.log(html);
+        console.log(data);
+        merizo_search = data;
         var dt = document.createElement('template');
         dt.innerHTML = html;
         this.merizosearch_results_table.current.appendChild(dt.content);
       }
     }
+    for(let key in this.state.merizosearch_results){
+      let uid = key.slice(0,-12);
+      if(key.includes(".pdb2")){
+        let merizosearch_idx = this.state.merizosearch_results[uid+'_segment.tsv'];
+        console.log(merizosearch_idx);
+        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx);
+      }
+    }
+    
   }
 
   getResultsFiles = (data, props) => {
@@ -163,7 +169,7 @@ class ResultsStructure extends React.Component{
     });
     return(results_files);
   }
-
+ 
   getResults = () => {
     let result_uri = this.props.submit_url+this.props.uuid;
     let joblist_uri = this.props.joblist_url;
@@ -432,7 +438,7 @@ class ResultsStructure extends React.Component{
                   <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
                 </div>
               )}
-              <div className="merizoseach_structures" id="merizoseach_structures" ref={this.merizosearch_structures}></div>
+              <div className="merizoseach_pdb" id="merizoseach_pdb" ref={this.merizosearch_pdb}></div>
             </div>
           </div>
 

@@ -30,6 +30,16 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+## Weird molstar things 
+
+We're using esbuild. Esbuild does not natively handle sass. I can't for the life of me get the esbuild sass plugin to work so... I just wrote a quick sass converter for the molstart scss files. Run it with
+
+``` bash
+node sass_converter.js > public/static/css/light.css
+```
+
+Then we can just load it in the HTML header etc...
+
 # Learn More
 
 React has a heirarchical model of the page and page regions. Sibling regions of the page can share state by storing that state in a parental node.

@@ -123,7 +123,9 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
     viewer.addSurface(Window.$3Dmol.SurfaceType.VDW, {'opacity':0.8, colorscheme: 'whiteCarbon'});
   }
   if(merizo){
+    console.log(merizo);
     let merizo_data = parse_merizo(merizo);
+    console.log(merizo_data);
     merizo_labels = merizo_data[0];
   }
   viewer.zoomTo();                                      /* set camera */

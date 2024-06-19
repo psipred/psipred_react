@@ -1,0 +1,731 @@
+{
+  css: '.msp-plugin {\n' +
+    '  font-family: "Helvetica Neue", "Segoe UI", Helvetica, "Source Sans Pro", Arial, sans-serif;\n' +
+    '  font-size: 14px;\n' +
+    '  line-height: 1.42857143;\n' +
+    '  position: absolute;\n' +
+    '  left: 0;\n' +
+    '  top: 0;\n' +
+    '  right: 0;\n' +
+    '  bottom: 0;\n' +
+    '  /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */\n' +
+    '  /* background */\n' +
+    '  /* highlight & toasts */\n' +
+    '  background: rgb(238, 236, 231);\n' +
+    '}\n' +
+    '.msp-plugin * {\n' +
+    '  box-sizing: border-box;\n' +
+    '}\n' +
+    '.msp-plugin [hidden],\n' +
+    '.msp-plugin template {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin a {\n' +
+    '  background-color: transparent;\n' +
+    '}\n' +
+    '.msp-plugin a:active,\n' +
+    '.msp-plugin a:hover {\n' +
+    '  outline: 0;\n' +
+    '}\n' +
+    '.msp-plugin abbr[title] {\n' +
+    '  border-bottom: 1px dotted;\n' +
+    '}\n' +
+    '.msp-plugin b,\n' +
+    '.msp-plugin strong {\n' +
+    '  font-weight: bold;\n' +
+    '}\n' +
+    '.msp-plugin small {\n' +
+    '  font-size: 80%;\n' +
+    '}\n' +
+    '.msp-plugin img {\n' +
+    '  border: 0;\n' +
+    '}\n' +
+    '.msp-plugin svg:not(:root) {\n' +
+    '  overflow: hidden;\n' +
+    '}\n' +
+    '.msp-plugin button,\n' +
+    '.msp-plugin input,\n' +
+    '.msp-plugin optgroup,\n' +
+    '.msp-plugin select,\n' +
+    '.msp-plugin textarea {\n' +
+    '  color: inherit;\n' +
+    '  font: inherit;\n' +
+    '  margin: 0;\n' +
+    '}\n' +
+    '.msp-plugin button {\n' +
+    '  overflow: visible;\n' +
+    '}\n' +
+    '.msp-plugin button,\n' +
+    '.msp-plugin select {\n' +
+    '  text-transform: none;\n' +
+    '}\n' +
+    '.msp-plugin button,\n' +
+    '.msp-plugin html input[type=button],\n' +
+    '.msp-plugin input[type=reset],\n' +
+    '.msp-plugin input[type=submit] {\n' +
+    '  -webkit-appearance: button;\n' +
+    '  cursor: pointer;\n' +
+    '}\n' +
+    '.msp-plugin button[disabled],\n' +
+    '.msp-plugin html input[disabled] {\n' +
+    '  cursor: default;\n' +
+    '}\n' +
+    '.msp-plugin button::-moz-focus-inner,\n' +
+    '.msp-plugin input::-moz-focus-inner {\n' +
+    '  border: 0;\n' +
+    '  padding: 0;\n' +
+    '}\n' +
+    '.msp-plugin input {\n' +
+    '  line-height: normal;\n' +
+    '}\n' +
+    '.msp-plugin input[type=checkbox],\n' +
+    '.msp-plugin input[type=radio] {\n' +
+    '  box-sizing: border-box;\n' +
+    '  padding: 0;\n' +
+    '}\n' +
+    '.msp-plugin input[type=number]::-webkit-inner-spin-button,\n' +
+    '.msp-plugin input[type=number]::-webkit-outer-spin-button {\n' +
+    '  height: auto;\n' +
+    '}\n' +
+    '.msp-plugin textarea {\n' +
+    '  overflow: auto;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-expanded, .msp-plugin .msp-layout-standard {\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  top: 0;\n' +
+    '  bottom: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard {\n' +
+    '  border: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-region {\n' +
+    '  overflow: hidden;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-static, .msp-plugin .msp-layout-scrollable {\n' +
+    '  position: absolute;\n' +
+    '}\n' +
+    '.msp-plugin .msp-scrollable {\n' +
+    '  overflow-y: auto;\n' +
+    '}\n' +
+    '.msp-plugin .msp-scrollable-container {\n' +
+    '  position: absolute;\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  top: 0;\n' +
+    '  bottom: 0;\n' +
+    '  overflow-y: auto;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-static {\n' +
+    '  overflow: hidden;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-top .msp-layout-static, .msp-plugin .msp-layout-main .msp-layout-static, .msp-plugin .msp-layout-bottom .msp-layout-static {\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  top: 0;\n' +
+    '  bottom: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-right .msp-layout-static {\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  top: 0;\n' +
+    '  bottom: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-right .msp-layout-scrollable {\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  top: 43px;\n' +
+    '  bottom: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-left .msp-layout-static {\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  bottom: 0;\n' +
+    '  top: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside {\n' +
+    '  position: absolute;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-main {\n' +
+    '  position: absolute;\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  bottom: 0;\n' +
+    '  top: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-top {\n' +
+    '  position: absolute;\n' +
+    '  right: 0;\n' +
+    '  height: 97px;\n' +
+    '  top: -97px;\n' +
+    '  width: 50%;\n' +
+    '  border-left: 1px solid #cec9ba;\n' +
+    '  border-bottom: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-bottom {\n' +
+    '  position: absolute;\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  height: 97px;\n' +
+    '  top: -97px;\n' +
+    '  width: 50%;\n' +
+    '  border-bottom: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-right {\n' +
+    '  position: absolute;\n' +
+    '  width: 50%;\n' +
+    '  right: 0;\n' +
+    '  bottom: -295px;\n' +
+    '  height: 295px;\n' +
+    '  border-left: 1px solid #cec9ba;\n' +
+    '  border-top: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-left {\n' +
+    '  position: absolute;\n' +
+    '  width: 50%;\n' +
+    '  left: 0;\n' +
+    '  bottom: 0;\n' +
+    '  bottom: -295px;\n' +
+    '  height: 295px;\n' +
+    '  border-top: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-right .msp-layout-right {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-right .msp-layout-left {\n' +
+    '  width: 100%;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-left .msp-layout-left {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-left .msp-layout-right {\n' +
+    '  width: 100%;\n' +
+    '  border-left: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-collapse-left .msp-layout-left {\n' +
+    '  width: 32px;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-collapse-left .msp-layout-right {\n' +
+    '  left: 32px;\n' +
+    '  width: auto;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-top .msp-layout-top {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-top .msp-layout-bottom {\n' +
+    '  width: 100%;\n' +
+    '  border-left: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-bottom .msp-layout-bottom {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-outside .msp-layout-hide-bottom .msp-layout-top {\n' +
+    '  width: 100%;\n' +
+    '  border-left: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape {\n' +
+    '  position: absolute;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-main {\n' +
+    '  position: absolute;\n' +
+    '  left: 330px;\n' +
+    '  right: 300px;\n' +
+    '  bottom: 70px;\n' +
+    '  top: 100px;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-top {\n' +
+    '  position: absolute;\n' +
+    '  left: 330px;\n' +
+    '  right: 300px;\n' +
+    '  height: 100px;\n' +
+    '  top: 0;\n' +
+    '  border-bottom: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-bottom {\n' +
+    '  position: absolute;\n' +
+    '  left: 330px;\n' +
+    '  right: 300px;\n' +
+    '  height: 70px;\n' +
+    '  bottom: 0;\n' +
+    '  border-top: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-right {\n' +
+    '  position: absolute;\n' +
+    '  width: 300px;\n' +
+    '  right: 0;\n' +
+    '  bottom: 0;\n' +
+    '  top: 0;\n' +
+    '  border-left: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-left {\n' +
+    '  position: absolute;\n' +
+    '  width: 330px;\n' +
+    '  left: 0;\n' +
+    '  bottom: 0;\n' +
+    '  top: 0;\n' +
+    '  border-right: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-right .msp-layout-right {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-right .msp-layout-main, .msp-plugin .msp-layout-standard-landscape .msp-layout-hide-right .msp-layout-top, .msp-plugin .msp-layout-standard-landscape .msp-layout-hide-right .msp-layout-bottom {\n' +
+    '  right: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-left .msp-layout-left {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-left .msp-layout-main, .msp-plugin .msp-layout-standard-landscape .msp-layout-hide-left .msp-layout-top, .msp-plugin .msp-layout-standard-landscape .msp-layout-hide-left .msp-layout-bottom {\n' +
+    '  left: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-collapse-left .msp-layout-left {\n' +
+    '  width: 32px;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-collapse-left .msp-layout-main, .msp-plugin .msp-layout-standard-landscape .msp-layout-collapse-left .msp-layout-top, .msp-plugin .msp-layout-standard-landscape .msp-layout-collapse-left .msp-layout-bottom {\n' +
+    '  left: 32px;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-bottom .msp-layout-bottom {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-bottom .msp-layout-main {\n' +
+    '  bottom: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-top .msp-layout-top {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-landscape .msp-layout-hide-top .msp-layout-main {\n' +
+    '  top: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait {\n' +
+    '  position: absolute;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-main {\n' +
+    '  position: absolute;\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  bottom: 361px;\n' +
+    '  top: 97px;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-top {\n' +
+    '  position: absolute;\n' +
+    '  right: 0;\n' +
+    '  height: 97px;\n' +
+    '  top: 0;\n' +
+    '  width: 50%;\n' +
+    '  border-left: 1px solid #cec9ba;\n' +
+    '  border-bottom: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-bottom {\n' +
+    '  position: absolute;\n' +
+    '  left: 0;\n' +
+    '  right: 0;\n' +
+    '  height: 97px;\n' +
+    '  width: 50%;\n' +
+    '  border-bottom: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-right {\n' +
+    '  position: absolute;\n' +
+    '  width: 50%;\n' +
+    '  right: 0;\n' +
+    '  bottom: 0;\n' +
+    '  height: 361px;\n' +
+    '  border-left: 1px solid #cec9ba;\n' +
+    '  border-top: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-left {\n' +
+    '  position: absolute;\n' +
+    '  width: 50%;\n' +
+    '  left: 0;\n' +
+    '  bottom: 0;\n' +
+    '  height: 361px;\n' +
+    '  border-top: 1px solid #cec9ba;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-right .msp-layout-right {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-right .msp-layout-left {\n' +
+    '  width: 100%;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-left .msp-layout-left {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-left .msp-layout-right {\n' +
+    '  width: 100%;\n' +
+    '  border-left: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-right.msp-layout-hide-left .msp-layout-main {\n' +
+    '  bottom: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-collapse-left .msp-layout-left {\n' +
+    '  width: 32px;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-collapse-left .msp-layout-right {\n' +
+    '  left: 32px;\n' +
+    '  width: auto;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-top .msp-layout-top {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-top .msp-layout-bottom {\n' +
+    '  width: 100%;\n' +
+    '  border-left: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-bottom .msp-layout-bottom {\n' +
+    '  display: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-bottom .msp-layout-top {\n' +
+    '  width: 100%;\n' +
+    '  border-left: none;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-portrait .msp-layout-hide-top.msp-layout-hide-bottom .msp-layout-main {\n' +
+    '  top: 0;\n' +
+    '}\n' +
+    '.msp-plugin .msp-layout-standard-reactive {\n' +
+    '  position: absolute;\n' +
+    '}\n' +
+    '@media (orientation: landscape), (min-width: 1000px) {\n' +
+    '  .msp-plugin .msp-layout-standard-reactive .msp-layout-main {\n' +
+    '    position: absolute;\n' +
+    '    left: 330px;\n' +
+    '    right: 300px;\n' +
+    '    bottom: 70px;\n' +
+    '    top: 100px;\n' +
+    '  }\n'... 71241 more characters,
+  loadedUrls: [
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/light.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/light.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/colors/light.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/colors/light.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/base.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/base.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/variables.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/variables.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/normalize.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/normalize.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/common.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/common.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/controls-outside.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/controls-outside.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/controls-landscape.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/controls-landscape.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/controls-portrait.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/layout/controls-portrait.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/ui.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/ui.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/controls-base.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/controls-base.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/controls.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/controls.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/slider.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/slider.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/misc.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/misc.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/tasks.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/tasks.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/viewport.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/viewport.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/log.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/log.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/sequence.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/sequence.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/transformer.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/transformer.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/toast.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/toast.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/help.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/help.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/line-graph.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/components/line-graph.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    },
+    URL {
+      href: 'file:///home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/logo.scss',
+      origin: 'null',
+      protocol: 'file:',
+      username: '',
+      password: '',
+      host: '',
+      hostname: '',
+      port: '',
+      pathname: '/home/dbuchan/Code/psipred_react/node_modules/molstar/lib/mol-plugin-ui/skin/base/logo.scss',
+      search: '',
+      searchParams: URLSearchParams {},
+      hash: ''
+    }
+  ]
+}
