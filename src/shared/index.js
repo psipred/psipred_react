@@ -19,7 +19,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   };
   let merizo_color = function(atom){
     let domain_number = merizo_labels[atom.resi];
-    // console.log(merizo_labels);
+    //console.log(merizo_labels);
     if(colours.colourNames[domain_number]){
       atom.color = colours.colourNames[domain_number]; return(colours.colourNames[domain_number]);
     }

@@ -132,7 +132,6 @@ class ResultsStructure extends React.Component{
       let uid = key.slice(0,-12);
       if(key.includes(".pdb2")){
         let merizosearch_idx = this.state.merizosearch_results[uid+'_segment.tsv'];
-        console.log(merizosearch_idx);
         display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx);
       }
     }

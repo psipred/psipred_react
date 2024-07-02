@@ -677,6 +677,7 @@ export function parse_merizosearch_search_results(file)
   htmltab += "<th>Max TM</th>";
   htmltab += "<th>RMSD</th></tr></thead><tbody>";
   lines.forEach(function(line, i){
+    if(i === 0){return;}
     if(line.length > 0){
       htmltab += "<tr>";
       let entries = line.split(/\t+/);
