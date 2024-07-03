@@ -677,8 +677,10 @@ export function parse_merizosearch_search_results(file)
   htmltab += "<th>T TM</th>";
   htmltab += "<th>Max TM</th>";
   htmltab += "<th>RMSD</th></tr></thead><tbody>";
+  let result_cnt = 0;
   lines.forEach(function(line){
     if(line.length > 0){
+      result_cnt+=1;
       htmltab += "<tr>";
       let entries = line.split(/\t+/);
       entries.shift();
@@ -695,5 +697,8 @@ export function parse_merizosearch_search_results(file)
   }
   });
   htmltab += "</tbody></table>";
+  if(result_cnt === 0){
+    return {html: "<h2>Merizo Search identified no domains for this PDB structure</h2>", data: {}};
+  }
   return {html: htmltab, data: {}};
 }
