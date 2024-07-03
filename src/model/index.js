@@ -169,7 +169,7 @@ export class Model extends React.Component{
     //console.log(this.state.pdb_data);
     //console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
     var data = this.state.pdb_data[Object.keys(this.state.pdb_data)[0]];
-    display_structure(this.model.current, data, true, false);
+    display_structure(this.model.current, data, true, false, false, false);
   }
 
     componentDidMount(){

@@ -38,7 +38,7 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.metsite_results){
       if(key.includes(".MetPred")){
-        display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false, false);
+        display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false, false, false);
       }
       if(key.includes(".Metpred")){
         let file_data = this.state.metsite_results[key];
@@ -55,10 +55,10 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.hspred_results){
       if(key.includes("_initial.pdb")){
-        display_structure(this.hspred_initial_pdb.current, this.state.hspred_results[key], false, false);    
+        display_structure(this.hspred_initial_pdb.current, this.state.hspred_results[key], false, false, false);    
       }
       if(key.includes("_second.pdb")){
-        display_structure(this.hspred_second_pdb.current, this.state.hspred_results[key], false, false);
+        display_structure(this.hspred_second_pdb.current, this.state.hspred_results[key], false, false, false);
       }
       if(key.includes(".out")){
         let file_data = this.state.hspred_results[key];
@@ -75,7 +75,7 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.memembed_results){
       if(key.includes(".pdb")){
-        display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false, true);    
+        display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false, true, false);    
       }
     }
     for(let key in this.state.merizo_results){
@@ -104,7 +104,7 @@ class ResultsStructure extends React.Component{
 
         this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
 
-        display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx);
+        display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx, true);
       }
       if(key.includes(".merizo")){
         let file_data = this.state.merizo_results[key];
@@ -121,8 +121,6 @@ class ResultsStructure extends React.Component{
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
         const { html, data} = parse_merizosearch_search_results(file_data);
-        console.log(data);
-        merizo_search = data;
         var dt = document.createElement('template');
         dt.innerHTML = html;
         this.merizosearch_results_table.current.appendChild(dt.content);
@@ -131,8 +129,8 @@ class ResultsStructure extends React.Component{
     for(let key in this.state.merizosearch_results){
       let uid = key.slice(0,-12);
       if(key.includes(".pdb2")){
-        let merizosearch_idx = this.state.merizosearch_results[uid+'_segment.tsv'];
-        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx);
+        let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
+        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false);
       }
     }
     
@@ -437,7 +435,7 @@ class ResultsStructure extends React.Component{
                   <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
                 </div>
               )}
-              <div className="merizoseach_pdb" id="merizoseach_pdb" ref={this.merizosearch_pdb}></div>
+              <div className="merizo_pdb pdb_panel_class_merizo" id="merizoseach_pdb" ref={this.merizosearch_pdb}></div>
             </div>
           </div>
 

@@ -77,6 +77,9 @@ export function parse_dmpmetal(file)
 }
 
 export function merizo_html(dat_string){
+  let lines = dat_string.split("\n");
+  lines.shift();
+  dat_string = lines[1];
   //console.log(dat_string);
   let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 30%" >';
   merizo_table += '<tr><th>Domain ID</th><th>Domain Region</th><th>Colour</th></tr>';
@@ -112,10 +115,8 @@ export function merizo_html(dat_string){
 }
 
 
-
 export function parse_merizo(string){
   let merizo_labels = {};
-
   let resi = string.split(",");
   for (var i = 0; i < resi.length; i++) {
     let ele = resi[i].split(":")
@@ -138,7 +139,6 @@ export function extractBFactors(pdbContent) {
       bFactors.push(bFactor);
     }
   }
-
   return bFactors;
 }
 
@@ -661,6 +661,7 @@ export function parse_parseds(annotations, file)
 export function parse_merizosearch_search_results(file)
 { 
   let lines = file.split("\n");
+  lines.shift();
   let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
   htmltab += "<th>Chopping</th>";
   htmltab += "<th>conf</th>";
@@ -676,14 +677,19 @@ export function parse_merizosearch_search_results(file)
   htmltab += "<th>T TM</th>";
   htmltab += "<th>Max TM</th>";
   htmltab += "<th>RMSD</th></tr></thead><tbody>";
-  lines.forEach(function(line, i){
-    if(i === 0){return;}
+  lines.forEach(function(line){
     if(line.length > 0){
       htmltab += "<tr>";
       let entries = line.split(/\t+/);
       entries.shift();
-      entries.forEach(function(entry){
-        htmltab += "<td>"+entry+"</td>";
+      entries.forEach(function(entry, i){
+        // console.log(i);
+        if(i === 4){
+          htmltab += '<td><a href="https://www.cathdb.info/version/latest/domain/'+entry+'">'+entry+'</a></td>';
+        }
+        else{
+          htmltab += "<td>"+entry+"</td>";
+        }
       });
       htmltab += "</tr>";
   }

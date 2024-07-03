@@ -8,8 +8,14 @@ import { parse_merizo } from '../interface/parsers.js';
 
 var moment = require('moment');
 
-export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo)
+export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl)
 {
+  //mol_container - handle for the DOM element for the structure
+  //pdb_data - PDB data in text format
+  //cartoon - bool for cartoon colouring
+  //memembed - bool for memember colouring
+  //merizo - merizo data in text format or False
+  //merizo_ctl - bool to toggle merizo colouring side bar
   let merizo_labels = [];
   let cartoon_color = function(atom) {
     if(atom.ss === 'h'){atom.color = '#e353e3'; return '#e353e3';}
@@ -86,15 +92,16 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
       return "rgb(255, 125, 69)";
     }
   };
-
+  
   // Function to color atoms by occupancy values
+
   let element = mol_container;
   let config = { backgroundColor: '#ffffff' };
   let viewer = Window.$3Dmol.createViewer( element, config );
   viewer.addModel( pdb_data, "pdb" );                       /* load data */
-  console.log(viewer);
-
-  if(merizo){
+  //console.log(viewer);
+  
+  if(merizo_ctl){
       //Add event listeners to buttons
     document.getElementById("colorByBFactor").addEventListener("click", function() {
       viewer.setStyle({}, { cartoon: { colorfunc: bFactor_color } });
@@ -110,7 +117,6 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
       viewer.setStyle({}, { cartoon: { colorfunc: bFactorBins_color } });
       viewer.render();
     });
-    viewer.setStyle({}, {cartoon: {colorfunc: merizo_color}});
   }
   else if(cartoon)
   {
@@ -122,11 +128,10 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   if(memembed){
     viewer.addSurface(Window.$3Dmol.SurfaceType.VDW, {'opacity':0.8, colorscheme: 'whiteCarbon'});
   }
-  if(merizo){
-    console.log(merizo);
-    let merizo_data = parse_merizo(merizo);
-    console.log(merizo_data);
+  if(merizo_dat){
+    let merizo_data = parse_merizo(merizo_dat);
     merizo_labels = merizo_data[0];
+    viewer.setStyle({}, {cartoon: {colorfunc: merizo_color}});
   }
   viewer.zoomTo();                                      /* set camera */
   viewer.render();                                      /* render scene */
