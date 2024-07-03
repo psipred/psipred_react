@@ -144,6 +144,10 @@ class ResultsSidebarDownloads extends React.Component{
           link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' Annotated PDB'], ['.dom_pdb', this.props.job_strings.merizo.shortName+' Domain PDB files'], ['.merizo', this.props.job_strings.merizo.shortName+' Boundaries']], this.props.job_strings.merizo.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
         }
+        if(name === this.props.job_strings.merizosearch.varName){
+          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' Annotated PDB'], ['.dom_pdb', this.props.job_strings.merizo.shortName+' Domain PDB files'], ['_segment.tsv', this.props.job_strings.merizo.shortName+' Segmenting Result'], ['_search.tsv', this.props.job_strings.merizo.shortName+' Search Result']],this.props.job_strings.merizo.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
         
         count = link_data[1];
       }
