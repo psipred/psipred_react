@@ -160,6 +160,13 @@ td{
   color: #ffffff;
   display: table;
 }
+.form-header-green
+{
+  background-color: #175817;
+  color: #ffffff;
+  display: table;
+}
+
 
 .form-header-row
 {

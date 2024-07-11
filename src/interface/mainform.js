@@ -176,6 +176,68 @@ class StructForm extends React.Component {
 //  <td data-toggle="tool-tip" title="Generate TDB file from structure for use with genTHREADER, pGenTHREADER and pDomTHREADER"><input type="checkbox" id="id_gentdb_job" name="gentdb_job" value="gentdb_job" onChange={this.handleChange} checked={this.props.analyses.includes('gentdb_job')} />&nbsp;<label htmlFor="id_gentdb_job">Generate TDB (Custom Generated Threading File)</label></td>
                 
 
+class TransForm extends React.Component {
+  handleChange = (event) => {
+    this.props.handleChange(event);
+  }
+
+  handleSubmit = (event) => {
+    this.props.handleSubmit(event);
+  }
+
+  render () {
+    return (
+    <div className="form-group">
+      <div className="col-md-12">
+        <div className="row form-header-row"><br />
+          <form className="form" id="main_form" method="Post" intro="slide" outro="slide" name="main_form" onSubmit={this.handleSubmit} >
+            <input type="hidden" name="csrfmiddlewaretoken" value="6TwolraqeOHCMgVbxvCgNJ3EQsHdqo9Rbp5GNIZkxWUFhlYjWMfLikgu0x7SxLDa" />
+            <div className="form-group">
+              <table className="full-width-table">
+              <tbody>
+                <tr><td colSpan="2"><h4>RNASeq Analyses</h4></td></tr>
+                <tr>
+                  <td data-toggle="tool-tip" title={this.props.job_strings.gsrcl.tooltip}><input type="checkbox" id="id_gsrcl_job" name={this.props.job_strings.gsrcl.jobName} value={this.props.job_strings.gsrcl.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.gsrcl.jobName)} />&nbsp;<label htmlFor="id_gsrcl_job">{this.props.job_strings.gsrcl.describedName}</label></td>
+                  <td></td>
+                </tr>
+                <tr><td colSpan="2"><a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /></td>
+                </tr>
+              </tbody>
+              </table>
+            </div>
+            <div className="col-sm-12 form-header-green">
+              <div className="row form-header-row">
+                <h5 className="float-header">Submission details</h5>
+              </div>
+            </div>
+            
+            <p className="form_error"></p> <br /><br /><br /> Select MAGE-TAB format RNAseq data file<br /> <input type="file" id="pdbFile" name="pdbFile" defaultValue='' /><br /><br />
+            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br />
+            If you wish to try this method follow this link to retrieve <a className="form-link" href="">a test csv file.</a><br /><br />
+            <div className="form-group">
+              <div className="form-group">
+                <label className="control-label" htmlFor="id_job_name">Job name</label><input className="form-control" type="text" placeholder="Job name" title="" required="" id="id_job_name" name="job_name" value={this.props.name} onChange={this.handleChange} />
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="form-group">
+                <label className="control-label" htmlFor="id_email">Email (optional)</label><input className="form-control" type="email" placeholder="Email (optional)" title="" id="id_email" name="email" value={this.props.email} onChange={this.handleChange}  />
+              </div>
+            </div>
+            { this.props.suspension_message !== null ?
+              <div><h3 className="form_error">{this.props.suspension_message}</h3></div>
+            :
+              <div className="form-group"><input className="btn btn-danger" type="reset" value="Reset" onClick={this.props.handleReset}/> <input className="btn btn-primary" type="submit" value="Submit" /></div>    
+            }
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+  }
+}
+
 class FormInteractivity extends React.Component{
   render(props) {
     return(
@@ -186,8 +248,12 @@ class FormInteractivity extends React.Component{
             <div className="col-md-12 form-header-blue">
               <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
             </div>
-          :
+          : this.props.formSelectedOption === "StructForm" ?
             <div className="col-md-12 form-header-red">
+              <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
+            </div>
+          : 
+          <div className="col-md-12 form-header-green">
               <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
             </div>
           }
@@ -195,7 +261,9 @@ class FormInteractivity extends React.Component{
             <div className="row form-header-row">
               <div className="funkyradio">
                 <div className="funkyradio-primary"><input type="radio" id="radio1" name="radio" value="SeqForm" checked={this.props.formSelectedOption === "SeqForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio1"><b>Sequence Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
-                <div className="funkyradio-danger"><input type="radio" id="radio2" name="radio" value="StructForm" checked={this.props.formSelectedOption === "StructForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio2"><b>PDB Structure Data&nbsp;&nbsp;</b></label></div>
+                <div className="funkyradio-danger"><input type="radio" id="radio2" name="radio" value="StructForm" checked={this.props.formSelectedOption === "StructForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio2"><b>PDB Structure Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
+                <div className="funkyradio-success"><input type="radio" id="radio3" name="radio" value="TransForm" checked={this.props.formSelectedOption === "TransForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio3"><b>RNASeq Data&nbsp;&nbsp;</b></label></div>
+    
               </div><br />
             </div>
           </div>
@@ -208,15 +276,27 @@ class FormInteractivity extends React.Component{
               <h5 className="float-header">Choose prediction methods (hover for short description)</h5>
             </div>
           </div>
-          :
+          : this.props.formSelectedOption === "StructForm" ?
           <div className="col-md-12 form-header-red">
             <div className="row form-header-row">
               <h5 className="float-header">Choose prediction methods (hover for short description)</h5>
             </div>
           </div>
+          : 
+          <div className="col-md-12 form-header-green">
+          <div className="row form-header-row">
+            <h5 className="float-header">Choose prediction methods (hover for short description)</h5>
+          </div>
+        </div>
         }
         </div>
-        { this.props.formSelectedOption === "SeqForm" ? <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} /> : <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />}
+        { this.props.formSelectedOption === "SeqForm" ?
+            <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} />
+          : this.props.formSelectedOption === "StructForm" ?
+            <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
+          :
+            <TransForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
+            }
 
       </div>
       );
