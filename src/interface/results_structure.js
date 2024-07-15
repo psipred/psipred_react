@@ -116,11 +116,12 @@ class ResultsStructure extends React.Component{
       }
 
     }
-    let merizo_search = {};
+    let button_names = [];
     for(let key in this.state.merizosearch_results){
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
         const { html, data} = parse_merizosearch_search_results(file_data);
+        button_names = data;
         var dt = document.createElement('template');
         dt.innerHTML = html;
         this.merizosearch_results_table.current.appendChild(dt.content);
@@ -130,7 +131,7 @@ class ResultsStructure extends React.Component{
       let uid = key.slice(0,-12);
       if(key.includes(".pdb2")){
         let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
-        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false);
+        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names);
       }
     }
     

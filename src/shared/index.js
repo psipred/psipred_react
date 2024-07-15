@@ -8,13 +8,13 @@ import { parse_merizo } from '../interface/parsers.js';
 
 var moment = require('moment');
 
-export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl)
+export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl, merizo_search_button_names)
 {
   //mol_container - handle for the DOM element for the structure
   //pdb_data - PDB data in text format
   //cartoon - bool for cartoon colouring
   //memembed - bool for memember colouring
-  //merizo - merizo data in text format or False
+  //merizo_dat - merizo data in text format or False
   //merizo_ctl - bool to toggle merizo colouring side bar
   let merizo_labels = [];
   let cartoon_color = function(atom) {
@@ -32,6 +32,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
     atom.color = 'White';
     return('White');  
   };
+  
   let hotspot_color = function(atom){
     if(atom.b === 1.0){atom.color = 'red'; return 'red';}
     if(atom.b === 0.5){atom.color = 'black'; return 'black';}
@@ -101,6 +102,27 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   viewer.addModel( pdb_data, "pdb" );                       /* load data */
   //console.log(viewer);
   
+  if(merizo_search_button_names){
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
+    for (const [key, value] of Object.entries(merizo_search_button_names)){
+      // eslint-disable-next-line no-loop-func
+      document.getElementById(value).addEventListener("click", function() {
+        let lab_copy = JSON.parse(JSON.stringify(merizo_labels));
+        for (const [key2, value2] of Object.entries(merizo_labels)){
+          if(Number(key) !== value2){
+            merizo_labels[key2] = 0;
+          }
+        }
+        viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+        viewer.render();
+        merizo_labels =JSON.parse(JSON.stringify(lab_copy));
+      });
+    }
+  }
+
   if(merizo_ctl){
       //Add event listeners to buttons
     document.getElementById("colorByBFactor").addEventListener("click", function() {

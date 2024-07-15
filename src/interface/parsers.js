@@ -662,7 +662,10 @@ export function parse_merizosearch_search_results(file)
 { 
   let lines = file.split("\n");
   lines.shift();
-  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
+  let button_names = {};
+  let htmltab = '<button align="right" width="50%" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Colour All Domains&nbsp</button><br /><br />';
+  htmltab += '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
+  htmltab += "<th>Show</th>";
   htmltab += "<th>Chopping</th>";
   htmltab += "<th>conf</th>";
   htmltab += "<th>plddt</th>";
@@ -684,6 +687,8 @@ export function parse_merizosearch_search_results(file)
       htmltab += "<tr>";
       let entries = line.split(/\t+/);
       entries.shift();
+      htmltab += '<td><button class="btn btn-secondary btn-block merizo_buttons" id="show_msearch_'+result_cnt+'">Show</button></td>';
+      button_names[result_cnt] ="show_msearch_"+result_cnt;
       entries.forEach(function(entry, i){
         // console.log(i);
         if(i === 4){
@@ -700,5 +705,5 @@ export function parse_merizosearch_search_results(file)
   if(result_cnt === 0){
     return {html: "<h2>Merizo Search identified no domains for this PDB structure</h2>", data: {}};
   }
-  return {html: htmltab, data: {}};
+  return {html: htmltab, data: button_names};
 }
