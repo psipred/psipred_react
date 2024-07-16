@@ -16,6 +16,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   //memembed - bool for memember colouring
   //merizo_dat - merizo data in text format or False
   //merizo_ctl - bool to toggle merizo colouring side bar
+
   let merizo_labels = [];
   let cartoon_color = function(atom) {
     if(atom.ss === 'h'){atom.color = '#e353e3'; return '#e353e3';}
@@ -103,16 +104,20 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   //console.log(viewer);
   
   if(merizo_search_button_names){
+    //console.log(merizo_search_button_names);
     document.getElementById("colorByDomains").addEventListener("click", function() {
       viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
       viewer.render();
     });
+
     for (const [key, value] of Object.entries(merizo_search_button_names)){
+      // eslint-disable-next-line no-loop-func
+      //console.log(merizo_labels);
       // eslint-disable-next-line no-loop-func
       document.getElementById(value).addEventListener("click", function() {
         let lab_copy = JSON.parse(JSON.stringify(merizo_labels));
         for (const [key2, value2] of Object.entries(merizo_labels)){
-          if(Number(key) !== value2){
+          if(Number(key) !== Number(value2)){
             merizo_labels[key2] = 0;
           }
         }

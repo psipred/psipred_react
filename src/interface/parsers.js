@@ -663,14 +663,15 @@ export function parse_merizosearch_search_results(file)
   let lines = file.split("\n");
   lines.shift();
   let button_names = {};
-  let htmltab = '<button align="right" width="50%" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Colour All Domains&nbsp</button><br /><br />';
+  let htmltab = '<button align="right" width="50%" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Re-colour All Domains&nbsp</button>';
+  htmltab += "<h3>Top TM Score Domains</h3>";
   htmltab += '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
   htmltab += "<th>Show</th>";
   htmltab += "<th>Chopping</th>";
   htmltab += "<th>conf</th>";
   htmltab += "<th>plddt</th>";
-  htmltab += "<th>Top K rank</th>";
-  htmltab += "<th>Hit</th>";
+  htmltab += "<th>Hit:CATH</th>";
+  htmltab += "<th>Hit:PDB</th>";
   htmltab += "<th>Cosine Sim</th>";
   htmltab += "<th>Query Length</th>";
   htmltab += "<th>Hit Length</th>";
@@ -691,8 +692,12 @@ export function parse_merizosearch_search_results(file)
       button_names[result_cnt] ="show_msearch_"+result_cnt;
       entries.forEach(function(entry, i){
         // console.log(i);
-        if(i === 4){
+        if(i === 3){
+          //skips Top K rank value
+        }
+        else if(i === 4){
           htmltab += '<td><a href="https://www.cathdb.info/version/latest/domain/'+entry+'">'+entry+'</a></td>';
+          htmltab += '<td><a href="https://www.rcsb.org/structure/'+entry.substring(0,4)+'">'+entry.substring(0,4)+'</a></td>';
         }
         else{
           htmltab += "<td>"+entry+"</td>";
