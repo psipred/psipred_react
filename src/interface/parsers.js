@@ -79,11 +79,14 @@ export function parse_dmpmetal(file)
 export function merizo_html(dat_string){
   let lines = dat_string.split("\n");
   lines.shift();
-  dat_string = lines[1];
-  //console.log(dat_string);
+  dat_string = lines[0];
   let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 30%" >';
   merizo_table += '<tr><th>Domain ID</th><th>Domain Region</th><th>Colour</th></tr>';
   let data = dat_string.split("\t");
+  if(! data[7]){
+    let merizo_table = '<br /><h3>NO DOMAIN BOUNDARIES FOUND FOR THIS PDB FILE</h3>';
+    return(merizo_table); 
+  }
   let domains = data[7].split(",");
   domains.forEach((domain, idx) => {
      merizo_table += '<tr><td>'+(idx+1)+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';

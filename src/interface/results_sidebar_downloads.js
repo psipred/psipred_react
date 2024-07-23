@@ -103,14 +103,10 @@ class ResultsSidebarDownloads extends React.Component{
 
   createDownloadLinks = (count, file_info, title) => { 
     let html_data = [];
-    
-    //_v2.pdb2
-    // v2_01.pdb2
-    
+
     html_data.push(<h5 key={count} >{title}</h5>);
     count++;
     file_info.forEach((file) => {
-      console.log(file);
       html_data.push(<button className="fake-link" key={count} onClick={this.getFile} value={file[0]} >{file[1]}</button>);
       count++;
       html_data.push(<br key={count} />);

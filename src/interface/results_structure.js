@@ -105,14 +105,15 @@ class ResultsStructure extends React.Component{
         this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
 
         display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx, true);
-      }
-      if(key.includes(".merizo")){
+       }
+       if(key.includes(".merizo")){
         let file_data = this.state.merizo_results[key];
+        console.log(file_data);
         let html_data = merizo_html(file_data);
 
-        var mr = document.createElement('template');
-        mr.innerHTML = html_data;
-        this.merizo_boundaries.current.appendChild(mr.content);
+         var mr = document.createElement('template');
+         mr.innerHTML = html_data;
+         this.merizo_boundaries.current.appendChild(mr.content);
       }
 
     }
