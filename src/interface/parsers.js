@@ -661,15 +661,14 @@ export function parse_parseds(annotations, file)
   return(annotations);
 }
 
-function build_merizo_html_table(lines, cath_table, add_buttons){
+function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
 
   let button_names = {};
-  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
+  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" id="'+tblid+'" align="center"><thead><tr>';
   if(add_buttons){
     htmltab += "<th>Show</th>";
+    htmltab += "<th>Chopping</th>";
   }
-  htmltab += "<th>Chopping</th>";
-  htmltab += "<th>conf</th>";
   htmltab += "<th>plddt</th>";
   if(cath_table){
     htmltab += "<th>Hit:CATH</th>";
@@ -677,15 +676,14 @@ function build_merizo_html_table(lines, cath_table, add_buttons){
   }
   else{
     htmltab += "<th>Hit:TED</th>";
-    htmltab += "<th></th>";
   }
   htmltab += "<th>Cosine Sim</th>";
   htmltab += "<th>Query Length</th>";
   htmltab += "<th>Hit Length</th>";
   htmltab += "<th>Align Length</th>";
   htmltab += "<th>Seq ID</th>";
-  htmltab += "<th>Q TM</th>";
-  htmltab += "<th>T TM</th>";
+  //htmltab += "<th>Q TM</th>";
+  //htmltab += "<th>T TM</th>";
   htmltab += "<th>Max TM</th>";
   htmltab += "<th>RMSD</th></tr></thead><tbody>";
   let result_cnt = 0;
@@ -701,8 +699,8 @@ function build_merizo_html_table(lines, cath_table, add_buttons){
       }
       entries.forEach(function(entry, i){
         // console.log(i);
-        if(i === 3){
-          //skips Top K rank value
+        if(i === 1 || i === 3 || i === 10 || i === 11)  {
+          //skips emb rank value
         }
         else if(i === 4){
           if(cath_table){
@@ -711,17 +709,21 @@ function build_merizo_html_table(lines, cath_table, add_buttons){
           }
           else{
             // massage entry
-           
             let dom = entry;
             dom = dom.replace('AF-','');
             dom = dom.replace('-F1-model_v4','');
             let uniprot = dom.slice(0, -2); 
             uniprot = uniprot.replace('_TED', '');
-            htmltab += '<td colspan="2"><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';  
+            htmltab += '<td><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';  
           }
         }
         else{
-          htmltab += "<td>"+entry+"</td>";
+          if(! add_buttons && i === 0){
+
+          }
+          else{
+            htmltab += "<td>"+entry+"</td>";
+          }
         }
       });
       htmltab += "</tr>";
@@ -768,17 +770,20 @@ export function parse_merizosearch_search_results(file)
     lines = top_tm_results[key]['data'];
     top_lines.push(lines[0]);
   }
-  let top_data = build_merizo_html_table(top_lines, cath_table, true);
+  let top_data = build_merizo_html_table(top_lines, cath_table, true, "toptmtable");
   top_data['html'] = '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Re-colour All Domains&nbsp</button><h3>Domains with highest TM Score</h3>' + top_data['html'];
   
   //build Each domain table
   let domain_html = '';
   let domain_buttons = {};
+  let table_ids = []
   for(const [key, value] of Object.entries(per_domain_results)){
-    let dom_data = build_merizo_html_table(value['data'], cath_table, false);
-    domain_html += '<h3>Domain '+key+' hits</h3>';
+    let dom_data = build_merizo_html_table(value['data'], cath_table, false, key+"tmtable");
+    let entries = value['data'][0].split("\t");
+    domain_html += '<h3>Domain '+key+' hits: '+entries[1]+'</h3>';
     domain_html += '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="show_domain_'+key+'">Show Domain '+key+'&nbsp</button>' + dom_data['html'];
     domain_buttons[key] ='show_domain_'+key;
+    table_ids.push(key+"tmtable");
   }
-  return {html: top_data['html'], data: top_data['data'], althtml: domain_html, domdata: domain_buttons};
+  return {html: top_data['html'], data: top_data['data'], althtml: domain_html, domdata: domain_buttons, tableids: table_ids};
 }

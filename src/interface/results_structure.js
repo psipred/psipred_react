@@ -9,6 +9,8 @@ import {parse_hspred} from './parsers.js';
 import {merizo_html} from './parsers.js';
 import {parse_merizosearch_search_results} from './parsers.js';
 // import {extractBFactors} from './parsers.js';
+import $ from 'jquery';
+import DataTable from 'datatables.net-dt';
 
 class ResultsStructure extends React.Component{
   constructor(props){
@@ -122,16 +124,31 @@ class ResultsStructure extends React.Component{
     for(let key in this.state.merizosearch_results){
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
-        const { html, data, althtml, domdata} = parse_merizosearch_search_results(file_data);
+        const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data);
         button_names = data;
         domain_button_names = domdata;
         var dt = document.createElement('template');
         dt.innerHTML = html;
         this.merizosearch_results_table.current.appendChild(dt.content);
+        let table = $('#toptmtable').DataTable({
+           searching : false,
+           paging: false,
+           ordering: true,
+           order: [[1, 'asc']]
+        });
 
         var ndt = document.createElement('template');
         ndt.innerHTML = althtml;
         this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+        tableids.forEach(function(id){
+          console.log(id);
+          let domtable = $('#'+id).DataTable({
+            searching : false,
+             paging: false,
+             ordering: true,
+             order: [[7, 'dsc']]
+        });
+        });
       }
     }
     for(let key in this.state.merizosearch_results){
@@ -141,7 +158,7 @@ class ResultsStructure extends React.Component{
         display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
       }
     }
-    
+
   }
 
   getResultsFiles = (data, props) => {
