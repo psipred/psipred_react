@@ -142,7 +142,7 @@ class MerizoSearchOptions extends React.Component {
         <h4>{this.props.job_strings.merizosearch.fullName}</h4>
         <strong>Chain:</strong><input type="text" id="merizosearch_chain" name="merizosearch_chain" value={this.props.merizosearch_chain} onChange={this.props.handleSidebarChange} /><br /><br />
         <strong>Search Database:</strong><br />
-          <input type="radio" id="merizosearch_db_cath" name="merizosearch_db" value="cath-dataset-nonredundant-S20" checked={this.props.merizosearch_db === 'cath'} onChange={this.props.handleSidebarChange} /><label htmlFor="merizosearch_db">&nbsp;CATH S20 NR</label><br />
+          <input type="radio" id="merizosearch_db_cath" name="merizosearch_db" value="cath" checked={this.props.merizosearch_db === 'cath'} onChange={this.props.handleSidebarChange} /><label htmlFor="merizosearch_db">&nbsp;CATH S20 NR</label><br />
           <input type="radio" id="merizosearch_db_ted100" name="merizosearch_db" value="ted100" checked={this.props.merizosearch_db === 'ted100'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizosearch_db">&nbsp;TED100</label><br />
   
         </div>

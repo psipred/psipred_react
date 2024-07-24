@@ -25,8 +25,8 @@ class ResultsStructure extends React.Component{
     this.merizo_pdb_sidebar = React.createRef();
     this.merizosearch_pdb = React.createRef();
     this.merizosearch_results_table = React.createRef();
+    this.merizosearch_alt_results_table = React.createRef();
     this.timer = null;
-    
   }
 
   componentDidUpdate(prevProps) {
@@ -117,22 +117,28 @@ class ResultsStructure extends React.Component{
       }
 
     }
-    let button_names = [];
+    let button_names = {};
+    let domain_button_names = {};
     for(let key in this.state.merizosearch_results){
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
-        const { html, data} = parse_merizosearch_search_results(file_data);
+        const { html, data, althtml, domdata} = parse_merizosearch_search_results(file_data);
         button_names = data;
+        domain_button_names = domdata;
         var dt = document.createElement('template');
         dt.innerHTML = html;
         this.merizosearch_results_table.current.appendChild(dt.content);
+
+        var ndt = document.createElement('template');
+        ndt.innerHTML = althtml;
+        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
       }
     }
     for(let key in this.state.merizosearch_results){
       let uid = key.slice(0,-12);
       if(key.includes(".pdb2")){
         let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
-        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names);
+        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
       }
     }
     
@@ -489,7 +495,7 @@ class ResultsStructure extends React.Component{
                 <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
               </div>
             )}
-          
+            <div className="merizosearch_alt_results_table" id="merizosearch_alt_results_table" ref={this.merizosearch_alt_results_table}></div>
           </div>
           </div>
 

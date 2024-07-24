@@ -661,20 +661,24 @@ export function parse_parseds(annotations, file)
   return(annotations);
 }
 
-export function parse_merizosearch_search_results(file)
-{ 
-  let lines = file.split("\n");
-  lines.shift();
+function build_merizo_html_table(lines, cath_table, add_buttons){
+
   let button_names = {};
-  let htmltab = '<button align="right" width="50%" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Re-colour All Domains&nbsp</button>';
-  htmltab += "<h3>Top TM Score Domains</h3>";
-  htmltab += '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
-  htmltab += "<th>Show</th>";
+  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead><tr>';
+  if(add_buttons){
+    htmltab += "<th>Show</th>";
+  }
   htmltab += "<th>Chopping</th>";
   htmltab += "<th>conf</th>";
   htmltab += "<th>plddt</th>";
-  htmltab += "<th>Hit:CATH</th>";
-  htmltab += "<th>Hit:PDB</th>";
+  if(cath_table){
+    htmltab += "<th>Hit:CATH</th>";
+    htmltab += "<th>Hit:PDB</th>";
+  }
+  else{
+    htmltab += "<th>Hit:TED</th>";
+    htmltab += "<th></th>";
+  }
   htmltab += "<th>Cosine Sim</th>";
   htmltab += "<th>Query Length</th>";
   htmltab += "<th>Hit Length</th>";
@@ -691,16 +695,30 @@ export function parse_merizosearch_search_results(file)
       htmltab += "<tr>";
       let entries = line.split(/\t+/);
       entries.shift();
-      htmltab += '<td><button class="btn btn-secondary btn-block merizo_buttons" id="show_msearch_'+result_cnt+'">Show</button></td>';
-      button_names[result_cnt] ="show_msearch_"+result_cnt;
+      if(add_buttons){
+        htmltab += '<td><button class="btn btn-secondary btn-block merizo_tbl_buttons" id="show_msearch_'+result_cnt+'">Show</button></td>';
+        button_names[result_cnt] ="show_msearch_"+result_cnt;
+      }
       entries.forEach(function(entry, i){
         // console.log(i);
         if(i === 3){
           //skips Top K rank value
         }
         else if(i === 4){
+          if(cath_table){
           htmltab += '<td><a href="https://www.cathdb.info/version/latest/domain/'+entry+'">'+entry+'</a></td>';
           htmltab += '<td><a href="https://www.rcsb.org/structure/'+entry.substring(0,4)+'">'+entry.substring(0,4)+'</a></td>';
+          }
+          else{
+            // massage entry
+           
+            let dom = entry;
+            dom = dom.replace('AF-','');
+            dom = dom.replace('-F1-model_v4','');
+            let uniprot = dom.slice(0, -2); 
+            uniprot = uniprot.replace('_TED', '');
+            htmltab += '<td colspan="2"><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';  
+          }
         }
         else{
           htmltab += "<td>"+entry+"</td>";
@@ -714,4 +732,53 @@ export function parse_merizosearch_search_results(file)
     return {html: "<h2>Merizo Search identified no domains for this PDB structure</h2>", data: {}};
   }
   return {html: htmltab, data: button_names};
+}
+
+export function parse_merizosearch_search_results(file)
+{ 
+  // split the results in to top TM hit for each domain and by domain
+  let cath_table = true;
+  let top_tm_results = {};
+  let per_domain_results = {}
+  let lines = file.split("\n");
+  lines.shift();
+  lines.forEach(function(line){
+    if(line.length === 0){return;}
+    let entries = line.split(/\t+/);
+    if(entries[5].includes('_TED')){
+      cath_table = false;
+    }
+    let domain_number = parseInt(entries[0].slice(-2), 10);
+    
+    if(!(domain_number in top_tm_results)){
+      top_tm_results[domain_number] = {'tm': 0, 'data': []};
+      per_domain_results[domain_number] = {'data': []};
+    }
+
+    if(parseFloat(entries[12]) > top_tm_results[domain_number]['tm'])
+    {
+      top_tm_results[domain_number]['tm'] = parseFloat(entries[12]);
+      top_tm_results[domain_number]['data'] = [line];
+    }
+    per_domain_results[domain_number]['data'].push(line);
+  });
+  //build Top TM table
+  let top_lines = [];
+  for(const [key, value] of Object.entries(top_tm_results)){
+    lines = top_tm_results[key]['data'];
+    top_lines.push(lines[0]);
+  }
+  let top_data = build_merizo_html_table(top_lines, cath_table, true);
+  top_data['html'] = '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Re-colour All Domains&nbsp</button><h3>Domains with highest TM Score</h3>' + top_data['html'];
+  
+  //build Each domain table
+  let domain_html = '';
+  let domain_buttons = {};
+  for(const [key, value] of Object.entries(per_domain_results)){
+    let dom_data = build_merizo_html_table(value['data'], cath_table, false);
+    domain_html += '<h3>Domain '+key+' hits</h3>';
+    domain_html += '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="show_domain_'+key+'">Show Domain '+key+'&nbsp</button>' + dom_data['html'];
+    domain_buttons[key] ='show_domain_'+key;
+  }
+  return {html: top_data['html'], data: top_data['data'], althtml: domain_html, domdata: domain_buttons};
 }

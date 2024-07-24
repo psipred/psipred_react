@@ -8,7 +8,7 @@ import { parse_merizo } from '../interface/parsers.js';
 
 var moment = require('moment');
 
-export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl, merizo_search_button_names)
+export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl, merizo_search_button_names, merizo_search_domain_button_names)
 {
   //mol_container - handle for the DOM element for the structure
   //pdb_data - PDB data in text format
@@ -111,6 +111,31 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
     });
 
     for (const [key, value] of Object.entries(merizo_search_button_names)){
+      // eslint-disable-next-line no-loop-func
+      //console.log(merizo_labels);
+      // eslint-disable-next-line no-loop-func
+      document.getElementById(value).addEventListener("click", function() {
+        let lab_copy = JSON.parse(JSON.stringify(merizo_labels));
+        for (const [key2, value2] of Object.entries(merizo_labels)){
+          if(Number(key) !== Number(value2)){
+            merizo_labels[key2] = 0;
+          }
+        }
+        viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+        viewer.render();
+        merizo_labels =JSON.parse(JSON.stringify(lab_copy));
+      });
+    }
+  }
+
+  if(merizo_search_domain_button_names){
+    //console.log(merizo_search_button_names);
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
+
+    for (const [key, value] of Object.entries(merizo_search_domain_button_names)){
       // eslint-disable-next-line no-loop-func
       //console.log(merizo_labels);
       // eslint-disable-next-line no-loop-func
