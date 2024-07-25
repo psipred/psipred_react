@@ -28,6 +28,7 @@ class ResultsStructure extends React.Component{
     this.merizosearch_pdb = React.createRef();
     this.merizosearch_results_table = React.createRef();
     this.merizosearch_alt_results_table = React.createRef();
+    this.merizosearch_tables_initialised = false;
     this.timer = null;
   }
 
@@ -121,6 +122,12 @@ class ResultsStructure extends React.Component{
     }
     let button_names = {};
     let domain_button_names = {};
+    let found_merizo_search_results = false;
+    for(let key in this.state.merizosearch_results){
+      if(key.includes("search.tsv")){
+        found_merizo_search_results = true;
+      }
+    }
     for(let key in this.state.merizosearch_results){
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
@@ -141,7 +148,6 @@ class ResultsStructure extends React.Component{
         ndt.innerHTML = althtml;
         this.merizosearch_alt_results_table.current.appendChild(ndt.content);
         tableids.forEach(function(id){
-          console.log(id);
           let domtable = $('#'+id).DataTable({
             searching : false,
              paging: false,
@@ -149,13 +155,33 @@ class ResultsStructure extends React.Component{
              order: [[7, 'dsc']]
         });
         });
+        this.merizosearch_tables_initialised = true;
+      }
+
+      if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
+        var dt = document.createElement('template');
+        dt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        this.merizosearch_results_table.current.appendChild(dt.content);
+        
+        var ndt = document.createElement('template');
+        ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+  
+        this.merizosearch_tables_initialised = true;
       }
     }
+   
+
     for(let key in this.state.merizosearch_results){
       let uid = key.slice(0,-12);
       if(key.includes(".pdb2")){
         let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
-        display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
+        if(Object.keys(button_names).length> 0 && Object.keys(domain_button_names).length > 0){
+          display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
+        }
+        else{
+          display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false);
+        }
       }
     }
 

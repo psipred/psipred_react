@@ -676,6 +676,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
   }
   else{
     htmltab += "<th>Hit:TED</th>";
+    htmltab += "<th>Get all Atom PDB</th>";
   }
   htmltab += "<th>Cosine Sim</th>";
   htmltab += "<th>Query Length</th>";
@@ -714,7 +715,9 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
             dom = dom.replace('-F1-model_v4','');
             let uniprot = dom.slice(0, -2); 
             uniprot = uniprot.replace('_TED', '');
-            htmltab += '<td><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';  
+            htmltab += '<td><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';
+            htmltab += '<td><a href="https://ted-dev.cathdb.info/api/v1/files/'+entry+'.pdb">DOWNLOAD PDB</a></td>';
+            
           }
         }
         else{
