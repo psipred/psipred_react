@@ -29,6 +29,7 @@ class ResultsStructure extends React.Component{
     this.merizosearch_results_table = React.createRef();
     this.merizosearch_alt_results_table = React.createRef();
     this.merizosearch_tables_initialised = false;
+    this.update_count = 0;
     this.timer = null;
   }
 
@@ -38,7 +39,8 @@ class ResultsStructure extends React.Component{
       this.time = null;
     }
     //console.log(this.state);
-
+    this.update_count = this.update_count + 1;
+    
     for(let key in this.state.metsite_results){
       if(key.includes(".MetPred")){
         display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false, false, false);
@@ -81,6 +83,7 @@ class ResultsStructure extends React.Component{
         display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false, true, false);    
       }
     }
+
     for(let key in this.state.merizo_results){
       let uid = key.slice(0,-15);
 
@@ -110,13 +113,16 @@ class ResultsStructure extends React.Component{
         display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx, true);
        }
        if(key.includes(".merizo")){
+
         let file_data = this.state.merizo_results[key];
         console.log(file_data);
         let html_data = merizo_html(file_data);
-
-         var mr = document.createElement('template');
-         mr.innerHTML = html_data;
-         this.merizo_boundaries.current.appendChild(mr.content);
+        if(Object.keys(this.state.merizo_results).length === 1){
+          html_data = "<h3>Chain ID not present in PDB file</h3>";
+        }
+        var mr = document.createElement('template');
+        mr.innerHTML = html_data;
+        this.merizo_boundaries.current.appendChild(mr.content);
       }
 
     }
@@ -166,8 +172,16 @@ class ResultsStructure extends React.Component{
         var ndt = document.createElement('template');
         ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
         this.merizosearch_alt_results_table.current.appendChild(ndt.content);
-  
         this.merizosearch_tables_initialised = true;
+      }
+    }
+    if(this.update_count > 1){
+      if(Object.keys(this.state.merizosearch_results).length == 0){
+        var dt = document.createElement('template');
+        dt.innerHTML = "<h3>Chain ID not present in PDB file</h3>";;
+        this.merizosearch_results_table.current.appendChild(dt.content);
+        this.merizosearch_pdb.current.appendChild(dt.content);
+        
       }
     }
    
@@ -176,7 +190,7 @@ class ResultsStructure extends React.Component{
       let uid = key.slice(0,-12);
       if(key.includes(".pdb2")){
         let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
-        if(Object.keys(button_names).length> 0 && Object.keys(domain_button_names).length > 0){
+        if(Object.keys(button_names).length > 0 && Object.keys(domain_button_names).length > 0){
           display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
         }
         else{

@@ -231,6 +231,15 @@ const validateFormData = (state, jobs, pdbData) => {
       checked.message = "HSPred Protein 2 must be a single letter";
       return(checked);
     }
+    if(! ValidateChainID(state.merizo_chain)) {
+      checked.message = "Merizo chain ID must be a single letter";
+      return(checked);
+    }
+    if(! ValidateChainID(state.merizosearch_chain)) {
+      checked.message = "Merizo Search chain ID be a single letter";
+      return(checked);
+    }
+    
     if(pdbData) {
       if(! /ATOM\s+\d+/i.test(pdbData)){
           checked.message = "Your file does not look like a plain text ascii pdb file. This service does not accept .gz or xml format pdb files";

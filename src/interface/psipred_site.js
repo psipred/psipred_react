@@ -70,7 +70,6 @@ class DisplayArea extends React.Component{
       merizo_iterate: 'FALSE',
       merizo_chain: 'A',
       merizosearch_db: 'ted100',
-      merizosearch_iterate: "FALSE",
       merizosearch_chain: "A",
       svgs: null,
       results_files: false,
@@ -218,6 +217,7 @@ class DisplayArea extends React.Component{
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
       merizo_iterate: 'FALSE',
+      merizo_chain: 'A',
       merizosearch_db: 'ted100',
       merizosearch_iterate: "TRUE",
       merizosearch_chain: "A",
@@ -263,10 +263,6 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
-      merizo_iterate: 'FALSE',
-      merizosearch_db: 'ted100',
-      merizosearch_iterate: "TRUE",
-      merizosearch_chain: "A",
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -453,9 +449,11 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
-    this.state.seq = this.state.seq.replace(/\r?\n|\r/g, "");
+    this.state.seq = this.state.seq.replace(/\r?\n|\r|\s/g, "");
     let checked = validateFormData(this.state, jobs, pdbData);
-    //console.log(checked);
+    console.log("THIS CHECK");
+    console.log(checked);
+
     if(checked.send){
       //SENDING THINGS NOW!!!, set up callback to update state.
       this.setState({

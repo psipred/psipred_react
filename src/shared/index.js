@@ -426,10 +426,12 @@ export function configurePost(formState)
   }
   if(formState.jobs.includes('merizo')){
     fd.append("merizo_iterate", formState.merizo_iterate);
+    fd.append("merizo_chain", formState.merizo_chain);
   }
   if(formState.jobs.includes('merizosearch')){
     fd.append("merizosearch_iterate", formState.merizosearch_iterate);
     fd.append("merizosearch_db", formState.merizosearch_db);
+    fd.append("merizosearch_chain", formState.merizosearch_chain);
   }
   return(fd);
 }

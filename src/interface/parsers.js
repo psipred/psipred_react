@@ -679,7 +679,9 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
     htmltab += "<th>Get all Atom PDB</th>";
   }
   htmltab += "<th>Cosine Sim</th>";
-  htmltab += "<th>Query Length</th>";
+  if(add_buttons){
+    htmltab += "<th>Query Length</th>";
+  }
   htmltab += "<th>Hit Length</th>";
   htmltab += "<th>Align Length</th>";
   htmltab += "<th>Seq ID</th>";
@@ -721,7 +723,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
           }
         }
         else{
-          if(! add_buttons && i === 0){
+          if(! add_buttons && (i === 0 || i === 5)){
 
           }
           else{
@@ -783,7 +785,7 @@ export function parse_merizosearch_search_results(file)
   for(const [key, value] of Object.entries(per_domain_results)){
     let dom_data = build_merizo_html_table(value['data'], cath_table, false, key+"tmtable");
     let entries = value['data'][0].split("\t");
-    domain_html += '<h3>Domain '+key+' hits: '+entries[1]+'</h3>';
+    domain_html += '<h3>Domain '+key+': '+entries[1]+', Length '+entries[7]+'</h3>';
     domain_html += '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="show_domain_'+key+'">Show Domain '+key+'&nbsp</button>' + dom_data['html'];
     domain_buttons[key] ='show_domain_'+key;
     table_ids.push(key+"tmtable");
