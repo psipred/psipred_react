@@ -109,9 +109,9 @@ class ResultsStructure extends React.Component{
         pdb_options.innerHTML += '</div>';
 
         this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
-        console.log("TRYING TO BUILD STRUCT");
+        //console.log("TRYING TO BUILD STRUCT");
         display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx, true);
-        console.log("TRYING TO BUILD STRUCT 2");
+        //console.log("TRYING TO BUILD STRUCT 2");
         }
        if(key.includes(".merizo")){
 
@@ -132,60 +132,60 @@ class ResultsStructure extends React.Component{
     let button_names = {};
     let domain_button_names = {};
     let found_merizo_search_results = false;
-    for(let key in this.state.merizosearch_results){
-      if(key.includes("search.tsv")){
-        found_merizo_search_results = true;
-      }
-    }
-    for(let key in this.state.merizosearch_results){
-      if(key.includes("search.tsv")){
-        let file_data = this.state.merizosearch_results[key];
-        const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data);
-        button_names = data;
-        domain_button_names = domdata;
-        var dt = document.createElement('template');
-        dt.innerHTML = html;
-        this.merizosearch_results_table.current.appendChild(dt.content);
-        let table = $('#toptmtable').DataTable({
-           searching : false,
-           paging: false,
-           ordering: true,
-           order: [[1, 'asc']]
-        });
+    // for(let key in this.state.merizosearch_results){
+    //   if(key.includes("search.tsv")){
+    //     found_merizo_search_results = true;
+    //   }
+    // }
+    // for(let key in this.state.merizosearch_results){
+    //   if(key.includes("search.tsv")){
+    //     let file_data = this.state.merizosearch_results[key];
+    //     const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data);
+    //     button_names = data;
+    //     domain_button_names = domdata;
+    //     var dt = document.createElement('template');
+    //     dt.innerHTML = html;
+    //     this.merizosearch_results_table.current.appendChild(dt.content);
+    //     let table = $('#toptmtable').DataTable({
+    //        searching : false,
+    //        paging: false,
+    //        ordering: true,
+    //        order: [[1, 'asc']]
+    //     });
 
-        var ndt = document.createElement('template');
-        ndt.innerHTML = althtml;
-        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
-        tableids.forEach(function(id){
-          let domtable = $('#'+id).DataTable({
-            searching : false,
-             paging: false,
-             ordering: true,
-             order: [[7, 'dsc']]
-        });
-        });
-        this.merizosearch_tables_initialised = true;
-      }
+    //     var ndt = document.createElement('template');
+    //     ndt.innerHTML = althtml;
+    //     this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+    //     tableids.forEach(function(id){
+    //       let domtable = $('#'+id).DataTable({
+    //         searching : false,
+    //          paging: false,
+    //          ordering: true,
+    //          order: [[7, 'dsc']]
+    //     });
+    //     });
+    //     this.merizosearch_tables_initialised = true;
+    //   }
 
-      if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
-        var dt = document.createElement('template');
-        dt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
-        this.merizosearch_results_table.current.appendChild(dt.content);
+    //   if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
+    //     var dt = document.createElement('template');
+    //     dt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+    //     this.merizosearch_results_table.current.appendChild(dt.content);
         
-        var ndt = document.createElement('template');
-        ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
-        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
-        this.merizosearch_tables_initialised = true;
-      }
-    }
-    if(this.update_count > 1){
-      if(Object.keys(this.state.merizosearch_results).length == 0){
-        var dt = document.createElement('template');
-        dt.innerHTML = "<h3>Chain ID not present in PDB file</h3>";;
-        this.merizosearch_results_table.current.appendChild(dt.content);
-        this.merizosearch_pdb.current.appendChild(dt.content);
+    //     var ndt = document.createElement('template');
+    //     ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+    //     this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+    //     this.merizosearch_tables_initialised = true;
+    //   }
+    // }
+    // if(this.update_count > 1){
+    //   if(Object.keys(this.state.merizosearch_results).length == 0){
+    //     var dt = document.createElement('template');
+    //     dt.innerHTML = "<h3>Chain ID not present in PDB file</h3>";;
+    //     this.merizosearch_results_table.current.appendChild(dt.content);
+    //     this.merizosearch_pdb.current.appendChild(dt.content);
         
-      }
+    //   }
     }
    
 
