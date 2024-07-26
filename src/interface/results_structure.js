@@ -117,8 +117,10 @@ class ResultsStructure extends React.Component{
         let file_data = this.state.merizo_results[key];
         console.log(file_data);
         let html_data = merizo_html(file_data);
-        if(Object.keys(this.state.merizo_results).length === 1){
-          html_data = "<h3>Chain ID not present in PDB file</h3>";
+        if(this.state.merizo_results){
+          if(Object.keys(this.state.merizo_results).length === 1){
+            html_data = "<h3>Chain ID not present in PDB file</h3>";
+          }
         }
         var mr = document.createElement('template');
         mr.innerHTML = html_data;
