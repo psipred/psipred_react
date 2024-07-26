@@ -132,40 +132,40 @@ class ResultsStructure extends React.Component{
     let button_names = {};
     let domain_button_names = {};
     let found_merizo_search_results = false;
-    // for(let key in this.state.merizosearch_results){
-    //   if(key.includes("search.tsv")){
-    //     found_merizo_search_results = true;
-    //   }
-    // }
-    // for(let key in this.state.merizosearch_results){
-    //   if(key.includes("search.tsv")){
-    //     let file_data = this.state.merizosearch_results[key];
-    //     const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data);
-    //     button_names = data;
-    //     domain_button_names = domdata;
-    //     var dt = document.createElement('template');
-    //     dt.innerHTML = html;
-    //     this.merizosearch_results_table.current.appendChild(dt.content);
-    //     let table = $('#toptmtable').DataTable({
-    //        searching : false,
-    //        paging: false,
-    //        ordering: true,
-    //        order: [[1, 'asc']]
-    //     });
+    for(let key in this.state.merizosearch_results){
+      if(key.includes("search.tsv")){
+        found_merizo_search_results = true;
+      }
+    }
+    for(let key in this.state.merizosearch_results){
+      if(key.includes("search.tsv")){
+        let file_data = this.state.merizosearch_results[key];
+        const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data);
+        button_names = data;
+        domain_button_names = domdata;
+        var dt = document.createElement('template');
+        dt.innerHTML = html;
+        this.merizosearch_results_table.current.appendChild(dt.content);
+        let table = $('#toptmtable').DataTable({
+           searching : false,
+           paging: false,
+           ordering: true,
+           order: [[1, 'asc']]
+        });
 
-    //     var ndt = document.createElement('template');
-    //     ndt.innerHTML = althtml;
-    //     this.merizosearch_alt_results_table.current.appendChild(ndt.content);
-    //     tableids.forEach(function(id){
-    //       let domtable = $('#'+id).DataTable({
-    //         searching : false,
-    //          paging: false,
-    //          ordering: true,
-    //          order: [[7, 'dsc']]
-    //     });
-    //     });
-    //     this.merizosearch_tables_initialised = true;
-    //   }
+        var ndt = document.createElement('template');
+        ndt.innerHTML = althtml;
+        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+        tableids.forEach(function(id){
+          let domtable = $('#'+id).DataTable({
+            searching : false,
+             paging: false,
+             ordering: true,
+             order: [[7, 'dsc']]
+        });
+        });
+        this.merizosearch_tables_initialised = true;
+      }
 
     //   if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
     //     var dt = document.createElement('template');
@@ -178,7 +178,7 @@ class ResultsStructure extends React.Component{
     //     this.merizosearch_tables_initialised = true;
     //   }
     // }
-    // if(this.update_count > 1){
+    // if(this.update_count > 1 && this.state.merizosearch_results){
     //   if(Object.keys(this.state.merizosearch_results).length == 0){
     //     var dt = document.createElement('template');
     //     dt.innerHTML = "<h3>Chain ID not present in PDB file</h3>";;
