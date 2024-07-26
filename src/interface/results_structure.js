@@ -178,15 +178,15 @@ class ResultsStructure extends React.Component{
         this.merizosearch_tables_initialised = true;
       }
     }
-    // if(this.update_count > 1 && this.state.merizosearch_results){
-    //   if(Object.keys(this.state.merizosearch_results).length == 0){
-    //     var dt = document.createElement('template');
-    //     dt.innerHTML = "<h3>Chain ID not present in PDB file</h3>";;
-    //     this.merizosearch_results_table.current.appendChild(dt.content);
-    //     this.merizosearch_pdb.current.appendChild(dt.content);
+    if(this.update_count > 1 && this.state.merizosearch_results){
+      if(Object.keys(this.state.merizosearch_results).length == 0){
+        var dt = document.createElement('template');
+        dt.innerHTML = "<h3>Chain ID not present in PDB file</h3>";;
+        this.merizosearch_results_table.current.appendChild(dt.content);
+        this.merizosearch_pdb.current.appendChild(dt.content);
         
-    //   }
-    // }
+      }
+    }
    
 
     // for(let key in this.state.merizosearch_results){
