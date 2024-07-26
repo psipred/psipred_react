@@ -123,6 +123,8 @@ class ResultsStructure extends React.Component{
             html_data = "<h3>Chain ID not present in PDB file</h3>";
           }
         }
+        console.log("PARSING MERISO 3");
+        
         var mr = document.createElement('template');
         mr.innerHTML = html_data;
         this.merizo_boundaries.current.appendChild(mr.content);
