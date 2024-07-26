@@ -186,21 +186,21 @@ class ResultsStructure extends React.Component{
     //     this.merizosearch_pdb.current.appendChild(dt.content);
         
     //   }
-    }
+    // }
    
 
-    for(let key in this.state.merizosearch_results){
-      let uid = key.slice(0,-12);
-      if(key.includes(".pdb2")){
-        let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
-        if(Object.keys(button_names).length > 0 && Object.keys(domain_button_names).length > 0){
-          display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
-        }
-        else{
-          display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false);
-        }
-      }
-    }
+    // for(let key in this.state.merizosearch_results){
+    //   let uid = key.slice(0,-12);
+    //   if(key.includes(".pdb2")){
+    //     let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
+    //     if(Object.keys(button_names).length > 0 && Object.keys(domain_button_names).length > 0){
+    //       display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
+    //     }
+    //     else{
+    //       display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false);
+    //     }
+    //   }
+    // }
 
   }
 
