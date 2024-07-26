@@ -99,7 +99,7 @@ See also class_layout.odp
 
 3. If it is a new sequence job, don't forget to add your job to the `ResultsSidebarResubmission` class in `results_sidebar_resubmission.js` and don't forget any tooltips. Copy an existing entry and edit as needed.
 
-4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include any additional panels when it detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class of the form `[Algorithm]Options`. Add your new class and the appropriate inputs. You MUST ensure that the form input names match the new state variable names you added in step 1 if you added new state variables (i.e. `DisplayArea`'s `this.state` etc...). You will also have to update `shared/index.js` `configurepost()` to include extra options.
+4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include any additional panels when it detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class of the form `[Algorithm]Options`. Add your new class and the appropriate inputs. You MUST ensure that the form input names match the new state variable names you added in step 1 if you added new state variables (i.e. `DisplayArea`'s `this.state` etc...). You will also have to update `shared/index.js` `configurepost()` to include extra options. Important in `checkform.js` add any checks for params the user provides in `validateFormData`
 
 5. In `checkform.js` in `validateFormData()`. Add/Update any new validations you now may have for the new/advanced/options inputs.
 

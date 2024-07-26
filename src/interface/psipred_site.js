@@ -39,13 +39,13 @@ class DisplayArea extends React.Component{
     this.state = {
       displayType: 'input',
       displayTime: true,
-      formSelectedOption: 'StructForm',
+      formSelectedOption: 'SeqForm',
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", 
       "dmpfold", 's4pred', 'dmpmetal' ],
       struct_job_names: ["metsite", "hspred", "memembed", "merizo", "merizosearch"],
       // analyses: ['psipred_job'],
-      analyses: ['merizosearch_job'],
+      analyses: ['psipred_job'],
       jobs: [],
       input_data: input_data,
       seq: seq,
@@ -449,11 +449,11 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
-    this.state.seq = this.state.seq.replace(/\r?\n|\r|\s/g, "");
+    
+    this.state.seq = this.state.seq.replace(/\r/g, "");
+    //console.log(this.state.seq);
     let checked = validateFormData(this.state, jobs, pdbData);
-    console.log("THIS CHECK");
-    console.log(checked);
-
+    this.state.seq = checked.seq;
     if(checked.send){
       //SENDING THINGS NOW!!!, set up callback to update state.
       this.setState({

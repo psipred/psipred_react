@@ -170,9 +170,10 @@ const validateFormData = (state, jobs, pdbData) => {
         checked.message= "No sequence provided";
         return(checked);
       }
+  
       checked.message = test_seq(state.seq, jobs);
     }
-    else {
+    else { //dealing with MSA
       let seq_count = 0;
       let residue_count = 0;
       let seqs = {};
@@ -187,7 +188,7 @@ const validateFormData = (state, jobs, pdbData) => {
           residue_count += line.length;
         }
       });
-      //console.log(seqs);
+      console.log(seqs);
       let msa_residue_total = seqs["1"].length*seq_count;
 
       if(residue_count !== msa_residue_total){
@@ -201,6 +202,7 @@ const validateFormData = (state, jobs, pdbData) => {
           return(checked);
         }
       }
+      state.seq = seqs[1];
     }
     if(! ValidateFloatString(state.dompred_e_value_cutoff)) {
       checked.message = "E Value cutoff for Dompred must be a number";
@@ -278,6 +280,7 @@ const validateFormData = (state, jobs, pdbData) => {
   checked.message = 'all tests passed';
   checked.pdbData = pdbData;
   checked.jobs = jobs;
+  checked.seq = state.seq;
   return(checked);
 };
 
