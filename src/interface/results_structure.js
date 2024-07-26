@@ -109,21 +109,19 @@ class ResultsStructure extends React.Component{
         pdb_options.innerHTML += '</div>';
 
         this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
-
+        console.log("TRYING TO BUILD STRUCT");
         display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx, true);
-       }
+        console.log("TRYING TO BUILD STRUCT 2");
+        }
        if(key.includes(".merizo")){
 
         let file_data = this.state.merizo_results[key];
-        console.log("PARSING MERIZO");
         let html_data = merizo_html(file_data);
-        console.log("PARSING MERISO 2");
         if(this.state.merizo_results){
           if(Object.keys(this.state.merizo_results).length === 1){
             html_data = "<h3>Chain ID not present in PDB file</h3>";
           }
         }
-        console.log("PARSING MERISO 3");
         
         var mr = document.createElement('template');
         mr.innerHTML = html_data;
