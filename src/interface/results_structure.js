@@ -167,17 +167,17 @@ class ResultsStructure extends React.Component{
         this.merizosearch_tables_initialised = true;
       }
 
-    //   if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
-    //     var dt = document.createElement('template');
-    //     dt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
-    //     this.merizosearch_results_table.current.appendChild(dt.content);
+      if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
+        var dt = document.createElement('template');
+        dt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        this.merizosearch_results_table.current.appendChild(dt.content);
         
-    //     var ndt = document.createElement('template');
-    //     ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
-    //     this.merizosearch_alt_results_table.current.appendChild(ndt.content);
-    //     this.merizosearch_tables_initialised = true;
-    //   }
-    // }
+        var ndt = document.createElement('template');
+        ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+        this.merizosearch_tables_initialised = true;
+      }
+    }
     // if(this.update_count > 1 && this.state.merizosearch_results){
     //   if(Object.keys(this.state.merizosearch_results).length == 0){
     //     var dt = document.createElement('template');
