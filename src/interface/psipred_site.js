@@ -520,9 +520,9 @@ export class PsipredSite extends React.Component{
     console.log("PAGE LOAD uuid: "+uuid);
     this.state = {
       suspension_message: null,
-      server_message: null,
+      //server_message: null,
       //suspension_message: "The server will be offline until the 15th of Feb 2024",
-      //server_message: "Big changes a'comin'",
+      server_message: "The service will be unavailable from the 12th of August 2024 for essential upgrades and maintainance. We hope to be back online as early as the 14th of but work may take until the 19th. We apologise for any inconvenience",
       endpoints_url: null,
       submit_url: null,
       times_url: null,
