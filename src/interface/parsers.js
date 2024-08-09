@@ -677,6 +677,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
   else{
     htmltab += "<th>Hit:TED</th>";
     htmltab += "<th>Get all Atom PDB</th>";
+    htmltab += "<th>CATH H-Family</th>"
   }
   htmltab += "<th>Cosine Sim</th>";
   if(add_buttons){
@@ -688,7 +689,11 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
   //htmltab += "<th>Q TM</th>";
   //htmltab += "<th>T TM</th>";
   htmltab += "<th>Max TM</th>";
-  htmltab += "<th>RMSD</th></tr></thead><tbody>";
+  htmltab += "<th>RMSD</th>";
+  if(! cath_table){
+    htmltab += "<th>Species</th>";
+  }
+  htmltab += "</tr></thead><tbody>";
   let result_cnt = 0;
   lines.forEach(function(line){
     if(line.length > 0){
@@ -699,6 +704,14 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
       if(add_buttons){
         htmltab += '<td><button class="btn btn-secondary btn-block merizo_tbl_buttons" id="show_msearch_'+result_cnt+'">Show</button></td>';
         button_names[result_cnt] ="show_msearch_"+result_cnt;
+      }
+      let meta_data = [];
+      if(entries.length === 15){
+        meta_data = entries.pop();
+        if(! cath_table){
+          meta_data = meta_data.replace(/'/g, '"');
+          meta_data = JSON.parse(meta_data);
+        }
       }
       entries.forEach(function(entry, i){
         // console.log(i);
@@ -719,7 +732,12 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
             uniprot = uniprot.replace('_TED', '');
             htmltab += '<td><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';
             htmltab += '<td><a href="https://ted-dev.cathdb.info/api/v1/files/'+entry+'.pdb">DOWNLOAD PDB</a></td>';
-            
+            if(meta_data.cath){
+                htmltab += '<td><a href="https://www.cathdb.info/version/latest/superfamily/'+meta_data.cath+'">'+meta_data.cath+'</a></td>';
+            }
+            else{
+              htmltab += '<td>Unkown</td>';
+            }
           }
         }
         else{
@@ -731,6 +749,14 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
           }
         }
       });
+      if(! cath_table){
+        if(meta_data.cath){
+          htmltab += '<td><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id='+meta_data.taxid+'">'+meta_data.taxsci+'</a></td>';
+      }
+      else{
+        htmltab += '<td>Unkown</td>';
+      }
+      }
       htmltab += "</tr>";
   }
   });
@@ -748,7 +774,7 @@ export function parse_merizosearch_search_results(file)
   let top_tm_results = {};
   let per_domain_results = {}
   let lines = file.split("\n");
-  lines.shift();
+  lines.shift();  
   lines.forEach(function(line){
     if(line.length === 0){return;}
     let entries = line.split(/\t+/);
