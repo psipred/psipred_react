@@ -194,8 +194,10 @@ class ResultsMain extends React.Component{
         catch{
           message.message=error
         }
+        console.log(message.message);
         console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
-       alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        console.log(message.message);
+        alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
        return null;
      });
   }
