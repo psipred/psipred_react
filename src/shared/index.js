@@ -290,7 +290,9 @@ export function request_data(uri, file_url, mime){
   }
   req.open("GET", file_url+uri, false);
   //req.setRequestHeader('Content-Type', 'text/plain; charset=utf-8');
-  if(mime){req.setRequestHeader('Accept', mime);}
+  if(mime){req.setRequestHeader('Accept', mime);
+    req.overrideMimeType(mime);
+  }
 
   req.send();
   req.onerror = function() {
