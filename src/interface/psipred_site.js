@@ -307,6 +307,10 @@ class DisplayArea extends React.Component{
   updateUuid = (newValue) => {
     this.setState({uuid: newValue});
   }
+  updateName = (newValue) => {
+    this.setState({name: newValue});
+  }
+  
   updateForm = (newValue) => {
     this.setState({formSelectedOption: newValue});
   }
@@ -487,7 +491,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateSVGs={this.updateSVGs}  updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateSVGs={this.updateSVGs}  updateName={this.updateName} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
           </div>
           <div className="col-md-3">
             { this.state.displayTime === true &&
