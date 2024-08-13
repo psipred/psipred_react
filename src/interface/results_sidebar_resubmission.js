@@ -29,7 +29,7 @@ class ResultsSidebarResubmission extends React.Component{
   }
 
   triggerStartChange = (value) => {
-    console.log(value);
+    //console.log(value);
     if(value.length===0){
       this.setState({
         seqStart: 1,
@@ -42,7 +42,7 @@ class ResultsSidebarResubmission extends React.Component{
     }
   }
   triggerStopChange = (value) => {
-    console.log(value);
+    //console.log(value);
     if(value.length===0 || value > this.props.seq.length){
       this.setState({
         seqStop: this.props.seq.length,

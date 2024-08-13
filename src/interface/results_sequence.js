@@ -484,7 +484,7 @@ class ResultsSequence extends React.Component{
                 dmpmetal_results: parsed_data.dmpmetal,
                 annotations: local_annotations});
             });
-            console.log(parsed_data);
+            //console.log(parsed_data);
 
             this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
@@ -498,7 +498,7 @@ class ResultsSequence extends React.Component{
             console.log("Awaiting Worker")
           }
           else{
-            console.log("hello");
+            //console.log("hello");
             throw new Error("Job Failed");
          }
 
@@ -517,7 +517,7 @@ class ResultsSequence extends React.Component{
         catch{
           message=error
         }
-        console.log(message.message); 
+        //console.log(message.message); 
         //alert();
         console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
         alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");

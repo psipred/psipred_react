@@ -544,7 +544,7 @@ export function parse_memsatdata(annotations, file)
   tmp_anno.forEach(function(anno, i){
     annotations[i].memsat = anno;
   });
-  console.log(annotations);
+  //console.log(annotations);
   return(annotations);
 }
 //type is one of gen, pgen and dgen

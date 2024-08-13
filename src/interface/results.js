@@ -180,7 +180,7 @@ class ResultsMain extends React.Component{
         let message = {};
         try {
           let obj = await error.json().then(json => {return(json);});
-          console.log(obj);
+          //console.log(obj);
           if(obj.error){
             message.message = obj.error;
           }
