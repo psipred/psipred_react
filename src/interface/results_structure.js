@@ -219,7 +219,7 @@ class ResultsStructure extends React.Component{
         if(props.results_map.includes(glob))
         {
           try {
-            let file_content = request_data(entry.data_path, props.files_url, 'text/plain');
+            let file_content = request_data(entry.data_path, props.files_url, 'text/plain;charset=UTF-8');
             let file_name = entry.data_path.split('/')[2];
             results_files[file_name] = file_content;
         
