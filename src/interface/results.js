@@ -113,7 +113,7 @@ class ResultsMain extends React.Component{
          this.setState({
             result_uri: config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID,
          });
-         console.log(data.submissions[0].submission_name);
+         config_data.props.updateName(data.submissions[0].submission_name);
          config_data.props.updateUuid(data.UUID);
          config_data.props.updateWaiting(true);
        }
