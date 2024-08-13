@@ -572,7 +572,7 @@ export class PsipredSite extends React.Component{
             <div className="col-md-9"></div><div className="col-md-3"></div>
           </div>
         <div className="helixy">
-          <img alt="It's Helixy y'all!" src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/images/helixy_png_blank.png" />
+          <img alt="It's Helixy y'all!" src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/helixy_png_blank.png" />
         </div>
         </div>
       </section>
