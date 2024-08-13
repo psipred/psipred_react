@@ -432,7 +432,6 @@ export function configurePost(formState)
     fd.append("merizo_chain", formState.merizo_chain);
   }
   if(formState.jobs.includes('merizosearch')){
-    fd.append("merizosearch_iterate", formState.merizosearch_iterate);
     fd.append("merizosearch_db", formState.merizosearch_db);
     fd.append("merizosearch_chain", formState.merizosearch_chain);
   }
