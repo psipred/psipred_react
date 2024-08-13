@@ -481,8 +481,8 @@ class DisplayArea extends React.Component{
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} setDMPMetSeq={this.setDMPMetSeq} /></div>
-          <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
+          {/* <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} setDMPMetSeq={this.setDMPMetSeq} /></div>
+          <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div> */}
         </div>
       :
         <div>
@@ -522,7 +522,7 @@ export class PsipredSite extends React.Component{
       suspension_message: null,
       //server_message: null,
       //suspension_message: "The server will be offline until the 15th of Feb 2024",
-      server_message: "The service will be unavailable from the 12th of August 2024 for essential upgrades and maintainance. We hope to be back online as early as the 14th of but work may take until the 19th. We apologise for any inconvenience",
+      server_message: "The service is unavailable for essential upgrades and maintainance. We hope to be back online as early as the 14th of but work may take until the 19th. We apologise for any inconvenience",
       endpoints_url: null,
       submit_url: null,
       times_url: null,
