@@ -285,13 +285,19 @@ export function request_data(uri, file_url, mime){
   let results_data = null;
   let req = new XMLHttpRequest();
   req.onreadystatechange = function (){
+    console.log("AFTER REQUEST, TESTING READY STATE");
     if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
      results_data = req.response;
     }
+    console.log("READY STATE HANDLED");
   }
+  console.log("BEFORE OPEN")
   req.open("GET", file_url+uri, false);
+  console.log("AFTER OPEN")
   if(mime){req.setRequestHeader('Accept', mime);}
+  console.log("AFTER MIMESET")
   req.send();
+  console.log("AFTER SEND")
   req.onerror = function() {
     alert("Request failed");
   };
