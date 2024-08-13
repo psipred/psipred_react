@@ -485,8 +485,8 @@ class DisplayArea extends React.Component{
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          {/* <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} setDMPMetSeq={this.setDMPMetSeq} /></div>
-          <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div> */}
+          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} setDMPMetSeq={this.setDMPMetSeq} /></div>
+          <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
         </div>
       :
         <div>
