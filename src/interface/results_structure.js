@@ -219,9 +219,15 @@ class ResultsStructure extends React.Component{
         if(props.results_map.includes(glob))
         {
           try {
+            console.log("HI");
             let file_content = request_data(entry.data_path, props.files_url);
+            console.log("HI2");
+            
             let file_name = entry.data_path.split('/')[2];
+            console.log("HI3");
             results_files[file_name] = file_content;
+            console.log("HI4");
+            
           }
           catch (err){
             console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk  providing the following information; submission data, submission email address, analyses you had selected and the job name." + err.message);
