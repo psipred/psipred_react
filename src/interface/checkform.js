@@ -170,8 +170,7 @@ const validateFormData = (state, jobs, pdbData) => {
         checked.message= "No sequence provided";
         return(checked);
       }
-  
-      checked.message = test_seq(state.seq, jobs);
+      checked.message = test_seq(whole_seq, jobs);
     }
     else { //dealing with MSA
       let seq_count = 0;
@@ -197,6 +196,7 @@ const validateFormData = (state, jobs, pdbData) => {
       }
       for(let key in seqs)
       {
+        //console.log("MSA seq testing");
         checked.message += test_seq(seqs[key]);
         if(checked.message > 0){
           return(checked);
