@@ -171,6 +171,7 @@ const validateFormData = (state, jobs, pdbData) => {
         return(checked);
       }
       checked.message = test_seq(whole_seq, jobs);
+      state.seq = whole_seq;
     }
     else { //dealing with MSA
       let seq_count = 0;
