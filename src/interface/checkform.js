@@ -285,5 +285,4 @@ const validateFormData = (state, jobs, pdbData) => {
   return(checked);
 };
 
-
 export { validateFormData };
