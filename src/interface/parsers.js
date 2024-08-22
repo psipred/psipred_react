@@ -723,7 +723,12 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
         else if(i === 4){
           if(cath_table){
           htmltab += '<td><a href="https://www.cathdb.info/version/latest/domain/'+entry+'">'+entry+'</a></td>';
-          htmltab += '<td><a href="https://www.cathdb.info/version/latest/superfamily/'+meta_data.cath+'">'+meta_data.cath+'</a></td>';
+          if(meta_data.cath.includes('NA') ){
+            htmltab += '<td>Unassigned</td>';
+          }
+          else{
+            htmltab += '<td><a href="https://www.cathdb.info/version/latest/superfamily/'+meta_data.cath+'">'+meta_data.cath+'</a></td>';
+          }
           htmltab += '<td><a href="https://www.rcsb.org/structure/'+entry.substring(0,4)+'">'+entry.substring(0,4)+'</a></td>';
           }
           else{
