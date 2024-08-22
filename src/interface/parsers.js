@@ -744,7 +744,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
           }
         }
         else{
-          console.log(entry, i);
+          // console.log(entry, i);
           if((! add_buttons && (i === 0 ||  i === 6 || i === 2 ))){
 
           }
