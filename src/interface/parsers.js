@@ -668,8 +668,8 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
   if(add_buttons){
     htmltab += "<th>Show</th>";
     htmltab += "<th>Chopping</th>";
+    htmltab += "<th>plddt</th>";
   }
-  htmltab += "<th>plddt</th>";
   if(cath_table){
     htmltab += "<th>Hit:CATH</th>";
     htmltab += "<th>Hit:PDB</th>";
@@ -700,10 +700,11 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
       result_cnt+=1;
       htmltab += "<tr>";
       let entries = line.split(/\t+/);
-      entries.shift();
+      let hit_name = entries.shift();
       if(add_buttons){
-        htmltab += '<td><button class="btn btn-secondary btn-block merizo_tbl_buttons" id="show_msearch_'+result_cnt+'">Show</button></td>';
-        button_names[result_cnt] ="show_msearch_"+result_cnt;
+        let dom_number = parseInt(hit_name.slice(-2), 10);
+        htmltab += '<td><button class="btn btn-secondary btn-block merizo_tbl_buttons" id="show_msearch_'+dom_number+'">Show</button></td>';
+        button_names[dom_number] ="show_msearch_"+dom_number;
       }
       let meta_data = [];
       if(entries.length === 15){
@@ -716,7 +717,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
       entries.forEach(function(entry, i){
         // console.log(i);
         if(i === 1 || i === 3 || i === 10 || i === 11)  {
-          //skips emb rank value
+          //skips unused table values
         }
         else if(i === 4){
           if(cath_table){
@@ -741,7 +742,8 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
           }
         }
         else{
-          if(! add_buttons && (i === 0 || i === 5)){
+          console.log(entry, i);
+          if((! add_buttons && (i === 0 ||  i === 6 || i === 2 ))){
 
           }
           else{
@@ -774,8 +776,8 @@ export function parse_merizosearch_search_results(file)
   let top_tm_results = {};
   let per_domain_results = {}
   let lines = file.split("\n");
-  lines.shift();  
-  lines.forEach(function(line){
+  lines.shift();
+  lines.forEach(function(line, i){
     if(line.length === 0){return;}
     let entries = line.split(/\t+/);
     if(entries[5].includes('_TED')){
