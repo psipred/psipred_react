@@ -816,7 +816,7 @@ export function parse_merizosearch_search_results(file)
     top_lines.push(lines[0]);
   }
   let top_data = build_merizo_html_table(top_lines, cath_table, true, "toptmtable");
-  top_data['html'] = '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Re-colour All Domains&nbsp</button><h3>Domains with highest TM Score</h3>' + top_data['html'];
+  top_data['html'] = '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Re-colour All Segments&nbsp</button><h3>Domains with highest TM Score</h3>' + top_data['html'];
   
   //build Each domain table
   let domain_html = '';
