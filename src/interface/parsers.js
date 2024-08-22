@@ -741,7 +741,12 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
             htmltab += '<td><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';
             htmltab += '<td><a href="https://ted-dev.cathdb.info/api/v1/files/'+entry+'.pdb">DOWNLOAD PDB</a></td>';
             if(meta_data.cath){
+              if(meta_data.cath.includes('NA') ){
+                htmltab += '<td>Unassigned</td>';
+              }
+              else{
                 htmltab += '<td><a href="https://www.cathdb.info/version/latest/superfamily/'+meta_data.cath+'">'+meta_data.cath+'</a></td>';
+              }
             }
             else{
               htmltab += '<td>Unkown</td>';
