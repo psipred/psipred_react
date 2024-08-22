@@ -672,6 +672,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
   }
   if(cath_table){
     htmltab += "<th>Hit:CATH</th>";
+    htmltab += "<th>CATH H-Family</th>"
     htmltab += "<th>Hit:PDB</th>";
   }
   else{
@@ -709,10 +710,10 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
       let meta_data = [];
       if(entries.length === 15){
         meta_data = entries.pop();
-        if(! cath_table){
+        //if(! cath_table){
           meta_data = meta_data.replace(/'/g, '"');
           meta_data = JSON.parse(meta_data);
-        }
+        //}
       }
       entries.forEach(function(entry, i){
         // console.log(i);
@@ -722,6 +723,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
         else if(i === 4){
           if(cath_table){
           htmltab += '<td><a href="https://www.cathdb.info/version/latest/domain/'+entry+'">'+entry+'</a></td>';
+          htmltab += '<td><a href="https://www.cathdb.info/version/latest/superfamily/'+meta_data.cath+'">'+meta_data.cath+'</a></td>';
           htmltab += '<td><a href="https://www.rcsb.org/structure/'+entry.substring(0,4)+'">'+entry.substring(0,4)+'</a></td>';
           }
           else{
