@@ -366,17 +366,20 @@ class DisplayArea extends React.Component{
 
   handleSeqChange = (event) =>  {
     var value = event.target.value;
+    //console.log(value);
     if(event.target.name === 'input_data'){
       //Handle FASTA HERE!
+      value = value.replace(/\r/g, "");
       this.setState({
         input_data: value
       });
       var header_count = (value.match(/>/g) || []).length;
       // Here we handle fasta input and grab the name/header for the jobname if possible
       if(header_count === 1) {
-        var fasta_regex = /^>(\S+).*\n(.+)/;
+        var fasta_regex = /^>(\S+).*\n([\S\s]+)/;
         var match = fasta_regex.exec(value);
         if(match){
+          //console.log(match[2])
           this.setState({
             name: match[1],
             seq: match[2].toUpperCase(),
@@ -420,6 +423,7 @@ class DisplayArea extends React.Component{
     if(this.state.analyses.length === 13){
       alert("You have selected every analysis method. We don't allow submissions which select all analyses. Please consider more carefully which predictions you require.");
     }
+    //console.log(this.state.seq);
   }
 
   handleSidebarChange = (event) => {
@@ -453,9 +457,7 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
-    
-    this.state.seq = this.state.seq.replace(/\r/g, "");
-    //console.log(this.state.seq);
+
     let checked = validateFormData(this.state, jobs, pdbData);
     this.state.seq = checked.seq;
     if(checked.send){
