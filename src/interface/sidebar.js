@@ -5,7 +5,7 @@ class Sidebar extends React.Component{
     return(
       <div className="box box-primary" id="main_form">
         <div className="box-header with-border">
-          <h5 className="box-title">Required Options</h5>
+          <h5 className="box-title">Additional Settings</h5>
         </div>
         <div className="box-body">
           <div className="col-md-12">
@@ -28,18 +28,15 @@ class Sidebar extends React.Component{
           { this.props.analyses.includes(this.props.job_strings.merizo.jobName) &&
             <MerizoOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
+          { this.props.analyses.includes(this.props.job_strings.merizosearch.jobName) &&
+            <MerizoSearchOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
+          }
           </div>
         </div>
       </div>
     );
   }
 }
-// { this.props.analyses.includes("bioserf_job") &&
-// <BioSerfOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
-// }
-// { this.props.analyses.includes("domserf_job") &&
-// <DomSerfOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
-// }
 
 class MetsiteOptions extends React.Component {
   render () {
@@ -129,36 +126,28 @@ class MerizoOptions extends React.Component {
     return(
       <div className="row form-header-row">
         <h4>{this.props.job_strings.merizo.fullName}</h4>
+        <strong>Chain:</strong><input type="text" id="merizo_chain" name="merizo_chain" value={this.props.merizo_chain} onChange={this.props.handleSidebarChange} /><br /><br />
         <strong>Segmentation Mode:</strong><br />
-          <input type="radio" id="merizo_mode_default" name="merizo_iterate" value="FALSE" checked={this.props.merizo_iterate === 'FALSE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Default</label><br />
-          <input type="radio" id="merizo_mode_iterative" name="merizo_iterate" value="TRUE" checked={this.props.merizo_iterate === 'TRUE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Iterative</label><br />
+          <input type="radio" id="merizo_mode_default" name="merizo_iterate" value="FALSE" checked={this.props.merizo_iterate === 'FALSE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Default (short chain)</label><br />
+          <input type="radio" id="merizo_mode_iterative" name="merizo_iterate" value="TRUE" checked={this.props.merizo_iterate === 'TRUE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizo_mode">Iterative (long chain)</label><br />
       </div>
     );
   }
 }
 
-// class BioSerfOptions extends React.Component {
-//   render () {
-//     return(
-//       <div className="row form-header-row">
-//         <h4>Bioserf</h4>
-//         <strong>MODELLER Key:</strong>
-//         <input type="text" id="bioserf_modeller_key" name="bioserf_modeller_key" value={this.props.bioserf_modeller_key} onChange={this.props.handleSidebarChange} />
-//       </div>
-//     );
-//   }
-// }
-
-// class DomSerfOptions extends React.Component {
-//   render () {
-//     return(
-//       <div className="row form-header-row">
-//         <h4>Domserf</h4>
-//         <strong>MODELLER Key:</strong>
-//         <input type="text" id="domserf_modeller_key" name="domserf_modeller_key" value={this.props.domserf_modeller_key} onChange={this.props.handleSidebarChange} />
-//       </div>
-//     );
-//   }
-// }
+class MerizoSearchOptions extends React.Component {
+  render () {
+    return(
+      <div className="row form-header-row">
+        <h4>{this.props.job_strings.merizosearch.fullName}</h4>
+        <strong>Chain:</strong><input type="text" id="merizosearch_chain" name="merizosearch_chain" value={this.props.merizosearch_chain} onChange={this.props.handleSidebarChange} /><br /><br />
+        <strong>Search Database:</strong><br />
+          <input type="radio" id="merizosearch_db_cath" name="merizosearch_db" value="cath" checked={this.props.merizosearch_db === 'cath'} onChange={this.props.handleSidebarChange} /><label htmlFor="merizosearch_db">&nbsp;CATH 4.3</label><br />
+          <input type="radio" id="merizosearch_db_ted100" name="merizosearch_db" value="ted100" checked={this.props.merizosearch_db === 'ted100'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizosearch_db">&nbsp;TED100</label><br />
+  
+        </div>
+    );
+  }
+}
 
 export {Sidebar};

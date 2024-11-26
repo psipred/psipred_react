@@ -92,7 +92,7 @@ class ResultsSidebarDownloads extends React.Component{
   getFile = (event) => {
     Object.keys(this.props.results_files).forEach((job) => {
       Object.keys(this.props.results_files[job]).forEach((file) => {
-        console.log(file);
+        console.log("Getting "+file);
         if(file.includes(event.target.value)){
           saveAs(new Blob(this.props.results_files[job][file].split()), file);
         }
@@ -137,7 +137,11 @@ class ResultsSidebarDownloads extends React.Component{
           downloads_text.push(link_data[0]);
         }
         if(name === this.props.job_strings.merizo.varName){
-          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' PDB'], ['.merizo', this.props.job_strings.merizo.shortName+' Boundaries']], this.props.job_strings.merizo.shortName+' DOWNLOADS');
+          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' Annotated PDB'], ['.dom_pdb', this.props.job_strings.merizo.shortName+' Domain PDB files'], ['.merizo', this.props.job_strings.merizo.shortName+' Boundaries']], this.props.job_strings.merizo.shortName+' DOWNLOADS');
+          downloads_text.push(link_data[0]);
+        }
+        if(name === this.props.job_strings.merizosearch.varName){
+          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' Annotated PDB'], ['.dom_pdb', this.props.job_strings.merizo.shortName+' Domain PDB files (all)'], ['_segment.tsv', this.props.job_strings.merizo.shortName+' Segmenting Result'], ['_search.tsv', this.props.job_strings.merizo.shortName+' Significant Results'], ['_search_insignificant.tsv', this.props.job_strings.merizo.shortName+' Insignificant Results']], this.props.job_strings.merizo.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
         }
         
@@ -196,6 +200,10 @@ class ResultsSidebarDownloads extends React.Component{
           }
           if(name === this.props.job_strings.mempack.varName){
             link_data = this.createDownloadLinks(count, [['_LIPID_EXPOSURE.results', this.props.job_strings.mempack.shortName+' Lipid Exposure Results'], ['_CONTACT_DEF1.results', this.props.job_strings.mempack.shortName+' Contacts']], this.props.job_strings.mempack.shortName+' DOWNLOADS');
+            downloads_text.push(link_data[0]);
+          }
+          if(name === this.props.job_strings.dmpmetal.varName){
+            link_data = this.createDownloadLinks(count, [['.dmpmetal', this.props.job_strings.dmpmetal.shortName+' Residue Results']], this.props.job_strings.dmpmetal.shortName+' DOWNLOADS');
             downloads_text.push(link_data[0]);
           }
 

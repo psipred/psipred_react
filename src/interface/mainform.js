@@ -80,7 +80,7 @@ class SeqForm extends React.Component {
                 <label className="control-label" htmlFor="id_input_data">Protein Sequence</label><textarea className="form-control" cols="40" rows="3" placeholder="Protein Sequence" title="" required="" id="id_input_data" name="input_data" value={this.props.input_data} onChange={this.handleChange}></textarea>
               </div>
             </div>
-            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a> or <button onClick={this.props.setTestSeq} type="button" class="fake-link">click here to load a test seq</button>.
+            <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br /> If you wish to test these services follow this link to retrieve <a className="form-link" href="http://www.uniprot.org/uniprot/B0R5N9.fasta">a test fasta sequence</a> or <button onClick={this.props.setTestSeq} type="button" class="fake-link">click here to load a test seq</button>.<br />For DMPmetal, <button onClick={this.props.setDMPMetSeq} type="button" class="fake-link">click here to set a test sequence</button>.
             <br /><br />
             <div className="form-group">
               <div className="form-group">
@@ -125,6 +125,11 @@ class StructForm extends React.Component {
             <div className="form-group">
               <table className="full-width-table">
               <tbody>
+                <tr><td colSpan="2"><h4>Popular Analyses</h4></td></tr>
+                <tr>
+                  <td colspan="2" data-toggle="tool-tip" title={this.props.job_strings.merizosearch.tooltip}><input type="checkbox" id="id_merizosearch_job" name={this.props.job_strings.merizosearch.jobName} value={this.props.job_strings.merizosearch.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.merizosearch.jobName)} />&nbsp;<label htmlFor="id_merizosearch_job">{this.props.job_strings.merizosearch.describedName}</label></td>
+                </tr>
+                <tr><td colSpan="2"><h4>Structure Analyses</h4></td></tr>
                 <tr>
                   <td data-toggle="tool-tip" title={this.props.job_strings.metsite.tooltip}><input type="checkbox" id="id_metsite_job" name={this.props.job_strings.metsite.jobName} value={this.props.job_strings.metsite.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.metsite.jobName)} />&nbsp;<label htmlFor="id_metsite_job">{this.props.job_strings.metsite.describedName}</label></td>
                   <td data-toggle="tool-tip" title={this.props.job_strings.hspred.tooltip}><input type="checkbox" id="id_hspred_job" name={this.props.job_strings.hspred.jobName} value={this.props.job_strings.hspred.jobName} onChange={this.handleChange} checked={this.props.analyses.includes(this.props.job_strings.hspred.jobName)} />&nbsp;<label htmlFor="id_hspred_job">{this.props.job_strings.hspred.describedName}</label></td>
@@ -225,6 +230,7 @@ class MainForm extends React.Component{
         <div className="box-header with-border">
           <p>The PSIPRED Workbench provides a range of protein structure prediction methods. The site can be used interactively via a web browser or programmatically via our REST API. For high-throughput analyses, downloads of all the algorithms are available.</p>
           <p><b>Amino acid</b> sequences enable: secondary structure prediction, including regions of disorder and transmembrane helix packing; contact analysis; fold recognition; structure modelling; and prediction of domains and function. In addition <b>PDB Structure files</b> allow prediction of protein-metal ion contacts, protein-protein hotspot residues, and membrane protein orientation.</p>
+          <p>For Help or Errors please email psipred-help@cs.ucl.ac.uk</p>
           <hr id="hr_form"></hr>
         </div>
         <div className="box-header with-border"><h5 className="box-title">Data Input</h5></div>

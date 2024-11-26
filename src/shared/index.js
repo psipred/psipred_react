@@ -8,8 +8,15 @@ import { parse_merizo } from '../interface/parsers.js';
 
 var moment = require('moment');
 
-export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo)
+export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl, merizo_search_button_names, merizo_search_domain_button_names)
 {
+  //mol_container - handle for the DOM element for the structure
+  //pdb_data - PDB data in text format
+  //cartoon - bool for cartoon colouring
+  //memembed - bool for memember colouring
+  //merizo_dat - merizo data in text format or False
+  //merizo_ctl - bool to toggle merizo colouring side bar
+
   let merizo_labels = [];
   let cartoon_color = function(atom) {
     if(atom.ss === 'h'){atom.color = '#e353e3'; return '#e353e3';}
@@ -19,13 +26,14 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   };
   let merizo_color = function(atom){
     let domain_number = merizo_labels[atom.resi];
-    console.log(merizo_labels);
+    //console.log(merizo_labels);
     if(colours.colourNames[domain_number]){
       atom.color = colours.colourNames[domain_number]; return(colours.colourNames[domain_number]);
     }
     atom.color = 'White';
     return('White');  
   };
+  
   let hotspot_color = function(atom){
     if(atom.b === 1.0){atom.color = 'red'; return 'red';}
     if(atom.b === 0.5){atom.color = 'black'; return 'black';}
@@ -86,15 +94,66 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
       return "rgb(255, 125, 69)";
     }
   };
-
+  
   // Function to color atoms by occupancy values
+
   let element = mol_container;
   let config = { backgroundColor: '#ffffff' };
   let viewer = Window.$3Dmol.createViewer( element, config );
   viewer.addModel( pdb_data, "pdb" );                       /* load data */
-  console.log(viewer);
+  //console.log(viewer);
+  
+  if(merizo_search_button_names){
+    //console.log(merizo_search_button_names);
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
 
-  if(merizo){
+    for (const [key, value] of Object.entries(merizo_search_button_names)){
+      // eslint-disable-next-line no-loop-func
+      //console.log(merizo_labels);
+      // eslint-disable-next-line no-loop-func
+      document.getElementById(value).addEventListener("click", function() {
+        let lab_copy = JSON.parse(JSON.stringify(merizo_labels));
+        for (const [key2, value2] of Object.entries(merizo_labels)){
+          if(Number(key) !== Number(value2)){
+            merizo_labels[key2] = 0;
+          }
+        }
+        viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+        viewer.render();
+        merizo_labels =JSON.parse(JSON.stringify(lab_copy));
+      });
+    }
+  }
+
+  if(merizo_search_domain_button_names){
+    //console.log(merizo_search_button_names);
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
+
+    for (const [key, value] of Object.entries(merizo_search_domain_button_names)){
+      // eslint-disable-next-line no-loop-func
+      //console.log(merizo_labels);
+      // eslint-disable-next-line no-loop-func
+      document.getElementById(value).addEventListener("click", function() {
+        let lab_copy = JSON.parse(JSON.stringify(merizo_labels));
+        for (const [key2, value2] of Object.entries(merizo_labels)){
+          if(Number(key) !== Number(value2)){
+            merizo_labels[key2] = 0;
+          }
+        }
+        viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+        viewer.render();
+        merizo_labels =JSON.parse(JSON.stringify(lab_copy));
+      });
+    }
+  }
+
+  if(merizo_ctl){
       //Add event listeners to buttons
     document.getElementById("colorByBFactor").addEventListener("click", function() {
       viewer.setStyle({}, { cartoon: { colorfunc: bFactor_color } });
@@ -110,7 +169,6 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
       viewer.setStyle({}, { cartoon: { colorfunc: bFactorBins_color } });
       viewer.render();
     });
-    viewer.setStyle({}, {cartoon: {colorfunc: merizo_color}});
   }
   else if(cartoon)
   {
@@ -122,9 +180,10 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   if(memembed){
     viewer.addSurface(Window.$3Dmol.SurfaceType.VDW, {'opacity':0.8, colorscheme: 'whiteCarbon'});
   }
-  if(merizo){
-    let merizo_data = parse_merizo(merizo);
+  if(merizo_dat){
+    let merizo_data = parse_merizo(merizo_dat);
     merizo_labels = merizo_data[0];
+    viewer.setStyle({}, {cartoon: {colorfunc: merizo_color}});
   }
   viewer.zoomTo();                                      /* set camera */
   viewer.render();                                      /* render scene */
@@ -132,6 +191,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
 }
 
 export function decide_location(href, hostname, main_url, app_path){
+    console.log("DECIDING WHERE I AM");
     let uris = {
         endpoints_url: 'http://127.0.0.1:8000/analytics_automated/endpoints/',
         submit_url: 'http://127.0.0.1:8000/analytics_automated/submission/',
@@ -147,21 +207,9 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['main_url'] = 'http://127.0.0.1:3000';
     }
 
-    if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || (href.includes('psipred') && !  href.includes('psipred_beta')) )
-    {
-      uris['main_url'] = "http://bioinf.cs.ucl.ac.uk/";
-      uris['app_path'] = '/psipred';
-      uris['joblist_url'] = main_url+uris['app_path']+'/api/job/';
-      uris['endpoints_url'] = main_url+uris['app_path']+'/api/endpoints/';
-      uris['submit_url'] = main_url+uris['app_path']+'/api/submission/';
-      uris['times_url'] = main_url+uris['app_path']+'/api/jobtimes/';
-      uris['files_url'] = main_url+uris['app_path']+"/api";
-      uris['gears_svg'] = "http://bioinf.cs.ucl.ac.uk/psipred_beta/static/images/gears.svg";
-      uris['location']= "Production";
-    }
-    else if(hostname === "bioinfstage1.cs.ucl.ac.uk")
+    if(hostname === "bioinfstaging1.cs.ucl.ac.uk")
     { //update for staging paths
-      uris['main_url'] = "bioinfstage1.cs.ucl.ac.uk";
+      uris['main_url'] = "bioinfstaging3.cs.ucl.ac.uk";
       uris['joblist_url'] = main_url+app_path+'/api/job/';
       uris['endpoints_url'] = main_url+app_path+'/api/endpoints/';
       uris['submit_url'] = main_url+app_path+'/api/submission/';
@@ -169,8 +217,11 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['files_url'] = main_url+app_path+"/api";
       uris['location'] = 'Staging';
       //gears_svg = "../static/images/gears.svg";
+      console.log(uris);
+      return(uris);
+  
     }
-    else if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta/" || href.includes('psipred_beta'))
+    if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_beta" || href.includes('psipred_beta'))
     { //update for staging paths
       uris['app_path'] = app_path;
       uris['main_url'] = "bioinf.cs.ucl.ac.uk";
@@ -181,8 +232,42 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['files_url'] = main_url+app_path+"/api";
       uris['location'] = 'Staging';
       //gears_svg = "../static/images/gears.svg";
-    } else if (hostname === "127.0.0.1" || hostname === "localhost"){
+      console.log(uris);
+      return(uris);
+  
+    }
+    if(href  === "http://bioinf.cs.ucl.ac.uk/psipred_alt" || href.includes('psipred_alt'))
+     { //update for staging paths
+        uris['app_path'] = '/psipred_alt';
+        uris['main_url'] = "bioinf.cs.ucl.ac.uk";
+        uris['joblist_url'] = main_url+'/psipred_alt/api/job/';
+        uris['endpoints_url'] = main_url+'/psipred_alt/api/endpoints/';
+        uris['submit_url'] = main_url+'/psipred_alt/api/submission/';
+        uris['times_url'] = main_url+'/psipred_alt/api/jobtimes/';
+        uris['files_url'] = main_url+"/psipred_alt/api";
+        uris['location'] = 'Staging';
+        //gears_svg = "../static/images/gears.svg";
+        console.log(uris);
+        return(uris);
+    
+    } 
+    if (hostname === "127.0.0.1" || hostname === "localhost"){
       console.log("dev server using default URIs");
+      console.log(uris);
+      return(uris);  
+    }
+    if(href === "http://bioinf.cs.ucl.ac.uk/psipred/" || href.includes('psipred')  )
+    {
+        uris['main_url'] = "http://bioinf.cs.ucl.ac.uk/";
+        uris['app_path'] = '/psipred';
+        uris['joblist_url'] = main_url+uris['app_path']+'/api/job/';
+        uris['endpoints_url'] = main_url+uris['app_path']+'/api/endpoints/';
+        uris['submit_url'] = main_url+uris['app_path']+'/api/submission/';
+        uris['times_url'] = main_url+uris['app_path']+'/api/jobtimes/';
+        uris['files_url'] = main_url+uris['app_path']+"/api";
+        uris['gears_svg'] = "http://bioinf.cs.ucl.ac.uk/psipred/static/images/gears.svg";
+        uris['location']= "Production";
+        console.log("IN PROD");
     } else {
       alert('UNSETTING ENDPOINTS WARNING, WARNING! WEBSITE NON FUNCTIONAL');
       uris['joblist_url'] = '';
@@ -190,13 +275,12 @@ export function decide_location(href, hostname, main_url, app_path){
       uris['submit_url'] = '';
       uris['times_url'] = '';
     }
-    console.log(uris);
+      console.log(uris);
     return(uris);
 }
 
 export function request_data(uri, file_url, mime){
   // convert this to synchronous
-  console.log("REQUESTING ASCII DATA: "+file_url+uri)
   let results_data = null;
   let req = new XMLHttpRequest();
   req.onreadystatechange = function (){
@@ -205,7 +289,11 @@ export function request_data(uri, file_url, mime){
     }
   }
   req.open("GET", file_url+uri, false);
-  if(mime){req.setRequestHeader('Accept', mime);}
+  //req.setRequestHeader('Content-Type', 'text/plain; charset=utf-8');
+  if(mime){req.setRequestHeader('Accept', mime);
+    req.overrideMimeType(mime);
+  }
+
   req.send();
   req.onerror = function() {
     alert("Request failed");
@@ -341,6 +429,11 @@ export function configurePost(formState)
   }
   if(formState.jobs.includes('merizo')){
     fd.append("merizo_iterate", formState.merizo_iterate);
+    fd.append("merizo_chain", formState.merizo_chain);
+  }
+  if(formState.jobs.includes('merizosearch')){
+    fd.append("merizosearch_db", formState.merizosearch_db);
+    fd.append("merizosearch_chain", formState.merizosearch_chain);
   }
   return(fd);
 }

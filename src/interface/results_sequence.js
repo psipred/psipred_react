@@ -14,6 +14,8 @@ import { parse_presults } from './parsers.js';
 import { parse_parseds } from './parsers.js';
 import { parse_featcfg } from './parsers.js';
 import { parse_ffpreds} from './parsers.js';
+import { parse_dmpmetal} from './parsers.js';
+import { parse_dmpmetal_annotations} from './parsers.js';
 import { psipred } from './biod3/main.js';
 import { genericxyLineChart } from './biod3/main.js';
 import DataTable from 'datatables.net-dt';
@@ -27,8 +29,8 @@ class ResultsSequence extends React.Component{
     residues.forEach(function(res){
       annotations.push({'res': res});
     });
-    let panel_height = ((Math.ceil(annotations.length/50)+2)*20)+(8*20);
-    if(panel_height < 300){panel_height = 300;}
+    let panel_height = ((Math.ceil(annotations.length/50)+2)*20)+(13*20);
+    if(panel_height < 410){panel_height = 410;}
     this.state ={
       annotations: annotations,
       psipred_results: null,
@@ -59,6 +61,7 @@ class ResultsSequence extends React.Component{
     this.gen_table_initialised = false;
     this.pdom_table_initialised = false;
     this.pgen_table_initialised = false;
+    this.dmpmetal_table = React.createRef();
 
     this.timer = null;
   }
@@ -68,7 +71,7 @@ class ResultsSequence extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    console.log("RUNNING COMPONENET DID UPDATE", this.state);
+    console.log("RUNNING COMPONENT DID UPDATE", this.state);
     for(let key in this.state.psipred_results){
       if(key.includes(".horiz")){
         let file_data = this.state.psipred_results[key];
@@ -357,6 +360,15 @@ class ResultsSequence extends React.Component{
       } 
     }
 
+    for(let key in this.state.dmpmetal_results){
+      if(key.includes(".dmpmetal")){
+        let file_data = this.state.dmpmetal_results[key];
+        let dmpmetal_table = parse_dmpmetal(file_data);  
+        let dmpt = document.createElement('template');
+        dmpt.innerHTML = dmpmetal_table;
+        this.dmpmetal_table.current.appendChild(dmpt.content);
+      }
+    }
 
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
@@ -376,6 +388,7 @@ class ResultsSequence extends React.Component{
           results_files[file_name] = image_url;
       }
       else {
+        
         if(props.results_map.includes(glob))
         {
           try {
@@ -384,8 +397,8 @@ class ResultsSequence extends React.Component{
             results_files[file_name] = file_content;
           }
           catch (err){
-            console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
-            alert("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+            console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk  providing the following information; submission data, submission email address, analyses you had selected and the job name." + err.message);
+            alert("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
             return null;
           }
         }
@@ -448,7 +461,11 @@ class ResultsSequence extends React.Component{
                 if(key.includes('.boundary')){
                   console.log("Found Dompred and parsing");
                   local_annotations = parse_parseds(local_annotations, results_data[key]);
-                } 
+                }
+                if(key.includes('.dmpmetal')){
+                  console.log("Found DMPmetal and parsing");
+                  local_annotations = parse_dmpmetal_annotations(local_annotations, results_data[key]);
+                }
                 
               }
               // we assign the results files 
@@ -464,15 +481,16 @@ class ResultsSequence extends React.Component{
                 dompred_results: parsed_data.dompred,
                 ffpred_results: parsed_data.ffpred,
                 mempack_results: parsed_data.mempack,
+                dmpmetal_results: parsed_data.dmpmetal,
                 annotations: local_annotations});
             });
-            console.log(parsed_data);
+            //console.log(parsed_data);
 
             this.props.updateResultsFiles(res);
             this.props.updateDisplayTime(false);
             this.props.updateWaiting(false);
             this.props.updateConfig(config_csv);
-          }
+        }
           else if(data.state === "Error"){
             throw new Error(data.submissions.at(-1).last_message);
           }
@@ -480,8 +498,9 @@ class ResultsSequence extends React.Component{
             console.log("Awaiting Worker")
           }
           else{
+            //console.log("hello");
             throw new Error("Job Failed");
-          }
+         }
 
         }
       }).catch(async error => {
@@ -498,10 +517,11 @@ class ResultsSequence extends React.Component{
         catch{
           message=error
         }
-        console.log(message.message);
-        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        //alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        this.setState({error_message: message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk"});
+        //console.log(message.message); 
+        //alert();
+        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        this.setState({error_message: message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name."});
         this.props.updateWaiting(false);
         return null;
       });
@@ -513,6 +533,8 @@ class ResultsSequence extends React.Component{
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
     this.timer = setInterval(() => this.getResults(), 20000);
+    //this.timer = setInterval(() => this.getResults(), 500);
+    
   }
 
   renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
@@ -702,7 +724,13 @@ class ResultsSequence extends React.Component{
         { this.renderPanel("mempack_pane", this.props.job_strings.mempack.shortName+" Cartoon", "mempack_plot", 'mempack_plot', this.mempack_plot , this.props.mempack_waiting_message, this.props.mempack_waiting_icon) }
         </div>
          }
+           { this.props.analyses.includes("dmpmetal_job") &&
+        <div>
+        { this.renderPanel("dmpmetal_table", this.props.job_strings.dmpmetal.shortName+" Table", "dmpmetal_table", 'dmpmetal_table', this.dmpmetal_table , this.props.dmpmetal_waiting_message, this.props.dmpmetal_waiting_icon) }
+        </div>
+         }
          
+
       </div>
     );
   }

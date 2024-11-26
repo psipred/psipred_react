@@ -1,10 +1,92 @@
 import * as colours from '../shared/colour_names.js';
 
+// take and ss2 (file) and parse the details and write the new annotation grid
+export function parse_dmpmetal_annotations(annotations, file)
+{
+    let lines = file.split('\n');
+    lines.forEach((line) => {
+      let entries = line.split("\t");
+      let idx = parseInt(entries[2])-1;
+      //console.log(idx);
+      if(entries.length == 4){
+        if(parseFloat(entries[3]) >= 0.1){
+            annotations[idx].dmpmetal = 'MB';
+        }
+      }
+    });
+    // TO DO
+    return(annotations);
+}
+
+
+export function parse_dmpmetal(file)
+{
+    let lines = file.split('\n');
+    let result_count = 0;
+    let metal_ions = {
+      'CHEBI:48775': 'Cd2+',
+      'CHEBI:29108': 'Ca2+',
+      'CHEBI:48828': 'Co2+',
+      'CHEBI:49415': 'Co3+',
+      'CHEBI:23378': 'Cu cation',
+      'CHEBI:49552': 'Cu+',
+      'CHEBI:29036': 'Cu2+',
+      'CHEBI:60240': 'divalent metal cation',
+      'CHEBI:190135': 'di-μ-sulfido-diiron',
+      'CHEBI:24875': 'iron cation',
+      'CHEBI:29033': 'Fe2+',
+      'CHEBI:29034': 'Fe3+',
+      'CHEBI:30408': 'iron-sulfur cluster',
+      'CHEBI:49713': 'Li+',
+      'CHEBI:18420': 'Mg2+',
+      'CHEBI:29035': 'Mn2+',
+      'CHEBI:16793': 'Hg2+',
+      'CHEBI:49786': 'Ni2+',
+      'CHEBI:60400': 'nickel-iron-sulfur cluster',
+      'CHEBI:47739': 'NiFe4S4 cluster',
+      'CHEBI:29103': 'K+',
+      'CHEBI:29101': 'Na+',
+      'CHEBI:49883': 'tetra-μ3-sulfido-tetrairon',
+      'CHEBI:21137': 'tri-μ-sulfido-μ3-sulfido-triiron',
+      'CHEBI:29105': 'Zn2+',
+      'CHEBI:177874': 'NiFe4S5 cluster',
+      'CHEBI:21143': 'Fe8S7 iron-sulfur cluster',
+      'CHEBI:60504': 'iron-sulfur-iron cofactor',
+      'CHEBI:25213': 'metal cation',
+    };
+    let dmp_table = '<br /><p>Binding residues are reported where estimated p-value 0.1% or greater.</p><table class="small-table table-striped table-bordered" style="width: 100%">';
+    dmp_table += '<tr><th style="width: 10%">Residue ID</th><th style="width: 30%">CHEBI ID</th><th style="width: 30%">Metal</th><th style="width: 30%">P-Value</th></tr>';
+    lines.forEach((line) => {
+      let entries = line.split("\t");
+      if(entries.length == 4){
+        if(parseFloat(entries[3]) >= 0.1){
+            result_count++;
+            dmp_table += '<tr><td style="width: 10%">'+entries[2]+'</td>';
+            dmp_table += '<td style="width: 30%"><a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId='+entries[1]+'">'+entries[1]+'</a></td>';
+            dmp_table += '<td style="width: 30%">'+metal_ions[entries[1]]+'</td>';
+            dmp_table += '<td style="width: 30%">'+entries[3]+'</td></tr>';
+      
+          }
+      }
+    });
+    dmp_table += '</table><p>There may be lower probability predictions in the Residue Results file.</p>';
+    if(result_count === 0){
+      dmp_table = "<h4>No binding site residues with p-value >= 0.1 predicted for this sequence. There may be lower probability predictions in the Residue Results file.</h4>"
+    }
+    return(dmp_table);
+}
+
 export function merizo_html(dat_string){
-  //console.log(dat_string);
+  let lines = dat_string.split("\n");
+  lines.shift();
+  dat_string = lines[0];
   let merizo_table = '<br /><h3>Domain Assignments</h3><table class="small-table table-striped table-bordered"  style="width: 30%" >';
   merizo_table += '<tr><th>Domain ID</th><th>Domain Region</th><th>Colour</th></tr>';
   let data = dat_string.split("\t");
+  if(! data[7]){
+    let merizo_table = '<br /><h3>NO DOMAIN BOUNDARIES FOUND FOR THIS PDB FILE</h3>';
+    return(merizo_table); 
+  }
   let domains = data[7].split(",");
   domains.forEach((domain, idx) => {
      merizo_table += '<tr><td>'+(idx+1)+'</td><td>'+domain+'</td><td style="background-color:'+colours.colourNames[idx+1]+';">&nbsp;</td></tr>';
@@ -36,10 +118,8 @@ export function merizo_html(dat_string){
 }
 
 
-
 export function parse_merizo(string){
   let merizo_labels = {};
-
   let resi = string.split(",");
   for (var i = 0; i < resi.length; i++) {
     let ele = resi[i].split(":")
@@ -62,7 +142,6 @@ export function extractBFactors(pdbContent) {
       bFactors.push(bFactor);
     }
   }
-
   return bFactors;
 }
 
@@ -347,8 +426,8 @@ export function get_memsat_ranges(regex, data)
       let regions = match[1].split(',');
       regions.forEach(function(region, i){
         regions[i] = region.split('-');
-        regions[i][0] = parseInt(regions[i][0]);
-        regions[i][1] = parseInt(regions[i][1]);
+        regions[i][0] = parseInt(regions[i][0]-1);
+        regions[i][1] = parseInt(regions[i][1]-1);
       });
       return(regions);
     }
@@ -357,8 +436,8 @@ export function get_memsat_ranges(regex, data)
         // console.log(match[1]);
         let seg = match[1].split('-');
         let regions = [[], ];
-        regions[0][0] = parseInt(seg[0]);
-        regions[0][1] = parseInt(seg[1]);
+        regions[0][0] = parseInt(seg[0]-1);
+        regions[0][1] = parseInt(seg[1]-1);
         return(regions);
     }
     return(match[1]);
@@ -465,6 +544,7 @@ export function parse_memsatdata(annotations, file)
   tmp_anno.forEach(function(anno, i){
     annotations[i].memsat = anno;
   });
+  //console.log(annotations);
   return(annotations);
 }
 //type is one of gen, pgen and dgen
@@ -579,4 +659,176 @@ export function parse_parseds(annotations, file)
     });
   }
   return(annotations);
+}
+
+function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
+
+  let button_names = {};
+  let htmltab = '<table width="100%" class="small-table table-striped table-bordered ffpred-table" id="'+tblid+'" align="center"><thead><tr>';
+  if(add_buttons){
+    htmltab += "<th>Show</th>";
+    htmltab += "<th>Chopping</th>";
+    htmltab += "<th>plddt</th>";
+  }
+  if(cath_table){
+    htmltab += "<th>Hit:CATH</th>";
+    htmltab += "<th>CATH H-Family</th>"
+    htmltab += "<th>Hit:PDB</th>";
+  }
+  else{
+    htmltab += "<th>Hit:TED</th>";
+    htmltab += "<th>Get all Atom PDB</th>";
+    htmltab += "<th>CATH H-Family</th>"
+  }
+  htmltab += "<th>Cosine Sim</th>";
+  if(add_buttons){
+    htmltab += "<th>Query Length</th>";
+  }
+  htmltab += "<th>Hit Length</th>";
+  htmltab += "<th>Align Length</th>";
+  htmltab += "<th>Seq ID</th>";
+  //htmltab += "<th>Q TM</th>";
+  //htmltab += "<th>T TM</th>";
+  htmltab += "<th>Max TM</th>";
+  htmltab += "<th>RMSD</th>";
+  if(! cath_table){
+    htmltab += "<th>Species</th>";
+  }
+  htmltab += "</tr></thead><tbody>";
+  let result_cnt = 0;
+  lines.forEach(function(line){
+    if(line.length > 0){
+      result_cnt+=1;
+      htmltab += "<tr>";
+      let entries = line.split(/\t+/);
+      let hit_name = entries.shift();
+      if(add_buttons){
+        let dom_number = parseInt(hit_name.slice(-2), 10);
+        htmltab += '<td><button class="btn btn-secondary btn-block merizo_tbl_buttons" id="show_msearch_'+dom_number+'">Show</button></td>';
+        button_names[dom_number] ="show_msearch_"+dom_number;
+      }
+      let meta_data = [];
+      if(entries.length === 15){
+        meta_data = entries.pop();
+        //if(! cath_table){
+          meta_data = meta_data.replace(/'/g, '"');
+          meta_data = JSON.parse(meta_data);
+        //}
+      }
+      entries.forEach(function(entry, i){
+        // console.log(i);
+        if(i === 1 || i === 3 || i === 10 || i === 11)  {
+          //skips unused table values
+        }
+        else if(i === 4){
+          if(cath_table){
+          htmltab += '<td><a href="https://www.cathdb.info/version/latest/domain/'+entry+'">'+entry+'</a></td>';
+          if(meta_data.cath.includes('NA') ){
+            htmltab += '<td>Unassigned</td>';
+          }
+          else{
+            htmltab += '<td><a href="https://www.cathdb.info/version/latest/superfamily/'+meta_data.cath+'">'+meta_data.cath+'</a></td>';
+          }
+          htmltab += '<td><a href="https://www.rcsb.org/structure/'+entry.substring(0,4)+'">'+entry.substring(0,4)+'</a></td>';
+          }
+          else{
+            // massage entry
+            let dom = entry;
+            dom = dom.replace('AF-','');
+            dom = dom.replace('-F1-model_v4','');
+            let uniprot = dom.slice(0, -2); 
+            uniprot = uniprot.replace('_TED', '');
+            htmltab += '<td><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';
+            htmltab += '<td><a href="https://ted-dev.cathdb.info/api/v1/files/'+entry+'.pdb">DOWNLOAD PDB</a></td>';
+            if(meta_data.cath){
+              if(meta_data.cath.includes('NA') ){
+                htmltab += '<td>Unassigned</td>';
+              }
+              else{
+                htmltab += '<td><a href="https://www.cathdb.info/version/latest/superfamily/'+meta_data.cath+'">'+meta_data.cath+'</a></td>';
+              }
+            }
+            else{
+              htmltab += '<td>Unkown</td>';
+            }
+          }
+        }
+        else{
+          // console.log(entry, i);
+          if((! add_buttons && (i === 0 ||  i === 6 || i === 2 ))){
+
+          }
+          else{
+            htmltab += "<td>"+entry+"</td>";
+          }
+        }
+      });
+      if(! cath_table){
+        if(meta_data.cath){
+          htmltab += '<td><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id='+meta_data.taxid+'">'+meta_data.taxsci+'</a></td>';
+      }
+      else{
+        htmltab += '<td>Unkown</td>';
+      }
+      }
+      htmltab += "</tr>";
+  }
+  });
+  htmltab += "</tbody></table>";
+  if(result_cnt === 0){
+    return {html: "<h2>Merizo Search identified no domains for this PDB structure</h2>", data: {}};
+  }
+  return {html: htmltab, data: button_names};
+}
+
+export function parse_merizosearch_search_results(file)
+{ 
+  // split the results in to top TM hit for each domain and by domain
+  let cath_table = true;
+  let top_tm_results = {};
+  let per_domain_results = {}
+  let lines = file.split("\n");
+  lines.shift();
+  lines.forEach(function(line, i){
+    if(line.length === 0){return;}
+    let entries = line.split(/\t+/);
+    if(entries[5].includes('_TED')){
+      cath_table = false;
+    }
+    let domain_number = parseInt(entries[0].slice(-2), 10);
+    
+    if(!(domain_number in top_tm_results)){
+      top_tm_results[domain_number] = {'tm': 0, 'data': []};
+      per_domain_results[domain_number] = {'data': []};
+    }
+
+    if(parseFloat(entries[12]) > top_tm_results[domain_number]['tm'])
+    {
+      top_tm_results[domain_number]['tm'] = parseFloat(entries[12]);
+      top_tm_results[domain_number]['data'] = [line];
+    }
+    per_domain_results[domain_number]['data'].push(line);
+  });
+  //build Top TM table
+  let top_lines = [];
+  for(const [key, value] of Object.entries(top_tm_results)){
+    lines = top_tm_results[key]['data'];
+    top_lines.push(lines[0]);
+  }
+  let top_data = build_merizo_html_table(top_lines, cath_table, true, "toptmtable");
+  top_data['html'] = '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="colorByDomains">Re-colour All Segments&nbsp</button><h3>Domains with highest TM Score</h3>' + top_data['html'];
+  
+  //build Each domain table
+  let domain_html = '';
+  let domain_buttons = {};
+  let table_ids = []
+  for(const [key, value] of Object.entries(per_domain_results)){
+    let dom_data = build_merizo_html_table(value['data'], cath_table, false, key+"tmtable");
+    let entries = value['data'][0].split("\t");
+    domain_html += '<h3>Domain '+key+': '+entries[1]+', Length '+entries[7]+'</h3>';
+    domain_html += '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="show_domain_'+key+'">Show Domain '+key+'&nbsp</button>' + dom_data['html'];
+    domain_buttons[key] ='show_domain_'+key;
+    table_ids.push(key+"tmtable");
+  }
+  return {html: top_data['html'], data: top_data['data'], althtml: domain_html, domdata: domain_buttons, tableids: table_ids};
 }

@@ -1,8 +1,11 @@
 import {select as d3Select } from 'd3-selection';
-//import {getEmPixels} from '../getEmPixels.js'
 import * as d3 from 'd3';
 require('blueimp-canvas-to-blob');
 var FileSaver = require('file-saver');
+//require('/home/dbuchan/Code/biod3/node_modules/blueimp-canvas-to-blob');
+//require('/Users/dbuchan/Code/biod3/node_modules/blueimp-canvas-to-blob');
+//const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
+//const FileSaver = require('/Users/dbuchan/Code/biod3/node_modules/file-saver');
 
 const protoChart = {
   chartType: false, // can be one of 'line', 'grid'
@@ -47,42 +50,6 @@ export function biod3_clearSelection(parent)
     d3.select(parent).select("svg").remove();
 }
 
-export function getEmPixels(document, documentElement){ 
-
-  // Form the style on the fly to result in smaller minified file
-  var important = "!important;";
-  var style = "position:absolute" + important + "visibility:hidden" + important + "width:1em" + important + "font-size:1em" + important + "padding:0" + important;
-
-      var extraBody;
-
-      if (!documentElement) {
-          // Emulate the documentElement to get rem value (documentElement does not work in IE6-7)
-          documentElement = extraBody = document.createElement("body");
-          extraBody.style.cssText = "font-size:1em" + important;
-          documentElement.insertAfter(extraBody, document.body);
-      }
-
-      // Create and style a test element
-      var testElement = document.createElement("i");
-      testElement.style.cssText = style;
-      documentElement.appendChild(testElement);
-
-      // Get the client width of the test element
-      var value = testElement.clientWidth;
-
-      if (extraBody) {
-          // Remove the extra body element
-          documentElement.removeChild(extraBody);
-      }
-      else {
-          // Remove the test element
-          documentElement.removeChild(testElement);
-      }
-
-      // Return the em value in pixels
-      return value;
-}
-
 //
 // Builds a panel to put a chart in given the prototype Object
 // Call With
@@ -97,7 +64,7 @@ export function chartFactory(opts, proto = protoChart) {
   //     .attr("class", "tooltip")
   //     .style("opacity", 0)
   //     .style("position", "absolute");
-  chart.em_size = getEmPixels(document, document.documentElement);
+  chart.em_size = getEmPixels();
   chart.margin.left = chart.em_size*chart.margin_scaler;
   chart.margin.right = chart.em_size*chart.margin_scaler;
   chart.margin.top = chart.em_size*chart.margin_scaler;

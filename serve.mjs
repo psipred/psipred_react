@@ -18,11 +18,13 @@ const serve = async (servedir, listen) => {
   })
   
   // Start esbuild's local web server. Random port will be chosen by esbuild.
+  // edited to start actually randomly
   const { host, port } = await ctx.serve({
     servedir: "public",
+    port: Math.floor(Math.random() * (6000 - 5000 + 1) + 5000) ,
     onRequest: (message) => {console.log(message.method, message.status, message.path)},
   }, {});
-
+  //console.log(port)
   // Create a second (proxy) server that will forward requests to esbuild.
   const proxy = http.createServer((req, res) => {
     // forwardRequest forwards an http request through to esbuid.

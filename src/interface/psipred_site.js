@@ -43,7 +43,8 @@ class DisplayArea extends React.Component{
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", 
       "dmpfold", 's4pred', 'dmpmetal' ],
-      struct_job_names: ["metsite", "hspred", "memembed", "merizo", ],
+      struct_job_names: ["metsite", "hspred", "memembed", "merizo", "merizosearch"],
+      // analyses: ['psipred_job'],
       analyses: ['psipred_job'],
       jobs: [],
       input_data: input_data,
@@ -67,6 +68,9 @@ class DisplayArea extends React.Component{
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
       merizo_iterate: 'FALSE',
+      merizo_chain: 'A',
+      merizosearch_db: 'ted100',
+      merizosearch_chain: "A",
       svgs: null,
       results_files: false,
       config_data: null,
@@ -74,7 +78,8 @@ class DisplayArea extends React.Component{
       results_map: ['png', 'gif', 'jpg', 'horiz', 'ss2', 'pbdat', 'comb', 'memsat_svm',
                     'presult', 'align', 'presults', 'dom_presults', 'parseds', 'featcfg',
                     'full_formatted', 'csv', 'ann', 'aln', 'con', 'pdb', 'merizo', 'idx',
-                    'boundary', 'Metpred', 'MetPred', 'out', 'results', 'pdb2', 'pdf', 'dmpmetal'],
+                    'boundary', 'Metpred', 'MetPred', 'out', 'results', 'pdb2', 'pdf',
+                    'dmpmetal', 'dom_pdb', 'tsv'],
       job_strings: { "psipred": { 'shortName': 'PSIPRED',
                                   'fullName': 'PSIPRED 4.0',
                                   'describedName': 'PSIPRED 4.0 (Predict Secondary Structure)',
@@ -171,6 +176,12 @@ class DisplayArea extends React.Component{
                                 'varName': 'merizo',
                                 'jobName': 'merizo_job',
                                 'tooltip': 'Fast and accurate protein domain prediction', },
+                      "merizosearch": { 'shortName': 'Merizo Search',
+                                'fullName': 'Merizo Search',
+                                'describedName': 'Merizo Search (Domain segmentation and identification)',
+                                'varName': 'merizosearch',
+                                'jobName': 'merizosearch_job',
+                                'tooltip': 'Fast domain segmentation and idenftication', },
                       "dmpmetal": {'shortName': 'DMPmetal',
                                    'fullName': 'DMPmetal',
                                    'describedName': 'DMPmetal (Metal Binding Site Prediction)',
@@ -206,6 +217,10 @@ class DisplayArea extends React.Component{
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
       merizo_iterate: 'FALSE',
+      merizo_chain: 'A',
+      merizosearch_db: 'ted100',
+      merizosearch_iterate: "TRUE",
+      merizosearch_chain: "A",
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -248,7 +263,6 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
-      merizo_iterate: 'FALSE',
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -269,6 +283,14 @@ class DisplayArea extends React.Component{
       input_data: test_seq});
   }
 
+  setDMPMetSeq = () => {
+    let test_seq = 'IDVLLGADDGSLAFVPSEFSISPGEKIVFKNNAGFPHNIVFDEDSIPSGVDASKISMSEEDLLNAKGETFEVALSNKGEYSFYCSPHQGAGMVGKVTVN';
+    this.setState({
+      seq: test_seq,
+      input_data: test_seq});
+  }
+
+
   updateResubmit = (change) => {
     this.setState({
       resubmit: change});
@@ -285,6 +307,10 @@ class DisplayArea extends React.Component{
   updateUuid = (newValue) => {
     this.setState({uuid: newValue});
   }
+  updateName = (newValue) => {
+    this.setState({name: newValue});
+  }
+  
   updateForm = (newValue) => {
     this.setState({formSelectedOption: newValue});
   }
@@ -340,17 +366,20 @@ class DisplayArea extends React.Component{
 
   handleSeqChange = (event) =>  {
     var value = event.target.value;
+    //console.log(value);
     if(event.target.name === 'input_data'){
       //Handle FASTA HERE!
+      value = value.replace(/\r/g, "");
       this.setState({
         input_data: value
       });
       var header_count = (value.match(/>/g) || []).length;
       // Here we handle fasta input and grab the name/header for the jobname if possible
       if(header_count === 1) {
-        var fasta_regex = /^>(.+)\n(.+)/;
+        var fasta_regex = /^>(\S+).*\n([\S\s]+)/;
         var match = fasta_regex.exec(value);
         if(match){
+          //console.log(match[2])
           this.setState({
             name: match[1],
             seq: match[2].toUpperCase(),
@@ -394,6 +423,7 @@ class DisplayArea extends React.Component{
     if(this.state.analyses.length === 13){
       alert("You have selected every analysis method. We don't allow submissions which select all analyses. Please consider more carefully which predictions you require.");
     }
+    //console.log(this.state.seq);
   }
 
   handleSidebarChange = (event) => {
@@ -427,9 +457,9 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
-    this.state.seq = this.state.seq.replace(/\r?\n|\r/g, "");
+
     let checked = validateFormData(this.state, jobs, pdbData);
-    //console.log(checked);
+    this.state.seq = checked.seq;
     if(checked.send){
       //SENDING THINGS NOW!!!, set up callback to update state.
       this.setState({
@@ -457,13 +487,13 @@ class DisplayArea extends React.Component{
       <div className="row">
       { this.state.displayType === "input" ?
         <div>
-          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} /></div>
+          <div className="col-md-9"><MainForm {...{...this.state, ...this.props}} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} handleStructChange={this.handleStructChange} handleReset={this.handleReset} handleSeqChange={this.handleSeqChange} setTestSeq={this.setTestSeq} setDMPMetSeq={this.setDMPMetSeq} /></div>
           <div className="col-md-3"><Sidebar {...this.state} handleSidebarChange={this.handleSidebarChange} /></div>
         </div>
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateSVGs={this.updateSVGs}  updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateSVGs={this.updateSVGs}  updateName={this.updateName} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
           </div>
           <div className="col-md-3">
             { this.state.displayTime === true &&
@@ -498,7 +528,7 @@ export class PsipredSite extends React.Component{
       suspension_message: null,
       server_message: null,
       //suspension_message: "The server will be offline until the 15th of Feb 2024",
-      //server_message: "Big changes a'comin'",
+      //server_message: "Our new hardware and service upgrade is complete. There may be some minor bugs. If you encounter one of these please email psipred-help@cs.ucl.ac.uk",
       endpoints_url: null,
       submit_url: null,
       times_url: null,
@@ -544,7 +574,7 @@ export class PsipredSite extends React.Component{
             <div className="col-md-9"></div><div className="col-md-3"></div>
           </div>
         <div className="helixy">
-          <img alt="It's Helixy y'all!" src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/images/helixy_png_blank.png" />
+          <img alt="It's Helixy y'all!" src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/helixy_png_blank.png" />
         </div>
         </div>
       </section>

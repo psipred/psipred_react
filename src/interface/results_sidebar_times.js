@@ -35,8 +35,8 @@ class ResultsSidebarTimes extends React.Component{
        //DO SOME THINGS
      }).catch(async error => {
        let obj = await error.json().then(json => {return(json);});
-       console.log("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-       alert("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+       console.log("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+       alert("Getting Times data "+this.props.times_url+" Failed. "+obj.error+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
       return null;
      })
   }
@@ -98,7 +98,9 @@ class ResultsSidebarTimes extends React.Component{
               { this.props.analyses.includes(this.props.job_strings.dmpmetal.jobName) &&
               <div><span className="info-box-number">{this.props.job_strings.dmpmetal.shortName} runtime: {this.state.dmpmetal}</span><br /></div>
               }
-              
+              { this.props.analyses.includes(this.props.job_strings.merizosearch.jobName) &&
+              <div><span className="info-box-number">{this.props.job_strings.merizosearch.shortName} runtime: {this.state.merizosearch}</span><br /></div>
+              }          
             </div>
       </div>
     );

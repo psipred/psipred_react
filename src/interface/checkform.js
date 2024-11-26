@@ -170,9 +170,10 @@ const validateFormData = (state, jobs, pdbData) => {
         checked.message= "No sequence provided";
         return(checked);
       }
-      checked.message = test_seq(state.seq, jobs);
+      checked.message = test_seq(whole_seq, jobs);
+      state.seq = whole_seq;
     }
-    else {
+    else { //dealing with MSA
       let seq_count = 0;
       let residue_count = 0;
       let seqs = {};
@@ -187,7 +188,7 @@ const validateFormData = (state, jobs, pdbData) => {
           residue_count += line.length;
         }
       });
-      //console.log(seqs);
+      console.log(seqs);
       let msa_residue_total = seqs["1"].length*seq_count;
 
       if(residue_count !== msa_residue_total){
@@ -196,11 +197,13 @@ const validateFormData = (state, jobs, pdbData) => {
       }
       for(let key in seqs)
       {
+        //console.log("MSA seq testing");
         checked.message += test_seq(seqs[key]);
         if(checked.message > 0){
           return(checked);
         }
       }
+      state.seq = seqs[1];
     }
     if(! ValidateFloatString(state.dompred_e_value_cutoff)) {
       checked.message = "E Value cutoff for Dompred must be a number";
@@ -231,6 +234,15 @@ const validateFormData = (state, jobs, pdbData) => {
       checked.message = "HSPred Protein 2 must be a single letter";
       return(checked);
     }
+    if(! ValidateChainID(state.merizo_chain)) {
+      checked.message = "Merizo chain ID must be a single letter";
+      return(checked);
+    }
+    if(! ValidateChainID(state.merizosearch_chain)) {
+      checked.message = "Merizo Search chain ID be a single letter";
+      return(checked);
+    }
+    
     if(pdbData) {
       if(! /ATOM\s+\d+/i.test(pdbData)){
           checked.message = "Your file does not look like a plain text ascii pdb file. This service does not accept .gz or xml format pdb files";
@@ -269,8 +281,8 @@ const validateFormData = (state, jobs, pdbData) => {
   checked.message = 'all tests passed';
   checked.pdbData = pdbData;
   checked.jobs = jobs;
+  checked.seq = state.seq;
   return(checked);
 };
-
 
 export { validateFormData };

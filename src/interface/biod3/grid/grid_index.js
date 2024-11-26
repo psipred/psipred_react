@@ -11,6 +11,7 @@ import { returnRange } from '../common/index';
 import { printDebug } from '../common/index';
 const cb = require('../common/palette.js');
 var FileSaver = require('file-saver');
+//const FileSaver = require('/home/dbuchan/Code/biod3/node_modules/file-saver');
 const custom = {
 E: {fill: 'Gold', name: 'Strand'},
 H: {fill: 'HotPink', name: 'Helix'},
@@ -48,7 +49,7 @@ const annotations = [
 //
 export function biod3_annotationGrid(data, opts={})
 {
-  let psipred_opts = {id: "annotationGrid", chartType: 'annotationGrid', annotation_sets: annotations, download_buttons: true, grid_label: true, grid_colour_type: "custom", grid_colour_annotations: ["ss", "disopred", "dompred", 'dmpmetal','memsat'], custom_grid_palette: custom };
+  let psipred_opts = {id: "annotationGrid", chartType: 'annotationGrid', annotation_sets: annotations, download_buttons: true, grid_label: true, grid_colour_type: "custom", grid_colour_annotations: ["ss", "disopred", "dompred", 'dmpmetal', 'memsat'], custom_grid_palette: custom };
   psipred_opts = Object.assign(psipred_opts, opts);
   biod3_genericGrid(data, 'res', 50, "annotationGrid", psipred_opts);
 }
@@ -103,8 +104,7 @@ export function biod3_genericGrid(data, cellseries, xdimension, label="seqAnnota
 
 function add_annotation_toggle(chart, data, scales, xdimension)
 {
-    const updateAnnotations = function(d){
-                              chart.grid_colour_type=d.name;
+    const updateAnnotations = function(d){chart.grid_colour_type=d.name;
                               chart.grid_colour_annotations=d.values;
                               chart.container.selectAll(".rect").remove();
                               chart.container.selectAll(".text").remove();
@@ -156,9 +156,9 @@ function add_annotation_toggle(chart, data, scales, xdimension)
           .classed('active', true);})
     .on('mouseout', function(d){
         d3.select('#'+labelText(d)+'button')
-          .classed('active', true);
+          .classed('active', false);
         d3.select('#'+labelText(d)+'Text')
-          .classed('active', true);})
+          .classed('active', false);})
     .on('click', updateAnnotations);
 }
 
@@ -194,7 +194,7 @@ function drawLegend(chart)
       .attr("width", chart.em_size)
       .attr("height", chart.em_size)
       .attr("transform", function(d, i){
-            if(label_counter === 4)
+            if(label_counter == 4)
             {
               label_counter = 0;
               y_pos += 1;
@@ -210,7 +210,7 @@ function drawLegend(chart)
         .data(Object.keys(palette));
     text.enter().append("text")
       .attr("transform", function(d, i){
-            if(label_counter === 4)
+            if(label_counter == 4)
             {
               label_counter = 0;
               y_pos += 1;
@@ -298,7 +298,7 @@ function update(chart, data, scales, xdimension) {
     .attr("class", "rect")
     .attr("width", chart.em_size*1.1)
     .attr("height", chart.em_size*1.1)
-    .attr("transform", function(d) { if(cell_count === xdimension)
+    .attr("transform", function(d) { if(cell_count == xdimension)
                                      {
                                         cell_count = 0;
                                         y_pos+=chart.em_size*1.2;
@@ -322,7 +322,7 @@ function update(chart, data, scales, xdimension) {
         .data(data);
       text.enter().append("text")
         .attr("transform", function(d) {
-                                         if(cell_count === xdimension)
+                                         if(cell_count == xdimension)
                                          {
                                             cell_count = 0;
                                             y_pos+=chart.em_size*1.2;
@@ -386,7 +386,7 @@ function setScale(chart, xVals, yVals, yExtent, xdimension, ydimension, cell_num
     .domain(returnRange(xVals[0], xVals[1]));
 
   let y_range = returnRange(yVals[0], yVals[1]);
-  y_range.forEach(function(value, i) { if(value === 1) {y_range[i] = 1;}
+  y_range.forEach(function(value, i) { if(value == 1) {y_range[i] = 1;}
                                        else {y_range[i] = ((value-1)*xdimension)+1; }
   });
   const y = d3.scaleBand().range([0, yExtent])

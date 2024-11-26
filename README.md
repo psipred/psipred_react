@@ -37,6 +37,16 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+## Weird molstar things 
+
+We're using esbuild. Esbuild does not natively handle sass. I can't for the life of me get the esbuild sass plugin to work so... I just wrote a quick sass converter for the molstart scss files. Run it with
+
+``` bash
+node sass_converter.js > public/static/css/light.css
+```
+
+Then we can just load it in the HTML header etc...
+
 # Learn More
 
 React has a heirarchical model of the page and page regions. Sibling regions of the page can share state by storing that state in a parental node.
@@ -56,11 +66,11 @@ And we have a shared folder that lets us share code between models
 
 ## Site model
 
-To level `index.js` is now just a dispatcher for the 3 entry points and holds any global state that all three entry points need.
+The model `index.js` is now just a dispatcher for the 3 entry points and holds any global state that all three entry points need.
 
 ### interface model
 
-The Parent container for the page/results is called `Interface` and can be found in the index.js.This is really just the menu, header and footer regions. The main action happens in it's immediate child; `PsipredSite`. From here its child is `DisplayArea`. `DisplayArea` is responsible for holding most of the state of the pages and it's children are `MainForm`, `Sidebar`, `ResultsMain`, `ResultsSidebarTimes`, `ResultsSidebarDownloads` and `ResultsSidebarResubmission`.
+The Parent container for the page/results is called `Interface` and can be found in the index.js. This is really just the menu, header and footer regions. The main action happens in it's immediate child; `PsipredSite`. From here its child is `DisplayArea`. `DisplayArea` is responsible for holding most of the state of the pages and it's children are `MainForm`, `Sidebar`, `ResultsMain`, `ResultsSidebarTimes`, `ResultsSidebarDownloads` and `ResultsSidebarResubmission`.
 
 ### msa model
 
@@ -70,7 +80,7 @@ This is just a simple class that reads the alignment and annotation files it nee
 
 This is just a simple class that reads the alignment files it needs, dispatches a request for a 3D model and displays that when it comes back.
 
-### Classes
+### Interface Model Sub-Classes
 
 See also class_layout.odp
 
@@ -90,13 +100,13 @@ See also class_layout.odp
 
 # Adding services to PSIPRED web server
 
-1. First modify the page in `interface/psipred_site.js` in `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. This is critical for setting which files show up in the downloads area. `analyses` in `this.state` controls which jobs already have a check mark in the form on page load. `job_strings` keeps a track of how your new method is spelt across the site. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API.
+1. First modify the page in `interface/psipred_site.js` in `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should usually be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. This is critical for setting which files show up in the downloads area. `analyses` in `this.state` controls which jobs already have a check mark in the form on page load. `job_strings` keeps a track of how your new method is spelt across the site. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API.
 
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box and edit as needed. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. Ensure `onChange` and `checked` are correct.
 
 3. If it is a new sequence job, don't forget to add your job to the `ResultsSidebarResubmission` class in `results_sidebar_resubmission.js` and don't forget any tooltips. Copy an existing entry and edit as needed.
 
-4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include any additional panels when it detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class of the form `[Algorithm]Options`. Add your new class and the appropriate inputs. You MUST ensure that the form input names match the new state variable names you added in step 1 if you added new state variables (i.e. `DisplayArea`'s `this.state` etc...)
+4. If you need extended sidebar options edit `sidebar.js`. Update the `Sidebar` class to include any additional panels when it detects if `'[ALGORITHM]_job'` has been selected. And then reference a new class of the form `[Algorithm]Options`. Add your new class and the appropriate inputs. You MUST ensure that the form input names match the new state variable names you added in step 1 if you added new state variables (i.e. `DisplayArea`'s `this.state` etc...). You will also have to update `shared/index.js` `configurepost()` to include extra options. Important in `checkform.js` add any checks for params the user provides in `validateFormData`
 
 5. In `checkform.js` in `validateFormData()`. Add/Update any new validations you now may have for the new/advanced/options inputs.
 
@@ -110,7 +120,7 @@ See also class_layout.odp
    a) in `results_sequence.js` in the `ResultsSequence` class update the constructor and `this.state` to handle any results and plots you need, using `React.createRef()` to bind new page elements you need.
    b) In `render()` add an appropriate new chunk to hold any results panel for this job (i.e. like `this.props.analyses.includes("psipred_job")`). Use `renderPanel()` to insert an area for a diagram
    c) In `getResults()` ensure `if(data.state === "Complete"){` handles parsing any files that need it. Ensure `this.setState({` sends the results contents to an appropriate state variables to hold them here.
-   d) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or  tables in the lower page region
+   d) In `componentDidUpdate` update how you're handling any arrived results files. For the plots or tables in the lower page region
    e) update `results_sidebar_downloads` to ensure the files you want users to access are available.
    and update `returnzip()` appropriately. Recall that you need to add the results file glob to the list of `results_map` list in `psipred_site.js`
 
@@ -121,7 +131,7 @@ See also class_layout.odp
 
 ## WARNING
 
-If you added a new file type then you have to update the staging and production apache config to serve that file type, see the ansible scripts/files
+If you added a new file type is step 1, then you have to update the staging and production apache config to serve that file type, see the ansible scripts/files
 
 # Server suspensions and messages
 

@@ -7,7 +7,10 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 import {merizo_html} from './parsers.js';
+import {parse_merizosearch_search_results} from './parsers.js';
 // import {extractBFactors} from './parsers.js';
+import $ from 'jquery';
+import DataTable from 'datatables.net-dt';
 
 class ResultsStructure extends React.Component{
   constructor(props){
@@ -22,6 +25,11 @@ class ResultsStructure extends React.Component{
     this.merizo_pdb = React.createRef();
     this.merizo_boundaries = React.createRef();
     this.merizo_pdb_sidebar = React.createRef();
+    this.merizosearch_pdb = React.createRef();
+    this.merizosearch_results_table = React.createRef();
+    this.merizosearch_alt_results_table = React.createRef();
+    this.merizosearch_tables_initialised = false;
+    this.update_count = 0;
     this.timer = null;
   }
 
@@ -30,11 +38,12 @@ class ResultsStructure extends React.Component{
       clearInterval(this.timer);
       this.time = null;
     }
-    console.log(this.state);
-
+    //console.log(this.state);
+    this.update_count = this.update_count + 1;
+    
     for(let key in this.state.metsite_results){
       if(key.includes(".MetPred")){
-        display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false, false);
+        display_structure(this.metsite_pdb.current, this.state.metsite_results[key], false, false, false);
       }
       if(key.includes(".Metpred")){
         let file_data = this.state.metsite_results[key];
@@ -51,10 +60,10 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.hspred_results){
       if(key.includes("_initial.pdb")){
-        display_structure(this.hspred_initial_pdb.current, this.state.hspred_results[key], false, false);    
+        display_structure(this.hspred_initial_pdb.current, this.state.hspred_results[key], false, false, false);    
       }
       if(key.includes("_second.pdb")){
-        display_structure(this.hspred_second_pdb.current, this.state.hspred_results[key], false, false);
+        display_structure(this.hspred_second_pdb.current, this.state.hspred_results[key], false, false, false);
       }
       if(key.includes(".out")){
         let file_data = this.state.hspred_results[key];
@@ -71,13 +80,14 @@ class ResultsStructure extends React.Component{
 
     for(let key in this.state.memembed_results){
       if(key.includes(".pdb")){
-        display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false, true);    
+        display_structure(this.memembed_pdb.current, this.state.memembed_results[key], false, true, false);    
       }
     }
-    for(let key in this.state.merizo_results){
-      let uid = key.slice(0,-15)
 
-      if(key.includes(".pdb2")){
+    for(let key in this.state.merizo_results){
+      let uid = key.slice(0,-15);
+
+      if(key.includes("_v2.pdb2")){
         let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
         // let bFactors = extractBFactors(this.state.merizo_results[key])
 
@@ -99,18 +109,98 @@ class ResultsStructure extends React.Component{
         pdb_options.innerHTML += '</div>';
 
         this.merizo_pdb_sidebar.current.appendChild(pdb_options.content);
+        //console.log("TRYING TO BUILD STRUCT");
+        display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx, true);
+        //console.log("TRYING TO BUILD STRUCT 2");
+        }
+       if(key.includes(".merizo")){
 
-        display_structure(this.merizo_pdb.current, this.state.merizo_results[key], false, false, merizo_idx);
-      }
-      if(key.includes(".merizo")){
         let file_data = this.state.merizo_results[key];
         let html_data = merizo_html(file_data);
-
+        if(this.state.merizo_results){
+          if(Object.keys(this.state.merizo_results).length === 1){
+            html_data = "<h3>Chain ID not present in PDB file</h3>";
+          }
+        }
+        
         var mr = document.createElement('template');
         mr.innerHTML = html_data;
         this.merizo_boundaries.current.appendChild(mr.content);
       }
+
     }
+    let button_names = {};
+    let domain_button_names = {};
+    let found_merizo_search_results = false;
+    for(let key in this.state.merizosearch_results){
+      if(key.includes("search.tsv")){
+        found_merizo_search_results = true;
+      }
+    }
+    for(let key in this.state.merizosearch_results){
+      if(key.includes("search.tsv")){
+        let file_data = this.state.merizosearch_results[key];
+        const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data);
+        button_names = data;
+        domain_button_names = domdata;
+        var dt = document.createElement('template');
+        dt.innerHTML = html;
+        this.merizosearch_results_table.current.appendChild(dt.content);
+        let table = $('#toptmtable').DataTable({
+           searching : false,
+           paging: false,
+           ordering: true,
+           order: [[1, 'asc']]
+        });
+
+        var ndt = document.createElement('template');
+        ndt.innerHTML = althtml;
+        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+        tableids.forEach(function(id){
+          let domtable = $('#'+id).DataTable({
+            searching : false,
+             paging: false,
+             ordering: true,
+             order: [[7, 'dsc']]
+        });
+        });
+        this.merizosearch_tables_initialised = true;
+      }
+
+      if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
+        var dt = document.createElement('template');
+        dt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        this.merizosearch_results_table.current.appendChild(dt.content);
+        
+        var ndt = document.createElement('template');
+        ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        this.merizosearch_alt_results_table.current.appendChild(ndt.content);
+        this.merizosearch_tables_initialised = true;
+      }
+    }
+    if(this.update_count > 1 && this.state.merizosearch_results){
+      if(Object.keys(this.state.merizosearch_results).length == 0){
+        var dt = document.createElement('template');
+        dt.innerHTML = "<h3>Chain ID not present in PDB file</h3>";;
+        this.merizosearch_results_table.current.appendChild(dt.content);
+        this.merizosearch_pdb.current.appendChild(dt.content);
+        
+      }
+    }
+   
+    for(let key in this.state.merizosearch_results){
+      let uid = key.slice(0,-12);
+      if(key.includes(".pdb2")){
+        let merizosearch_idx = this.state.merizosearch_results[uid+'_merizo.idx'];
+        if(Object.keys(button_names).length > 0 && Object.keys(domain_button_names).length > 0){
+          display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false, button_names, domain_button_names);
+        }
+        else{
+          display_structure(this.merizosearch_pdb.current, this.state.merizosearch_results[key], false, false, merizosearch_idx, false);
+        }
+      }
+    }
+
   }
 
   getResultsFiles = (data, props) => {
@@ -129,13 +219,14 @@ class ResultsStructure extends React.Component{
         if(props.results_map.includes(glob))
         {
           try {
-            let file_content = request_data(entry.data_path, props.files_url);
+            let file_content = request_data(entry.data_path, props.files_url, 'text/plain;charset=UTF-8');
             let file_name = entry.data_path.split('/')[2];
             results_files[file_name] = file_content;
+        
           }
           catch (err){
-            console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk " + err.message);
-            alert("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
+            console.log("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk  providing the following information; submission data, submission email address, analyses you had selected and the job name." + err.message);
+            alert("Getting and processing data file: "+entry.data_path+" Failed. The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
             return null;
           }
         }
@@ -143,7 +234,7 @@ class ResultsStructure extends React.Component{
     });
     return(results_files);
   }
-
+ 
   getResults = () => {
     let result_uri = this.props.submit_url+this.props.uuid;
     let joblist_uri = this.props.joblist_url;
@@ -186,7 +277,8 @@ class ResultsStructure extends React.Component{
               this.setState({metsite_results: parsed_data.metsite,
                     hspred_results: parsed_data.hspred,
                     memembed_results: parsed_data.memembed,
-                    merizo_results: parsed_data.merizo
+                    merizo_results: parsed_data.merizo,
+                    merizosearch_results: parsed_data.merizosearch,
               });
             });
             this.props.updateResultsFiles(res);
@@ -220,10 +312,10 @@ class ResultsStructure extends React.Component{
         catch{
           message=error
         }
-        console.log(message.message);
-        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        //alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        this.setState({error_message: message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk"});
+        //console.log(message.message);
+        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        this.setState({error_message: message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name."});
         this.props.updateWaiting(false);
         return null;
       });
@@ -232,7 +324,8 @@ class ResultsStructure extends React.Component{
 
   componentDidMount(){
     //here is a good place to send the results and set up the polling.
-    this.timer = setInterval(() => this.getResults(), 20000);
+    //this.timer = setInterval(() => this.getResults(), 20000);
+    this.timer = setInterval(() => this.getResults(), 500);
   }
 
   renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
@@ -384,6 +477,89 @@ class ResultsStructure extends React.Component{
           </div>
         )}
          
+        {this.props.analyses.includes("merizosearch_job") && (
+        <div>
+
+          <div className="box box-primary" id="merizosearch_structs">
+            <div className="box-header with-border">
+              <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Domains Found</h5>
+              <div className="box-tools pull-right">
+                <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i className="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div className="box-body">
+              {this.state.error_message && <div className="error">{this.state.error_message}</div>}
+              {this.props.waiting && (
+                <div className="waiting" intro="slide" outro="slide">
+                  <br />
+                  <h4>{this.props.merizosearch_waiting_message}</h4>
+                </div>
+              )}
+              {this.props.waiting && (
+                <div className="waiting_icon" intro="slide" outro="slide">
+                  <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
+                </div>
+              )}
+              <div className="merizo_pdb pdb_panel_class_merizo" id="merizoseach_pdb" ref={this.merizosearch_pdb}></div>
+            </div>
+          </div>
+
+          <div className="box box-primary" id="merizosearch_table">
+          <div className="box-header with-border">
+            <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Best Hits</h5>
+            <div className="box-tools pull-right">
+              <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i className="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div className="box-body">
+            {this.state.error_message && <div className="error">{this.state.error_message}</div>}
+            {this.props.waiting && (
+              <div className="waiting" intro="slide" outro="slide">
+                <br />
+                <h4>{this.props.merizosearch_waiting_message}</h4>
+              </div>
+            )}
+            {this.props.waiting && (
+              <div className="waiting_icon" intro="slide" outro="slide">
+                <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
+              </div>
+            )}
+            <div className="merizosearch_results_table" id="merizosearch_results_table" ref={this.merizosearch_results_table}></div>
+          </div>
+          </div>
+
+          <div className="box box-primary" id="merizosearch_table">
+          <div className="box-header with-border">
+            <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Alternate Hits</h5>
+            <div className="box-tools pull-right">
+              <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i className="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div className="box-body">
+            {this.state.error_message && <div className="error">{this.state.error_message}</div>}
+            {this.props.waiting && (
+              <div className="waiting" intro="slide" outro="slide">
+                <br />
+                <h4>{this.props.merizosearch_waiting_message}</h4>
+              </div>
+            )}
+            {this.props.waiting && (
+              <div className="waiting_icon" intro="slide" outro="slide">
+                <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
+              </div>
+            )}
+            <div className="merizosearch_alt_results_table" id="merizosearch_alt_results_table" ref={this.merizosearch_alt_results_table}></div>
+          </div>
+          </div>
+
+        </div>
+        )}
          
       </div>
     );

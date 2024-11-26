@@ -155,9 +155,9 @@ export class Model extends React.Component{
           message=error
         }
         console.log(message.message);
-        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        //alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk");
-        this.setState({error_message: message.message+". The Backend processing service was unable to process your submission. Please contact psipred@cs.ucl.ac.uk"});
+        console.log("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        alert("Fetching results: "+result_uri+" Failed. \n"+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        this.setState({error_message: message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name."});
         this.props.updateWaiting(false);
         return null;
       });
@@ -169,7 +169,7 @@ export class Model extends React.Component{
     //console.log(this.state.pdb_data);
     //console.log(this.state.pdb_data[Object.keys(this.state.pdb_data)[0]]);
     var data = this.state.pdb_data[Object.keys(this.state.pdb_data)[0]];
-    display_structure(this.model.current, data, true, false);
+    display_structure(this.model.current, data, true, false, false, false);
   }
 
     componentDidMount(){
