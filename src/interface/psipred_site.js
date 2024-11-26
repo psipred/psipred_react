@@ -88,7 +88,7 @@ class DisplayArea extends React.Component{
                                   'tooltip': 'Predict helices, beta sheets and coils from AA sequence', },
                       "disopred": { 'shortName': 'DISOPRED3',
                                   'fullName': 'DISOPRED3',
-                                  'describedName': 'DISOPRED3 (Disored Prediction)',
+                                  'describedName': 'DISOPRED3 (Disorder Prediction)',
                                   'varName': 'disopred',
                                   'jobName': 'disopred_job',
                                   'tooltip': 'Detect intrinsically disordered regions in proteins', },
