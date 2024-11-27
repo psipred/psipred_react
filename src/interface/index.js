@@ -27,7 +27,7 @@ export class Interface extends React.Component{
               
               <nav className="navbar navbar-static-top" role="navigation">
                   { /* <!-- Sidebar toggle button-->*/ }
-                  <a href={this.state.here} className="sidebar-toggle" data-toggle="push-menu" role="button" style={{ 'paddingTop': '18px'}}>
+                  <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button" style={{ 'paddingTop': '18px'}}>
                       <span className="sr-only">Toggle navigation</span>
                   </a>
                   <div className="container-fluid">
@@ -72,11 +72,6 @@ export class Interface extends React.Component{
                       <li>
                           <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Software_Downloads.html">
                               <i className="fa fa-download"></i> <span>Downloads &amp; Branding</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="https://twitter.com/psipred">
-                              <i className="fa fa-twitter"></i> <span>Twitter/News</span>
                           </a>
                       </li>
                     </ul>
@@ -140,6 +135,11 @@ export class Interface extends React.Component{
                    <li>
                        <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">
                            <i className="fa fa-question-circle-o"></i> <span>Help & Tutorials</span>
+                       </a>
+                   </li>
+                   <li>
+                       <a href="https://www.youtube.com/@psipreducl">
+                           <i class="fa fa-youtube-play"></i> <span>YouTube Tutorials</span>
                        </a>
                    </li>
                    <li>
