@@ -8,6 +8,7 @@ import {parse_metsite} from './parsers.js';
 import {parse_hspred} from './parsers.js';
 import {merizo_html} from './parsers.js';
 import {parse_merizosearch_search_results} from './parsers.js';
+import {parse_merizosearch_search_multi_domains} from './parsers.js';
 // import {extractBFactors} from './parsers.js';
 import $ from 'jquery';
 import DataTable from 'datatables.net-dt';
@@ -28,6 +29,10 @@ class ResultsStructure extends React.Component{
     this.merizosearch_pdb = React.createRef();
     this.merizosearch_results_table = React.createRef();
     this.merizosearch_alt_results_table = React.createRef();
+    this.merizosearch_multi_exact_table = React.createRef();
+    this.merizosearch_multi_contiguous_table = React.createRef();
+    this.merizosearch_multi_discontiguous_table = React.createRef();
+    this.merizosearch_multi_unordered_table = React.createRef();
     this.merizosearch_tables_initialised = false;
     this.update_count = 0;
     this.timer = null;
@@ -140,7 +145,7 @@ class ResultsStructure extends React.Component{
     for(let key in this.state.merizosearch_results){
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
-        const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data);
+        const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data, this.props.merizosearch_db);
         button_names = data;
         domain_button_names = domdata;
         var dt = document.createElement('template');
@@ -188,6 +193,29 @@ class ResultsStructure extends React.Component{
       }
     }
    
+    for(let key in this.state.merizosearch_results){
+      if(key.includes("_search_multi_dom.tsv") ){
+        let file_data = this.state.merizosearch_results[key];
+        const { unorderedhtml, discontightml, contightml, exacthtml, tableids} = parse_merizosearch_search_multi_domains(file_data);
+        //console.log(contightml);
+        var dt = document.createElement('template');
+        dt.innerHTML = contightml;
+        this.merizosearch_multi_contiguous_table.current.appendChild(dt.content);
+        
+        var dt = document.createElement('template');
+        dt.innerHTML = discontightml;
+        this.merizosearch_multi_discontiguous_table.current.appendChild(dt.content);
+        
+        var dt = document.createElement('template');
+        dt.innerHTML = unorderedhtml;
+        this.merizosearch_multi_unordered_table.current.appendChild(dt.content);
+        
+        var dt = document.createElement('template');
+        dt.innerHTML = exacthtml;
+        this.merizosearch_multi_exact_table.current.appendChild(dt.content);
+      }
+    }
+
     for(let key in this.state.merizosearch_results){
       let uid = key.slice(0,-12);
       if(key.includes(".pdb2")){
@@ -324,8 +352,8 @@ class ResultsStructure extends React.Component{
 
   componentDidMount(){
     //here is a good place to send the results and set up the polling.
-    //this.timer = setInterval(() => this.getResults(), 20000);
-    this.timer = setInterval(() => this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 20000);
+    //this.timer = setInterval(() => this.getResults(), 500);
   }
 
   renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
@@ -555,6 +583,35 @@ class ResultsStructure extends React.Component{
               </div>
             )}
             <div className="merizosearch_alt_results_table" id="merizosearch_alt_results_table" ref={this.merizosearch_alt_results_table}></div>
+          </div>
+          </div>
+
+          <div className="box box-primary" id="merizomulti_table">
+          <div className="box-header with-border">
+            <h5 className="box-title">{this.props.job_strings.merizosearch.shortName} Multi-domain Chain Matches</h5>
+            <div className="box-tools pull-right">
+              <button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i className="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div className="box-body">
+            {this.state.error_message && <div className="error">{this.state.error_message}</div>}
+            {this.props.waiting && (
+              <div className="waiting" intro="slide" outro="slide">
+                <br />
+                <h4>{this.props.merizosearch_waiting_message}</h4>
+              </div>
+            )}
+            {this.props.waiting && (
+              <div className="waiting_icon" intro="slide" outro="slide">
+                <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
+              </div>
+            )}
+            <div className="merizosearch_multi_results_table" id="merizosearch_multi_exact_table" ref={this.merizosearch_multi_exact_table}></div>
+            <div className="merizosearch_multi_results_table" id="merizosearch_multi_contiguous_table" ref={this.merizosearch_multi_contiguous_table}></div>
+            <div className="merizosearch_multi_results_table" id="merizosearch_multi_discontiguous_table" ref={this.merizosearch_multi_discontiguous_table}></div>
+            <div className="merizosearch_multi_results_table" id="merizosearch_multi_unordered_table" ref={this.merizosearch_multi_unordered_table}></div>
           </div>
           </div>
 

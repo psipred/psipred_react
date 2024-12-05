@@ -1,5 +1,6 @@
 import * as colours from '../shared/colour_names.js';
 
+
 // take and ss2 (file) and parse the details and write the new annotation grid
 export function parse_dmpmetal_annotations(annotations, file)
 {
@@ -741,8 +742,8 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
             dom = dom.replace('-F1-model_v4','');
             let uniprot = dom.slice(0, -2); 
             uniprot = uniprot.replace('_TED', '');
-            htmltab += '<td><a href="https://ted-dev.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';
-            htmltab += '<td><a href="https://ted-dev.cathdb.info/api/v1/files/'+entry+'.pdb">DOWNLOAD PDB</a></td>';
+            htmltab += '<td><a href="https://ted.cathdb.info/uniprot/'+uniprot+'">'+dom+'</a></td>';
+            htmltab += '<td><a href="https://ted.cathdb.info/api/v1/files/'+entry+'.pdb">DOWNLOAD PDB</a></td>';
             if(meta_data.cath){
               if(meta_data.cath.includes('NA') ){
                 htmltab += '<td>Unassigned</td>';
@@ -784,10 +785,11 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
   return {html: htmltab, data: button_names};
 }
 
-export function parse_merizosearch_search_results(file)
+export function parse_merizosearch_search_results(file, type)
 { 
   // split the results in to top TM hit for each domain and by domain
   let cath_table = true;
+  cath_table = true;
   let top_tm_results = {};
   let per_domain_results = {}
   let lines = file.split("\n");
@@ -795,7 +797,7 @@ export function parse_merizosearch_search_results(file)
   lines.forEach(function(line, i){
     if(line.length === 0){return;}
     let entries = line.split(/\t+/);
-    if(entries[5].includes('_TED')){
+    if(entries[5].includes("_TED")){
       cath_table = false;
     }
     let domain_number = parseInt(entries[0].slice(-2), 10);
@@ -826,7 +828,8 @@ export function parse_merizosearch_search_results(file)
   let domain_buttons = {};
   let table_ids = []
   for(const [key, value] of Object.entries(per_domain_results)){
-    let dom_data = build_merizo_html_table(value['data'], cath_table, false, key+"tmtable");
+    let data_slice = value['data'].slice(0,10);
+    let dom_data = build_merizo_html_table(data_slice, cath_table, false, key+"tmtable");
     let entries = value['data'][0].split("\t");
     domain_html += '<h3>Domain '+key+': '+entries[1]+', Length '+entries[7]+'</h3>';
     domain_html += '<button align="right" class="btn btn-secondary btn-block merizo_buttons" id="show_domain_'+key+'">Show Domain '+key+'&nbsp</button>' + dom_data['html'];
@@ -834,4 +837,143 @@ export function parse_merizosearch_search_results(file)
     table_ids.push(key+"tmtable");
   }
   return {html: top_data['html'], data: top_data['data'], althtml: domain_html, domdata: domain_buttons, tableids: table_ids};
+}
+
+function draw_chain(meta){
+  let meta_data = JSON.parse(meta);
+  let svg = '<svg version="1.1" baseProfile="full" width="500" height="30" xmlns="http://www.w3.org/2000/svg" aria-label="chain summary figure role="img">';
+  svg += '<rect width="492" height="6" x="4" y="12" fill="#aaaaaa"><title>Unmatched region</title></rect>';
+  let dom_count = 0;
+  let max_length = 0;
+  // TEMPORARY KLUDGE WHILE NEW META DATA IS BUILT
+  meta_data.forEach((hit) => {
+    let coords = hit.rr.split("_");
+    coords.forEach((coord) => {
+      let pair = coord.split("-");
+      pair[0] = parseInt(pair[0]);
+      pair[1] = parseInt(pair[1]);
+      if(pair[1] > max_length){
+        max_length = pair[1];
+      }
+    });
+  });
+  // REMOVE WHEN NEW META DATA IS IN PLACE
+
+  meta_data.forEach((hit, idx) => {
+    let colour = colours.colourNames[idx+1];
+    let coords = hit.rr.split("_");
+    let cath = hit.cath;
+    coords.forEach((coord) => {
+      let pair = coord.split("-");
+      pair[0] = parseInt(pair[0]);
+      pair[1] = parseInt(pair[1]);
+      let start_loc = (pair[0]/max_length)*492;
+      let stop_loc = (pair[1]/max_length)*492;
+      let width = stop_loc - start_loc;
+      if(hit.cath === "NA"){
+        svg += '<rect width="'+width+'" height="22" x="'+(start_loc+4)+'" y="4" fill="'+colour+'"><title>'+"Unassigned CATH : "+coord+'</title></rect>';
+      }
+      else {
+        svg += '<a href="https://www.cathdb.info/version/latest/superfamily/'+hit.cath+'"><rect width="'+width+'" height="22" x="'+(start_loc+4)+'" y="4" fill="'+colour+'"><title>'+hit.cath+" : "+coord+'</title></rect></a>';
+      }
+    });
+  });
+
+  svg += "</svg>";
+  return svg;
+}
+
+function build_chain_html(lines, title){
+  let cath_table = true;
+  lines.forEach((line) => {
+    if(line[6].includes('"ted":')){
+      cath_table = false;
+    }
+  });
+  let chain_html = "<div><h3>"+title+'</h3><table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead>';
+  if(cath_table){
+    chain_html += '<th>Link to CATH Entry</th><th>Link to PDB Entry</th><th>Total Domains in hit chain</th></thead><tbody>';
+  }
+  else {
+    // chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th><th style="width: 550px">MDA Diagram</th></thead><tbody>';
+    chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th></thead><tbody>';
+  }
+  lines.forEach((line) => {
+    if(cath_table){
+      var pdb= line[2].slice(0, -1);
+      chain_html += '<tr><td><a href="https://cathdb.info/search?q='+line[2]+'">'+line[2]+"</a></td>";
+      chain_html += '<td><a href="https://www.rcsb.org/structure/'+pdb+'">'+pdb+"</a></td>"; 
+    }
+    else{
+      var pos1 = line[2].indexOf("-");    
+      var pos2 = line[2].indexOf("-", pos1+1);
+      let uniprot = line[2].slice(pos1+1, pos2);
+      chain_html += '<tr><td><a href="https://ted.cathdb.info/uniprot/'+uniprot+'">'+uniprot+"</a></td>";
+      chain_html += '<td><a href="https://www.alphafold.ebi.ac.uk/entry/'+uniprot+'">'+line[2]+"</a></td>";
+    }
+    chain_html += "<td >"+line[3]+"</td>";
+    if(! cath_table){
+      //chain_html += '<td>'+draw_chain(line[6])+'</td></tr>';
+    }
+  });
+  
+  chain_html += "</tbody></table></div>";
+  return chain_html;
+}
+
+export function parse_merizosearch_search_multi_domains(file)
+{ 
+  // yes, this could be done on a single keyed object but I kinda like separating it out in to 4
+  // objects just for the sake of logically organising it
+  let unordered = []; // 0
+  let discontig = []; // 1
+  let contig = []; // 2
+  let exact= []; // 3
+  let lines = file.split('\n');
+  lines.forEach((line) => {
+      let entries = line.split('\t');
+      //console.log(entries);
+      entries[4] = parseInt(entries[4]);
+      if(entries[4] === 0){unordered.push(entries);}
+      if(entries[4] === 1){discontig.push(entries);}
+      if(entries[4] === 2){contig.push(entries);}
+      if(entries[4] === 3){exact.push(entries);}
+    });
+    let unorderedhtml = "";
+    let discontightml = "";
+    let contightml = "";
+    let exacthtml = "";
+    // we need to know if we're looking at TED or CATH results here. Should really get that from global
+    // state
+    // unorderedhtml = build_chain_html(unordered, "Unordered chain matches");
+    if(unordered.length > 0){
+      unorderedhtml = build_chain_html(unordered.slice(0, 10), "Unordered chain matches");
+      console.log(unordered);
+    }
+    else{
+      unorderedhtml = "<h3>There are no unordered chain matches for this query</h3>";
+    }
+    if(discontig.length > 0){
+      discontightml = build_chain_html(discontig.slice(0, 10), "Discontiguous chain matches");
+    }
+    else{
+      discontightml = "<h3>There are no discontiguous chain matches for this query</h3>";
+    }
+    if(contig.length > 0){
+      contightml = build_chain_html(contig.slice(0, 10), "Contiguous chain matches");
+    }
+    else{
+      contightml = "<h3>There are no contiguous chain matches for this query</h3>";
+    }
+    if(exact.length > 0){
+      exacthtml = build_chain_html(exact.slice(0, 10), "Exact chain matches");
+    }
+    else{
+      exacthtml = "<h3>There are no contiguous chain matches for this query</h3>";
+    }
+    let table_ids = [];
+
+  // foreach category build a diagram string and results table
+  return {unorderedhtml: unorderedhtml, discontightml: discontightml, contightml: contightml, exacthtml: exacthtml, tableids: table_ids};
+  //return {html: top_data['html'], data: top_data['data'], althtml: domain_html, domdata: domain_buttons, tableids: table_ids};
 }
