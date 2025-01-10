@@ -853,6 +853,8 @@ function draw_chain(meta){
       max_length = len;
     }
   });
+  console.log(max_length);
+  console.log(meta);
 
   meta_data.forEach((hit, idx) => {
     let colour = colours.colourNames[idx+1];
@@ -887,11 +889,10 @@ function build_chain_html(lines, title){
   });
   let chain_html = "<div><h3>"+title+'</h3><table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead>';
   if(cath_table){
-    chain_html += '<th>Link to CATH Entry</th><th>Link to PDB Entry</th><th>Total Domains in hit chain</th><th style="width: 550px">MDA Diagram</th></thead><tbody>';
+    chain_html += '<th>Link to CATH Entry</th><th>Link to PDB Entry</th><th>Total Domains in hit chain</th><th style="width: 500px">MDA Diagram</th></thead><tbody>';
   }
   else {
-    chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th><th style="width: 550px">MDA Diagram</th></thead><tbody>';
-    //chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th></thead><tbody>';
+    chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th><th style="width: 500px">MDA Diagram</th></thead><tbody>';
   }
   lines.forEach((line) => {
     if(cath_table){
@@ -907,9 +908,8 @@ function build_chain_html(lines, title){
       chain_html += '<td><a href="https://www.alphafold.ebi.ac.uk/entry/'+uniprot+'">'+line[2]+"</a></td>";
     }
     chain_html += "<td >"+line[3]+"</td>";
-    //if(! cath_table){
-      chain_html += '<td>'+draw_chain(line[6])+'</td></tr>';
-    //}
+    chain_html += '<td>'+draw_chain(line[6])+'</td></tr>';
+    
   });
   
   chain_html += "</tbody></table></div>";
