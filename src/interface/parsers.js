@@ -887,7 +887,7 @@ function build_chain_html(lines, title){
   });
   let chain_html = "<div><h3>"+title+'</h3><table width="100%" class="small-table table-striped table-bordered ffpred-table" align="center"><thead>';
   if(cath_table){
-    chain_html += '<th>Link to CATH Entry</th><th>Link to PDB Entry</th><th>Total Domains in hit chain</th></thead><tbody>';
+    chain_html += '<th>Link to CATH Entry</th><th>Link to PDB Entry</th><th>Total Domains in hit chain</th><th style="width: 550px">MDA Diagram</th></thead><tbody>';
   }
   else {
     chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th><th style="width: 550px">MDA Diagram</th></thead><tbody>';
