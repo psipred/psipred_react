@@ -780,7 +780,7 @@ function build_merizo_html_table(lines, cath_table, add_buttons, tblid){
   });
   htmltab += "</tbody></table>";
   if(result_cnt === 0){
-    return {html: "<h2>Merizo Search identified no domains for this PDB structure</h2>", data: {}};
+    return {html: "<h2>Merizo Search identified no significant domain hits for this structure after segmentation</h2>", data: {}};
   }
   return {html: htmltab, data: button_names};
 }
@@ -962,7 +962,7 @@ export function parse_merizosearch_search_multi_domains(file)
       exacthtml = build_chain_html(exact.slice(0, 10), "Exact chain matches");
     }
     else{
-      exacthtml = "<h3>There are no contiguous chain matches for this query</h3>";
+      exacthtml = "<h3>There are exact chain matches for this query</h3>";
     }
     let table_ids = [];
 
