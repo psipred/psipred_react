@@ -845,19 +845,14 @@ function draw_chain(meta){
   svg += '<rect width="492" height="6" x="4" y="12" fill="#aaaaaa"><title>Unmatched region</title></rect>';
   let dom_count = 0;
   let max_length = 0;
-  // TEMPORARY KLUDGE WHILE NEW META DATA IS BUILT
+  // Shouldn't have to loop over all the domains to find the hit length 
+  // as they should all be the same. But just in case...
   meta_data.forEach((hit) => {
-    let coords = hit.rr.split("_");
-    coords.forEach((coord) => {
-      let pair = coord.split("-");
-      pair[0] = parseInt(pair[0]);
-      pair[1] = parseInt(pair[1]);
-      if(pair[1] > max_length){
-        max_length = pair[1];
-      }
-    });
+    let len = parseInt(hit.clen);
+    if(len < max_length){
+      max_length = len;
+    }
   });
-  // REMOVE WHEN NEW META DATA IS IN PLACE
 
   meta_data.forEach((hit, idx) => {
     let colour = colours.colourNames[idx+1];
@@ -895,8 +890,8 @@ function build_chain_html(lines, title){
     chain_html += '<th>Link to CATH Entry</th><th>Link to PDB Entry</th><th>Total Domains in hit chain</th></thead><tbody>';
   }
   else {
-    // chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th><th style="width: 550px">MDA Diagram</th></thead><tbody>';
-    chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th></thead><tbody>';
+    chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th><th style="width: 550px">MDA Diagram</th></thead><tbody>';
+    //chain_html += '<th>Link to TED Entry</th><th>Link to AFDB Entry</th><th>Total Domains in hit chain</th></thead><tbody>';
   }
   lines.forEach((line) => {
     if(cath_table){
@@ -912,9 +907,9 @@ function build_chain_html(lines, title){
       chain_html += '<td><a href="https://www.alphafold.ebi.ac.uk/entry/'+uniprot+'">'+line[2]+"</a></td>";
     }
     chain_html += "<td >"+line[3]+"</td>";
-    if(! cath_table){
-      //chain_html += '<td>'+draw_chain(line[6])+'</td></tr>';
-    }
+    //if(! cath_table){
+      chain_html += '<td>'+draw_chain(line[6])+'</td></tr>';
+    //}
   });
   
   chain_html += "</tbody></table></div>";
