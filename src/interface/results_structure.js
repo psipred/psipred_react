@@ -174,11 +174,11 @@ class ResultsStructure extends React.Component{
 
       if(found_merizo_search_results === false && this.merizosearch_tables_initialised === false){
         var dt = document.createElement('template');
-        dt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        dt.innerHTML = "<h2>Merizo Search identified no significant domain hits for this PDB structure after segmentation</h2>";
         this.merizosearch_results_table.current.appendChild(dt.content);
         
         var ndt = document.createElement('template');
-        ndt.innerHTML = "<h2>Merizo Search identified no domains for this PDB structure</h2>";
+        ndt.innerHTML = "<h2>Merizo Search identified no significant domain hits for this PDB structure after segmentation</h2>";
         this.merizosearch_alt_results_table.current.appendChild(ndt.content);
         this.merizosearch_tables_initialised = true;
       }
