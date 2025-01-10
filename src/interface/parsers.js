@@ -848,9 +848,10 @@ function draw_chain(meta){
   // Shouldn't have to loop over all the domains to find the hit length 
   // as they should all be the same. But just in case...
   meta_data.forEach((hit) => {
-    let len = parseInt(hit.clen);
-    if(len < max_length){
-      max_length = len;
+    console.log(hit);
+    let clen = parseInt(hit.clen);
+    if(clen < max_length){
+      max_length = clen;
     }
   });
   console.log(max_length);
@@ -859,7 +860,7 @@ function draw_chain(meta){
   meta_data.forEach((hit, idx) => {
     let colour = colours.colourNames[idx+1];
     let coords = hit.rr.split("_");
-    let cath = hit.cath;
+    
     coords.forEach((coord) => {
       let pair = coord.split("-");
       pair[0] = parseInt(pair[0]);
