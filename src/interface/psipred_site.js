@@ -527,7 +527,7 @@ export class PsipredSite extends React.Component{
     this.state = {
       suspension_message: null,
       server_message: null,
-      suspension_message: "The server is offline for emergency maintainance",
+      //suspension_message: "The server is offline for emergency maintainance",
       //server_message: "Our new hardware and service upgrade is complete. There may be some minor bugs. If you encounter one of these please email psipred-help@cs.ucl.ac.uk",
       endpoints_url: null,
       submit_url: null,
@@ -569,9 +569,8 @@ export class PsipredSite extends React.Component{
           { this.state.suspension_message !== null &&
             <div><h3 className="form_error">{this.state.suspension_message}</h3></div>
           }
-          {
-          //  <DisplayArea {...this.state}/>
-          }
+          <DisplayArea {...this.state}/>
+          
           <div className="row">
             <div className="col-md-9"></div><div className="col-md-3"></div>
           </div>
