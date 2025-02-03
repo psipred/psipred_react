@@ -8,14 +8,15 @@ import { parse_merizo } from '../interface/parsers.js';
 
 var moment = require('moment');
 
-export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl)
+export function display_structure(mol_container, pdb_data, cartoon, memembed, merizo_dat, merizo_ctl, merizo_search_button_names, merizo_search_domain_button_names)
 {
   //mol_container - handle for the DOM element for the structure
   //pdb_data - PDB data in text format
   //cartoon - bool for cartoon colouring
   //memembed - bool for memember colouring
-  //merizo - merizo data in text format or False
+  //merizo_dat - merizo data in text format or False
   //merizo_ctl - bool to toggle merizo colouring side bar
+
   let merizo_labels = [];
   let cartoon_color = function(atom) {
     if(atom.ss === 'h'){atom.color = '#e353e3'; return '#e353e3';}
@@ -32,6 +33,7 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
     atom.color = 'White';
     return('White');  
   };
+  
   let hotspot_color = function(atom){
     if(atom.b === 1.0){atom.color = 'red'; return 'red';}
     if(atom.b === 0.5){atom.color = 'black'; return 'black';}
@@ -101,6 +103,56 @@ export function display_structure(mol_container, pdb_data, cartoon, memembed, me
   viewer.addModel( pdb_data, "pdb" );                       /* load data */
   //console.log(viewer);
   
+  if(merizo_search_button_names){
+    //console.log(merizo_search_button_names);
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
+
+    for (const [key, value] of Object.entries(merizo_search_button_names)){
+      // eslint-disable-next-line no-loop-func
+      //console.log(merizo_labels);
+      // eslint-disable-next-line no-loop-func
+      document.getElementById(value).addEventListener("click", function() {
+        let lab_copy = JSON.parse(JSON.stringify(merizo_labels));
+        for (const [key2, value2] of Object.entries(merizo_labels)){
+          if(Number(key) !== Number(value2)){
+            merizo_labels[key2] = 0;
+          }
+        }
+        viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+        viewer.render();
+        merizo_labels =JSON.parse(JSON.stringify(lab_copy));
+      });
+    }
+  }
+
+  if(merizo_search_domain_button_names){
+    //console.log(merizo_search_button_names);
+    document.getElementById("colorByDomains").addEventListener("click", function() {
+      viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+      viewer.render();
+    });
+
+    for (const [key, value] of Object.entries(merizo_search_domain_button_names)){
+      // eslint-disable-next-line no-loop-func
+      //console.log(merizo_labels);
+      // eslint-disable-next-line no-loop-func
+      document.getElementById(value).addEventListener("click", function() {
+        let lab_copy = JSON.parse(JSON.stringify(merizo_labels));
+        for (const [key2, value2] of Object.entries(merizo_labels)){
+          if(Number(key) !== Number(value2)){
+            merizo_labels[key2] = 0;
+          }
+        }
+        viewer.setStyle({}, { cartoon: { colorfunc: merizo_color } });
+        viewer.render();
+        merizo_labels =JSON.parse(JSON.stringify(lab_copy));
+      });
+    }
+  }
+
   if(merizo_ctl){
       //Add event listeners to buttons
     document.getElementById("colorByBFactor").addEventListener("click", function() {
@@ -229,7 +281,6 @@ export function decide_location(href, hostname, main_url, app_path){
 
 export function request_data(uri, file_url, mime){
   // convert this to synchronous
-  console.log("REQUESTING ASCII DATA: "+file_url+uri)
   let results_data = null;
   let req = new XMLHttpRequest();
   req.onreadystatechange = function (){
@@ -238,7 +289,11 @@ export function request_data(uri, file_url, mime){
     }
   }
   req.open("GET", file_url+uri, false);
-  if(mime){req.setRequestHeader('Accept', mime);}
+  //req.setRequestHeader('Content-Type', 'text/plain; charset=utf-8');
+  if(mime){req.setRequestHeader('Accept', mime);
+    req.overrideMimeType(mime);
+  }
+
   req.send();
   req.onerror = function() {
     alert("Request failed");
@@ -374,10 +429,11 @@ export function configurePost(formState)
   }
   if(formState.jobs.includes('merizo')){
     fd.append("merizo_iterate", formState.merizo_iterate);
+    fd.append("merizo_chain", formState.merizo_chain);
   }
   if(formState.jobs.includes('merizosearch')){
-    fd.append("merizosearch_iterate", formState.merizosearch_iterate);
     fd.append("merizosearch_db", formState.merizosearch_db);
+    fd.append("merizosearch_chain", formState.merizosearch_chain);
   }
   return(fd);
 }
@@ -414,4 +470,17 @@ export function parse_config(json){
     }
   });
   return(job_summary);
+}
+
+export function showChainTooltip(evt, text) {
+  let tooltip = document.getElementById("tooltip");
+  tooltip.innerHTML = text;
+  tooltip.style.display = "block";
+  tooltip.style.left = evt.pageX + 10 + 'px';
+  tooltip.style.top = evt.pageY + 10 + 'px';
+}
+
+export function hideChainTooltip() {
+  var tooltip = document.getElementById("tooltip");
+  tooltip.style.display = "none";
 }

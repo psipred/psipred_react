@@ -70,8 +70,7 @@ class DisplayArea extends React.Component{
       memembed_terminal: 'in',
       merizo_iterate: 'FALSE',
       merizo_chain: 'A',
-      merizosearch_db: 'cath',
-      merizosearch_iterate: "FALSE",
+      merizosearch_db: 'ted',
       merizosearch_chain: "A",
       svgs: null,
       results_files: false,
@@ -90,7 +89,7 @@ class DisplayArea extends React.Component{
                                   'tooltip': 'Predict helices, beta sheets and coils from AA sequence', },
                       "disopred": { 'shortName': 'DISOPRED3',
                                   'fullName': 'DISOPRED3',
-                                  'describedName': 'DISOPRED3 (Disored Prediction)',
+                                  'describedName': 'DISOPRED3 (Disorder Prediction)',
                                   'varName': 'disopred',
                                   'jobName': 'disopred_job',
                                   'tooltip': 'Detect intrinsically disordered regions in proteins', },
@@ -225,7 +224,8 @@ class DisplayArea extends React.Component{
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
       merizo_iterate: 'FALSE',
-      merizosearch_db: 'cath',
+      merizo_chain: 'A',
+      merizosearch_db: 'ted',
       merizosearch_iterate: "TRUE",
       merizosearch_chain: "A",
       annotation_svg: null,
@@ -270,10 +270,6 @@ class DisplayArea extends React.Component{
       memembed_algorithm: '0',
       memembed_barrel: 'TRUE',
       memembed_terminal: 'in',
-      merizo_iterate: 'FALSE',
-      merizosearch_db: 'cath',
-      merizosearch_iterate: "TRUE",
-      merizosearch_chain: "A",
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -318,6 +314,10 @@ class DisplayArea extends React.Component{
   updateUuid = (newValue) => {
     this.setState({uuid: newValue});
   }
+  updateName = (newValue) => {
+    this.setState({name: newValue});
+  }
+  
   updateForm = (newValue) => {
     this.setState({formSelectedOption: newValue});
   }
@@ -373,17 +373,20 @@ class DisplayArea extends React.Component{
 
   handleSeqChange = (event) =>  {
     var value = event.target.value;
+    //console.log(value);
     if(event.target.name === 'input_data'){
       //Handle FASTA HERE!
+      value = value.replace(/\r/g, "");
       this.setState({
         input_data: value
       });
       var header_count = (value.match(/>/g) || []).length;
       // Here we handle fasta input and grab the name/header for the jobname if possible
       if(header_count === 1) {
-        var fasta_regex = /^>(\S+).*\n(.+)/;
+        var fasta_regex = /^>(\S+).*\n([\S\s]+)/;
         var match = fasta_regex.exec(value);
         if(match){
+          //console.log(match[2])
           this.setState({
             name: match[1],
             seq: match[2].toUpperCase(),
@@ -427,6 +430,7 @@ class DisplayArea extends React.Component{
     if(this.state.analyses.length === 13){
       alert("You have selected every analysis method. We don't allow submissions which select all analyses. Please consider more carefully which predictions you require.");
     }
+    //console.log(this.state.seq);
   }
 
   handleSidebarChange = (event) => {
@@ -460,9 +464,9 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
-    this.state.seq = this.state.seq.replace(/\r?\n|\r/g, "");
+
     let checked = validateFormData(this.state, jobs, pdbData);
-    //console.log(checked);
+    this.state.seq = checked.seq;
     if(checked.send){
       //SENDING THINGS NOW!!!, set up callback to update state.
       this.setState({
@@ -496,7 +500,7 @@ class DisplayArea extends React.Component{
       :
         <div>
           <div className="col-md-9">
-            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateSVGs={this.updateSVGs}  updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
+            <ResultsMain {...{...this.state, ...this.props}} updateWaiting={this.updateWaiting} updateResultsFiles={this.updateResultsFiles} updateSVGs={this.updateSVGs}  updateName={this.updateName} updateUuid={this.updateUuid} updateConfig={this.updateConfig} updateResubmit={this.updateResubmit} updateForm={this.updateForm} updateSeq={this.updateSeq} updateAnalyses={this.updateAnalyses} updateDisplayTime={this.updateDisplayTime} />
           </div>
           <div className="col-md-3">
             { this.state.displayTime === true &&
@@ -530,8 +534,8 @@ export class PsipredSite extends React.Component{
     this.state = {
       suspension_message: null,
       server_message: null,
-      //suspension_message: "The server will be offline until the 15th of Feb 2024",
-      //server_message: "Big changes a'comin'",
+      //suspension_message: "The server is offline for emergency maintainance",
+      //server_message: "Our new hardware and service upgrade is complete. There may be some minor bugs. If you encounter one of these please email psipred-help@cs.ucl.ac.uk",
       endpoints_url: null,
       submit_url: null,
       times_url: null,
@@ -573,11 +577,12 @@ export class PsipredSite extends React.Component{
             <div><h3 className="form_error">{this.state.suspension_message}</h3></div>
           }
           <DisplayArea {...this.state}/>
+          
           <div className="row">
             <div className="col-md-9"></div><div className="col-md-3"></div>
           </div>
         <div className="helixy">
-          <img alt="It's Helixy y'all!" src="http://bioinf.cs.ucl.ac.uk/psipred_new/static/images/helixy_png_blank.png" />
+          <img alt="It's Helixy y'all!" src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/helixy_png_blank.png" />
         </div>
         </div>
       </section>

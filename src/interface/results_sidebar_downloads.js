@@ -103,14 +103,10 @@ class ResultsSidebarDownloads extends React.Component{
 
   createDownloadLinks = (count, file_info, title) => { 
     let html_data = [];
-    
-    //_v2.pdb2
-    // v2_01.pdb2
-    
+
     html_data.push(<h5 key={count} >{title}</h5>);
     count++;
     file_info.forEach((file) => {
-      console.log(file);
       html_data.push(<button className="fake-link" key={count} onClick={this.getFile} value={file[0]} >{file[1]}</button>);
       count++;
       html_data.push(<br key={count} />);
@@ -145,7 +141,7 @@ class ResultsSidebarDownloads extends React.Component{
           downloads_text.push(link_data[0]);
         }
         if(name === this.props.job_strings.merizosearch.varName){
-          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' Annotated PDB'], ['.dom_pdb', this.props.job_strings.merizo.shortName+' Domain PDB files'], ['_segment.tsv', this.props.job_strings.merizo.shortName+' Segmenting Result'], ['_search.tsv', this.props.job_strings.merizo.shortName+' Search Result']],this.props.job_strings.merizo.shortName+' DOWNLOADS');
+          link_data = this.createDownloadLinks(count, [['.pdb2', this.props.job_strings.merizo.shortName+' Annotated PDB'], ['.dom_pdb', this.props.job_strings.merizo.shortName+' Domain PDB files (all)'], ['_segment.tsv', this.props.job_strings.merizo.shortName+' Segmenting Result'], ['_search.tsv', this.props.job_strings.merizo.shortName+' Significant Results'], ['_search_insignificant.tsv', this.props.job_strings.merizo.shortName+' Insignificant Results'], ['search_multi_dom.tsv', this.props.job_strings.merizo.shortName+' Multidomain Matches'] ], this.props.job_strings.merizo.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
         }
         

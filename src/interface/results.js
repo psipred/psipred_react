@@ -113,6 +113,7 @@ class ResultsMain extends React.Component{
          this.setState({
             result_uri: config_data.props.main_url+config_data.props.app_path+"/&uuid="+data.UUID,
          });
+         config_data.props.updateName(data.submissions[0].submission_name);
          config_data.props.updateUuid(data.UUID);
          config_data.props.updateWaiting(true);
        }
@@ -179,7 +180,7 @@ class ResultsMain extends React.Component{
         let message = {};
         try {
           let obj = await error.json().then(json => {return(json);});
-          console.log(obj);
+          //console.log(obj);
           if(obj.error){
             message.message = obj.error;
           }
@@ -193,8 +194,10 @@ class ResultsMain extends React.Component{
         catch{
           message.message=error
         }
+        console.log(message.message);
         console.log("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
-       alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
+        console.log(message.message);
+        alert("Posting Job to "+config_data.props.submit_url+" Failed. "+message.message+". The Backend processing service was unable to process your submission. Please contact psipred-help@cs.ucl.ac.uk providing the following information; submission data, submission email address, analyses you had selected and the job name.");
        return null;
      });
   }

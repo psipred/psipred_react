@@ -141,13 +141,9 @@ class MerizoSearchOptions extends React.Component {
       <div className="row form-header-row">
         <h4>{this.props.job_strings.merizosearch.fullName}</h4>
         <strong>Chain:</strong><input type="text" id="merizosearch_chain" name="merizosearch_chain" value={this.props.merizosearch_chain} onChange={this.props.handleSidebarChange} /><br /><br />
-        <strong>Segmentation Mode:</strong><br />
-          <input type="radio" id="merizosearch_mode_default" name="merizosearch_iterate" value="FALSE" checked={this.props.merizosearch_iterate === 'FALSE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizosearch_mode">Default (short chain)</label><br />
-          <input type="radio" id="merizosearch_mode_iterative" name="merizosearch_iterate" value="TRUE" checked={this.props.merizosearch_iterate === 'TRUE'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizosearch_mode">Iterative (long chain)</label><br />
         <strong>Search Database:</strong><br />
-          <input type="radio" id="merizosearch_db_cath" name="merizosearch_db" value="cath-dataset-nonredundant-S20" checked={this.props.merizosearch_db === 'cath'} onChange={this.props.handleSidebarChange} /><label htmlFor="merizosearch_db">&nbsp;CATH S20 NR</label><br />
-          <input type="radio" id="merizosearch_db_faiss" name="merizosearch_db" value="faiss" checked={this.props.merizosearch_db === 'faiss'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizosearch_db">&nbsp;FAISS</label><br />
-  
+          <input type="radio" id="merizosearch_db_ted" name="merizosearch_db" value="ted" checked={this.props.merizosearch_db === 'ted'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizosearch_db">&nbsp;TED (slow)</label><br />
+          <input type="radio" id="merizosearch_db_cath" name="merizosearch_db" value="cath" checked={this.props.merizosearch_db === 'cath'} onChange={this.props.handleSidebarChange} /><label htmlFor="merizosearch_db">&nbsp;CATH 4.3 (fast)</label><br />
         </div>
     );
   }
