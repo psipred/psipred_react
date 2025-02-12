@@ -436,7 +436,8 @@ export function configurePost(formState)
     fd.append("merizosearch_chain", formState.merizosearch_chain);
   }
   if(formState.jobs.includes('gsrcl')){
-    fd.append("gsrcl_tissue", formState.gsrcl_tissue);
+    fd.append("verify_hdf_tissue", formState.gsrcl_tissue);
+    fd.append("gsrcl_predict_tissue", formState.gsrcl_tissue);
   }
   return(fd);
 }
