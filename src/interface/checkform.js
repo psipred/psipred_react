@@ -81,23 +81,35 @@ function test_seq(seq, jobs, pdbData)
 }
 
 
-const validateFormData = (state, jobs, pdbData) => {
+const validateFormData = (state, jobs, pdbData, transFile) => {
   let compare = (a1, a2) => a1.filter(v => a2.includes(v)).length;
   let checked = { send: false, // flag to control if the form data looks valid and should be POSTed
                   message: null, //Any error message if send is false
                   result_page: "seq", // if send is true seq whether we're rendering the seq or structu results page
                   jobs: null, // we return an array of the jobs that need to be run removing anything redundant from jobs
-                  pdbData: ''
+                  pdbData: '',
+                  transData: null,
                 };
   let seq_job_list = state.seq_job_names;
   let struct_job_list =  state.struct_job_names;
+  let trans_job_list =  state.trans_job_names;
+  
   if((compare(jobs, seq_job_list) > 0) && (compare(jobs, struct_job_list) > 0)) {
     checked.message = "You can not submit both sequence and structure analysis jobs";
     return(checked);
   }
+  if((compare(jobs, seq_job_list) > 0) && (compare(jobs, trans_job_list) > 0)) {
+    checked.message = "You can not submit both sequence and transcriptomics analysis jobs";
+    return(checked);
+  }
+  if((compare(jobs, struct_job_list) > 0) && (compare(jobs, trans_job_list) > 0)) {
+    checked.message = "You can not submit both transcriptomics and structure analysis jobs";
+    return(checked);
+  }
+
   //console.log(jobs);
   //console.log(seq_job_list);
-  if((compare(jobs, seq_job_list) === 0) && (compare(jobs, struct_job_list) === 0)) {
+  if((compare(jobs, seq_job_list) === 0) && (compare(jobs, struct_job_list) === 0) && (compare(jobs, trans_job_list) === 0)) {
     checked.message = "You must select at least one analysis job";
     return(checked);
   }
@@ -149,7 +161,10 @@ const validateFormData = (state, jobs, pdbData) => {
   if(compare(jobs, struct_job_list) > 0) {
     checked.result_page = 'struct';
   }
-
+  if(compare(jobs, trans_job_list) > 0) {
+    checked.result_page = 'trans';
+  }
+  
   if(checked.result_page === 'seq') {
     //Here we validate the various sequence analysis inputs  let seq_count = seq.split(">").length - 1;
     if(jobs.length === 13)
@@ -215,7 +230,7 @@ const validateFormData = (state, jobs, pdbData) => {
       return(checked);
     }
   }
-  else { // Here we validate structure things
+  else if(checked.result_page === 'struct') { // Here we validate structure things
     if(jobs.length === 4)
     {
       checked.message = "You can't select all structure analyses";
@@ -249,6 +264,9 @@ const validateFormData = (state, jobs, pdbData) => {
           return(checked);
       }
     }
+  }
+  else { //here we validate transcriptomics things
+    // TEST THE transFile file SIZE
   }
   //console.log(jobs);
   //remove redundant jobs

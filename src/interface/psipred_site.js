@@ -454,6 +454,7 @@ class DisplayArea extends React.Component{
     //console.log(jobs);
     let pdbFile = null;
     let pdbData = null;
+    let transFile = null;;
     try{
      pdbFile = document.getElementById("pdbFile").files[0];
      if(pdbFile){
@@ -466,8 +467,15 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
+    try{
+      transFile = document.getElementById("transFile").files[0];
+     }
+       catch(err) {
+        alert("Input hd5 file could not be read from Form.");
+     }
+     
 
-    let checked = validateFormData(this.state, jobs, pdbData);
+    let checked = validateFormData(this.state, jobs, pdbData, transFile);
     this.state.seq = checked.seq;
     if(checked.send){
       //SENDING THINGS NOW!!!, set up callback to update state.
