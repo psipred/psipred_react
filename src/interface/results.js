@@ -3,7 +3,7 @@ import {configurePost} from '../shared/index.js'; // eslint-disable-line no-unus
 import {request_data} from '../shared/index.js'; // eslint-disable-line no-unused-vars
 import {ResultsSequence} from './results_sequence.js'; // eslint-disable-line no-unused-vars
 import {ResultsStructure} from './results_structure.js'; // eslint-disable-line no-unused-vars
-
+import {ResultsTranscriptomics} from './results_transcriptomics.js'; // eslint-disable-line no-unused-vars
 
 //We render the name bar with the copy link and then we render the seq plot for
 //any SeqForm results.
@@ -52,6 +52,8 @@ class ResultsMain extends React.Component{
       dmpmetal_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
       merizosearch_waiting_message: 'Please wait for your '+this.props.job_strings.merizosearch.shortName+' job to process',
       merizosearch_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
+      gsrcl_waiting_message: 'Please wait for your '+this.props.job_strings.gsrcl.shortName+' job to process',
+      gsrcl_waiting_icon: process.env.PUBLIC_URL+'/static/images/gears.svg',
     };
   }
 
@@ -226,8 +228,11 @@ class ResultsMain extends React.Component{
       <div>
       { (this.props.uuid && this.props.formSelectedOption==='SeqForm') ?
         <ResultsSequence {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} updateConfig={this.props.updateConfig} />
-        :
+        : this.props.formSelectedOption === "StructForm" ?
         <ResultsStructure {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} updateConfig={this.props.updateConfig} />
+        : 
+        <ResultsTranscriptomics {...{...this.state, ...this.props}} updateWaiting={this.props.updateWaiting} updateResultsFiles={this.props.updateResultsFiles} updateConfig={this.props.updateConfig} />
+      
       }
 
 

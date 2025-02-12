@@ -100,7 +100,7 @@ See also class_layout.odp
 
 # Adding services to PSIPRED web server
 
-1. First modify the page in `interface/psipred_site.js` in `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should usually be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. This is critical for setting which files show up in the downloads area. `analyses` in `this.state` controls which jobs already have a check mark in the form on page load. `job_strings` keeps a track of how your new method is spelt across the site. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API.
+1. First modify the page in `interface/psipred_site.js` in `class DisplayArea`. Add any new state variables for (sidebar items) to the constructor `this.state` (line 35) if you think you'll need them. Mostly it'll be things for any advanced config but you should usually be fine with what is already there. You will also need to update the `handleReset` and `handleResubmit` functions to reinitialise any of these new state variables. Add your job names to `seq_job_names` or `struct_job_names` or `trans_job_names`. If your new job produces files types not covered by previous jobs then add file globs for your new job by updating `results_map` in `this.state` in the `DisplayArea` class. This is critical for setting which files show up in the downloads area. `analyses` in `this.state` controls which jobs already have a check mark in the form on page load. `job_strings` keeps a track of how your new method is spelt across the site. Must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API.
 
 2. In `mainform.js` add the algorithm to HTML table in either the `SeqForm` or `StructForm` class. Copy an existing check box and edit as needed. Both the input `name` and `value` must be of the form `'[ALGORITHM]_job'` and must match what the job is called over the backend API. Ensure `onChange` and `checked` are correct.
 
@@ -128,6 +128,12 @@ See also class_layout.odp
     a) If we're working on structure methods you can set the struct form in `psipredsite.js`, set 
     `formSelectedOption` to `StructForm` 
     b) now repeat what is in 9 but with `results_structure.js`
+
+10. If we're handling a transcriptomics result:
+    a) If we're working on structure methods you can set the struct form in `psipredsite.js`, set 
+    `formSelectedOption` to `TransForm`
+    b) now repeat what is in 9 but with `results_transcriptomics.js`
+
 
 ## WARNING
 

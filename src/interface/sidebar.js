@@ -31,6 +31,10 @@ class Sidebar extends React.Component{
           { this.props.analyses.includes(this.props.job_strings.merizosearch.jobName) &&
             <MerizoSearchOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
           }
+          { this.props.analyses.includes(this.props.job_strings.gsrcl.jobName) &&
+            <GsRCLOptions {...this.props} handleSidebarChange={this.props.handleSidebarChange} />
+          }
+          
           </div>
         </div>
       </div>
@@ -145,6 +149,21 @@ class MerizoSearchOptions extends React.Component {
           <input type="radio" id="merizosearch_db_ted" name="merizosearch_db" value="ted" checked={this.props.merizosearch_db === 'ted'} onChange={this.props.handleSidebarChange} /> <label htmlFor="merizosearch_db">&nbsp;TED (slow)</label><br />
           <input type="radio" id="merizosearch_db_cath" name="merizosearch_db" value="cath" checked={this.props.merizosearch_db === 'cath'} onChange={this.props.handleSidebarChange} /><label htmlFor="merizosearch_db">&nbsp;CATH 4.3 (fast)</label><br />
         </div>
+    );
+  }
+}
+
+
+class GsRCLOptions extends React.Component {
+  render () {
+    return(
+      <div className="row form-header-row">
+        <h4>{this.props.job_strings.gsrcl.fullName}</h4>
+        <strong>Tissue Dataset:</strong>
+          <select id="gsrcl_tissue" size="1" name="gsrcl_tissue" value={this.props.gsrcl_tissue} onChange={this.props.handleSidebarChange} >
+            <option value="Quake_Smart-seq2_Limb_Muscle">Mouse Limb Muscle</option>
+          </select>
+      </div>
     );
   }
 }
