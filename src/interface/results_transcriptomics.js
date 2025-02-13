@@ -199,7 +199,7 @@ class ResultsTranscriptomics extends React.Component{
         { this.props.analyses.includes("gsrcl_job") &&
           <div className="box box-primary" id="gsrcl_preds">
             <div className="box-header with-border">
-              <h5 className="box-title">{this.props.job_strings.metsite.shortName} Predictions</h5>
+              <h5 className="box-title">{this.props.job_strings.gsrcl.shortName} Cluster Plot</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
             </div>
             <div className="box-body">
@@ -207,12 +207,12 @@ class ResultsTranscriptomics extends React.Component{
                 <div className="error">{this.state.error_message}</div>
               }
               { this.props.waiting &&
-                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.metsite_waiting_message}</h4></div>
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.gsrcl_waiting_message}</h4></div>
               }
               { this.props.waiting &&
-                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.metsite_waiting_icon} /></div>
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.gsrcl_waiting_icon} /></div>
               }
-              <div className="metsite_structure pdb_panel_class" id="metsite_structure" ref={this.metsite_pdb}></div>
+              <div className="gsrcl_structure pdb_panel_class" id="gsrcl_svg" ref={this.gsrcl_pdb}></div>
               
             </div>
           </div>
