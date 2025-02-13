@@ -396,6 +396,16 @@ export function configurePost(formState)
       alert(e);
     }
   }
+  if(formState.transData) {
+    try
+    {
+      file = new Blob([formState.transData]);
+    } catch (e)
+    {
+      alert(e);
+    }
+  }
+  
   let fd = new FormData();
   console.log("JOB NAME: "+formState.name);
 

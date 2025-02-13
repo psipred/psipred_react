@@ -298,6 +298,7 @@ const validateFormData = (state, jobs, pdbData, transFile) => {
   checked.send = true;
   checked.message = 'all tests passed';
   checked.pdbData = pdbData;
+  checked.transData = transFile;
   checked.jobs = jobs;
   checked.seq = state.seq;
   return(checked);

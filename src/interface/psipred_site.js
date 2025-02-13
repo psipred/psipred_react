@@ -27,6 +27,7 @@ class DisplayArea extends React.Component{
     let input_data = '';
     let seq = '';
     let pdb_data = null;
+    let trans_data = null;
     let name = "";
     let email = '';
       
@@ -53,6 +54,7 @@ class DisplayArea extends React.Component{
       name: name,
       email: email,
       pdbData: pdb_data,
+      transData: trans_data,
       waiting: false,
       uuid: null,
       bioserf_modeller_key: '',
@@ -216,6 +218,7 @@ class DisplayArea extends React.Component{
       dompred_psiblast_iterations: '5',
       ffpred_selection: 'human',
       pdbData: null,
+      transData: null,
       metsite_metal_type: 'CA',
       metsite_chain_id: 'A',
       metsite_fpr: '1',
@@ -264,6 +267,7 @@ class DisplayArea extends React.Component{
       dompred_psiblast_iterations: '5',
       ffpred_selection: 'human',
       pdbData: '',
+      transData: '',
       metsite_metal_type: 'CA',
       metsite_chain_id: 'A',
       metsite_fpr: '1',
@@ -482,6 +486,7 @@ class DisplayArea extends React.Component{
       this.setState({
         jobs: checked.jobs,
         pdbData: checked.pdbData,
+        transData: checked.transData,
         displayType: 'results'
       });
     }
