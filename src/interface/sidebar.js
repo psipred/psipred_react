@@ -161,7 +161,7 @@ class GsRCLOptions extends React.Component {
         <h4>{this.props.job_strings.gsrcl.fullName}</h4>
         <strong>Tissue Dataset:</strong>
           <select id="gsrcl_tissue" size="1" name="gsrcl_tissue" value={this.props.gsrcl_tissue} onChange={this.props.handleSidebarChange} >
-            <option value="Quake_Smart-seq2_Limb_Muscle">Mouse Limb Muscle</option>
+            <option value="QuakeSmartseq2LimbMuscle">Mouse Limb Muscle</option>
           </select>
       </div>
     );
