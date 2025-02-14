@@ -2,6 +2,9 @@ import React from 'react';
 import {request_data} from '../shared/index.js'; 
 import {parse_config} from '../shared/index.js';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {parse_gsrcl_legend} from './parsers.js';
+import {parse_gsrcl_probabilities} from './parsers.js';
+
 // import {extractBFactors} from './parsers.js';
 import $ from 'jquery';
 import DataTable from 'datatables.net-dt';
@@ -10,7 +13,10 @@ class ResultsTranscriptomics extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
-
+    
+    this.gsrcl_svg = React.createRef();
+    this.gsrcl_legend = React.createRef();
+    this.gsrcl_table = React.createRef();
     this.update_count = 0;
     this.timer = null;
   }
@@ -22,6 +28,46 @@ class ResultsTranscriptomics extends React.Component{
     }
     //console.log(this.state);
     this.update_count = this.update_count + 1;
+    for(let key in this.state.gsrcl_results){
+      if(key.includes(".svg")){
+        let svg_data = this.state.gsrcl_results[key];
+        //console.log(file_data);
+        var dt = document.createElement('template');
+        dt.innerHTML = svg_data;
+        this.gsrcl_svg.current.appendChild(dt.content);
+      }
+    }
+    for(let key in this.state.gsrcl_results){
+      if(key.includes(".txt")){
+        let file_data = this.state.gsrcl_results[key];
+        if(file_data.length > 0){
+          let html_data = parse_gsrcl_legend(file_data);
+          var dt = document.createElement('template');
+          dt.innerHTML = html_data;
+          this.gsrcl_legend.current.appendChild(dt.content);
+        }
+      }
+    }
+    
+    for(let key in this.state.gsrcl_results){
+      if(key.includes(".csv")){
+        let file_data = this.state.gsrcl_results[key];
+        if(file_data.length > 0){
+          let html_data = parse_gsrcl_probabilities(file_data);
+          var dt = document.createElement('template');
+          dt.innerHTML = html_data;
+          this.gsrcl_table.current.appendChild(dt.content);
+          let table = $('#gsrcl_probabilities_table').DataTable({
+            searching : false,
+            paging: false,
+            ordering: true,
+            order: [[7, 'asc']]
+         });
+ 
+        }
+      }
+    }
+    
 
   }
 
@@ -142,8 +188,8 @@ class ResultsTranscriptomics extends React.Component{
 
   componentDidMount(){
     //here is a good place to send the results and set up the polling.
-    this.timer = setInterval(() => this.getResults(), 20000);
-    //this.timer = setInterval(() => this.getResults(), 500);
+    //this.timer = setInterval(() => this.getResults(), 20000);
+    this.timer = setInterval(() => this.getResults(), 500);
   }
 
   renderPanel(panel_id, title, plot_class, plot_id, plot_data_ref, waiting_message, waiting_icon){
@@ -197,7 +243,7 @@ class ResultsTranscriptomics extends React.Component{
         }
 
         { this.props.analyses.includes("gsrcl_job") &&
-          <div className="box box-primary" id="gsrcl_preds">
+          <div className="box box-primary" id="gsrcl_svg_image">
             <div className="box-header with-border">
               <h5 className="box-title">{this.props.job_strings.gsrcl.shortName} Cluster Plot</h5>
               <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
@@ -212,8 +258,29 @@ class ResultsTranscriptomics extends React.Component{
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.gsrcl_waiting_icon} /></div>
               }
-              <div className="gsrcl_structure pdb_panel_class" id="gsrcl_svg" ref={this.gsrcl_pdb}></div>
-              
+              <div className="gsrcl_svg" id="gsrcl_svg" ref={this.gsrcl_svg}></div>
+              <div className="gsrcl_legend" id="gsrcl_legend" ref={this.gsrcl_legend}></div>
+            </div>
+          </div>
+         }
+        
+        { this.props.analyses.includes("gsrcl_job") &&
+          <div className="box box-primary" id="gsrcl_probabilities">
+            <div className="box-header with-border">
+              <h5 className="box-title">{this.props.job_strings.gsrcl.shortName} Probabilities</h5>
+              <div className="box-tools pull-right"><button className="btn btn-box-tool" type="button" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i className="fa fa-plus"></i></button></div>
+            </div>
+            <div className="box-body">
+              { this.state.error_message &&
+                <div className="error">{this.state.error_message}</div>
+              }
+              { this.props.waiting &&
+                <div className="waiting" intro="slide" outro="slide"><br /><h4>{this.props.gsrcl_waiting_message}</h4></div>
+              }
+              { this.props.waiting &&
+                <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.gsrcl_waiting_icon} /></div>
+              }
+              <div className="gsrcl_table" id="gsrcl_table" ref={this.gsrcl_table}></div>
             </div>
           </div>
          }

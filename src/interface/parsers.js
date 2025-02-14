@@ -970,3 +970,62 @@ export function parse_merizosearch_search_multi_domains(file)
   return {unorderedhtml: unorderedhtml, discontightml: discontightml, contightml: contightml, exacthtml: exacthtml, tableids: table_ids};
   //return {html: top_data['html'], data: top_data['data'], althtml: domain_html, domdata: domain_buttons, tableids: table_ids};
 }
+
+export function parse_gsrcl_legend(file)
+{
+  //console.log(file);
+  let html_data = '<table width="30%" class="small-table table-striped table-bordered gsrcl-legend" id="gsrcl_legend" align="left"><thead>';
+  html_data += '<tr><th>Colour</th><th></th><th>Cell Type</th></tr>';
+  html_data += '</thead><tbody>';
+  let lines = file.split('\n');
+  lines.forEach((line) => {
+    let entries = line.split('\t');
+    if(entries[0].length > 0){
+      html_data += '<tr>';
+      html_data += '<td style="background: '+entries[1]+'">&nbsp;</td>';
+      html_data += '<td>&nbsp;</td>';
+      html_data += '<td>'+entries[0]+'</td>';
+      html_data += '</tr>';
+    }
+  });
+  html_data += '</tbody></table>';
+
+  return(html_data);
+}
+
+
+export function parse_gsrcl_probabilities(file)
+{
+  //console.log(file);
+  let html_data = '<table width="100%" class="small-table table-striped table-bordered gsrcl-probabilities" id="gsrcl_probabilities_table" align="left"><thead>';
+  let lines = file.split('\n');
+  let header = lines.shift();
+  let fields = header.split(',');
+  fields.shift();
+  html_data += '<tr><th>Profile ID</th>';
+  fields.forEach((field) => {
+    html_data += '<th>'+field+'</th>';
+  });
+  html_data += '</tr></thead><tbody>';
+  lines.forEach((line, i) => {
+    if(i > 10){return false;} 
+    html_data += '<tr>';
+    let entries = line.split(',');
+    entries.forEach((entry, j) => {
+      if(j === 0){
+        html_data += '<td>'+entry+'</td>';
+      }
+      else if (j === entries.length-1)
+      {
+        html_data += '<td>'+entry+'</td>';
+      }
+      else {
+        html_data += '<td>'+entry.substring(0,3)+'</td>';
+      }
+    });
+    html_data += '</tr>';
+  });
+  html_data += '</tbody></table>';
+
+  return(html_data);
+}
