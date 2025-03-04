@@ -558,7 +558,7 @@ export function parse_presults(file, ann_list, type)
   let lines = file.split('\n');
   let pseudo_table = null;
   console.log("PARSING ANN LIST");
-  console.log(ann_list);
+  console.log(ann_list[0]);
   console.log(Object.keys(ann_list));
   console.log(Object.getOwnPropertyNames(ann_list));
   console.log("SHOWN ANN LIST");
