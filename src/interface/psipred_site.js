@@ -40,14 +40,14 @@ class DisplayArea extends React.Component{
     this.state = {
       displayType: 'input',
       displayTime: true,
-      formSelectedOption: 'TransForm', // can be one of StructForm, SeqForm or TransForm
+      formSelectedOption: 'SeqForm', // can be one of StructForm, SeqForm or TransForm
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", 
       "dmpfold", 's4pred', 'dmpmetal' ],
       struct_job_names: ["metsite", "hspred", "memembed", "merizo", "merizosearch"],
       trans_job_names: ['gsrcl'],
       // analyses: ['psipred_job'],
-      analyses: ['gsrcl_job'],
+      analyses: ['psipred_job'],
       jobs: [],
       input_data: input_data,
       seq: seq,
