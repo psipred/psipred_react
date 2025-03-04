@@ -557,17 +557,6 @@ export function parse_presults(file, ann_list, type)
   }
   let lines = file.split('\n');
   let pseudo_table = null;
-  console.log("PARSING ANN LIST");
-  console.log(ann_list);
-  console.log(Object.keys(ann_list));
-  console.log(Object.getOwnPropertyNames(ann_list));
-  
-  let test_obj = {};
-  test_obj['1asd_12'] = { 'ann': 'things.ann', 'aln': 'things.aln'};
-  console.log(test_obj);
-  console.log(Object.keys(test_obj));
-
-  console.log("SHOWN ANN LIST");
   if(Object.keys(ann_list).length > 0){
   console.log("WE MADE IT TO THIS LIST");
   pseudo_table =  '<div class="text-right modeller-key" style="visibility: visible;">Modeller Licence Key: <input class="text" value=""><br><br></div>';

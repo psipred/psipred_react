@@ -67,6 +67,7 @@ class ResultsSequence extends React.Component{
     this.dmpmetal_table = React.createRef();
 
     this.timer = null;
+    this.update_count = 0;
   }
 
   componentDidUpdate(prevProps) {
@@ -167,12 +168,11 @@ class ResultsSequence extends React.Component{
       }
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
-        //console.log(file_data);
-        console.log(this.state.ann_gen_set);
+        if(this.update_count > 0){
         let html_data = parse_presults(file_data, this.state.ann_gen_set, "gen");
         var gt = document.createElement('template');
         gt.innerHTML = html_data;
-        this.genthreaderTable.current.appendChild(gt.content);
+        this.genthreaderTable.current.appendChild(gt.content);}
       }
     }
 
@@ -369,6 +369,8 @@ class ResultsSequence extends React.Component{
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
+
+    this.update_count++;
   }
 
   getResultsFiles = (data, props) => {
