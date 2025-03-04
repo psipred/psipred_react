@@ -14,7 +14,7 @@ class ResultsTranscriptomics extends React.Component{
     super(props);
     this.state = {};
     
-    this.gsrcl_svg = React.createRef();
+    this.gsrcl_png = React.createRef();
     this.gsrcl_legend = React.createRef();
     this.gsrcl_table = React.createRef();
     this.update_count = 0;
@@ -29,23 +29,13 @@ class ResultsTranscriptomics extends React.Component{
     //console.log(this.state);
     this.update_count = this.update_count + 1;
     for(let key in this.state.gsrcl_results){
-      if(key.includes(".svg")){
-        let svg_data = this.state.gsrcl_results[key];
-        //console.log(file_data);
-        var dt = document.createElement('template');
-        dt.innerHTML = svg_data;
-        this.gsrcl_svg.current.appendChild(dt.content);
-      }
-    }
-    for(let key in this.state.gsrcl_results){
-      if(key.includes(".txt")){
-        let file_data = this.state.gsrcl_results[key];
-        if(file_data.length > 0){
-          let html_data = parse_gsrcl_legend(file_data);
-          var dt = document.createElement('template');
-          dt.innerHTML = html_data;
-          this.gsrcl_legend.current.appendChild(dt.content);
-        }
+      if(key.includes(".png")){
+        let img_url = this.state.gsrcl_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "GsRCL t-SNE plot";
+        newElement.style.width = "800px";
+        this.gsrcl_png.current.appendChild(newElement);
       }
     }
     
@@ -258,9 +248,8 @@ class ResultsTranscriptomics extends React.Component{
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.gsrcl_waiting_icon} /></div>
               }
-              <div className="gsrcl_svg" id="gsrcl_svg" ref={this.gsrcl_svg}></div>
-              <div className="gsrcl_legend" id="gsrcl_legend" ref={this.gsrcl_legend}></div>
-            </div>
+              <div className="gsrcl_png" id="gsrcl_png" ref={this.gsrcl_png}></div>
+              </div>
           </div>
          }
         

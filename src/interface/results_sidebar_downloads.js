@@ -153,7 +153,7 @@ class ResultsSidebarDownloads extends React.Component{
       let link_data = [];
       if(this.props.analyses.includes(name+'_job')){
         if(name === this.props.job_strings.gsrcl.varName){
-          link_data = this.createDownloadLinks(count, [['.svg', 'SVG Image'], ['.txt', 'Image labels'], ['.csv', 'Cell Probabilities']], this.props.job_strings.gsrcl.shortName+' DOWNLOADS');
+          link_data = this.createDownloadLinks(count, [['.svg', 'SVG Image'], ['.png', 'PNG Image'], ['.csv', 'Cell Probabilities']], this.props.job_strings.gsrcl.shortName+' DOWNLOADS');
           downloads_text.push(link_data[0]);
         }
         count = link_data[1];
