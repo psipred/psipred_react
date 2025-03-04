@@ -559,7 +559,7 @@ export function parse_presults(file, ann_list, type)
   let pseudo_table = null;
   console.log("PARSING ANN LIST");
   console.log(ann_list);
-  console.log(ann_list.entries());
+  console.log(Object.entries(ann_list));
   console.log("SHOWN ANN LIST");
   if(Object.keys(ann_list).length > 0){
   console.log("WE MADE IT TO THIS LIST");
