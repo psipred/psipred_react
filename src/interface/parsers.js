@@ -561,8 +561,12 @@ export function parse_presults(file, ann_list, type)
   console.log(ann_list);
   console.log(Object.keys(ann_list));
   console.log(Object.getOwnPropertyNames(ann_list));
-  console.log(ann_list.length);
   
+  let test_obj = {};
+  test_obj['1asd_12'] = { 'ann': 'things.ann', 'aln': 'things.aln'};
+  console.log(test_obj);
+  console.log(Object.keys(test_obj));
+
   console.log("SHOWN ANN LIST");
   if(Object.keys(ann_list).length > 0){
   console.log("WE MADE IT TO THIS LIST");
