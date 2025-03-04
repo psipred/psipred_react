@@ -164,14 +164,12 @@ class ResultsSequence extends React.Component{
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
-        ann_gen_set = {};
-        ann_gen_set[id]['ann'] = path+".ann";
-        ann_gen_set[id]['aln'] = path+".aln";
+        ann_gen_set[id] = { 'ann': path+".ann", 'aln': path+".aln" };
       }
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
         //console.log(file_data);
-        //console.log(ann_gen_set);
+        console.log(ann_gen_set);
         let html_data = parse_presults(file_data, ann_gen_set, "gen");
         var gt = document.createElement('template');
         gt.innerHTML = html_data;
