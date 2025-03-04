@@ -164,7 +164,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
-        ann_gen_set[id] = {};
+        ann_gen_set = {};
         ann_gen_set[id]['ann'] = path+".ann";
         ann_gen_set[id]['aln'] = path+".aln";
       }
