@@ -135,9 +135,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
-        ann_set[id] = {};
-        ann_set[id]['ann'] = path+".ann";
-        ann_set[id]['aln'] = path+".aln";
+        ann_set[id] = { 'ann': path+".ann", 'aln': path+".aln" };
       }
     }
     for(let key in this.state.pgenthreader_results){
@@ -186,9 +184,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
-        ann_dom_set[id] = {};
-        ann_dom_set[id]['ann'] = path+".ann";
-        ann_dom_set[id]['aln'] = path+".aln";
+        ann_dom_set[id] = { 'ann': path+".ann", 'aln': path+".aln" };
       }
     }
     for(let key in this.state.pdomthreader_results){
