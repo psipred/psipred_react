@@ -560,9 +560,7 @@ export function parse_presults(file, ann_list, type)
   console.log("PARSING ANN LIST");
   console.log(ann_list);
   console.log(Object.keys(ann_list));
-  Object.getOwnPropertyNames(ann_list).forEach(function(local_name){
-    console.log(local_name);
-  });
+  console.log(Object.getOwnPropertyNames(ann_list));
   console.log("SHOWN ANN LIST");
   if(Object.keys(ann_list).length > 0){
   console.log("WE MADE IT TO THIS LIST");
