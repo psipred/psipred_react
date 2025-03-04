@@ -149,10 +149,12 @@ class ResultsSequence extends React.Component{
       }
       if(key.includes(".presults")){
         let file_data = this.state.pgenthreader_results[key];
+        if(this.update_count > 0){
         let html_data = parse_presults(file_data, this.state.ann_set, "pgen");
         var t = document.createElement('template');
         t.innerHTML = html_data;
         this.pgenthreaderTable.current.appendChild(t.content);
+        }
       }
     }
     if(this.state.pgenthreader_results && this.pgen_table_initialised === false){
@@ -172,7 +174,8 @@ class ResultsSequence extends React.Component{
         let html_data = parse_presults(file_data, this.state.ann_gen_set, "gen");
         var gt = document.createElement('template');
         gt.innerHTML = html_data;
-        this.genthreaderTable.current.appendChild(gt.content);}
+        this.genthreaderTable.current.appendChild(gt.content);
+      }
       }
     }
 
@@ -198,10 +201,12 @@ class ResultsSequence extends React.Component{
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
         //console.log(file_data);
+        if(this.update_count > 0){
         let html_data = parse_presults(file_data, this.state.ann_dom_set, "dgen");
         var dt = document.createElement('template');
         dt.innerHTML = html_data;
         this.pdomthreaderTable.current.appendChild(dt.content);
+        }
       }
     }
 
