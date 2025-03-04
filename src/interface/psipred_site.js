@@ -465,18 +465,18 @@ class DisplayArea extends React.Component{
        pdbData = await readPDBFile(pdbFile);
      }
     }
-      catch(err) {
+    catch(err) {
         pdbData = "";
         if(err.message.includes("FileReader.readAsText is not an object")){
           alert("File selected not valid");
         }
     }
-    try{
-      transFile = document.getElementById("transFile").files[0];
-     }
-       catch(err) {
-        alert("Input hd5 file could not be read from Form.");
-     }
+    // try{
+    //   transFile = document.getElementById("transFile").files[0];
+    //  }
+    // catch(err) {
+    //   alert("Input hd5 file could not be read from Form.");
+    // }
      
 
     let checked = validateFormData(this.state, jobs, pdbData, transFile);
