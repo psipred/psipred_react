@@ -557,6 +557,7 @@ export function parse_presults(file, ann_list, type)
   }
   let lines = file.split('\n');
   let pseudo_table = null;
+  console.log(ann_list);
   if(Object.keys(ann_list).length > 0){
   console.log("WE MADE IT TO THIS LIST");
   pseudo_table =  '<div class="text-right modeller-key" style="visibility: visible;">Modeller Licence Key: <input class="text" value=""><br><br></div>';

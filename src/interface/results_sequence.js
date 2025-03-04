@@ -171,7 +171,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
         //console.log(file_data);
-        console.log(ann_gen_set);
+        //console.log(ann_gen_set);
         let html_data = parse_presults(file_data, ann_gen_set, "gen");
         var gt = document.createElement('template');
         gt.innerHTML = html_data;
