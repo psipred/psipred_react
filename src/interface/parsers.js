@@ -560,10 +560,10 @@ export function parse_presults(file, ann_list, type)
   console.log("PARSING ANN LIST");
   console.log(ann_list);
   console.log("SHOWN ANN LIST");
-  console.log(Object.keys(ann_list));
-  console.log(Object.keys(ann_list).length);
+  console.log(Object.getOwnPropertyNames(ann_list));
+  console.log(Object.getOwnPropertyNames(ann_list).length);
   
-  if(Object.keys(ann_list).length > 0){
+  if(Object.getOwnPropertyNames(ann_list).length > 0){
   console.log("WE MADE IT TO THIS LIST");
   pseudo_table =  '<div class="text-right modeller-key" style="visibility: visible;">Modeller Licence Key: <input class="text" value=""><br><br></div>';
   pseudo_table += '<table class="filter_table" cellspacing="5" cellpadding="5" border="0"><tbody><tr><td class="alnright"><h4>Filter Table Rows</h4></td></tr><tr><td class="alnright">Min P-Value: <input id="min_'+type+'_pval" name="min_'+type+'_score" type="text"></td></tr><tr><td class="alnright" >Max P-Value: <input id="max_'+type+'_pval" name="max_'+type+'_pval" type="text"></td></tr></tbody></table><br />';
