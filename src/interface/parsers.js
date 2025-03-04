@@ -560,7 +560,7 @@ export function parse_presults(file, ann_list, type)
   console.log("PARSING ANN LIST");
   console.log(ann_list);
   console.log(JSON.stringify(ann_list));
-  ann_list.forEach(function(local_name){
+  Object.keys(ann_list).forEach(function(local_name){
     console.log(local_name);
   });
   console.log("SHOWN ANN LIST");
