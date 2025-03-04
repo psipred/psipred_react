@@ -557,10 +557,10 @@ export function parse_presults(file, ann_list, type)
   }
   let lines = file.split('\n');
   let pseudo_table = null;
-  console.log("PARSING ANN LIST");
-  console.log(ann_list);
-  console.log("SHOWN ANN LIST");
-  console.log(Object.getOwnPropertyNames(ann_list.Data).length);
+  // console.log("PARSING ANN LIST");
+  // console.log(ann_list);
+  // console.log("SHOWN ANN LIST");
+  // console.log(Object.getOwnPropertyNames(ann_list.Data).length);
   
   if(Object.getOwnPropertyNames(ann_list.Data).length > 0){
   console.log("WE MADE IT TO THIS LIST");
