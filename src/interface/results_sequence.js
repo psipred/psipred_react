@@ -38,6 +38,9 @@ class ResultsSequence extends React.Component{
       memsatsvm_results: null,
       pgenthreader_results: null,
       annotation_panel_height: panel_height,
+      ann_set: {},
+      ann_gen_set: {},
+      ann_dom_set: {},
     };
     this.sequencePlot = React.createRef();
     this.horizPlot = React.createRef();
@@ -64,9 +67,11 @@ class ResultsSequence extends React.Component{
     this.dmpmetal_table = React.createRef();
 
     this.timer = null;
+    this.update_count = 0;
   }
 
   componentDidUpdate(prevProps) {
+    
     if(this.props.waiting === false){
       clearInterval(this.timer);
       this.time = null;
@@ -127,17 +132,12 @@ class ResultsSequence extends React.Component{
         this.memsatSVMSchematic.current.appendChild(newElement);
       } 
     }
-    let ann_set = {};
-    let ann_gen_set = {};
-    let ann_dom_set = {};
-    
+
     for(let key in this.state.pgenthreader_results){
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
-        ann_set[id] = {};
-        ann_set[id]['ann'] = path+".ann";
-        ann_set[id]['aln'] = path+".aln";
+        this.state.ann_set[id] = { 'ann': path+".ann", 'aln': path+".aln" };
       }
     }
     for(let key in this.state.pgenthreader_results){
@@ -149,10 +149,12 @@ class ResultsSequence extends React.Component{
       }
       if(key.includes(".presults")){
         let file_data = this.state.pgenthreader_results[key];
-        let html_data = parse_presults(file_data, ann_set, "pgen");
+        if(this.update_count > 0){
+        let html_data = parse_presults(file_data, this.state.ann_set, "pgen");
         var t = document.createElement('template');
         t.innerHTML = html_data;
         this.pgenthreaderTable.current.appendChild(t.content);
+        }
       }
     }
     if(this.state.pgenthreader_results && this.pgen_table_initialised === false){
@@ -164,17 +166,16 @@ class ResultsSequence extends React.Component{
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
-        ann_gen_set[id] = {};
-        ann_gen_set[id]['ann'] = path+".ann";
-        ann_gen_set[id]['aln'] = path+".aln";
+        this.state.ann_gen_set[id] = { 'ann': path+".ann", 'aln': path+".aln" };
       }
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
-        //console.log(file_data);
-        let html_data = parse_presults(file_data, ann_gen_set, "gen");
+        if(this.update_count > 0){
+        let html_data = parse_presults(file_data, this.state.ann_gen_set, "gen");
         var gt = document.createElement('template');
         gt.innerHTML = html_data;
         this.genthreaderTable.current.appendChild(gt.content);
+      }
       }
     }
 
@@ -187,9 +188,7 @@ class ResultsSequence extends React.Component{
       if(key.includes(".ann")){
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
-        ann_dom_set[id] = {};
-        ann_dom_set[id]['ann'] = path+".ann";
-        ann_dom_set[id]['aln'] = path+".aln";
+        this.state.ann_dom_set[id] = { 'ann': path+".ann", 'aln': path+".aln" };
       }
     }
     for(let key in this.state.pdomthreader_results){
@@ -201,13 +200,13 @@ class ResultsSequence extends React.Component{
       }
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
-        console.log(file_data);
-        console.log(ann_dom_set);
         
-        let html_data = parse_presults(file_data, ann_dom_set, "dgen");
+        if(this.update_count > 0){
+        let html_data = parse_presults(file_data, this.state.ann_dom_set, "dgen");
         var dt = document.createElement('template');
         dt.innerHTML = html_data;
         this.pdomthreaderTable.current.appendChild(dt.content);
+        }
       }
     }
 
@@ -375,6 +374,8 @@ class ResultsSequence extends React.Component{
     console.log("UPDATING ANNOTATION GRID");
     annotationGrid(this.state.annotations, {parent: this.sequencePlot.current, margin_scaler: 2, debug: false, container_width: 900, width: 900, height: this.state.annotation_panel_height, container_height: this.state.annotation_panel_height});
     //this.props.updateResultsFiles(results_data);
+
+    this.update_count++;
   }
 
   getResultsFiles = (data, props) => {
