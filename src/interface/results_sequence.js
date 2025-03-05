@@ -201,7 +201,9 @@ class ResultsSequence extends React.Component{
       }
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
-        //console.log(file_data);
+        console.log(file_data);
+        console.log(ann_dom_set);
+        
         let html_data = parse_presults(file_data, ann_dom_set, "dgen");
         var dt = document.createElement('template');
         dt.innerHTML = html_data;
