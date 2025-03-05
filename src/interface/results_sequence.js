@@ -200,7 +200,9 @@ class ResultsSequence extends React.Component{
       }
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
-        //console.log(file_data);
+        console.log(file_data);
+        console.log(this.state.ann_dom_set);
+        
         if(this.update_count > 0){
         let html_data = parse_presults(file_data, this.state.ann_dom_set, "dgen");
         var dt = document.createElement('template');
