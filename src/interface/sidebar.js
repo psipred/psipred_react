@@ -170,15 +170,16 @@ class GsRCLOptions extends React.Component {
             <option value="PbmcBenchDropSeq">Human Peripheral blood mononuclear cell: DropSeq</option>
             <option value="PbmcBenchinDrop">Human Peripheral blood mononuclear cell: inDrop</option>
             <option value="PbmcBenchSeqWell">Human Peripheral blood mononuclear cell: SeqWell</option>
-            <option value="Quake10xBladder">Mouse Bladder: Quake</option>
-            <option value="QuakeSmartseq2Diaphragm">Mouse Diaphragm: Quake</option>
+            <option value="Quake10xBladder">Mouse Bladder: Quake 10x</option>
+            <option value="QuakeSmartseq2Diaphragm">Mouse Diaphragm: Quake seq2</option>
             <option value="Klein">Mouse Embryonic Stem Cell: Klein</option>
             <option value="Romanov">Mouse Hypothalamus: Romanov</option>
             <option value="Adam">Mouse Kidney: Adam</option>
-            <option value="QuakeSmartseq2LimbMuscle">Mouse Limb Muscle: Quake</option>
-            <option value="QuakeSmartseq2Lung">Mouse Lung: Quake</option>
+            <option value="QuakeSmart10xLimbMuscle">Mouse Limb Muscle: Quake 10x</option>
+            <option value="QuakeSmartseq2LimbMuscle">Mouse Limb Muscle: Quake seq2</option>
+            <option value="QuakeSmartseq2Lung">Mouse Lung: Quake seq2</option>
             <option value="BaronMouse">Mouse Pancreas: Baron</option>
-            <option value="QuakeSmartseq2Trachea">Mouse trachea: Quake</option>
+            <option value="QuakeSmartseq2Trachea">Mouse Trachea: Quake seq2</option>
           </select>
       </div>
     );
