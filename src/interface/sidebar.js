@@ -161,7 +161,25 @@ class GsRCLOptions extends React.Component {
         <h4>{this.props.job_strings.gsrcl.fullName}</h4>
         <strong>Tissue Dataset:</strong>
           <select id="gsrcl_tissue" size="1" name="gsrcl_tissue" value={this.props.gsrcl_tissue} onChange={this.props.handleSidebarChange} >
-            <option value="QuakeSmartseq2LimbMuscle">Mouse Limb Muscle</option>
+            <option value="BaronHuman">Human Pancreas: Baron</option>
+            <option value="Muraro">Human Pancreas: Muraro</option>
+            <option value="Segerstolpe">Human Pancreas: Segerstolpe</option>
+            <option value="Xin">Human Pancreas: Xin</option>
+            <option value="PbmcBench10Xv2">Human Peripheral blood mononuclear cell: 10Xv2</option>
+            <option value="PbmcBench10Xv3">Human Peripheral blood mononuclear cellL 10Xv3</option>
+            <option value="PbmcBenchDropSeq">Human Peripheral blood mononuclear cell: DropSeq</option>
+            <option value="PbmcBenchinDrop">Human Peripheral blood mononuclear cell: inDrop</option>
+            <option value="PbmcBenchSeqWell">Human Peripheral blood mononuclear cell: SeqWell</option>
+            <option value="Quake10xBladder">Mouse Bladder: Quake 10x</option>
+            <option value="QuakeSmartseq2Diaphragm">Mouse Diaphragm: Quake seq2</option>
+            <option value="Klein">Mouse Embryonic Stem Cell: Klein</option>
+            <option value="Romanov">Mouse Hypothalamus: Romanov</option>
+            <option value="Adam">Mouse Kidney: Adam</option>
+            <option value="QuakeSmart10xLimbMuscle">Mouse Limb Muscle: Quake 10x</option>
+            <option value="QuakeSmartseq2LimbMuscle">Mouse Limb Muscle: Quake seq2</option>
+            <option value="QuakeSmartseq2Lung">Mouse Lung: Quake seq2</option>
+            <option value="BaronMouse">Mouse Pancreas: Baron</option>
+            <option value="QuakeSmartseq2Trachea">Mouse Trachea: Quake seq2</option>
           </select>
       </div>
     );
