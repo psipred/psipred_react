@@ -448,6 +448,7 @@ export function configurePost(formState)
   if(formState.jobs.includes('gsrcl')){
     fd.append("verify_hdf_tissue", formState.gsrcl_tissue);
     fd.append("gsrcl_predict_tissue", formState.gsrcl_tissue);
+    fd.append("gsrcl_log", formState.gsrcl_log);
   }
   return(fd);
 }

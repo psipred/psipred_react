@@ -159,6 +159,9 @@ class GsRCLOptions extends React.Component {
     return(
       <div className="row form-header-row">
         <h4>{this.props.job_strings.gsrcl.fullName}</h4>
+        <strong>Log Transform Input Data?</strong><br />
+          <input type="radio" id="gsrcl_log_yes" name="gsrcl_log" value="1" checked={this.props.gsrcl_log === "1"} onChange={this.props.handleSidebarChange} /> <label htmlFor="gsrcl_log">&nbsp;Yes</label>&nbsp;
+          <input type="radio" id="gsrcl_log_no" name="gsrcl_log" value="0" checked={this.props.gsrcl_log === "0"} onChange={this.props.handleSidebarChange} /> <label htmlFor="gsrcl_log">&nbsp;No</label><br />
         <strong>Tissue Dataset:</strong>
           <select id="gsrcl_tissue" size="1" name="gsrcl_tissue" value={this.props.gsrcl_tissue} onChange={this.props.handleSidebarChange} >
             <option value="BaronHuman">Human Pancreas: Baron</option>
