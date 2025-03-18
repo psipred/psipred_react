@@ -195,7 +195,7 @@ class DisplayArea extends React.Component{
                                    'tooltip': 'llm based prediction of metal binding sites', },
                       "gsrcl": {'shortName': 'GsRCL',
                                 'fullName': 'Gaussian noise augmentation-based scRNA-seq Contrastive Learning',
-                                'describedName': 'GsRCL (Cell Type Classifiction)',
+                                'describedName': 'Gaussian noise augmentation-based scRNA-seq Contrastive Learning (Cell Type Classifiction)',
                                 'varName': 'gsrcl',
                                 'jobName': 'gsrcl_job',
                                 'tooltip': 'Cell Type Classification using contrastive learning', }             
