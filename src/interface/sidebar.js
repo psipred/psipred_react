@@ -162,8 +162,8 @@ class GsRCLOptions extends React.Component {
         <strong>Perform Log Transform on Data?</strong><br />
           <input type="radio" id="gsrcl_log_yes" name="gsrcl_log" value="1" checked={this.props.gsrcl_log === "1"} onChange={this.props.handleSidebarChange} /> <label htmlFor="gsrcl_log">&nbsp;Yes</label>&nbsp;
           <input type="radio" id="gsrcl_log_no" name="gsrcl_log" value="0" checked={this.props.gsrcl_log === "0"} onChange={this.props.handleSidebarChange} /> <label htmlFor="gsrcl_log">&nbsp;No</label><br />
-        <strong>Tissue Dataset:</strong>
-          <select id="gsrcl_tissue" size="1" name="gsrcl_tissue" value={this.props.gsrcl_tissue} onChange={this.props.handleSidebarChange} ><br /><br />
+        <strong>Tissue Dataset:</strong><br />
+          <select id="gsrcl_tissue" size="1" name="gsrcl_tissue" value={this.props.gsrcl_tissue} onChange={this.props.handleSidebarChange} >
             <option value="BaronHuman">Human Pancreas: Baron</option>
             <option value="Muraro">Human Pancreas: Muraro</option>
             <option value="Segerstolpe">Human Pancreas: Segerstolpe</option>
