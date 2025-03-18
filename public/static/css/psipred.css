@@ -564,3 +564,25 @@ input:invalid {
   margin-bottom: 2px;
   margin-right: 2px;
 }
+
+.gsrcl-probabilities {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.gsrcl-probabilities th {
+  white-space: nowrap;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  font-size: 15px;
+  height: 15px;
+  letter-spacing: 2px;
+  }
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper.active .dataTables_paginate .paginate_button.current:hover {
+  font-size: 15px;
+  height: 20px;
+  letter-spacing: 2px;
+  }

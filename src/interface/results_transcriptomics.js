@@ -14,10 +14,11 @@ class ResultsTranscriptomics extends React.Component{
     super(props);
     this.state = {};
     
-    this.gsrcl_svg = React.createRef();
+    this.gsrcl_png = React.createRef();
     this.gsrcl_legend = React.createRef();
     this.gsrcl_table = React.createRef();
     this.update_count = 0;
+    this.gsrcl_csv_found = false;
     this.timer = null;
   }
 
@@ -29,28 +30,19 @@ class ResultsTranscriptomics extends React.Component{
     //console.log(this.state);
     this.update_count = this.update_count + 1;
     for(let key in this.state.gsrcl_results){
-      if(key.includes(".svg")){
-        let svg_data = this.state.gsrcl_results[key];
-        //console.log(file_data);
-        var dt = document.createElement('template');
-        dt.innerHTML = svg_data;
-        this.gsrcl_svg.current.appendChild(dt.content);
-      }
-    }
-    for(let key in this.state.gsrcl_results){
-      if(key.includes(".txt")){
-        let file_data = this.state.gsrcl_results[key];
-        if(file_data.length > 0){
-          let html_data = parse_gsrcl_legend(file_data);
-          var dt = document.createElement('template');
-          dt.innerHTML = html_data;
-          this.gsrcl_legend.current.appendChild(dt.content);
-        }
+      if(key.includes(".png")){
+        let img_url = this.state.gsrcl_results[key];
+        let newElement = document.createElement('img');
+        newElement.src = img_url;
+        newElement.alt = "GsRCL t-SNE plot";
+        newElement.style.width = "800px";
+        this.gsrcl_png.current.appendChild(newElement);
       }
     }
     
     for(let key in this.state.gsrcl_results){
       if(key.includes(".csv")){
+        this.gsrcl_csv_found = true;
         let file_data = this.state.gsrcl_results[key];
         if(file_data.length > 0){
           let html_data = parse_gsrcl_probabilities(file_data);
@@ -58,17 +50,36 @@ class ResultsTranscriptomics extends React.Component{
           dt.innerHTML = html_data;
           this.gsrcl_table.current.appendChild(dt.content);
           let table = $('#gsrcl_probabilities_table').DataTable({
-            searching : false,
-            paging: false,
+            searching : true,
+            paging: true,
             ordering: true,
-            order: [[7, 'asc']]
+            lengthChange: 50,
+            pageLength: 50,
+            order: [[7, 'asc']],
+            layout: {
+              bottomEnd: {
+                  paging: {
+                      firstLast: true,
+                      buttons: 5
+                  }
+              }
+          }
          });
- 
         }
       }
     }
     
-
+    for(let key in this.state.gsrcl_results){
+      if(key.includes(".txt")){
+        let file_data = this.state.gsrcl_results[key];
+        console.log(file_data);
+        if(this.gsrcl_csv_found == false){
+          var dt = document.createElement('template');
+          dt.innerHTML = "<h2>Your input file is not formatted correctly</h2><p>"+file_data.slice(11)+"</p>";
+          this.gsrcl_table.current.appendChild(dt.content);
+        }
+      }
+    }
   }
 
   getResultsFiles = (data, props) => {
@@ -258,9 +269,8 @@ class ResultsTranscriptomics extends React.Component{
               { this.props.waiting &&
                 <div className="waiting_icon" intro="slide" outro="slide"><img alt="waiting icon" src={this.props.gsrcl_waiting_icon} /></div>
               }
-              <div className="gsrcl_svg" id="gsrcl_svg" ref={this.gsrcl_svg}></div>
-              <div className="gsrcl_legend" id="gsrcl_legend" ref={this.gsrcl_legend}></div>
-            </div>
+              <div className="gsrcl_png" id="gsrcl_png" ref={this.gsrcl_png}></div>
+              </div>
           </div>
          }
         

@@ -211,7 +211,9 @@ class TransForm extends React.Component {
               </div>
             </div>
             
-            <p className="form_error"></p> <br /><br /><br /> Input data must be submitted in <a href="https://www.hdfgroup.org/solutions/hdf5/">Hierarchical Data Format (HDF)</a>. Please consult our <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">docutmentation</a> on the required hdf5 layout for your data.<br /><br /> <input type="file" id="transFile" name="transFile" defaultValue='' /><br /><br />
+            <p className="form_error"></p> <br /><br /><br />
+            Input data must be submitted in CSV format. Please consult our <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">docutmentation</a> on the required layout for your data.<br /><br />
+            <input type="file" id="transFile" name="transFile" defaultValue='' /><br /><br />
             <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br />
             If you wish to try this method follow this link to retrieve <a className="form-link" href="">a test csv file.</a><br /><br />
             <div className="form-group">

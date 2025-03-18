@@ -999,7 +999,7 @@ export function parse_gsrcl_legend(file)
 export function parse_gsrcl_probabilities(file)
 {
   //console.log(file);
-  let html_data = '<table width="100%" class="small-table table-striped table-bordered gsrcl-probabilities" id="gsrcl_probabilities_table" align="left"><thead>';
+  let html_data = '<table class="small-table table-striped table-bordered gsrcl-probabilities" id="gsrcl_probabilities_table"><thead>';
   let lines = file.split('\n');
   let header = lines.shift();
   let fields = header.split(',');
@@ -1010,9 +1010,9 @@ export function parse_gsrcl_probabilities(file)
   });
   html_data += '</tr></thead><tbody>';
   lines.forEach((line, i) => {
-    if(i > 10){return false;} 
+    if(line.length == 0){return;} 
+    let entries = line.split(','); 
     html_data += '<tr>';
-    let entries = line.split(',');
     entries.forEach((entry, j) => {
       if(j === 0){
         html_data += '<td>'+entry+'</td>';

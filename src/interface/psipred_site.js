@@ -40,13 +40,13 @@ class DisplayArea extends React.Component{
     this.state = {
       displayType: 'input',
       displayTime: true,
+      //formSelectedOption: 'TransForm', // can be one of StructForm, SeqForm or TransForm
       formSelectedOption: 'SeqForm', // can be one of StructForm, SeqForm or TransForm
       seq_job_names: ["psipred",  "disopred", "pgenthreader", "metapsicov", "mempack",
       "memsatsvm", "genthreader", "dompred", "pdomthreader", "ffpred", "dmp", 
       "dmpfold", 's4pred', 'dmpmetal' ],
       struct_job_names: ["metsite", "hspred", "memembed", "merizo", "merizosearch"],
       trans_job_names: ['gsrcl'],
-      // analyses: ['psipred_job'],
       analyses: ['psipred_job'],
       jobs: [],
       input_data: input_data,
@@ -75,6 +75,7 @@ class DisplayArea extends React.Component{
       merizosearch_db: 'ted',
       merizosearch_chain: "A",
       gsrcl_tissue: "QuakeSmartseq2LimbMuscle",
+      gsrcl_log: "1",
       svgs: null,
       results_files: false,
       config_data: null,
@@ -232,7 +233,8 @@ class DisplayArea extends React.Component{
       merizosearch_db: 'ted',
       merizosearch_iterate: "TRUE",
       merizosearch_chain: "A",
-      gsrcl_reference_set: "QuakeSmartseq2LimbMuscle",
+      gsrcl_tissue: "QuakeSmartseq2LimbMuscle",
+      gsrcl_log: "1",
       annotation_svg: null,
       results_files: false,
       config_data: null,
@@ -471,12 +473,15 @@ class DisplayArea extends React.Component{
           alert("File selected not valid");
         }
     }
-    // try{
-    //   transFile = document.getElementById("transFile").files[0];
-    //  }
-    // catch(err) {
-    //   alert("Input hd5 file could not be read from Form.");
-    // }
+    try{
+      transFile = document.getElementById("transFile").files[0];
+     }
+       catch(err) {
+        console.log(err.message);
+        if(! err.message.includes("document.getElementById(...) is null")){
+          alert("Input expression matrix could not be read."+err);
+        }
+     }
      
 
     let checked = validateFormData(this.state, jobs, pdbData, transFile);
