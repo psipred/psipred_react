@@ -588,7 +588,7 @@ export class PsipredSite extends React.Component{
             <div><h3 className="form_error">WARNING: This is Dev</h3></div>
           }
           { this.state.location === "Staging" &&
-            <div><h3 className="form_error">WARNING: This is Staging</h3></div>
+            <div><h3 className="form_error">WARNING: This is Staging. We do not guarantee any service works via this landing page</h3></div>
           }
           { this.state.server_message !== null &&
             <div><h3 className="form_error">{this.state.server_message}</h3></div>
