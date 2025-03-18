@@ -194,7 +194,7 @@ class DisplayArea extends React.Component{
                                    'jobName': 'dmpmetal_job',
                                    'tooltip': 'llm based prediction of metal binding sites', },
                       "gsrcl": {'shortName': 'GsRCL',
-                                'fullName': 'GsRCL',
+                                'fullName': 'Gaussian noise augmentation-based scRNA-seq Contrastive Learning',
                                 'describedName': 'GsRCL (Cell Type Classifiction)',
                                 'varName': 'gsrcl',
                                 'jobName': 'gsrcl_job',
