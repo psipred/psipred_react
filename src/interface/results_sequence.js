@@ -177,9 +177,9 @@ class ResultsSequence extends React.Component{
         let file_data = this.state.genthreader_results[key];
         //if(this.update_count > 0){
 
-        console.log(file_data);
-        console.log(this.state.ann_gen_set);
-        console.log(this.update_count);
+        //console.log(file_data);
+        //console.log(this.state.ann_gen_set);
+        //console.log(this.update_count);
   
         let html_data = parse_presults(file_data, this.state.ann_gen_set, "gen");
         var gt = document.createElement('template');
@@ -549,8 +549,8 @@ class ResultsSequence extends React.Component{
     console.log("DRAWING EMPTY ANNOTATION PANEL");
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
-    //this.timer = setInterval(() => this.getResults(), 20000);
-    this.timer = setInterval(() => this.getResults(), 500);
+    this.timer = setInterval(() => this.getResults(), 20000);
+    //this.timer = setInterval(() => this.getResults(), 500);
     
   }
 
