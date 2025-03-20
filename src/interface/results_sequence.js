@@ -165,6 +165,7 @@ class ResultsSequence extends React.Component{
 
     for(let key in this.state.genthreader_results){
       if(key.includes(".ann")){
+        console.log("hellp");
         let path = key.substring(0, key.lastIndexOf("."));
         let id = path.substring(path.lastIndexOf(".")+1, path.length);
         this.state.ann_gen_set[id] = { 'ann': path+".ann", 'aln': path+".aln" };
