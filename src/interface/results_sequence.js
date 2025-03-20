@@ -164,6 +164,7 @@ class ResultsSequence extends React.Component{
     }
 
     for(let key in this.state.genthreader_results){
+      console.log(key);
       if(key.includes(".ann")){
         console.log("hellp");
         let path = key.substring(0, key.lastIndexOf("."));
