@@ -171,12 +171,12 @@ class ResultsSequence extends React.Component{
       }
       if(key.includes(".presults")){
         let file_data = this.state.genthreader_results[key];
-        if(this.update_count > 0){
+        //if(this.update_count > 0){
         let html_data = parse_presults(file_data, this.state.ann_gen_set, "gen");
         var gt = document.createElement('template');
         gt.innerHTML = html_data;
         this.genthreaderTable.current.appendChild(gt.content);
-      }
+        //}
       }
     }
 
