@@ -150,12 +150,12 @@ class ResultsSequence extends React.Component{
       if(key.includes(".presults")){
         let file_data = this.state.pgenthreader_results[key];
 
-        if(this.update_count > 0){
+        //if(this.update_count > 0){
         let html_data = parse_presults(file_data, this.state.ann_set, "pgen");
         var t = document.createElement('template');
         t.innerHTML = html_data;
         this.pgenthreaderTable.current.appendChild(t.content);
-        }
+        //}
       }
     }
     if(this.state.pgenthreader_results && this.pgen_table_initialised === false){
