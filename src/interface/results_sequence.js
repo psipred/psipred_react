@@ -202,16 +202,16 @@ class ResultsSequence extends React.Component{
       if(key.includes(".presults")){
         let file_data = this.state.pdomthreader_results[key];
 
-        console.log(file_data);
-        console.log(this.state.ann_dom_set);
-        console.log(this.update_count);
+        //console.log(file_data);
+        //console.log(this.state.ann_dom_set);
+        //console.log(this.update_count);
   
-        if(this.update_count > 0){
+        //if(this.update_count > 0){
         let html_data = parse_presults(file_data, this.state.ann_dom_set, "dgen");
         var dt = document.createElement('template');
         dt.innerHTML = html_data;
         this.pdomthreaderTable.current.appendChild(dt.content);
-        }
+        //}
       }
     }
 
@@ -540,8 +540,8 @@ class ResultsSequence extends React.Component{
     console.log("DRAWING EMPTY ANNOTATION PANEL");
     draw_empty_annotation_panel(this.state, this.sequencePlot.current)
     //here is a good place to send the results and set up the polling.
-    this.timer = setInterval(() => this.getResults(), 20000);
-    //this.timer = setInterval(() => this.getResults(), 500);
+    //this.timer = setInterval(() => this.getResults(), 20000);
+    this.timer = setInterval(() => this.getResults(), 500);
     
   }
 
