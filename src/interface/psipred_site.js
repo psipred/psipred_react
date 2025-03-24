@@ -479,7 +479,8 @@ class DisplayArea extends React.Component{
        catch(err) {
         console.log(err.message);
         if(! err.message.includes("document.getElementById(...) is null")){
-          alert("Input expression matrix could not be read."+err);
+          //alert("Input expression matrix could not be read."+err);
+          //we should alert something here really.
         }
      }
      
