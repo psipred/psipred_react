@@ -834,7 +834,7 @@ export function parse_merizosearch_search_results(file, type)
     let data_slice = value['data'].sort(function(a,b) {
       return a[7]-b[7]
      });
-    data_slice = value['data'].slice(0,10);
+    data_slice = data_slice.slice(0,10);
     let dom_data = build_merizo_html_table(data_slice, cath_table, false, key+"tmtable");
     let entries = value['data'][0].split("\t");
     domain_html += '<h3>Domain '+key+': '+entries[1]+', Length '+entries[7]+'</h3>';
