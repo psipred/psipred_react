@@ -837,9 +837,9 @@ export function parse_merizosearch_search_results(file, type)
       let entries = line.split('t');
       array_format_data.push(entries);
       console.log(array_format_data);
-      let array_format_data = array_format_data.sort(function(a,b) {
-        return a[13]-b[13];
-      });
+      // let array_format_data = array_format_data.sort(function(a,b) {
+      //   return a[13]-b[13];
+      // });
       console.log(array_format_data);
     });
        
