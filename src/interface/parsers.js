@@ -830,6 +830,7 @@ export function parse_merizosearch_search_results(file, type)
   let domain_buttons = {};
   let table_ids = []
 
+  // cast the lines of data to a 2D array so we can sort by the 13th column
   for(const [key, value] of Object.entries(per_domain_results)){
     let data_lines = value['data'];
     let array_format_data = [];
@@ -842,7 +843,7 @@ export function parse_merizosearch_search_results(file, type)
       return parseFloat(a[13])-parseFloat(b[13]);
     });
     //console.log(array_format_data);
-    per_domain_results[key]['data'] = array_format_data
+    per_domain_results[key]['data'] = array_format_data;
   }
 
   for(const [key, value] of Object.entries(per_domain_results)){
