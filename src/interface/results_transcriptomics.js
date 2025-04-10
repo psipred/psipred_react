@@ -49,22 +49,22 @@ class ResultsTranscriptomics extends React.Component{
           var dt = document.createElement('template');
           dt.innerHTML = html_data;
           this.gsrcl_table.current.appendChild(dt.content);
-          let table = $('#gsrcl_probabilities_table').DataTable({
-            searching : true,
-            paging: true,
-            ordering: true,
-            lengthChange: 50,
-            pageLength: 50,
-            order: [[7, 'asc']],
-            layout: {
-              bottomEnd: {
-                  paging: {
-                      firstLast: true,
-                      buttons: 5
-                  }
-              }
-          }
-         });
+        //   let table = $('#gsrcl_probabilities_table').DataTable({
+        //     searching : true,
+        //     paging: true,
+        //     ordering: true,
+        //     lengthChange: 50,
+        //     pageLength: 50,
+        //     order: [[7, 'asc']],
+        //     layout: {
+        //       bottomEnd: {
+        //           paging: {
+        //               firstLast: true,
+        //               buttons: 5
+        //           }
+        //       }
+        //   }
+        //  });
         }
       }
     }
