@@ -292,14 +292,21 @@ class FormInteractivity extends React.Component{
         </div>
         }
         </div>
-        { this.props.formSelectedOption === "SeqForm" ?
+        {/* { this.props.formSelectedOption === "SeqForm" ?
             <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} />
           : this.props.formSelectedOption === "StructForm" ?
             <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
-          :
+        }
+
+            :
             <TransForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
             }
-
+        */}
+        { this.props.formSelectedOption === "SeqForm" ?
+            <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} />
+          : 
+            <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
+        }
       </div>
       );
   }
