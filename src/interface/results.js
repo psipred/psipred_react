@@ -103,11 +103,18 @@ class ResultsMain extends React.Component{
            config_data.props.updateForm(job_type);
          }
          else if (this.checkSubset(config_data.props.struct_job_names, submission_jobs)){
-           //GET PDB DATA
-          job_type = "StructForm";
-          config_data.props.updateAnalyses(submission_jobs.map(item => `${item}_job`));
-          config_data.props.updateForm(job_type);
-         }
+          //GET PDB DATA
+         job_type = "StructForm";
+         config_data.props.updateAnalyses(submission_jobs.map(item => `${item}_job`));
+         config_data.props.updateForm(job_type);
+        }
+        else if (this.checkSubset(config_data.props.trans_job_names, submission_jobs)){
+          //GET PDB DATA
+         job_type = "TransForm";
+         config_data.props.updateAnalyses(submission_jobs.map(item => `${item}_job`));
+         config_data.props.updateForm(job_type);
+        }
+
          else
          {
           //THROW SOME ERROR AS THE USERS SOMEHOW HAS A JOB THAT CONTAINS BOTH SEQ AND STRUCT JOBS
