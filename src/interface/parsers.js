@@ -839,13 +839,14 @@ export function parse_merizosearch_search_results(file, type)
       console.log(array_format_data);
       let array_format_data = array_format_data.sort(function(a,b) {
         return a[13]-b[13];
-       });
+      });
       console.log(array_format_data);
-       
     });
+       
+    }
 
   for(const [key, value] of Object.entries(per_domain_results)){
-    data_slice = value['data'].slice(0,10);
+    let data_slice = value['data'].slice(0,10);
     let dom_data = build_merizo_html_table(data_slice, cath_table, false, key+"tmtable");
     let entries = value['data'][0].split("\t");
     domain_html += '<h3>Domain '+key+': '+entries[1]+', Length '+entries[7]+'</h3>';
