@@ -842,7 +842,7 @@ export function parse_merizosearch_search_results(file, type)
     array_format_data = array_format_data.sort(function(a,b) {
       return parseFloat(b[13])-parseFloat(a[13]);
     });
-    console.log(array_format_data);
+    // console.log(array_format_data);
     per_domain_results[key]['data'] = [];
     array_format_data.forEach(function(entries, i){
       per_domain_results[key]['data'].push(entries.join("\t"));
