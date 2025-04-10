@@ -1015,18 +1015,19 @@ export function parse_gsrcl_probabilities(file)
   lines.forEach((line, i) => {
     if(line.length == 0){return;} 
     let entries = line.split(','); 
-    let cell_id = entries.shift();
-    html_data += '<tr><td>'+cell_id+'</td>'; 
-    let id_as = entries.pop();
-    let pred_class = entries.pop();
+    console.log(entries);
+    // let cell_id = entries.shift();
+    // html_data += '<tr><td>'+cell_id+'</td>'; 
+    // let id_as = entries.pop();
+    // let pred_class = entries.pop();
 
-    let best_p = 0;
-    entries.forEach((entry, j) => {
-      if(entry > best_p){
-        best_p = entry;
-      }
-    });
-    html_data += '<td>'+best_p+'</td><td>'+pred_class+'</td><td>'+id_as+'</td></tr>';
+    // let best_p = 0;
+    // entries.forEach((entry, j) => {
+    //   if(entry > best_p){
+    //     best_p = entry;
+    //   }
+    // });
+    // html_data += '<td>'+best_p+'</td><td>'+pred_class+'</td><td>'+id_as+'</td></tr>';
   });
   html_data += '</tbody></table>';
 
