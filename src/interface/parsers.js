@@ -843,7 +843,10 @@ export function parse_merizosearch_search_results(file, type)
       return parseFloat(a[13])-parseFloat(b[13]);
     });
     //console.log(array_format_data);
-    // per_domain_results[key]['data'] = array_format_data;
+    per_domain_results[key]['data'] = [];
+    array_format_data.forEach(function(entries, i){
+      per_domain_results[key]['data'].push(entries.join("\t"));
+    });
   }
 
   for(const [key, value] of Object.entries(per_domain_results)){
