@@ -837,12 +837,13 @@ export function parse_merizosearch_search_results(file, type)
       let entries = line.split('\t');
       array_format_data.push(entries);
     });
-    console.log(array_format_data); 
+    //console.log(array_format_data); 
     array_format_data = array_format_data.sort(function(a,b) {
       return parseFloat(a[13])-parseFloat(b[13]);
     });
-    console.log(array_format_data);
-    }
+    //console.log(array_format_data);
+    per_domain_results[key]['data'] = array_format_data
+  }
 
   for(const [key, value] of Object.entries(per_domain_results)){
     let data_slice = value['data'].slice(0,10);
