@@ -832,7 +832,7 @@ export function parse_merizosearch_search_results(file, type)
 
   for(const [key, value] of Object.entries(per_domain_results)){
     let data_slice = value['data'].sort(function(a,b) {
-      return a[7]-b[7]
+      return a[13]-b[13]
      });
     data_slice = data_slice.slice(0,10);
     let dom_data = build_merizo_html_table(data_slice, cath_table, false, key+"tmtable");
