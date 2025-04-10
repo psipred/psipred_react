@@ -829,6 +829,9 @@ export function parse_merizosearch_search_results(file, type)
   let domain_html = '';
   let domain_buttons = {};
   let table_ids = []
+
+  // ITERATE per_domain_results to sort it by TM score then for for loop below
+  
   for(const [key, value] of Object.entries(per_domain_results)){
     let data_slice = value['data'].slice(0,10);
     let dom_data = build_merizo_html_table(data_slice, cath_table, false, key+"tmtable");
@@ -1004,28 +1007,26 @@ export function parse_gsrcl_probabilities(file)
   let header = lines.shift();
   let fields = header.split(',');
   fields.shift();
-  html_data += '<tr><th>Profile ID</th>';
-  fields.forEach((field) => {
-    html_data += '<th>'+field+'</th>';
-  });
+  html_data += '<tr><th>Profile ID</th><th>Best P-value</th><th>Pred class</th><th>Identified as</th>';
+  // fields.forEach((field) => {
+  //   html_data += '<th>'+field+'</th>';
+  // });
   html_data += '</tr></thead><tbody>';
   lines.forEach((line, i) => {
     if(line.length == 0){return;} 
     let entries = line.split(','); 
-    html_data += '<tr>';
+    let cell_id = entries.shift();
+    html_data += '<tr><td>'+cell_id+'</td>'; 
+    let id_as = entries.pop();
+    let pred_class = entries.pop();
+
+    let best_p = 0;
     entries.forEach((entry, j) => {
-      if(j === 0){
-        html_data += '<td>'+entry+'</td>';
-      }
-      else if (j === entries.length-1)
-      {
-        html_data += '<td>'+entry+'</td>';
-      }
-      else {
-        html_data += '<td>'+entry.substring(0,3)+'</td>';
+      if(entry > best_p){
+        best_p = entry;
       }
     });
-    html_data += '</tr>';
+    html_data += '<td>'+best_p+'</td><td>'+pred_class+'</td><td>'+id_as+'</td></tr>';
   });
   html_data += '</tbody></table>';
 
