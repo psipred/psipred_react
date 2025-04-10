@@ -834,7 +834,7 @@ export function parse_merizosearch_search_results(file, type)
     let data_lines = value['data'];
     let array_format_data = [];
     data_lines.forEach(function(line, i){
-      let entries = line.split('t');
+      let entries = line.split('\t');
       array_format_data.push(entries);
       console.log(array_format_data);
       // let array_format_data = array_format_data.sort(function(a,b) {
