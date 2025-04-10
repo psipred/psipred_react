@@ -831,11 +831,19 @@ export function parse_merizosearch_search_results(file, type)
   let table_ids = []
 
   for(const [key, value] of Object.entries(per_domain_results)){
-    console.log(value['data']);
-    let data_slice = value['data'].sort(function(a,b) {
-      return a[13]-b[13]
-     });
-    console.log(data_slice);
+    let data_lines = value['data'];
+    let array_format_data = [];
+    data_lines.forEach(function(line, i){
+      let entries = line.split('t');
+      array_format_data.push(entries);
+      console.log(array_format_data);
+      let array_format_data = array_format_data.sort(function(a,b) {
+        return a[13]-b[13];
+       });
+      console.log(array_format_data);
+    });
+
+  for(const [key, value] of Object.entries(per_domain_results)){
     data_slice = data_slice.slice(0,10);
     let dom_data = build_merizo_html_table(data_slice, cath_table, false, key+"tmtable");
     let entries = value['data'][0].split("\t");
