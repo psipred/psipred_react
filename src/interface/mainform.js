@@ -264,8 +264,9 @@ class FormInteractivity extends React.Component{
               <div className="funkyradio">
                 <div className="funkyradio-primary"><input type="radio" id="radio1" name="radio" value="SeqForm" checked={this.props.formSelectedOption === "SeqForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio1"><b>Sequence Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
                 <div className="funkyradio-danger"><input type="radio" id="radio2" name="radio" value="StructForm" checked={this.props.formSelectedOption === "StructForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio2"><b>PDB Structure Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
+                {/*
                 <div className="funkyradio-success"><input type="radio" id="radio3" name="radio" value="TransForm" checked={this.props.formSelectedOption === "TransForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio3"><b>RNASeq Data&nbsp;&nbsp;</b></label></div>
-    
+                */}
               </div><br />
             </div>
           </div>
@@ -292,21 +293,14 @@ class FormInteractivity extends React.Component{
         </div>
         }
         </div>
-        {/* { this.props.formSelectedOption === "SeqForm" ?
+        { this.props.formSelectedOption === "SeqForm" ?
             <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} />
           : this.props.formSelectedOption === "StructForm" ?
             <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
-        }
-
             :
             <TransForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
             }
-        */}
-        { this.props.formSelectedOption === "SeqForm" ?
-            <SeqForm {...this.props} handleChange={this.props.handleSeqChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} setTestSeq={this.props.setTestSeq} />
-          : 
-            <StructForm  {...this.props} handleChange={this.props.handleStructChange} handleReset={this.props.handleReset} handleSubmit={this.props.handleSubmit} />
-        }
+
       </div>
       );
   }
