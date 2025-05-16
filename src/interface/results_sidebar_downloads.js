@@ -107,10 +107,26 @@ class ResultsSidebarDownloads extends React.Component{
     html_data.push(<h5 key={count} >{title}</h5>);
     count++;
     file_info.forEach((file) => {
+      if(file[0].includes(".png") ||file[0].includes(".jpg") || file[0].includes(".jpeg") ||file[0].includes(".gif"))
+      {
+        Object.keys(this.props.results_files).forEach((job) => {
+          Object.keys(this.props.results_files[job]).forEach((res_file) => {
+            console.log("Getting "+res_file);
+            if(res_file.includes(file[0])){
+              html_data.push(<a key={count} href={res_file}>{file[1]}</a>);
+              count++;
+              html_data.push(<br key={count} />);
+              count++;
+            }
+          });
+        });
+      }
+      else {
       html_data.push(<button className="fake-link" key={count} onClick={this.getFile} value={file[0]} >{file[1]}</button>);
       count++;
       html_data.push(<br key={count} />);
       count++;
+      }
     });
     return([html_data, count]);
   }
