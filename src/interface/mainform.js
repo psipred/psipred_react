@@ -212,10 +212,10 @@ class TransForm extends React.Component {
             </div>
             
             <p className="form_error"></p> <br /><br /><br />
-            Input data must be submitted in CSV format. Please consult our <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">docutmentation</a> on the required layout for your data.<br /><br />
+            Input data must be submitted in CSV format. Please consult our <a href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">documentation</a> on the required layout for your data.<br /><br />
             <input type="file" id="transFile" name="transFile" defaultValue='' /><br /><br />
             <a className="form-link" href="http://bioinfadmin.cs.ucl.ac.uk/UCL-CS_Bioinformatics_Server_Tutorial.html">Help...</a><br />
-            If you wish to try this method follow this link to retrieve <a className="form-link" href="">a test csv file.</a><br /><br />
+            If you wish to try this method follow this link to retrieve <a className="form-link" href="https://bioinfadmin.cs.ucl.ac.uk/downloads/GsRCL/examples/Quake_Smart-seq2_Diaphragm.csv">a test csv file.</a><br /><br />
             <div className="form-group">
               <div className="form-group">
                 <label className="control-label" htmlFor="id_job_name">Job name</label><input className="form-control" type="text" placeholder="Job name" title="" required="" id="id_job_name" name="job_name" value={this.props.name} onChange={this.handleChange} />
