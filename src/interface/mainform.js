@@ -254,22 +254,20 @@ class FormInteractivity extends React.Component{
             <div className="col-md-12 form-header-red">
               <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
             </div>
-          
-          {/* 
-            :
+          : 
+  
           <div className="col-md-12 form-header-green">
               <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
             </div>
-            */}
           }
           <div className="col-md-12">
             <div className="row form-header-row">
               <div className="funkyradio">
                 <div className="funkyradio-primary"><input type="radio" id="radio1" name="radio" value="SeqForm" checked={this.props.formSelectedOption === "SeqForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio1"><b>Sequence Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
                 <div className="funkyradio-danger"><input type="radio" id="radio2" name="radio" value="StructForm" checked={this.props.formSelectedOption === "StructForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio2"><b>PDB Structure Data&nbsp;&nbsp;</b></label></div>&nbsp;&nbsp;&nbsp;
-                
+                {/*
                 <div className="funkyradio-success"><input type="radio" id="radio3" name="radio" value="TransForm" checked={this.props.formSelectedOption === "TransForm"} onChange={this.props.handleInputChange} /> <label htmlFor="radio3"><b>RNASeq Data&nbsp;&nbsp;</b></label></div>
-                
+                */}
               </div><br />
             </div>
           </div>
