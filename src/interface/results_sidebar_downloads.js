@@ -113,7 +113,7 @@ class ResultsSidebarDownloads extends React.Component{
           Object.keys(this.props.results_files[job]).forEach((res_file) => {
             console.log("Getting "+res_file);
             if(res_file.includes(file[0])){
-              html_data.push(<a key={count} href={"api/submissions/"+res_file}>{file[1]}</a>);
+              html_data.push(<a className="form-link" key={count} href={"api/submissions/"+res_file}>{file[1]}</a>);
               count++;
               html_data.push(<br key={count} />);
               count++;
