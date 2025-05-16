@@ -255,9 +255,11 @@ class FormInteractivity extends React.Component{
               <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
             </div>
           : 
+          {/* 
           <div className="col-md-12 form-header-green">
               <div className="row form-header-row"><h5 className="float-header">Select input data type</h5></div>
             </div>
+            */}
           }
           <div className="col-md-12">
             <div className="row form-header-row">
