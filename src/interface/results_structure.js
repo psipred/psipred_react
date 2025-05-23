@@ -105,6 +105,7 @@ class ResultsStructure extends React.Component{
           error_html += "http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM</h4><p>";
           lines.forEach(function(line){
             console.log(line);
+            line.replace(/\s/g, "&nbsp;");
             error_html += line+"<br />";
           });
           error_html += "</p>";
