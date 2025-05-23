@@ -101,7 +101,7 @@ class ResultsStructure extends React.Component{
           let error_html = "<h3>Your PDB file is malformatted. Please correct and resubmit</h3>";
           var error = document.createElement('template');
           error.innerHTML = error_html;
-          this.merizo_pdb_error.current.appendChild(error.content);
+          this.merizo_error.current.appendChild(error.content);
         }
       }
       if(key.includes("_v2.pdb2")){
