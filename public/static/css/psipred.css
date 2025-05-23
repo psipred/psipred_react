@@ -586,3 +586,7 @@ input:invalid {
   height: 20px;
   letter-spacing: 2px;
   }
+
+.fixed_width{
+  font-family: monospace
+}
