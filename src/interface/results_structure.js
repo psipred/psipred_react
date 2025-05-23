@@ -98,6 +98,10 @@ class ResultsStructure extends React.Component{
         let merizo_error = this.state.merizo_results[key];
         if(merizo_error.length > 0){ 
           console.log(merizo_error);
+          let error_html = "<h3>Your PDB file is malformatted. Please correct and resubmit</h3>";
+          var error = document.createElement('template');
+          mr.innerHTML = error_html;
+          this.merizo_pdb_error.current.appendChild(mr.content);
         }
       }
       if(key.includes("_v2.pdb2")){
