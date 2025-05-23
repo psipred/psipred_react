@@ -97,7 +97,7 @@ class ResultsStructure extends React.Component{
       if(key.includes(".txt")){
         let errors = this.state.merizo_results[key];
 
-        if(errors.includes("It *seems* everything is OK.")){ 
+        if(! errors.includes("It *seems* everything is OK.")){ 
           //console.log(errors);
           let lines = errors.split("\n");
           let error_html = "<h2>Your PDB file is malformatted. Please correct and resubmit</h2>";
