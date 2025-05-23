@@ -26,7 +26,7 @@ class ResultsStructure extends React.Component{
     this.merizo_pdb = React.createRef();
     this.merizo_boundaries = React.createRef();
     this.merizo_pdb_sidebar = React.createRef();
-    this.merizo_pdb_error = React.createRef();
+    this.merizo_error = React.createRef();
     // this.merizosearch_error = React.createRef();
     this.merizosearch_pdb = React.createRef();
     this.merizosearch_results_table = React.createRef();
