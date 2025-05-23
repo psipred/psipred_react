@@ -26,6 +26,8 @@ class ResultsStructure extends React.Component{
     this.merizo_pdb = React.createRef();
     this.merizo_boundaries = React.createRef();
     this.merizo_pdb_sidebar = React.createRef();
+    this.merizo_pdb_error = React.createRef();
+    // this.merizosearch_error = React.createRef();
     this.merizosearch_pdb = React.createRef();
     this.merizosearch_results_table = React.createRef();
     this.merizosearch_alt_results_table = React.createRef();
@@ -92,6 +94,12 @@ class ResultsStructure extends React.Component{
     for(let key in this.state.merizo_results){
       let uid = key.slice(0,-15);
 
+      if(key.includes(".txt")){
+        let merizo_error = this.state.merizo_results[key];
+        if(merizo_error.length > 0){ 
+          console.log(merizo_error);
+        }
+      }
       if(key.includes("_v2.pdb2")){
         let merizo_idx = this.state.merizo_results[uid+'_merizo_v2.idx'];
         // let bFactors = extractBFactors(this.state.merizo_results[key])
@@ -498,6 +506,7 @@ class ResultsStructure extends React.Component{
                   <img alt="waiting icon" src={this.props.merizo_waiting_icon} />
                 </div>
               )}
+              <div className="merizo_error" id="merizo_errorr" ref={this.merizo_error}></div>
               <div className="pdb_panel_class_merizo_options" id="merizo_sidebar_bg" ref={this.merizo_pdb_sidebar}></div>
               <div className="merizo_pdb pdb_panel_class_merizo" id="merizo_pdb_panel" ref={this.merizo_pdb}></div>
               <div className="merizo_boundaries" id="merizo_boundary_table" ref={this.merizo_boundaries}></div>
