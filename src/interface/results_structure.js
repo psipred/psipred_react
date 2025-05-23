@@ -27,7 +27,7 @@ class ResultsStructure extends React.Component{
     this.merizo_boundaries = React.createRef();
     this.merizo_pdb_sidebar = React.createRef();
     this.merizo_error = React.createRef();
-    // this.merizosearch_error = React.createRef();
+    this.merizosearch_error = React.createRef();
     this.merizosearch_pdb = React.createRef();
     this.merizosearch_results_table = React.createRef();
     this.merizosearch_alt_results_table = React.createRef();
@@ -101,7 +101,7 @@ class ResultsStructure extends React.Component{
           //console.log(errors);
           let lines = errors.split("\n");
           let error_html = "<h2>Your PDB file is malformatted. Please correct and resubmit</h2>";
-          error_html += "<h3>Validation performed using pdb_validate from https://github.com/haddocking/pdb-tools</h3>";
+          error_html += "<h3>Validation is performed using pdb_validate from https://github.com/haddocking/pdb-tools</h3>";
           error_html += "<h3>To understand your errors, read the format specification:</h3>";
           error_html += "<h3><a href='http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM'>http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM</a></h3><p class='fixed_width'><br /><br />";
           lines.forEach(function(line){
@@ -166,6 +166,29 @@ class ResultsStructure extends React.Component{
       }
     }
     for(let key in this.state.merizosearch_results){
+
+      if(key.includes(".txt")){
+        let errors = this.state.merizosearch_results[key];
+
+        if(! errors.includes("It *seems* everything is OK.")){ 
+          console.log(errors);
+          let lines = errors.split("\n");
+          let error_html = "<h2>Your PDB file is malformatted. Please correct and resubmit</h2>";
+          error_html += "<h3>Validation is performed using pdb_validate from https://github.com/haddocking/pdb-tools</h3>";
+          error_html += "<h3>To understand your errors, read the format specification:</h3>";
+          error_html += "<h3><a href='http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM'>http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM</a></h3><p class='fixed_width'><br /><br />";
+          lines.forEach(function(line){
+            console.log(line);
+            line = line.replace(/\s/g, "&nbsp;");
+            error_html += line+"<br />";
+          });
+          error_html += "</p>";
+          var error_ele = document.createElement('template');
+          error_ele.innerHTML = error_html;
+          this.merizosearch_error.current.appendChild(error_ele.content);
+        }
+      }
+
       if(key.includes("search.tsv")){
         let file_data = this.state.merizosearch_results[key];
         const { html, data, althtml, domdata, tableids} = parse_merizosearch_search_results(file_data, this.props.merizosearch_db);
@@ -554,6 +577,7 @@ class ResultsStructure extends React.Component{
                   <img alt="waiting icon" src={this.props.merizosearch_waiting_icon} />
                 </div>
               )}
+              <div className="merizosearch_error" id="merizosearch_errorr" ref={this.merizosearch_error}></div>
               <div className="merizo_pdb pdb_panel_class_merizo" id="merizoseach_pdb" ref={this.merizosearch_pdb}></div>
             </div>
           </div>
