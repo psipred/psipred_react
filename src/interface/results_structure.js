@@ -99,7 +99,9 @@ class ResultsStructure extends React.Component{
         if(errors.length > 0){ 
           //console.log(errors);
           let lines = errors.split("\n");
-          let error_html = "<h3>Your PDB file is malformatted. Please correct and resubmit</h3><p>";
+          let error_html = "<h3>Your PDB file is malformatted. Please correct and resubmit</h3>
+          error_html += "<h4>Errors produced by pdb_validate: </h4>
+          <p>";
           lines.forEach(function(line){
             console.log(line);
             error_html += line+"<br />";
