@@ -102,10 +102,10 @@ class ResultsStructure extends React.Component{
           let error_html = "<h3>Your PDB file is malformatted. Please correct and resubmit</h3>";
           error_html += "<h3>Validation performed using pdb_validate from https://github.com/haddocking/pdb-tools</h3>";
           error_html += "<h3>To understand your errors, read the format specification:</h3>";
-          error_html += "http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM</h3><p><br /><br />";
+          error_html += "<h3><a href='http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM'>http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM</a></h3><p><br /><br />";
           lines.forEach(function(line){
             console.log(line);
-            line.replace(/\s/g, "&nbsp;");
+            line = line.replace(/\s/g, "&nbsp;");
             error_html += line+"<br />";
           });
           error_html += "</p>";
