@@ -96,7 +96,8 @@ class ResultsStructure extends React.Component{
 
       if(key.includes(".txt")){
         let errors = this.state.merizo_results[key];
-        if(errors.length > 0){ 
+
+        if(errors.includes("It *seems* everything is OK.")){ 
           //console.log(errors);
           let lines = errors.split("\n");
           let error_html = "<h2>Your PDB file is malformatted. Please correct and resubmit</h2>";
@@ -104,7 +105,7 @@ class ResultsStructure extends React.Component{
           error_html += "<h3>To understand your errors, read the format specification:</h3>";
           error_html += "<h3><a href='http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM'>http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM</a></h3><p class='fixed_width'><br /><br />";
           lines.forEach(function(line){
-            console.log(line);
+            //console.log(line);
             line = line.replace(/\s/g, "&nbsp;");
             error_html += line+"<br />";
           });
