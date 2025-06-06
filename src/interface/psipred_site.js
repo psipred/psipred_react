@@ -555,7 +555,7 @@ export class PsipredSite extends React.Component{
     this.state = {
       //suspension_message: null,
       //server_message: null,
-      suspension_message: "The server is offline due to capacity issues caused by malicious users",
+      //suspension_message: "The server is offline due to capacity issues caused by malicious users",
       //server_message: "The PSIPRED Workbench is undergoing some server upgrades. We apologise for any service disruption. If you experience any issues please email psipred-help@cs.ucl.ac.uk",
       endpoints_url: null,
       submit_url: null,
