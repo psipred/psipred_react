@@ -36,7 +36,7 @@ export class Interface extends React.Component{
                         </div>
                         <div className="collapse navbar-collapse" id="navbar-collapse">
                           <div className="nav navbar-nav navbar-right">
-                            <a href="https://www.ucl.ac.uk/" alt="UCL"><img alt="UCL Logo" height="50px" src="http://cms.cs.ucl.ac.uk/typo3/fileadmin/bioinf/templates/images/ucl-logo.svg" /></a>
+                            <a href="https://www.ucl.ac.uk/" alt="UCL"><img alt="UCL Logo" height="50px" src="https://bioinf.cs.ucl.ac.uk/assets/images/ucl-logo.svg" /></a>
                           </div>
                         </div>
                   </div>
