@@ -552,10 +552,15 @@ export class PsipredSite extends React.Component{
     console.log("PAGE LOAD location : "+window.location.hostname);
     console.log("PAGE LOAD href: "+href);
     console.log("PAGE LOAD uuid: "+uuid);
+
+    let suspend_message = null;
+    let warning_message = null;
+    suspend_message = "The server is offline due to capacity issues caused by malicious users. For any issues please email psipred-help@cs.ucl.ac.uk",;
+    // warning_message = "Next week we will shut the server down. If you experience any issues please email psipred-help@cs.ucl.ac.uk",;
+
     this.state = {
-      suspension_message: null,
-      //suspension_message: "The server is offline due to capacity issues caused by malicious users",
-      server_message: "Next week we will shut the server down. If you experience any issues please email psipred-help@cs.ucl.ac.uk",
+      suspension_message: suspend_message,
+      server_message: warning_message,
       endpoints_url: null,
       submit_url: null,
       times_url: null,
