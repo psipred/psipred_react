@@ -554,7 +554,6 @@ export class PsipredSite extends React.Component{
     console.log("PAGE LOAD uuid: "+uuid);
     this.state = {
       suspension_message: null,
-      //server_message: null,
       //suspension_message: "The server is offline due to capacity issues caused by malicious users",
       server_message: "Next week we will shut the server down. If you experience any issues please email psipred-help@cs.ucl.ac.uk",
       endpoints_url: null,
