@@ -37,7 +37,7 @@ export class Interface extends React.Component{
                         <div className="collapse navbar-collapse" id="navbar-collapse">
                           <div className="nav navbar-nav navbar-right">
                             <a href="https://elixir-europe.org/about-us/who-we-are/nodes/uk" alt="Elixir"><img alt="Elixir Logo" height="50px" src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/elixir.svg" /></a>&nbsp;&nbsp;&nbsp;
-                            <a href="https://www.ucl.ac.uk/" alt="UCL"><img alt="UCL Logo" height="50px" src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/ucl-logo.svg" /></a>
+                            <a href="https://www.ucl.ac.uk/" alt="UCL"><img alt="UCL Logo" height="50px" src="https://bioinf.cs.ucl.ac.uk/assets/images/ucl-logo.svg" /></a>
                           </div>
                         </div>
                   </div>
