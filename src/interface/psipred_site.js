@@ -555,7 +555,7 @@ export class PsipredSite extends React.Component{
 
     let suspend_message = null;
     let warning_message = null;
-    suspend_message = "2025/11/21: The server is offline due to capacity issues. We aim to bring the server back as soon as we can later today. For any problems please email psipred-help@cs.ucl.ac.uk";
+    //suspend_message = "2025/11/21: The server is offline due to capacity issues. We aim to bring the server back as soon as we can later today. For any problems please email psipred-help@cs.ucl.ac.uk";
     // warning_message = "Next week we will shut the server down. If you experience any issues please email psipred-help@cs.ucl.ac.uk";
 
     this.state = {
