@@ -32,12 +32,12 @@ export class Interface extends React.Component{
                   </a>
                   <div className="container-fluid">
                         <div className="navbar-header" style={{ 'paddingTop': '5px'}}>
-                          <h4 className="psipred_title" ><b>UCL Department of Computer Science: Bioinformatics Group</b></h4>
+                          <h4 className="psipred_title" ><b>UCL Department of Computer Science</b></h4>
                         </div>
                         <div className="collapse navbar-collapse" id="navbar-collapse">
                           <div className="nav navbar-nav navbar-right">
                             <a href="https://elixir-europe.org/about-us/who-we-are/nodes/uk" alt="Elixir"><img alt="Elixir Logo" height="50px" src="http://bioinf.cs.ucl.ac.uk/psipred/static/images/elixir.svg" /></a>&nbsp;&nbsp;&nbsp;
-                            <a href="https://www.ucl.ac.uk/" alt="UCL"><img alt="UCL Logo" height="50px" src="https://bioinf.cs.ucl.ac.uk/assets/images/ucl-logo.svg" /></a>
+                            <a href="https://www.ucl.ac.uk/" alt="UCL"><img alt="UCL Logo" height="50px" class="ucl-pad" src="https://bioinf.cs.ucl.ac.uk/assets/images/ucl-logo.svg" /></a>
                           </div>
                         </div>
                   </div>
