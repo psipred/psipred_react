@@ -32,7 +32,7 @@ export class Interface extends React.Component{
                   </a>
                   <div className="container-fluid">
                         <div className="navbar-header" style={{ 'paddingTop': '5px'}}>
-                          <h4 className="psipred_title" ><b>UCL Department of Computer Science</b></h4>
+                          <h4 className="psipred_title" ><b>UCL Computer Science</b></h4>
                         </div>
                         <div className="collapse navbar-collapse" id="navbar-collapse">
                           <div className="nav navbar-nav navbar-right">
