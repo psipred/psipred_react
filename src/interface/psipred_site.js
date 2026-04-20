@@ -555,7 +555,7 @@ export class PsipredSite extends React.Component{
 
     let suspend_message = null;
     let warning_message = null;
-    suspend_message = "The server is offline for essential power upgrade work. Service will return on 2026/04/20";
+    suspend_message = "Power upgrade work remains ongoing. We expect the service return 2026/04/21 or 2026/04/22";
     //warning_message = "The server will be down for essential hardware maintainance this weekend. Job submissions will be suspended from 2026/04/17";
 
     this.state = {
