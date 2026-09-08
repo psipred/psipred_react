@@ -270,7 +270,7 @@ const validateFormData = (state, jobs, pdbData, transFile) => {
     //console.log(transFile.size);
     if(transFile.size > 50000000)
     {
-      checked.message = "Your Transcriptomics data file is too large. We can only accept input files smaller than 50 megabytes (50000000 bytes). ";
+      checked.message = "Your Transcriptomics data file is too large for our service. We can only accept input files smaller than 50 megabytes (50000000 bytes). ";
       return(checked);
     }
     //console.log("ENDDATE");
